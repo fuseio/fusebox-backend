@@ -24,12 +24,23 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Fuse Charge Backend API developed with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
 ```bash
 $ npm install
+```
+
+## Environment
+
+Make sure to have the following keys and corresponding values in the .env file
+
+```bash
+PORT=
+MONGO_URI=
+AUTH0_ISSUER_URL=
+AUTH0_AUDIENCE=
 ```
 
 ## Running the app

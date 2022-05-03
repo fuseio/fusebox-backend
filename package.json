@@ -1,7 +1,7 @@
 {
   "name": "backend-api",
   "version": "0.0.1",
-  "description": "",
+  "description": "Fuse Charge Backend API",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -18,9 +18,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve"
   },
   "dependencies": {
+    "@compodoc/compodoc": "^1.1.19",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/mapped-types": "*",

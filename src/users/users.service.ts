@@ -23,6 +23,10 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User> {
+    return this.userModel.findOne({ _id: id }).exec();
+  }
+
+  async findOneByAuth0Id(id: string): Promise<User> {
     return this.userModel.findOne({ auth0_id: id }).exec();
   }
 

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SubmitQuestionnaireDto } from './dto/submit-questionnaire.dto';
 
 @Controller('users')
 export class UsersController {
@@ -18,5 +19,11 @@ export class UsersController {
   @Get()
   findOne(@User('sub') id: string) {
     return this.usersService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/questionnaire/:id')
+  submitQuestionnaire(@Param() { id }, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
+    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto);
   }
 }

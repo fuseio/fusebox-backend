@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SubmitQuestionnaireDto } from './dto/submit-questionnaire.dto';
 import { User } from './interfaces/user.interface';
 import * as constants from './users.constants';
 
@@ -23,5 +24,11 @@ export class UsersService {
 
   async findOne(id: string): Promise<User> {
     return this.userModel.findOne({ auth0_id: id }).exec();
+  }
+
+  async submitQuestionnaire(id: string, submitQuestionnaireDto: SubmitQuestionnaireDto) {
+    return await this.userModel.findByIdAndUpdate(id,
+      { questionnaire: submitQuestionnaireDto.questionnaire }
+    );
   }
 }

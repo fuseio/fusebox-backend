@@ -1,7 +1,5 @@
 import { Controller, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { SubmitQuestionnaireDto } from './dto/submit-questionnaire.dto';
 import { IsAccountOwnerGuard } from './guards/is-account-owner.guard';

@@ -7,7 +7,7 @@ import { IsCreatorOwnerGuard } from './guards/is-creator-owner.guard';
 import { IsProjectOwnerGuard } from './guards/is-project-owner.guard';
 import { ProjectsService } from './projects.service';
 
-@Controller('projects')
+@Controller({ path: 'projects', version: '1' })
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) { }
 

@@ -4,7 +4,7 @@ import { User } from 'src/users/user.decorator';
 import { UsersService } from 'src/users/users.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
-@Controller('auth')
+@Controller({ path: 'auth', version: '1' })
 export class AuthController {
     constructor(private readonly usersService: UsersService) { }
 

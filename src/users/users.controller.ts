@@ -4,7 +4,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { SubmitQuestionnaireDto } from './dto/submit-questionnaire.dto';
 import { IsAccountOwnerGuard } from './guards/is-account-owner.guard';
 
-@Controller('users')
+@Controller({ path: 'users', version: '1' })
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 

@@ -28,16 +28,21 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content controller">
+               <div class="content guard">
                    <div class="content-data">
 
 
 
 
 
+
+
+
+
+
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >UsersController</li>
+    <li>Guards</li>
+    <li >IsAccountOwnerGuard</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -50,19 +55,12 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
-        <p class="comment">
+        <div class="tab-pane fade active in" id="c-info">
+            <p class="comment">
             <h3>File</h3>
-        </p>
-        <p class="comment">
-            <code>src/users/users.controller.ts</code>
-        </p>
-
-            <p class="comment">
-                <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>users</code>
+                <code>src/users/guards/is-account-owner.guard.ts</code>
             </p>
 
 
@@ -70,7 +68,7 @@
 
 
 
-            <section>
+                <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -84,7 +82,8 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#submitQuestionnaire" >submitQuestionnaire</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#canActivate" >canActivate</a>
                             </li>
                         </ul>
                     </td>
@@ -98,7 +97,56 @@
     </table>
 </section>
 
-            <section>
+                <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/users/guards/is-account-owner.guard.ts:6</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>usersService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UsersService.html" target="_self" >UsersService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+                <section>
     
     <h3 id="methods">
         Methods
@@ -107,40 +155,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="submitQuestionnaire"></a>
+                    <a name="canActivate"></a>
                     <span class="name">
-                        <span ><b>submitQuestionnaire</b></span>
-                        <a href="#submitQuestionnaire"><span class="icon ion-ios-link"></span></a>
+                        <span class="modifier">Async</span>
+                        <span ><b>canActivate</b></span>
+                        <a href="#canActivate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>submitQuestionnaire(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, submitQuestionnaireDto: <a href="../classes/SubmitQuestionnaireDto.html" target="_self">SubmitQuestionnaireDto</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@UseGuards(JwtAuthGuard, IsAccountOwnerGuard)<br />@Post(&#x27;/questionnaire/:id&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/users/users.controller.ts:19</a></div>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>canActivate(context: ExecutionContext)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Submits questionnaire answers for the given user id and verifies that the authenticated
-user has the given user id</p>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="9"
+                            class="link-to-prism">src/users/guards/is-account-owner.guard.ts:9</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -151,14 +191,13 @@ user has the given user id</p>
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
-                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>id</td>
+                                    <td>context</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <code>ExecutionContext</code>
                                     </td>
 
                                     <td>
@@ -166,24 +205,6 @@ user has the given user id</p>
                                     </td>
 
 
-                                    <td>
-                                        <p>User ID</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>submitQuestionnaireDto</td>
-                                    <td>
-                                                <code><a href="../classes/SubmitQuestionnaireDto.html" target="_self" >SubmitQuestionnaireDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -191,7 +212,7 @@ user has the given user id</p>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -201,40 +222,36 @@ user has the given user id</p>
             </tr>
         </tbody>
     </table>
-</section>    </div>
+</section>
+        </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Post, Body, UseGuards, Param } from &#x27;@nestjs/common&#x27;;
-import { UsersService } from &#x27;./users.service&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
-import { SubmitQuestionnaireDto } from &#x27;./dto/submit-questionnaire.dto&#x27;;
-import { IsAccountOwnerGuard } from &#x27;./guards/is-account-owner.guard&#x27;;
+        <div class="tab-pane fade  tab-source-code" id="c-source">
+            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CanActivate, ExecutionContext, Injectable } from &#x27;@nestjs/common&#x27;;
+import { User } from &#x27;../interfaces/user.interface&#x27;;
+import { UsersService } from &#x27;../users.service&#x27;;
 
-@Controller(&#x27;users&#x27;)
-export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+@Injectable()
+export class IsAccountOwnerGuard implements CanActivate {
+  constructor(private usersService: UsersService) { }
 
-  /**
-   * Submits questionnaire answers for the given user id and verifies that the authenticated 
-   * user has the given user id
-   * @param id User ID
-   * @param submitQuestionnaireDto 
-   */
-  @UseGuards(JwtAuthGuard, IsAccountOwnerGuard)
-  @Post(&#x27;/questionnaire/:id&#x27;)
-  submitQuestionnaire(@Param(&#x27;:id&#x27;) id: string, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
-    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto);
+  async canActivate(
+    context: ExecutionContext,
+  ): Promise&lt;boolean&gt; {
+
+    const request &#x3D; context.switchToHttp().getRequest();
+    const { params }: { params: { id: string } } &#x3D; request;
+    const auth0_id &#x3D; request?.user?.sub;
+    const userById &#x3D; await this.usersService.findOne(params.id);
+
+    if (!auth0_id || !userById || auth0_id !&#x3D;&#x3D; userById.auth0_id) return false;
+
+    return true;
   }
 }
 </code></pre>
-    </div>
+        </div>
 </div>
-
-
-
-
-
 
 
 
@@ -271,8 +288,8 @@ export class UsersController {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'UsersController.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'guard';
+            var COMPODOC_CURRENT_PAGE_URL = 'IsAccountOwnerGuard.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

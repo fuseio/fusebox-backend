@@ -28,19 +28,16 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content injectable">
+               <div class="content controller">
                    <div class="content-data">
 
 
 
 
 
-
-
-
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >UsersService</li>
+  <li>Controllers</li>
+  <li >ProjectsController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,8 +55,16 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/users/users.service.ts</code>
+            <code>src/projects/projects.controller.ts</code>
         </p>
+
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>projects</code>
+            </p>
+
 
 
 
@@ -79,24 +84,16 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#create" >create</a>
                             </li>
                             <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#findAll" >findAll</a>
                             </li>
                             <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#findOne" >findOne</a>
                             </li>
                             <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#findOneByAuth0Id" >findOneByAuth0Id</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#submitQuestionnaire" >submitQuestionnaire</a>
+                                <a href="#update" >update</a>
                             </li>
                         </ul>
                     </td>
@@ -111,55 +108,6 @@
 </section>
 
             <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(userModel: <a href="../interfaces/User.html" target="_self">Model&lt;User&gt;</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/users/users.service.ts:9</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>userModel</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../interfaces/User.html" target="_self" >Model&lt;User&gt;</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
-
-            <section>
     
     <h3 id="methods">
         Methods
@@ -170,7 +118,6 @@
                 <td class="col-md-4">
                     <a name="create"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
                         <span ><b>create</b></span>
                         <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -178,22 +125,30 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(createUserDto: <a href="../interfaces/User.html" target="_self">CreateUserDto</a>)</code>
+<code>create(createProjectDto: <a href="../interfaces/Project.html" target="_self">CreateProjectDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)<br />@Post()<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">src/projects/projects.controller.ts:20</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="16"
-                            class="link-to-prism">src/users/users.service.ts:16</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
+                    <div class="io-description"><p>Creates a new project for the authenticated user</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -208,9 +163,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>createUserDto</td>
+                                    <td>createProjectDto</td>
                                     <td>
-                                                <code><a href="../interfaces/User.html" target="_self" >CreateUserDto</a></code>
+                                                <code><a href="../interfaces/Project.html" target="_self" >CreateProjectDto</a></code>
                                     </td>
 
                                     <td>
@@ -225,7 +180,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -241,7 +196,6 @@
                 <td class="col-md-4">
                     <a name="findAll"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
                         <span ><b>findAll</b></span>
                         <a href="#findAll"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -249,26 +203,66 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findAll()</code>
+<code>findAll(auth0_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get()<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/projects/projects.controller.ts:29</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/users/users.service.ts:22</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
+                    <div class="io-description"><p>Finds all the projects of the authenticated user</p>
+</div>
 
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/User.html" target="_self" >Promise&lt;User[]&gt;</a></code>
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0_id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -280,7 +274,6 @@
                 <td class="col-md-4">
                     <a name="findOne"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
                         <span ><b>findOne</b></span>
                         <a href="#findOne"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -288,22 +281,31 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findOne(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>findOne(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;:id&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/projects/projects.controller.ts:40</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/users/users.service.ts:26</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
+                    <div class="io-description"><p>Fetches the project by the given id and verifies that the requesting
+authenticated user is the owner of the project</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -314,6 +316,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -328,6 +331,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>Project ID</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -335,7 +342,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -349,32 +356,40 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="findOneByAuth0Id"></a>
+                    <a name="update"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>findOneByAuth0Id</b></span>
-                        <a href="#findOneByAuth0Id"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>update</b></span>
+                        <a href="#update"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findOneByAuth0Id(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>update(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updateProjectDto: <a href="../interfaces/Project.html" target="_self">UpdateProjectDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Patch(&#x27;:id&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">src/projects/projects.controller.ts:52</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/users/users.service.ts:30</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
+                    <div class="io-description"><p>Updates the project with the given id with the given fields for the update
+and verifies that the requesting authenticated user is the owner of the project</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -385,6 +400,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -399,6 +415,24 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>Project ID</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>updateProjectDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/Project.html" target="_self" >UpdateProjectDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -406,7 +440,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -416,138 +450,71 @@
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="submitQuestionnaire"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>submitQuestionnaire</b></span>
-                        <a href="#submitQuestionnaire"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>submitQuestionnaire(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, submitQuestionnaireDto: <a href="../classes/SubmitQuestionnaireDto.html" target="_self">SubmitQuestionnaireDto</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">src/users/users.service.ts:34</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>submitQuestionnaireDto</td>
-                                    <td>
-                                                <code><a href="../classes/SubmitQuestionnaireDto.html" target="_self" >SubmitQuestionnaireDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
-
-    </div>
+</section>    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Inject, Injectable } from &#x27;@nestjs/common&#x27;;
-import { Model } from &#x27;mongoose&#x27;;
-import { CreateUserDto } from &#x27;./dto/create-user.dto&#x27;;
-import { SubmitQuestionnaireDto } from &#x27;./dto/submit-questionnaire.dto&#x27;;
-import { User } from &#x27;./interfaces/user.interface&#x27;;
-import * as constants from &#x27;./users.constants&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Param, Patch, Post, UseGuards } from &#x27;@nestjs/common&#x27;;
+import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
+import { User } from &#x27;src/users/user.decorator&#x27;;
+import { CreateProjectDto } from &#x27;./dto/create-project.dto&#x27;;
+import { UpdateProjectDto } from &#x27;./dto/update-project.dto&#x27;;
+import { IsCreatorOwnerGuard } from &#x27;./guards/is-creator-owner.guard&#x27;;
+import { IsProjectOwnerGuard } from &#x27;./guards/is-project-owner.guard&#x27;;
+import { ProjectsService } from &#x27;./projects.service&#x27;;
 
-@Injectable()
-export class UsersService {
-  constructor(
-    @Inject(constants.userModelString)
-    private userModel: Model&lt;User&gt;,
-  ) { }
+@Controller(&#x27;projects&#x27;)
+export class ProjectsController {
+  constructor(private readonly projectsService: ProjectsService) { }
 
-
-  async create(createUserDto: CreateUserDto): Promise&lt;User&gt; {
-    //TODO: When a user already exists, throw a custom exception of user already exists instead of internal server error
-    const createdUser &#x3D; new this.userModel(createUserDto);
-    return createdUser.save();
+  /**
+   * Creates a new project for the authenticated user
+   * @param createProjectDto 
+   */
+  @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
+  @Post()
+  create(@Body() createProjectDto: CreateProjectDto) {
+    return this.projectsService.create(createProjectDto);
   }
 
-  async findAll(): Promise&lt;User[]&gt; {
-    return this.userModel.find().exec();
+  /**
+   * Finds all the projects of the authenticated user
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findAll(@User(&#x27;sub&#x27;) auth0_id: string) {
+    return this.projectsService.findAll(auth0_id);
   }
 
-  async findOne(id: string): Promise&lt;User&gt; {
-    return this.userModel.findOne({ _id: id }).exec();
+  /**
+   * Fetches the project by the given id and verifies that the requesting 
+   * authenticated user is the owner of the project 
+   * @param id Project ID
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get(&#x27;:id&#x27;)
+  findOne(@Param(&#x27;id&#x27;) id: string) {
+    return this.projectsService.findOne(id);
   }
 
-  async findOneByAuth0Id(id: string): Promise&lt;User&gt; {
-    return this.userModel.findOne({ auth0_id: id }).exec();
-  }
-
-  async submitQuestionnaire(id: string, submitQuestionnaireDto: SubmitQuestionnaireDto) {
-    return await this.userModel.findByIdAndUpdate(id,
-      { questionnaire: submitQuestionnaireDto.questionnaire }
-    );
+  /**
+   * Updates the project with the given id with the given fields for the update 
+   * and verifies that the requesting authenticated user is the owner of the project 
+   * @param id Project ID
+   * @param updateProjectDto 
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Patch(&#x27;:id&#x27;)
+  update(@Param(&#x27;id&#x27;) id: string, @Body() updateProjectDto: UpdateProjectDto) {
+    return this.projectsService.update(id, updateProjectDto);
   }
 }
 </code></pre>
     </div>
-
 </div>
+
+
+
 
 
 
@@ -586,8 +553,8 @@ export class UsersService {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'UsersService.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProjectsController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

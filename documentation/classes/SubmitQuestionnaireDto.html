@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >CreateUserDto</li>
+  <li >SubmitQuestionnaireDto</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -62,7 +62,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/users/dto/create-user.dto.ts</code>
+            <code>src/users/dto/submit-questionnaire.dto.ts</code>
         </p>
 
 
@@ -83,13 +83,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#auth0_id" >auth0_id</a>
-                            </li>
-                            <li>
-                                <a href="#email" >email</a>
-                            </li>
-                            <li>
-                                <a href="#name" >name</a>
+                                <a href="#questionnaire" >questionnaire</a>
                             </li>
                         </ul>
                     </td>
@@ -114,16 +108,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="auth0_id"></a>
+                    <a name="questionnaire"></a>
                     <span class="name">
-                        <span ><b>auth0_id</b></span>
-                        <a href="#auth0_id"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>questionnaire</b></span>
+                        <a href="#questionnaire"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
 
                     </td>
                 </tr>
@@ -132,83 +126,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />
+                            @IsObject()<br />@IsNotEmptyObject()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/users/dto/create-user.dto.ts:11</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="email"></a>
-                    <span class="name">
-                        <span ><b>email</b></span>
-                        <a href="#email"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsEmail()<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/users/dto/create-user.dto.ts:8</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="name"></a>
-                    <span class="name">
-                        <span ><b>name</b></span>
-                        <a href="#name"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsString()<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/users/dto/create-user.dto.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/users/dto/submit-questionnaire.dto.ts:6</a></div>
                         </td>
                     </tr>
 
@@ -227,17 +151,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsEmail, IsString } from &#x27;class-validator&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsNotEmptyObject, IsObject } from &#x27;class-validator&#x27;;
 
-export class CreateUserDto {
-    @IsString()
-    name: string;
-
-    @IsEmail()
-    email: string;
-
-    @IsString()
-    auth0_id: string;
+export class SubmitQuestionnaireDto {
+    @IsObject()
+    @IsNotEmptyObject()
+    questionnaire: object;
 }
 </code></pre>
     </div>
@@ -277,7 +196,7 @@ export class CreateUserDto {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'CreateUserDto.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SubmitQuestionnaireDto.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -14,6 +14,7 @@ export class UsersService {
 
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    //TODO: When a user already exists, throw a custom exception of user already exists instead of internal server error
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }

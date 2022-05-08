@@ -15,4 +15,8 @@ export class ProjectsService {
         const createdProject = new this.projectModel(createProjectDto);
         return createdProject.save();
     }
+
+    async getProject(id: string): Promise<Project> {
+        return this.projectModel.findById(id)
+    }
 }

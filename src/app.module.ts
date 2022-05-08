@@ -4,7 +4,7 @@ import { UsersModule } from './users/users.module';
 import { ProjectsModule } from './projects/projects.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ProjectsModule],
+  imports: [AuthModule, UsersModule, ProjectsModule],
   controllers: [],
   providers: [],
 })

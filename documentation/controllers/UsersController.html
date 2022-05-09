@@ -58,12 +58,6 @@
             <code>src/users/users.controller.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Prefix</h3>
-            </p>
-            <p class="comment">
-                <code>users</code>
-            </p>
 
 
 
@@ -211,7 +205,7 @@ import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
 import { SubmitQuestionnaireDto } from &#x27;./dto/submit-questionnaire.dto&#x27;;
 import { IsAccountOwnerGuard } from &#x27;./guards/is-account-owner.guard&#x27;;
 
-@Controller(&#x27;users&#x27;)
+@Controller({ path: &#x27;users&#x27;, version: &#x27;1&#x27; })
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 

@@ -58,12 +58,6 @@
             <code>src/projects/projects.controller.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Prefix</h3>
-            </p>
-            <p class="comment">
-                <code>projects</code>
-            </p>
 
 
 
@@ -463,7 +457,7 @@ import { IsCreatorOwnerGuard } from &#x27;./guards/is-creator-owner.guard&#x27;;
 import { IsProjectOwnerGuard } from &#x27;./guards/is-project-owner.guard&#x27;;
 import { ProjectsService } from &#x27;./projects.service&#x27;;
 
-@Controller(&#x27;projects&#x27;)
+@Controller({ path: &#x27;projects&#x27;, version: &#x27;1&#x27; })
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) { }
 

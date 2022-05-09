@@ -58,12 +58,6 @@
             <code>src/auth/auth.controller.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Prefix</h3>
-            </p>
-            <p class="comment">
-                <code>auth</code>
-            </p>
 
 
 
@@ -278,7 +272,7 @@ import { User } from &#x27;src/users/user.decorator&#x27;;
 import { UsersService } from &#x27;src/users/users.service&#x27;;
 import { JwtAuthGuard } from &#x27;./guards/jwt-auth.guard&#x27;;
 
-@Controller(&#x27;auth&#x27;)
+@Controller({ path: &#x27;auth&#x27;, version: &#x27;1&#x27; })
 export class AuthController {
     constructor(private readonly usersService: UsersService) { }
 

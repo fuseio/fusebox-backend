@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  main:
+    container_name: main
+    build:
+      context: .
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    networks:
+      - chargenet
+    depends_on:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - chargenet
+networks:
+  chargenet:

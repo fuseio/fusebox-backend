@@ -57,11 +57,19 @@
 <h2 id="installation">Installation</h2>
 <div><pre class="line-numbers"><code class="language-bash">$ npm install</code></pre></div><h2 id="environment">Environment</h2>
 <p>Make sure to have the following keys and corresponding values in the .env file</p>
-<div><pre class="line-numbers"><code class="language-bash">PORT=
+<div><pre class="line-numbers"><code class="language-bash">SERVER_PORT=
 MONGO_URI=
 AUTH0_ISSUER_URL=
 AUTH0_AUDIENCE=</code></pre></div><h2 id="running-the-app">Running the app</h2>
-<div><pre class="line-numbers"><code class="language-bash"># development
+<div><pre class="line-numbers"><code class="language-bash">#docker dev
+$ npm run docker:dev
+
+#docker debug
+$ npm run docker:debug
+
+&quot;Then run the &#39;Debug: Charge&#39; configuration in launch.json through the debugger in VS Code&quot;
+
+# development
 $ npm run start
 
 # watch mode

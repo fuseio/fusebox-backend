@@ -16,7 +16,7 @@ export class UsersController {
    */
   @UseGuards(JwtAuthGuard, IsAccountOwnerGuard)
   @Post('/questionnaire/:id')
-  submitQuestionnaire(@Param(':id') id: string, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
+  submitQuestionnaire(@Param('id') id: string, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
     return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto);
   }
 }

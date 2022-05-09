@@ -9,7 +9,4 @@ export class CreateProjectDto {
 
     @IsString()
     description: string;
-
-    @IsString()
-    logoUri: string;
 }

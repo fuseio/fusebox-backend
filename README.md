@@ -37,7 +37,7 @@ $ npm install
 Make sure to have the following keys and corresponding values in the .env file
 
 ```bash
-PORT=
+SERVER_PORT=
 MONGO_URI=
 AUTH0_ISSUER_URL=
 AUTH0_AUDIENCE=
@@ -46,6 +46,14 @@ AUTH0_AUDIENCE=
 ## Running the app
 
 ```bash
+#docker dev
+$ npm run docker:dev
+
+#docker debug
+$ npm run docker:debug
+
+"Then run the 'Debug: Charge' configuration in launch.json through the debugger in VS Code"
+
 # development
 $ npm run start
 

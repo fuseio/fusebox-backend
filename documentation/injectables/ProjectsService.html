@@ -258,7 +258,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findAll(auth0_id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>findAll(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -287,7 +287,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>auth0_id</td>
+                                    <td>auth0Id</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
@@ -499,8 +499,8 @@ export class ProjectsService {
         return this.projectModel.findById(id)
     }
 
-    async findAll(auth0_id: string): Promise&lt;Project[]&gt; {
-        const userId &#x3D; await this.usersService.findOneByAuth0Id(auth0_id);
+    async findAll(auth0Id: string): Promise&lt;Project[]&gt; {
+        const userId &#x3D; await this.usersService.findOneByAuth0Id(auth0Id);
         return this.projectModel.find({ ownerId: userId });
     }
 

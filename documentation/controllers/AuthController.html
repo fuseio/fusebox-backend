@@ -242,7 +242,7 @@
 
 
                                     <td>
-                                        <p>Logs in the authenticated user&#39;s auth0_id and returns the user id in our db</p>
+                                        <p>Logs in the authenticated user&#39;s auth0Id and returns the user id in our db</p>
 
                                     </td>
                                 </tr>
@@ -288,7 +288,7 @@ export class AuthController {
 
     /**
      * 
-     * @param id Logs in the authenticated user&#x27;s auth0_id and returns the user id in our db
+     * @param id Logs in the authenticated user&#x27;s auth0Id and returns the user id in our db
      */
     @UseGuards(JwtAuthGuard)
     @Post(&#x27;/login&#x27;)

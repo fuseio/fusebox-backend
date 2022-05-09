@@ -8,5 +8,5 @@ export class CreateUserDto {
     email: string;
 
     @IsString()
-    auth0_id: string;
+    auth0Id: string;
 }

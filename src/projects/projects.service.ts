@@ -23,8 +23,8 @@ export class ProjectsService {
         return this.projectModel.findById(id)
     }
 
-    async findAll(auth0_id: string): Promise<Project[]> {
-        const userId = await this.usersService.findOneByAuth0Id(auth0_id);
+    async findAll(auth0Id: string): Promise<Project[]> {
+        const userId = await this.usersService.findOneByAuth0Id(auth0Id);
         return this.projectModel.find({ ownerId: userId });
     }
 

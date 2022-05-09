@@ -28,12 +28,13 @@ export class UsersService {
   }
 
   async findOneByAuth0Id(id: string): Promise<User> {
-    return this.userModel.findOne({ auth0_id: id }).exec();
+    return this.userModel.findOne({ auth0Id: id }).exec();
   }
 
   async submitQuestionnaire(id: string, submitQuestionnaireDto: SubmitQuestionnaireDto) {
     return await this.userModel.findByIdAndUpdate(id,
-      { questionnaire: submitQuestionnaireDto.questionnaire }
+      { questionnaire: submitQuestionnaireDto.questionnaire },
+      { new: true }
     );
   }
 }

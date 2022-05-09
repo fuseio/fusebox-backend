@@ -11,7 +11,7 @@ import { IsAccountOwnerGuard } from './guards/is-account-owner.guard';
   providers: [
     UsersService,
     IsAccountOwnerGuard,
-    ...usersProviders
+    ...usersProviders,
   ],
   exports: [UsersService],
 })

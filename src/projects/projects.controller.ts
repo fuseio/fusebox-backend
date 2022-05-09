@@ -26,8 +26,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@User('sub') auth0_id: string) {
-    return this.projectsService.findAll(auth0_id);
+  findAll(@User('sub') auth0Id: string) {
+    return this.projectsService.findAll(auth0Id);
   }
 
   /**

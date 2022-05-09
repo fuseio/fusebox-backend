@@ -20,7 +20,7 @@ export class AuthController {
 
     /**
      * 
-     * @param id Logs in the authenticated user's auth0_id and returns the user id in our db
+     * @param id Logs in the authenticated user's auth0Id and returns the user id in our db
      */
     @UseGuards(JwtAuthGuard)
     @Post('/login')

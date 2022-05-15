@@ -10,8 +10,7 @@ export class UsersService {
   constructor(
     @Inject(constants.userModelString)
     private userModel: Model<User>,
-  ) { }
-
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     //TODO: When a user already exists, throw a custom exception of user already exists instead of internal server error
@@ -31,10 +30,14 @@ export class UsersService {
     return this.userModel.findOne({ auth0Id: id }).exec();
   }
 
-  async submitQuestionnaire(id: string, submitQuestionnaireDto: SubmitQuestionnaireDto) {
-    return await this.userModel.findByIdAndUpdate(id,
+  async submitQuestionnaire(
+    id: string,
+    submitQuestionnaireDto: SubmitQuestionnaireDto,
+  ) {
+    return await this.userModel.findByIdAndUpdate(
+      id,
       { questionnaire: submitQuestionnaireDto.questionnaire },
-      { new: true }
+      { new: true },
     );
   }
 }

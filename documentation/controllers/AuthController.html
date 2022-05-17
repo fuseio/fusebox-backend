@@ -37,7 +37,7 @@
 
 <ol class="breadcrumb">
   <li>Controllers</li>
-  <li >UsersController</li>
+  <li >AuthController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/users/users.controller.ts</code>
+            <code>src/auth/auth.controller.ts</code>
         </p>
 
 
@@ -78,7 +78,11 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#submitQuestionnaire" >submitQuestionnaire</a>
+                                <a href="#create" >create</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findOne" >findOne</a>
                             </li>
                         </ul>
                     </td>
@@ -101,16 +105,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="submitQuestionnaire"></a>
+                    <a name="create"></a>
                     <span class="name">
-                        <span ><b>submitQuestionnaire</b></span>
-                        <a href="#submitQuestionnaire"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>create</b></span>
+                        <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>submitQuestionnaire(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, submitQuestionnaireDto: <a href="../classes/SubmitQuestionnaireDto.html" target="_self">SubmitQuestionnaireDto</a>)</code>
+<code>create(createUserDto: <a href="../interfaces/User.html" target="_self">CreateUserDto</a>)</code>
                 </td>
             </tr>
 
@@ -118,23 +122,100 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard, IsAccountOwnerGuard)<br />@Post(&#x27;/questionnaire/:id&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/register&#x27;)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/users/users.controller.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="17"
+                            class="link-to-prism">src/auth/auth.controller.ts:17</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Submits questionnaire answers for the given user id and verifies that the authenticated
-user has the given user id</p>
+                    <div class="io-description"><p>Registers a new user for the authenticated user</p>
 </div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>createUserDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/User.html" target="_self" >CreateUserDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findOne"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findOne</b></span>
+                        <a href="#findOne"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findOne(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/login&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="27"
+                            class="link-to-prism">src/auth/auth.controller.ts:27</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -161,22 +242,8 @@ user has the given user id</p>
 
 
                                     <td>
-                                        <p>User ID</p>
+                                        <p>Logs in the authenticated user&#39;s auth0_id and returns the user id in our db</p>
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>submitQuestionnaireDto</td>
-                                    <td>
-                                                <code><a href="../classes/SubmitQuestionnaireDto.html" target="_self" >SubmitQuestionnaireDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -185,7 +252,7 @@ user has the given user id</p>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
@@ -199,27 +266,36 @@ user has the given user id</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Post, Body, UseGuards, Param } from &#x27;@nestjs/common&#x27;;
-import { UsersService } from &#x27;./users.service&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
-import { SubmitQuestionnaireDto } from &#x27;./dto/submit-questionnaire.dto&#x27;;
-import { IsAccountOwnerGuard } from &#x27;./guards/is-account-owner.guard&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Post, UseGuards } from &#x27;@nestjs/common&#x27;;
+import { CreateUserDto } from &#x27;src/users/dto/create-user.dto&#x27;;
+import { User } from &#x27;src/users/user.decorator&#x27;;
+import { UsersService } from &#x27;src/users/users.service&#x27;;
+import { JwtAuthGuard } from &#x27;./guards/jwt-auth.guard&#x27;;
 
-@Controller({ path: &#x27;users&#x27;, version: &#x27;1&#x27; })
-export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+@Controller({ path: &#x27;auth&#x27;, version: &#x27;1&#x27; })
+export class AuthController {
+    constructor(private readonly usersService: UsersService) { }
 
-  /**
-   * Submits questionnaire answers for the given user id and verifies that the authenticated 
-   * user has the given user id
-   * @param id User ID
-   * @param submitQuestionnaireDto 
-   */
-  @UseGuards(JwtAuthGuard, IsAccountOwnerGuard)
-  @Post(&#x27;/questionnaire/:id&#x27;)
-  submitQuestionnaire(@Param(&#x27;:id&#x27;) id: string, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
-    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto);
-  }
+    /**
+     * Registers a new user for the authenticated user
+     * @param createUserDto 
+     */
+    @UseGuards(JwtAuthGuard)
+    @Post(&#x27;/register&#x27;)
+    create(@Body() createUserDto: CreateUserDto) {
+        return this.usersService.create(createUserDto);
+    }
+
+    /**
+     * 
+     * @param id Logs in the authenticated user&#x27;s auth0_id and returns the user id in our db
+     */
+    @UseGuards(JwtAuthGuard)
+    @Post(&#x27;/login&#x27;)
+    async findOne(@User(&#x27;sub&#x27;) id: string) {
+        const user &#x3D; await this.usersService.findOneByAuth0Id(id);
+        return { id: user?.id };
+    }
 }
 </code></pre>
     </div>
@@ -266,7 +342,7 @@ export class UsersController {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'UsersController.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AuthController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

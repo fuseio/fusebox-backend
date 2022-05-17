@@ -61,10 +61,22 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
+                            <a href="#databaseConnectionString" title="src/projects/projects.constants.ts" ><b>databaseConnectionString</b>&nbsp;&nbsp;&nbsp;(src/.../projects.constants.ts)</a>
+                        </li>
+                        <li>
                             <a href="#databaseConnectionString" title="src/users/users.constants.ts" ><b>databaseConnectionString</b>&nbsp;&nbsp;&nbsp;(src/.../users.constants.ts)</a>
                         </li>
                         <li>
                             <a href="#databaseProviders" title="src/database.providers.ts" ><b>databaseProviders</b>&nbsp;&nbsp;&nbsp;(src/.../database.providers.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#projectModelString" title="src/projects/projects.constants.ts" ><b>projectModelString</b>&nbsp;&nbsp;&nbsp;(src/.../projects.constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ProjectSchema" title="src/projects/schemas/project.schema.ts" ><b>ProjectSchema</b>&nbsp;&nbsp;&nbsp;(src/.../project.schema.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#projectsProviders" title="src/projects/projects.providers.ts" ><b>projectsProviders</b>&nbsp;&nbsp;&nbsp;(src/.../projects.providers.ts)</a>
                         </li>
                         <li>
                             <a href="#User" title="src/users/user.decorator.ts" ><b>User</b>&nbsp;&nbsp;&nbsp;(src/.../user.decorator.ts)</a>
@@ -85,6 +97,61 @@
     </table>
 </section>
 
+    <h3>src/projects/projects.constants.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="databaseConnectionString"></a>
+                    <span class="name">
+                        <span ><b>databaseConnectionString</b></span>
+                        <a href="#databaseConnectionString"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;DATABASE_CONNECTION&#x27;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="projectModelString"></a>
+                    <span class="name">
+                        <span ><b>projectModelString</b></span>
+                        <a href="#projectModelString"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;PROJECT_MODEL&#x27;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>src/users/users.constants.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -175,6 +242,74 @@
         </tbody>
     </table>
 </section>
+    <h3>src/projects/schemas/project.schema.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ProjectSchema"></a>
+                    <span class="name">
+                        <span ><b>ProjectSchema</b></span>
+                        <a href="#ProjectSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new mongoose.Schema(
+    {
+        ownerId: { type: mongoose.Schema.Types.ObjectId, ref: &#x27;User&#x27;, required: true },
+        name: { type: String, required: true },
+        description: { type: String, required: true },
+        logoUri: { type: String },
+    },
+    {
+        timestamps: true
+    }
+)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/projects/projects.providers.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="projectsProviders"></a>
+                    <span class="name">
+                        <span ><b>projectsProviders</b></span>
+                        <a href="#projectsProviders"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    {
+        provide: constants.projectModelString,
+        useFactory: (connection: Connection) &#x3D;&gt; connection.model(&#x27;Project&#x27;, ProjectSchema),
+        inject: [constants.databaseConnectionString],
+    },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>src/users/user.decorator.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -220,11 +355,17 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>new mongoose.Schema({
-    name: { type: String },
-    email: { type: String, required: true, unique: true, index: true },
-    auth0_id: { type: String, required: true, unique: true, index: true },
-})</code>
+                        <i>Default value : </i><code>new mongoose.Schema(
+    {
+        name: { type: String },
+        email: { type: String, required: true, unique: true, index: true },
+        auth0_id: { type: String, required: true, unique: true, index: true },
+        questionnaire: { type: Object },
+    },
+    {
+        timestamps: true
+    }
+)</code>
                     </td>
                 </tr>
 

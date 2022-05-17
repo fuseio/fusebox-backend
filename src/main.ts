@@ -10,16 +10,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(Helmet());
-  app.setGlobalPrefix('charge');
+  app.setGlobalPrefix('accounts');
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe({
-    disableErrorMessages: true,
-    transform: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      disableErrorMessages: true,
+      transform: true,
+    }),
+  );
   app.enableVersioning({
     type: VersioningType.URI,
-    defaultVersion: '1'
+    defaultVersion: '1',
   });
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();

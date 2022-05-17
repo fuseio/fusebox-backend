@@ -253,11 +253,11 @@ export class IsProjectOwnerGuard implements CanActivate {
 
     const request &#x3D; context.switchToHttp().getRequest();
     const { params }: { params: { id: string } } &#x3D; request;
-    const auth0_id &#x3D; request?.user?.sub;
+    const auth0Id &#x3D; request?.user?.sub;
     const project &#x3D; await this.projectsService.findOne(params.id);
     const userById &#x3D; await this.usersService.findOne(project?.ownerId);
 
-    if (!auth0_id || !userById || auth0_id !&#x3D;&#x3D; userById.auth0_id) return false;
+    if (!auth0Id || !userById || auth0Id !&#x3D;&#x3D; userById.auth0Id) return false;
 
     return true;
   }

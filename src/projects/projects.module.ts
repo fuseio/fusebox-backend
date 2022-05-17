@@ -8,8 +8,6 @@ import { UsersModule } from 'src/users/users.module';
 @Module({
   imports: [UsersModule, DatabaseModule],
   controllers: [ProjectsController],
-  providers: [
-    ProjectsService,
-    ...projectsProviders]
+  providers: [ProjectsService, ...projectsProviders],
 })
-export class ProjectsModule { }
+export class ProjectsModule {}

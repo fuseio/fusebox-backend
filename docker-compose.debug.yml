@@ -1,0 +1,5 @@
+version: '3.7'
+
+services:
+  main:
+    command: npm run start:debug

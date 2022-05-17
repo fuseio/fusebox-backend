@@ -8,11 +8,7 @@ import { IsAccountOwnerGuard } from './guards/is-account-owner.guard';
 @Module({
   imports: [DatabaseModule],
   controllers: [UsersController],
-  providers: [
-    UsersService,
-    IsAccountOwnerGuard,
-    ...usersProviders
-  ],
+  providers: [UsersService, IsAccountOwnerGuard, ...usersProviders],
   exports: [UsersService],
 })
-export class UsersModule { }
+export class UsersModule {}

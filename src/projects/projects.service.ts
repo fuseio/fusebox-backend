@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
+import { ApiKeysService } from 'src/api-keys/api-keys.service';
 import { UsersService } from 'src/users/users.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -12,10 +13,15 @@ export class ProjectsService {
     @Inject(constants.projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService,
-  ) {}
+    private apiKeysService: ApiKeysService,
+  ) { }
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto);
+    const projectId = createdProject._id;
+
+    await this.apiKeysService.createPublicKey(projectId);
+
     return createdProject.save();
   }
 

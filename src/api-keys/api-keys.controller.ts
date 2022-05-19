@@ -4,9 +4,9 @@ import { IsProjectOwnerGuard } from '../projects/guards/is-project-owner.guard';
 import { IsValidApiSecretKeyGuard } from './guards/is-valid-api-key.guard';
 import { ApiKeysService } from './api-keys.service';
 
-@Controller({ path: 'apiKeys', version: '1' })
+@Controller({ path: 'apikeys', version: '1' })
 export class ApiKeysController {
-  constructor(private readonly apiKeysService: ApiKeysService) {}
+  constructor(private readonly apiKeysService: ApiKeysService) { }
 
   /**
    * Creates a API key secret for the given project
@@ -16,7 +16,7 @@ export class ApiKeysController {
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/secret/:projectId')
   createSecret(@Param('projectId') projectId: string) {
-    return this.apiKeysService.generateSecretKeys(projectId);
+    return this.apiKeysService.createSecretKey(projectId);
   }
 
   /**
@@ -39,15 +39,5 @@ export class ApiKeysController {
   @Put('/public/:projectId')
   updatePublic(@Param('projectId') projectId: string) {
     return this.apiKeysService.updatePublicKey(projectId);
-  }
-
-  /**
-   * Verifies the authorization API key secret for the given project
-   * @returns true if API key secret is correct, otherwise throws error
-   */
-  @UseGuards(IsValidApiSecretKeyGuard)
-  @Get('/testApiKey/:projectId')
-  verifyApiKey() {
-    return true;
   }
 }

@@ -11,7 +11,7 @@ export class ApiKeysService {
   constructor(
     @Inject(constants.apiKeyModelString)
     private apiKeyModel: Model<ApiKey>,
-  ) {}
+  ) { }
 
   async createKeys(projectId: string) {
     const publicKey = `pk_${await this.generateRandomToken()}`;
@@ -40,7 +40,7 @@ export class ApiKeysService {
     );
   }
 
-  async createPublicKeys(projectId: string) {
+  async createPublicKey(projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({
       projectId: projectId,
     });
@@ -68,7 +68,7 @@ export class ApiKeysService {
     );
   }
 
-  async getPublicKeys(projectId: string) {
+  async getPublicKey(projectId: string) {
     const apiKeys = await this.findOne(projectId);
 
     if (apiKeys && apiKeys?.publicKey) {
@@ -79,10 +79,10 @@ export class ApiKeysService {
   }
 
   async findOne(projectId: string) {
-    return await this.apiKeyModel.findOne({ projectId: projectId });
+    return this.apiKeyModel.findOne({ projectId: projectId, isTest: false });
   }
 
-  async generateSecretKeys(projectId: string) {
+  async createSecretKey(projectId: string) {
     const apiKeys = await this.apiKeyModel.findOne({ projectId: projectId });
 
     if (apiKeys && apiKeys?.secretHash) {
@@ -134,7 +134,7 @@ export class ApiKeysService {
   }
 
   async updateSecretKey(projectId: string) {
-    const newSecretKey = `pk_${await this.generateRandomToken()}`;
+    const newSecretKey = `sk_${await this.generateRandomToken()}`;
     const saltRounds = await bcrypt.genSalt();
     const newSecretHash = await bcrypt.hash(newSecretKey, saltRounds);
 

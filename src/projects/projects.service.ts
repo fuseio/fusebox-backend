@@ -14,13 +14,13 @@ export class ProjectsService {
     private projectModel: Model<Project>,
     private usersService: UsersService,
     private apiKeysService: ApiKeysService,
-  ) {}
+  ) { }
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto);
     const projectId = createdProject._id;
 
-    await this.apiKeysService.createPublicKeys(projectId);
+    await this.apiKeysService.createPublicKey(projectId);
 
     return createdProject.save();
   }

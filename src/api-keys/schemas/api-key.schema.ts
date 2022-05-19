@@ -8,9 +8,8 @@ export const ApiKeySchema = new mongoose.Schema(
       required: true,
     },
     publicKey: { type: String, required: true, index: true },
-    testPublicKey: { type: String, index: true },
     secretHash: { type: String },
-    testSecretHash: { type: String },
+    isTest: { type: Boolean, default: false }
   },
   {
     timestamps: true,

@@ -11,6 +11,7 @@ services:
       - chargenet
     depends_on:
       - mongo
+    restart: always
   mongo:
     container_name: mongo
     image: mongo
@@ -18,5 +19,6 @@ services:
       - '27017:27017'
     networks:
       - chargenet
+    restart: always
 networks:
   chargenet:

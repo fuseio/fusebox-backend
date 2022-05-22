@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  main:
+    build:
+      target: production
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod
+    env_file:
+      - .env
+    networks:
+      - chargenet

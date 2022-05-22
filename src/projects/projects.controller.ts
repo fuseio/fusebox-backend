@@ -60,4 +60,10 @@ export class ProjectsController {
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(id, updateProjectDto);
   }
+
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Post('/createlegacyjwt/:projectId')
+  createLegacyJwt(@Param('projectId') projectId: string) {
+    return this.projectsService.createLegacyJwt(projectId);
+  }
 }

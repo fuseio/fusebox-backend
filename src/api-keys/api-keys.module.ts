@@ -8,9 +8,9 @@ import { UsersModule } from 'src/users/users.module';
 import { ProjectsModule } from 'src/projects/projects.module';
 
 @Module({
-    imports: [DatabaseModule, UsersModule, forwardRef(() => ProjectsModule)],
-    controllers: [ApiKeysController],
-    providers: [ApiKeysService, IsProjectOwnerGuard, ...apiKeysProviders],
-    exports: [ApiKeysService],
+  imports: [DatabaseModule, UsersModule, forwardRef(() => ProjectsModule)],
+  controllers: [ApiKeysController],
+  providers: [ApiKeysService, IsProjectOwnerGuard, ...apiKeysProviders],
+  exports: [ApiKeysService],
 })
-export class ApiKeyModule { }
+export class ApiKeyModule {}

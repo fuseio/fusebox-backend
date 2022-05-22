@@ -1,12 +1,11 @@
-import { Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IsProjectOwnerGuard } from '../projects/guards/is-project-owner.guard';
-import { IsValidApiSecretKeyGuard } from './guards/is-valid-api-key.guard';
 import { ApiKeysService } from './api-keys.service';
 
 @Controller({ path: 'apikeys', version: '1' })
 export class ApiKeysController {
-  constructor(private readonly apiKeysService: ApiKeysService) { }
+  constructor(private readonly apiKeysService: ApiKeysService) {}
 
   /**
    * Creates a API key secret for the given project

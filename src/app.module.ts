@@ -5,6 +5,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { ApiKeyModule } from './api-keys/api-keys.module';
 import { AppController } from './app.controller';
 import { StudioLegacyJwtModule } from './studio-legacy-jwt/studio-legacy-jwt.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { StudioLegacyJwtModule } from './studio-legacy-jwt/studio-legacy-jwt.mod
     ProjectsModule,
     ApiKeyModule,
     StudioLegacyJwtModule,
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],
   providers: [],

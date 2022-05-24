@@ -7,13 +7,13 @@ export class IsProjectOwnerGuard implements CanActivate {
   constructor(
     private usersService: UsersService,
     private projectsService: ProjectsService,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const { params }: { params: { projectId: string } } = request;
+    const { params }: { params: { id: string } } = request;
     const auth0Id = request?.user?.sub;
-    const project = await this.projectsService.findOne(params.projectId);
+    const project = await this.projectsService.findOne(params.id);
     const userById = await this.usersService.findOne(project?.ownerId);
 
     if (!auth0Id || !userById || auth0Id !== userById.auth0Id) return false;

@@ -7,8 +7,8 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { User } from 'src/users/user.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { User } from '../users/user.decorator';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { IsCreatorOwnerGuard } from './guards/is-creator-owner.guard';
@@ -17,7 +17,7 @@ import { ProjectsService } from './projects.service';
 
 @Controller({ path: 'projects', version: '1' })
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(private readonly projectsService: ProjectsService) { }
 
   /**
    * Creates a new project for the authenticated user
@@ -62,8 +62,8 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
-  @Post('/createlegacyjwt/:projectId')
-  createLegacyJwt(@Param('projectId') projectId: string) {
-    return this.projectsService.createLegacyJwt(projectId);
+  @Post('/createlegacyjwt/:id')
+  createLegacyJwt(@Param('id') id: string) {
+    return this.projectsService.createLegacyJwt(id);
   }
 }

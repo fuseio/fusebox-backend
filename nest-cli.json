@@ -1,5 +1,31 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/charge-accounts-service/src",
+  "monorepo": true,
+  "root": "apps/charge-accounts-service",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/charge-accounts-service/tsconfig.app.json"
+  },
+  "projects": {
+    "charge-accounts-service": {
+      "type": "application",
+      "root": "apps/charge-accounts-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-accounts-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-accounts-service/tsconfig.app.json"
+      }
+    },
+    "charge-payments": {
+      "type": "application",
+      "root": "apps/charge-payments",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-payments/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-payments/tsconfig.app.json"
+      }
+    }
+  }
 }

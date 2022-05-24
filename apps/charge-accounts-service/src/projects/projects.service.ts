@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { ApiKeysService } from 'src/api-keys/api-keys.service';
-import { StudioLegacyJwtService } from 'src/studio-legacy-jwt/studio-legacy-jwt.service';
-import { UsersService } from 'src/users/users.service';
+import { ApiKeysService } from '../api-keys/api-keys.service';
+import { StudioLegacyJwtService } from '../studio-legacy-jwt/studio-legacy-jwt.service';
+import { UsersService } from '../users/users.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './interfaces/project.interface';

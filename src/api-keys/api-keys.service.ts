@@ -11,7 +11,7 @@ export class ApiKeysService {
   constructor(
     @Inject(constants.apiKeyModelString)
     private apiKeyModel: Model<ApiKey>,
-  ) { }
+  ) {}
 
   async createKeys(projectId: string) {
     const publicKey = `pk_${await this.generateRandomToken()}`;

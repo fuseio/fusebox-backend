@@ -1,10 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import * as dotenv from 'dotenv';
 import Helmet from 'helmet';
-
-dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

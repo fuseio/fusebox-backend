@@ -16,7 +16,7 @@ export class ProjectsService {
     private usersService: UsersService,
     private apiKeysService: ApiKeysService,
     private studioLegacyJwtService: StudioLegacyJwtService,
-  ) { }
+  ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto);

@@ -7,7 +7,7 @@ export class IsProjectOwnerGuard implements CanActivate {
   constructor(
     private usersService: UsersService,
     private projectsService: ProjectsService,
-  ) { }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

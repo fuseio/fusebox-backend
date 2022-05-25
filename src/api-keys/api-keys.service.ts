@@ -13,33 +13,6 @@ export class ApiKeysService {
     private apiKeyModel: Model<ApiKey>,
   ) {}
 
-  async createKeys(projectId: string) {
-    const publicKey = `pk_${await this.generateRandomToken()}`;
-    const secretKey = `sk_${await this.generateRandomToken()}`;
-    const saltRounds = await bcrypt.genSalt();
-    const secretHash = await bcrypt.hash(secretKey, saltRounds);
-    const result = await this.apiKeyModel.findOneAndUpdate(
-      { projectId: projectId },
-      {
-        publicKey: publicKey,
-        secretHash: secretHash,
-      },
-      { upsert: true, new: true },
-    );
-
-    if (result) {
-      return {
-        publicKey: publicKey,
-        secretKey: secretKey,
-      };
-    }
-
-    throw new HttpException(
-      'Internal Server Error',
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
-  }
-
   async createPublicKey(projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({
       projectId: projectId,
@@ -153,6 +126,17 @@ export class ApiKeysService {
         secretKey: newSecretKey,
       };
     }
+  }
+
+  async checkIfSecretExists(projectId: string): Promise<Boolean> {
+
+    const projectApiKeys = await this.apiKeyModel.findOne({ projectId: projectId });
+
+    if (projectApiKeys?.secretHash) {
+      return true;
+    }
+
+    return false;
   }
 
   private async generateRandomToken(): Promise<string> {

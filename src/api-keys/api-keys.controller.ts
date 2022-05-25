@@ -8,7 +8,7 @@ export class ApiKeysController {
   constructor(private readonly apiKeysService: ApiKeysService) {}
 
   /**
-   * Creates a API key secret for the given project
+   * Creates an API key secret for the given project
    * @param projectId
    * @returns the generated API key secret or error if secret already exists
    */
@@ -16,6 +16,17 @@ export class ApiKeysController {
   @Post('/secret/:projectId')
   createSecret(@Param('projectId') projectId: string) {
     return this.apiKeysService.createSecretKey(projectId);
+  }
+
+  /**
+   * Checks if an API key secret for the given project exists
+   * @param projectId
+   * @returns the generated API key secret or error if secret already exists
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get('/secret/:projectId')
+  checkIfSecretExists(@Param('projectId') projectId: string) {
+    return this.apiKeysService.checkIfSecretExists(projectId);
   }
 
   /**

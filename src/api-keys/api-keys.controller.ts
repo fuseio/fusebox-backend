@@ -1,4 +1,4 @@
-import { Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IsProjectOwnerGuard } from '../projects/guards/is-project-owner.guard';
 import { ApiKeysService } from './api-keys.service';

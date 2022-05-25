@@ -128,9 +128,10 @@ export class ApiKeysService {
     }
   }
 
-  async checkIfSecretExists(projectId: string): Promise<Boolean> {
-
-    const projectApiKeys = await this.apiKeyModel.findOne({ projectId: projectId });
+  async checkIfSecretExists(projectId: string): Promise<boolean> {
+    const projectApiKeys = await this.apiKeyModel.findOne({
+      projectId: projectId,
+    });
 
     if (projectApiKeys?.secretHash) {
       return true;

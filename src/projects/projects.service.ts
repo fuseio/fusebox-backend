@@ -45,8 +45,8 @@ export class ProjectsService {
     });
   }
 
-  async createLegacyJwt(projectId: string) {
-    const project = await this.projectModel.findById(projectId);
+  async createLegacyJwt(id: string) {
+    const project = await this.projectModel.findById(id);
 
     const legacyJwt = await this.studioLegacyJwtService.create(project?.name);
     return legacyJwt;

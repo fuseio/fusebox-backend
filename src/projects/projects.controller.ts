@@ -62,8 +62,8 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
-  @Post('/createlegacyjwt/:projectId')
-  createLegacyJwt(@Param('projectId') projectId: string) {
-    return this.projectsService.createLegacyJwt(projectId);
+  @Post('/createlegacyjwt/:id')
+  createLegacyJwt(@Param('id') id: string) {
+    return this.projectsService.createLegacyJwt(id);
   }
 }

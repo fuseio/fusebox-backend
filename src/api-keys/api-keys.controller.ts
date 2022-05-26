@@ -41,6 +41,17 @@ export class ApiKeysController {
   }
 
   /**
+   * Gets the public API key associated with the project
+   * @param projectId
+   * @returns the public API key associated with the given project
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get('/public/:projectId')
+  getPublic(@Param('projectId') projectId: string) {
+    return this.apiKeysService.getPublicKey(projectId);
+  }
+
+  /**
    * Revokes the old public API key and generates a new one for the given project
    * @param projectId
    * @returns the new public API key

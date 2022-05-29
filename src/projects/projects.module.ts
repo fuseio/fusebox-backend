@@ -5,10 +5,9 @@ import { DatabaseModule } from 'src/database.module';
 import { projectsProviders } from './projects.providers';
 import { UsersModule } from 'src/users/users.module';
 import { ApiKeyModule } from 'src/api-keys/api-keys.module';
-import { StudioLegacyJwtModule } from 'src/studio-legacy-jwt/studio-legacy-jwt.module';
 
 @Module({
-  imports: [UsersModule, DatabaseModule, ApiKeyModule, StudioLegacyJwtModule],
+  imports: [UsersModule, DatabaseModule, ApiKeyModule],
   controllers: [ProjectsController],
   providers: [ProjectsService, ...projectsProviders],
   exports: [ProjectsService],

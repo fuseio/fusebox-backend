@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { ApiKeysService } from 'src/api-keys/api-keys.service';
-import { StudioLegacyJwtService } from 'src/studio-legacy-jwt/studio-legacy-jwt.service';
 import { UsersService } from 'src/users/users.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -15,7 +14,6 @@ export class ProjectsService {
     private projectModel: Model<Project>,
     private usersService: UsersService,
     private apiKeysService: ApiKeysService,
-    private studioLegacyJwtService: StudioLegacyJwtService,
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
@@ -43,12 +41,5 @@ export class ProjectsService {
     return this.projectModel.findByIdAndUpdate(id, updateProjectDto, {
       new: true,
     });
-  }
-
-  async createLegacyJwt(id: string) {
-    const project = await this.projectModel.findById(id);
-
-    const legacyJwt = await this.studioLegacyJwtService.create(project?.name);
-    return legacyJwt;
   }
 }

@@ -10,7 +10,6 @@
             "name": "Debug: Charge",
             "remoteRoot": "/usr/src/app",
             "localRoot": "${workspaceFolder}",
-            "protocol": "inspector",
             "port": 9229,
             "restart": true,
             "address": "0.0.0.0",
@@ -34,7 +33,6 @@
             "envFile": "${workspaceFolder}/.env",
             "cwd": "${workspaceRoot}",
             "console": "integratedTerminal",
-            "protocol": "inspector"
         },  
         {
             "type": "pwa-node",

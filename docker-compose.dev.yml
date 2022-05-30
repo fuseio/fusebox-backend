@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  main:
+  charge-accounts-service:
     build:
       target: development
     volumes:
@@ -9,8 +9,17 @@ services:
       - ./node_modules:/usr/src/app/node_modules
     ports:
       - 9229:9229
-    command: npm run start:dev
-    env_file:
-      - .env
+    command: npm run start:dev charge-accounts-service
+    networks:
+      - chargenet
+  charge-payments-service:
+    build:
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    ports:
+      - 9227:9227
+    command: npm run start:dev charge-payments-service
     networks:
       - chargenet

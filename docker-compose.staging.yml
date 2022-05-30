@@ -1,7 +1,18 @@
 version: '3.7'
 
 services:
-  main:
+  charge-accounts-service:
+    build:
+      target: production
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod
+    env_file:
+      - .env
+    networks:
+      - chargenet
+  charge-payments-service:
     build:
       target: production
     volumes:

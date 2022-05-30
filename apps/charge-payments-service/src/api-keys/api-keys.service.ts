@@ -1,10 +1,11 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { ApiKey } from './interfaces/api-keys.interface ';
 import * as constants from './api-keys.constants';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import base64url from 'base64url';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class ApiKeysService {
@@ -19,7 +20,7 @@ export class ApiKeysService {
     });
 
     if (projectKeys) {
-      throw new HttpException('Public Keys already exist', HttpStatus.CONFLICT);
+      throw new RpcException('Public Keys already exist');
     }
 
     const publicKey = `pk_${await this.generateRandomToken()}`;
@@ -35,10 +36,7 @@ export class ApiKeysService {
       };
     }
 
-    throw new HttpException(
-      'Internal Server Error',
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
+    throw new RpcException('Internal Server Error');
   }
 
   async getPublicKey(projectId: string) {
@@ -48,7 +46,7 @@ export class ApiKeysService {
       return { publicKey: apiKeys?.publicKey };
     }
 
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new RpcException('Not Found');
   }
 
   async findOne(projectId: string) {
@@ -59,7 +57,7 @@ export class ApiKeysService {
     const apiKeys = await this.apiKeyModel.findOne({ projectId: projectId });
 
     if (apiKeys && apiKeys?.secretHash) {
-      throw new HttpException('Secret Key already exists', HttpStatus.CONFLICT);
+      throw new RpcException('Secret Key already exists');
     }
 
     const secretKey = `sk_${await this.generateRandomToken()}`;
@@ -80,10 +78,7 @@ export class ApiKeysService {
       };
     }
 
-    throw new HttpException(
-      'Internal Server Error',
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
+    throw new RpcException('Internal Server Error');
   }
 
   async updatePublicKey(projectId: string) {

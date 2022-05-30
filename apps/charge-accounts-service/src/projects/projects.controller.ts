@@ -5,10 +5,11 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { User } from 'src/users/user.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { User } from '../users/user.decorator';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { IsCreatorOwnerGuard } from './guards/is-creator-owner.guard';
@@ -59,5 +60,49 @@ export class ProjectsController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(id, updateProjectDto);
+  }
+
+  /**
+   * Creates an API key secret for the given project
+   * @param projectId
+   * @returns the generated API key secret or error if secret already exists
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Post('/secret/:projectId')
+  createSecret(@Param('projectId') projectId: string) {
+    return this.projectsService.createSecret(projectId);
+  }
+
+  /**
+   * Checks if an API key secret for the given project exists
+   * @param projectId
+   * @returns the generated API key secret or error if secret already exists
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get('/secret/:projectId')
+  checkIfSecretExists(@Param('projectId') projectId: string) {
+    return this.projectsService.checkIfSecretExists(projectId);
+  }
+
+  /**
+   * Revokes the old API key secret and generates a new one for the given project
+   * @param projectId
+   * @returns the new API key secret
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Put('/secret/:projectId')
+  updateSecret(@Param('projectId') projectId: string) {
+    return this.projectsService.updateSecret(projectId);
+  }
+
+  /**
+   * Gets the public API key associated with the project
+   * @param projectId
+   * @returns the public API key associated with the given project
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get('/public/:projectId')
+  getPublic(@Param('projectId') projectId: string) {
+    return this.projectsService.getPublic(projectId);
   }
 }

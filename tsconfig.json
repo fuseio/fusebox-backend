@@ -16,6 +16,20 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ],
+      "@app/accounts-service/*": [
+        "apps/charge-accounts-service/src/*"
+      ],
+      "@app/payments-service/*": [
+        "apps/charge-payments-service/src/*"
+      ]
+    }
   }
 }

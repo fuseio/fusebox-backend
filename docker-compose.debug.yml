@@ -1,5 +1,5 @@
 version: '3.7'
 
 services:
-  main:
+  charge-accounts-service:
     command: npm run start:debug

@@ -8,13 +8,13 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { User } from '../users/user.decorator';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
-import { IsCreatorOwnerGuard } from './guards/is-creator-owner.guard';
-import { IsProjectOwnerGuard } from './guards/is-project-owner.guard';
-import { ProjectsService } from './projects.service';
+import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard';
+import { User } from '@app/accounts-service/users/user.decorator';
+import { CreateProjectDto } from '@app/accounts-service/projects/dto/create-project.dto';
+import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-project.dto';
+import { IsCreatorOwnerGuard } from '@app/accounts-service/projects/guards/is-creator-owner.guard';
+import { IsProjectOwnerGuard } from '@app/accounts-service/projects/guards/is-project-owner.guard';
+import { ProjectsService } from '@app/accounts-service/projects/projects.service';
 
 @Controller({ path: 'projects', version: '1' })
 export class ProjectsController {

@@ -1,8 +1,8 @@
 import { Controller, Post, Body, UseGuards, Param } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { SubmitQuestionnaireDto } from './dto/submit-questionnaire.dto';
-import { IsAccountOwnerGuard } from './guards/is-account-owner.guard';
+import { UsersService } from '@app/accounts-service/users/users.service';
+import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard';
+import { SubmitQuestionnaireDto } from '@app/accounts-service/users/dto/submit-questionnaire.dto';
+import { IsAccountOwnerGuard } from '@app/accounts-service/users/guards/is-account-owner.guard';
 
 @Controller({ path: 'users', version: '1' })
 export class UsersController {

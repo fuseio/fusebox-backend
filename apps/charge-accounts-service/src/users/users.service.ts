@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
-import { SubmitQuestionnaireDto } from './dto/submit-questionnaire.dto';
-import { User } from './interfaces/user.interface';
-import * as constants from './users.constants';
+import { CreateUserDto } from '@app/accounts-service/users/dto/create-user.dto';
+import { SubmitQuestionnaireDto } from '@app/accounts-service/users/dto/submit-questionnaire.dto';
+import { User } from '@app/accounts-service/users/interfaces/user.interface';
+import * as constants from '@app/accounts-service/users/users.constants';
 
 @Injectable()
 export class UsersService {

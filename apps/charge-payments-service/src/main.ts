@@ -1,6 +1,6 @@
 import { Transport } from '@nestjs/microservices';
 import { NestFactory } from '@nestjs/core';
-import { ChargePaymentsServiceModule } from './charge-payments-service.module';
+import { ChargePaymentsServiceModule } from '@app/payments-service/charge-payments-service.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ChargePaymentsServiceModule);

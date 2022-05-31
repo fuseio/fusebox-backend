@@ -23,6 +23,12 @@
       ],
       "@app/common/*": [
         "libs/common/src/*"
+      ],
+      "@app/accounts-service/*": [
+        "apps/charge-accounts-service/src/*"
+      ],
+      "@app/payments-service/*": [
+        "apps/charge-payments-service/src/*"
       ]
     }
   }

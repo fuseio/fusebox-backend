@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ProjectsService } from './projects.service';
-import { ProjectsController } from './projects.controller';
+import { ProjectsService } from '@app/accounts-service/projects/projects.service';
+import { ProjectsController } from '@app/accounts-service/projects/projects.controller';
 import { DatabaseModule } from '@app/common';
-import { projectsProviders } from './projects.providers';
-import { UsersModule } from '../users/users.module';
+import { projectsProviders } from '@app/accounts-service/projects/projects.providers';
+import { UsersModule } from '@app/accounts-service/users/users.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({

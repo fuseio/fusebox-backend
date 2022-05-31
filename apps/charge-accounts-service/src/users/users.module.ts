@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+import { UsersService } from '@app/accounts-service/users/users.service';
+import { UsersController } from '@app/accounts-service/users/users.controller';
 import { DatabaseModule } from '@app/common';
-import { usersProviders } from './users.providers';
-import { IsAccountOwnerGuard } from './guards/is-account-owner.guard';
+import { usersProviders } from '@app/accounts-service/users/users.providers';
+import { IsAccountOwnerGuard } from '@app/accounts-service/users/guards/is-account-owner.guard';
 
 @Module({
   imports: [DatabaseModule],

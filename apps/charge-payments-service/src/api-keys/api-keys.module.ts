@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@app/common';
-import { ApiKeysController } from './api-keys.controller';
-import { ApiKeysService } from './api-keys.service';
-import { apiKeysProviders } from './api-keys.providers';
+import { ApiKeysController } from '@app/payments-service/api-keys/api-keys.controller';
+import { ApiKeysService } from '@app/payments-service/api-keys/api-keys.service';
+import { apiKeysProviders } from '@app/payments-service/api-keys/api-keys.providers';
 
 @Module({
   imports: [DatabaseModule],
@@ -10,4 +10,4 @@ import { apiKeysProviders } from './api-keys.providers';
   providers: [ApiKeysService, ...apiKeysProviders],
   exports: [ApiKeysService],
 })
-export class ApiKeyModule {}
+export class ApiKeyModule { }

@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Model } from 'mongoose';
 import { catchError, lastValueFrom, takeLast } from 'rxjs';
-import { UsersService } from '../users/users.service';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
-import { Project } from './interfaces/project.interface';
-import * as constants from './projects.constants';
+import { UsersService } from '@app/accounts-service/users/users.service';
+import { CreateProjectDto } from '@app/accounts-service/projects/dto/create-project.dto';
+import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-project.dto';
+import { Project } from '@app/accounts-service/projects/interfaces/project.interface';
+import * as constants from '@app/accounts-service/projects/projects.constants';
 
 @Injectable()
 export class ProjectsService {

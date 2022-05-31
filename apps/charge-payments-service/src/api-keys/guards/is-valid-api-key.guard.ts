@@ -1,10 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ApiKeysService } from '../api-keys.service';
+import { ApiKeysService } from '@app/payments-service/api-keys/api-keys.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class IsValidApiSecretKeyGuard implements CanActivate {
-  constructor(private apiKeysService: ApiKeysService) {}
+  constructor(private apiKeysService: ApiKeysService) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

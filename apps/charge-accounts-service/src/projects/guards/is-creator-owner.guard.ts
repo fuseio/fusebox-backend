@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '@app/accounts-service/users/users.service';
 
 @Injectable()
 export class IsCreatorOwnerGuard implements CanActivate {

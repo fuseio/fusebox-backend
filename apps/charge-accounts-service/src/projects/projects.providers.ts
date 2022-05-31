@@ -1,6 +1,6 @@
 import { Connection } from 'mongoose';
-import { ProjectSchema } from './schemas/project.schema';
-import * as constants from './projects.constants';
+import { ProjectSchema } from '@app/accounts-service/projects/schemas/project.schema';
+import * as constants from '@app/accounts-service/projects/projects.constants';
 
 export const projectsProviders = [
   {

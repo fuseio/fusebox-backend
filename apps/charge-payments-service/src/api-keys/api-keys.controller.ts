@@ -1,10 +1,10 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { ApiKeysService } from './api-keys.service';
+import { ApiKeysService } from '@app/payments-service/api-keys/api-keys.service';
 
 @Controller()
 export class ApiKeysController {
-  constructor(private readonly apiKeysService: ApiKeysService) {}
+  constructor(private readonly apiKeysService: ApiKeysService) { }
 
   /**
    * Creates an API key secret for the given project

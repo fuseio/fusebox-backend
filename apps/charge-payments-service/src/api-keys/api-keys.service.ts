@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { ApiKey } from './interfaces/api-keys.interface ';
-import * as constants from './api-keys.constants';
+import { ApiKey } from '@app/payments-service/api-keys/interfaces/api-keys.interface ';
+import * as constants from '@app/payments-service/api-keys/api-keys.constants';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import base64url from 'base64url';
@@ -12,7 +12,7 @@ export class ApiKeysService {
   constructor(
     @Inject(constants.apiKeyModelString)
     private apiKeyModel: Model<ApiKey>,
-  ) {}
+  ) { }
 
   async createPublicKey(projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({

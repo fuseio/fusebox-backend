@@ -1,6 +1,6 @@
 import { Connection } from 'mongoose';
-import { ApiKeySchema } from './schemas/api-key.schema';
-import * as constants from './api-keys.constants';
+import { ApiKeySchema } from '@app/payments-service/api-keys/schemas/api-key.schema';
+import * as constants from '@app/payments-service/api-keys/api-keys.constants';
 
 export const apiKeysProviders = [
   {

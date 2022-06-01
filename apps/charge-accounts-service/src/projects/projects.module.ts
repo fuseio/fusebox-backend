@@ -12,11 +12,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     DatabaseModule,
     ClientsModule.register([
       {
-        name: 'CHARGE_PAYMENTS_SERVICE',
+        name: 'CHARGE_API_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'charge-payments-service',
-          port: Number(process.env.PAYMENTS_TCP_PORT),
+          host: 'charge-api-service',
+          port: Number(process.env.API_TCP_PORT),
         },
       },
     ]),
@@ -25,4 +25,4 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   providers: [ProjectsService, ...projectsProviders],
   exports: [ProjectsService],
 })
-export class ProjectsModule {}
+export class ProjectsModule { }

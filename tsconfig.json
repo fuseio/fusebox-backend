@@ -27,8 +27,8 @@
       "@app/accounts-service/*": [
         "apps/charge-accounts-service/src/*"
       ],
-      "@app/payments-service/*": [
-        "apps/charge-payments-service/src/*"
+      "@app/api-service/*": [
+        "apps/charge-api-service/src/*"
       ]
     }
   }

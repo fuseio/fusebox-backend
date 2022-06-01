@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ApiKeysService } from '@app/payments-service/api-keys/api-keys.service';
+import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()

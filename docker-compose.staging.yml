@@ -12,7 +12,7 @@ services:
       - .env
     networks:
       - chargenet
-  charge-payments-service:
+  charge-api-service:
     build:
       target: production
     volumes:

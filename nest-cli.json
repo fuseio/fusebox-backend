@@ -18,13 +18,13 @@
         "tsConfigPath": "apps/charge-accounts-service/tsconfig.app.json"
       }
     },
-    "charge-payments-service": {
+    "charge-api-service": {
       "type": "application",
-      "root": "apps/charge-payments-service",
+      "root": "apps/charge-api-service",
       "entryFile": "main",
-      "sourceRoot": "apps/charge-payments-service/src",
+      "sourceRoot": "apps/charge-api-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/charge-payments-service/tsconfig.app.json"
+        "tsConfigPath": "apps/charge-api-service/tsconfig.app.json"
       }
     },
     "common": {

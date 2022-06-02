@@ -23,3 +23,14 @@ services:
     command: npm run start:dev charge-api-service
     networks:
       - chargenet
+  charge-relay-service:
+    build:
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    ports:
+      - 9226:9226
+    command: npm run start:dev charge-relay-service
+    networks:
+      - chargenet

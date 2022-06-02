@@ -2,7 +2,7 @@ import { Document } from 'mongoose'
 
 export interface RelayAccount extends Document {
   readonly projectId: string;
-  readonly address: string;
-  readonly childIndex: number;
+  readonly encryptedPK: string;
+  readonly publicKey: string;
   readonly nonce: number;
 }

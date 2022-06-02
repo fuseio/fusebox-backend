@@ -8,13 +8,13 @@ export const RelayAccountSchema = new mongoose.Schema(
       ref: 'Project',
       required: true
     },
-    address: {
+    encryptedPK: {
       type: String,
       required: true
     },
-    childIndex: {
-      type: Number,
-      required: [true, "can't be blank"]
+    publicKey: {
+      type: String,
+      required: true
     },
     nonce: {
       type: Number,

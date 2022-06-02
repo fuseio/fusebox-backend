@@ -26,7 +26,7 @@ export class ProjectsService {
     const createdProject = new this.projectModel(createProjectDto)
     const projectId = createdProject._id
 
-    this.callApiFunction('create_public', projectId)
+    this.callMSFunction(this.apiClient, 'create_public', projectId)
 
     return createdProject.save()
   }
@@ -50,24 +50,28 @@ export class ProjectsService {
   }
 
   async createSecret (projectId: string) {
-    return this.callApiFunction('create_secret', projectId)
+    const secret = await this.callMSFunction(this.apiClient, 'create_secret', projectId)
+    if (secret) {
+      this.callMSFunction(this.relayClient, 'create_account', projectId)
+    }
+    return secret
   }
 
   async checkIfSecretExists (projectId: string) {
-    return this.callApiFunction('check_secret', projectId)
+    return this.callMSFunction(this.apiClient, 'check_secret', projectId)
   }
 
   async updateSecret (projectId: string) {
-    return this.callApiFunction('update_secret', projectId)
+    return this.callMSFunction(this.apiClient, 'update_secret', projectId)
   }
 
   async getPublic (projectId: string) {
-    return this.callApiFunction('get_public', projectId)
+    return this.callMSFunction(this.apiClient, 'get_public', projectId)
   }
 
-  private async callApiFunction (pattern: string, data: string) {
+  private async callMSFunction (client: ClientProxy, pattern: string, data: string) {
     return lastValueFrom(
-      this.apiClient
+      client
         .send(pattern, data)
         .pipe(takeLast(1))
         .pipe(

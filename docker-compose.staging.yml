@@ -23,3 +23,15 @@ services:
       - .env
     networks:
       - chargenet
+  charge-relay-service:
+    build:
+      target: production
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod
+    env_file:
+      - ./apps/charge-relay-service/.env
+      - .env
+    networks:
+      - chargenet

@@ -1,10 +1,10 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
-import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service';
+import { Controller } from '@nestjs/common'
+import { MessagePattern } from '@nestjs/microservices'
+import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service'
 
 @Controller()
 export class ApiKeysController {
-  constructor(private readonly apiKeysService: ApiKeysService) {}
+  constructor (private readonly apiKeysService: ApiKeysService) {}
 
   /**
    * Creates an API key secret for the given project
@@ -12,8 +12,8 @@ export class ApiKeysController {
    * @returns the generated API key secret or error if secret already exists
    */
   @MessagePattern('create_secret')
-  createSecret(projectId: string) {
-    return this.apiKeysService.createSecretKey(projectId);
+  createSecret (projectId: string) {
+    return this.apiKeysService.createSecretKey(projectId)
   }
 
   /**
@@ -22,8 +22,8 @@ export class ApiKeysController {
    * @returns the generated API key secret or error if secret already exists
    */
   @MessagePattern('check_secret')
-  checkIfSecretExists(projectId: string) {
-    return this.apiKeysService.checkIfSecretExists(projectId);
+  checkIfSecretExists (projectId: string) {
+    return this.apiKeysService.checkIfSecretExists(projectId)
   }
 
   /**
@@ -32,8 +32,8 @@ export class ApiKeysController {
    * @returns the new API key secret
    */
   @MessagePattern('update_secret')
-  updateSecret(projectId: string) {
-    return this.apiKeysService.updateSecretKey(projectId);
+  updateSecret (projectId: string) {
+    return this.apiKeysService.updateSecretKey(projectId)
   }
 
   /**
@@ -42,8 +42,8 @@ export class ApiKeysController {
    * @returns the public API key associated with the given project
    */
   @MessagePattern('create_public')
-  createPublic(projectId: string) {
-    return this.apiKeysService.createPublicKey(projectId);
+  createPublic (projectId: string) {
+    return this.apiKeysService.createPublicKey(projectId)
   }
 
   /**
@@ -52,8 +52,8 @@ export class ApiKeysController {
    * @returns the public API key associated with the given project
    */
   @MessagePattern('get_public')
-  getPublic(projectId: string) {
-    console.log('get public on api side');
-    return this.apiKeysService.getPublicKey(projectId);
+  getPublic (projectId: string) {
+    console.log('get public on api side')
+    return this.apiKeysService.getPublicKey(projectId)
   }
 }

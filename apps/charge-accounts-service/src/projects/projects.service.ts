@@ -50,8 +50,11 @@ export class ProjectsService {
   }
 
   async createSecret (projectId: string) {
-    this.callMSFunction(this.relayClient, 'create_account', projectId)
-    return this.callMSFunction(this.apiClient, 'create_secret', projectId)
+    const secret = await this.callMSFunction(this.apiClient, 'create_secret', projectId)
+    if (secret) {
+      this.callMSFunction(this.relayClient, 'create_account', projectId)
+    }
+    return secret
   }
 
   async checkIfSecretExists (projectId: string) {

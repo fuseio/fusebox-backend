@@ -20,7 +20,7 @@ export class ProjectsService {
     @Inject(projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService
-  ) {}
+  ) { }
 
   async create (createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto)

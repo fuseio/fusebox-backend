@@ -35,6 +35,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "charge-relay-service": {
+      "type": "application",
+      "root": "apps/charge-relay-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-relay-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-relay-service/tsconfig.app.json"
+      }
     }
   }
 }

@@ -15,7 +15,7 @@ services:
       - AUTH0_AUDIENCE
     depends_on:
       - mongo
-      - charge-payments-service
+      - charge-api-service
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -25,24 +25,24 @@ services:
     networks:
       - chargenet
     restart: always
-  charge-payments-service:
-    container_name: charge-payments-service
+  charge-api-service:
+    container_name: charge-api-service
     build:
       context: .
-      dockerfile: ./apps/charge-payments-service/Dockerfile
+      dockerfile: ./apps/charge-api-service/Dockerfile
       target: development
-    command: npm run start:dev charge-payments-service
+    command: npm run start:dev charge-api-service
     environment:
-      - PAYMENTS_PORT
-      - MONGO_URI=${PAYMENTS_MONGO_URI}
+      - API_PORT
+      - MONGO_URI=${API_MONGO_URI}
     depends_on:
       - mongo
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - ${PAYMENTS_PORT}:${PAYMENTS_PORT}
-      - ${PAYMENTS_TCP_PORT}:${PAYMENTS_TCP_PORT}
+      - ${API_PORT}:${API_PORT}
+      - ${API_TCP_PORT}:${API_TCP_PORT}
     networks:
       - chargenet
     restart: always

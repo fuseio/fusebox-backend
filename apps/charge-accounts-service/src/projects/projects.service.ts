@@ -11,17 +11,17 @@ import * as constants from '@app/accounts-service/projects/projects.constants';
 @Injectable()
 export class ProjectsService {
   constructor(
-    @Inject('CHARGE_PAYMENTS_SERVICE') private readonly client: ClientProxy,
+    @Inject('CHARGE_API_SERVICE') private readonly apiClient: ClientProxy,
     @Inject(constants.projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto);
     const projectId = createdProject._id;
 
-    this.client.send('create_public', projectId).subscribe();
+    this.callApiFunction('create_public', projectId);
 
     return createdProject.save();
   }
@@ -45,24 +45,24 @@ export class ProjectsService {
   }
 
   async createSecret(projectId: string) {
-    return this.callPaymentsFunction('create_secret', projectId);
+    return this.callApiFunction('create_secret', projectId);
   }
 
   async checkIfSecretExists(projectId: string) {
-    return this.callPaymentsFunction('check_secret', projectId);
+    return this.callApiFunction('check_secret', projectId);
   }
 
   async updateSecret(projectId: string) {
-    return this.callPaymentsFunction('update_secret', projectId);
+    return this.callApiFunction('update_secret', projectId);
   }
 
   async getPublic(projectId: string) {
-    return this.callPaymentsFunction('get_public', projectId);
+    return this.callApiFunction('get_public', projectId);
   }
 
-  private async callPaymentsFunction(pattern: string, data: string) {
+  private async callApiFunction(pattern: string, data: string) {
     return lastValueFrom(
-      this.client
+      this.apiClient
         .send(pattern, data)
         .pipe(takeLast(1))
         .pipe(

@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { ApiKeysService } from '@app/payments-service/api-keys/api-keys.service';
+import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service';
 
 @Controller()
 export class ApiKeysController {
@@ -53,6 +53,7 @@ export class ApiKeysController {
    */
   @MessagePattern('get_public')
   getPublic(projectId: string) {
+    console.log('get public on api side')
     return this.apiKeysService.getPublicKey(projectId);
   }
 }

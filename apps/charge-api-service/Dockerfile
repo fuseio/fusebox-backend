@@ -25,4 +25,4 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/charge-payments-service/main"]
+CMD ["node", "dist/apps/charge-api-service/main"]

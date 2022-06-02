@@ -1,7 +1,7 @@
 {
-  "name": "charge-accounts-service",
+  "name": "charge-backend",
   "version": "0.0.1",
-  "description": "Fuse Charge Accounts Service Backend API",
+  "description": "Fuse Charge Backend",
   "author": "Maor Stamati <maor@fuse.io>",
   "private": true,
   "license": "MIT",

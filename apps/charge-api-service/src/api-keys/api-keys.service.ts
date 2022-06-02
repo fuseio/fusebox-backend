@@ -12,7 +12,7 @@ export class ApiKeysService {
   constructor (
     @Inject(apiKeyModelString)
     private apiKeyModel: Model<ApiKey>
-  ) {}
+  ) { }
 
   async createPublicKey (projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({
@@ -60,14 +60,16 @@ export class ApiKeysService {
       throw new RpcException('Secret Key already exists')
     }
 
-    const secretKey = `sk_${await this.generateRandomToken()}`
+    const { secretKey, secretPrefix, secretLastFourChars } = await this.generateSecretKey()
     const saltRounds = await bcrypt.genSalt()
     const secretHash = await bcrypt.hash(secretKey, saltRounds)
 
     const result = await this.apiKeyModel.findOneAndUpdate(
       { projectId },
       {
-        secretHash
+        secretHash,
+        secretPrefix,
+        secretLastFourChars
       },
       { upsert: true, new: true }
     )
@@ -102,41 +104,47 @@ export class ApiKeysService {
   }
 
   async updateSecretKey (projectId: string) {
-    const newSecretKey = `sk_${await this.generateRandomToken()}`
+    const { secretKey, secretPrefix, secretLastFourChars } = await this.generateSecretKey()
     const saltRounds = await bcrypt.genSalt()
-    const newSecretHash = await bcrypt.hash(newSecretKey, saltRounds)
+    const secretHash = await bcrypt.hash(secretKey, saltRounds)
 
     const result = await this.apiKeyModel.findOneAndUpdate(
       {
         projectId
       },
       {
-        secretHash: newSecretHash
+        secretHash,
+        secretPrefix,
+        secretLastFourChars
       },
       { upsert: true, new: true }
     )
 
     if (result) {
       return {
-        secretKey: newSecretKey
+        secretKey
       }
     }
   }
 
-  async checkIfSecretExists (projectId: string): Promise<boolean> {
+  async getApiKeysInfo (projectId: string) {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId
     })
+      .select('-secretHash')
 
-    if (projectApiKeys?.secretHash) {
-      return true
-    }
-
-    return false
+    return projectApiKeys || {}
   }
 
   private async generateRandomToken (): Promise<string> {
     const randomString = base64url(crypto.randomBytes(18))
     return randomString
+  }
+
+  private async generateSecretKey () {
+    const secretPrefix = 'sk_'
+    const secretKey = `${secretPrefix}${await this.generateRandomToken()}`
+    const secretLastFourChars = secretKey.slice(secretKey.length - 4)
+    return { secretKey, secretPrefix, secretLastFourChars }
   }
 }

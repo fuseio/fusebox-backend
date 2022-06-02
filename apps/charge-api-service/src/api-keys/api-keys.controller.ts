@@ -4,7 +4,7 @@ import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.se
 
 @Controller()
 export class ApiKeysController {
-  constructor (private readonly apiKeysService: ApiKeysService) {}
+  constructor (private readonly apiKeysService: ApiKeysService) { }
 
   /**
    * Creates an API key secret for the given project
@@ -17,13 +17,13 @@ export class ApiKeysController {
   }
 
   /**
-   * Checks if an API key secret for the given project exists
+   * Gets the api_key's for the given projectId
    * @param projectId
-   * @returns the generated API key secret or error if secret already exists
+   * @returns an object consisting unsensitive fields of the api_keys of the project
    */
-  @MessagePattern('check_secret')
+  @MessagePattern('get_api_keys_info')
   checkIfSecretExists (projectId: string) {
-    return this.apiKeysService.checkIfSecretExists(projectId)
+    return this.apiKeysService.getApiKeysInfo(projectId)
   }
 
   /**

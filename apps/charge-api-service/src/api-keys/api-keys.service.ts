@@ -127,7 +127,7 @@ export class ApiKeysService {
     }
   }
 
-  async checkIfSecretExists (projectId: string) {
+  async getApiKeysInfo (projectId: string) {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId
     })

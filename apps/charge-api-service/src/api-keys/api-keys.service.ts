@@ -12,7 +12,7 @@ export class ApiKeysService {
   constructor(
     @Inject(constants.apiKeyModelString)
     private apiKeyModel: Model<ApiKey>,
-  ) { }
+  ) {}
 
   async createPublicKey(projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({
@@ -54,7 +54,7 @@ export class ApiKeysService {
   }
 
   async createSecretKey(projectId: string) {
-    const apiKeys = await this.apiKeyModel.findOne({ projectId: projectId });
+    const apiKeys = await this.apiKeyModel.findOne({ projectId });
 
     if (apiKeys && apiKeys?.secretHash) {
       throw new RpcException('Secret Key already exists');

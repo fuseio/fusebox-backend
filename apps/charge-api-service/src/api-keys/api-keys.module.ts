@@ -10,4 +10,4 @@ import { apiKeysProviders } from 'apps/charge-api-service/src/api-keys/api-keys.
   providers: [ApiKeysService, ...apiKeysProviders],
   exports: [ApiKeysService],
 })
-export class ApiKeyModule { }
+export class ApiKeyModule {}

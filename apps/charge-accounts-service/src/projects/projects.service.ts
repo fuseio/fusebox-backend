@@ -7,15 +7,20 @@ import { CreateProjectDto } from '@app/accounts-service/projects/dto/create-proj
 import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-project.dto';
 import { Project } from '@app/accounts-service/projects/interfaces/project.interface';
 import * as constants from '@app/accounts-service/projects/projects.constants';
+import {
+  apiService,
+  relayService,
+} from '@app/common/constants/microservices.constants';
 
 @Injectable()
 export class ProjectsService {
   constructor(
-    @Inject('CHARGE_API_SERVICE') private readonly apiClient: ClientProxy,
+    @Inject(apiService) private readonly apiClient: ClientProxy,
+    @Inject(relayService) private readonly relayClient: ClientProxy,
     @Inject(constants.projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService,
-  ) { }
+  ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto);

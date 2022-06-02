@@ -3,6 +3,7 @@ import { AppModule } from '@app/accounts-service/app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import Helmet from 'helmet';
 import { Transport } from '@nestjs/microservices';
+import { accountsServiceHost } from '@app/common/constants/microservices.constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,7 +12,7 @@ async function bootstrap() {
     options: {
       retryAttempts: 5,
       retryDelay: 3000,
-      host: 'charge-accounts-service',
+      host: accountsServiceHost,
       port: process.env.ACCOUNTS_TCP_PORT,
     },
   });

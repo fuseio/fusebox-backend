@@ -5,6 +5,12 @@ import { DatabaseModule } from '@app/common';
 import { projectsProviders } from '@app/accounts-service/projects/projects.providers';
 import { UsersModule } from '@app/accounts-service/users/users.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import {
+  apiService,
+  apiServiceHost,
+  relayService,
+  relayServiceHost,
+} from '@app/common/constants/microservices.constants';
 
 @Module({
   imports: [
@@ -12,11 +18,21 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     DatabaseModule,
     ClientsModule.register([
       {
-        name: 'CHARGE_API_SERVICE',
+        name: apiService,
         transport: Transport.TCP,
         options: {
-          host: 'charge-api-service',
-          port: Number(process.env.API_TCP_PORT),
+          host: apiServiceHost,
+          port: parseInt(process.env.API_TCP_PORT),
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: relayService,
+        transport: Transport.TCP,
+        options: {
+          host: relayServiceHost,
+          port: parseInt(process.env.RELAY_TCP_PORT),
         },
       },
     ]),
@@ -25,4 +41,4 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   providers: [ProjectsService, ...projectsProviders],
   exports: [ProjectsService],
 })
-export class ProjectsModule { }
+export class ProjectsModule {}

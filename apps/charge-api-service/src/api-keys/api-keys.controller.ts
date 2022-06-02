@@ -4,7 +4,7 @@ import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.se
 
 @Controller()
 export class ApiKeysController {
-  constructor(private readonly apiKeysService: ApiKeysService) { }
+  constructor(private readonly apiKeysService: ApiKeysService) {}
 
   /**
    * Creates an API key secret for the given project

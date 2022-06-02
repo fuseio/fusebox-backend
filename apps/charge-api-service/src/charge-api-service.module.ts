@@ -8,4 +8,4 @@ import { ChargeApiServiceService } from '@app/api-service/charge-api-service.ser
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService],
 })
-export class ChargeApiServiceModule { }
+export class ChargeApiServiceModule {}

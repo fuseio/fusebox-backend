@@ -18,7 +18,7 @@ import { ProjectsService } from '@app/accounts-service/projects/projects.service
 
 @Controller({ path: 'projects', version: '1' })
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) { }
+  constructor(private readonly projectsService: ProjectsService) {}
 
   /**
    * Creates a new project for the authenticated user

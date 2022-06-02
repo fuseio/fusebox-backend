@@ -5,7 +5,7 @@ import { ChargeApiServiceService } from '@app/api-service/charge-api-service.ser
 export class ChargeApiServiceController {
   constructor(
     private readonly chargeApiServiceService: ChargeApiServiceService,
-  ) { }
+  ) {}
 
   @Get()
   getHello(): string {

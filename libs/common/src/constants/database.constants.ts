@@ -1,1 +1,1 @@
-export const databaseConnectionString = 'DATABASE_CONNECTION';
+export const databaseConnectionString = 'DATABASE_CONNECTION'

@@ -1,1 +1,1 @@
-export const userModelString = 'USER_MODEL';
+export const userModelString = 'USER_MODEL'

@@ -3,12 +3,12 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from '@app/accounts-service/users/dto/create-user.dto';
 import { SubmitQuestionnaireDto } from '@app/accounts-service/users/dto/submit-questionnaire.dto';
 import { User } from '@app/accounts-service/users/interfaces/user.interface';
-import * as constants from '@app/accounts-service/users/users.constants';
+import { userModelString } from '@app/accounts-service/users/users.constants';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(constants.userModelString)
+    @Inject(userModelString)
     private userModel: Model<User>,
   ) {}
 

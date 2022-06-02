@@ -1,1 +1,1 @@
-export const relayAccountString = 'RELAY_ACCOUNT_MODEL';
+export const relayAccountModelString = 'RELAY_ACCOUNT_MODEL';

@@ -6,7 +6,7 @@ import { UsersService } from '@app/accounts-service/users/users.service';
 import { CreateProjectDto } from '@app/accounts-service/projects/dto/create-project.dto';
 import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-project.dto';
 import { Project } from '@app/accounts-service/projects/interfaces/project.interface';
-import * as constants from '@app/accounts-service/projects/projects.constants';
+import { projectModelString } from '@app/accounts-service/projects/projects.constants';
 import {
   apiService,
   relayService,
@@ -17,7 +17,7 @@ export class ProjectsService {
   constructor(
     @Inject(apiService) private readonly apiClient: ClientProxy,
     @Inject(relayService) private readonly relayClient: ClientProxy,
-    @Inject(constants.projectModelString)
+    @Inject(projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService,
   ) {}

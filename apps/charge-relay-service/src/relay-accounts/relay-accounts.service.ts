@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Model } from 'mongoose';
-import * as constants from '@app/relay-service/relay-accounts/relay-accounts.constants';
+import { relayAccountModelString } from '@app/relay-service/relay-accounts/relay-accounts.constants';
 import { RelayAccount } from '@app/relay-service/relay-accounts/interfaces/api-keys.interface ';
 
 @Injectable()
 export class RelayAccountsService {
   constructor(
-    @Inject(constants.relayAccountString)
+    @Inject(relayAccountModelString)
     private relayAccountModel: Model<RelayAccount>,
   ) {}
 

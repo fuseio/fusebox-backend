@@ -7,9 +7,9 @@ export class RelayAccountsController {
   constructor(private readonly relayAccountsService: RelayAccountsService) {}
 
   /**
-   * Creates an API key secret for the given project
+   * Creates an Relay account for the given project
    * @param projectId
-   * @returns the generated API key secret or error if secret already exists
+   * @returns the generated Relay account or error if account already exists
    */
   @MessagePattern('create_account')
   createAccount(projectId: string) {

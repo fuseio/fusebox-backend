@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { ApiKey } from 'apps/charge-api-service/src/api-keys/interfaces/api-keys.interface ';
-import * as constants from 'apps/charge-api-service/src/api-keys/api-keys.constants';
+import { apiKeyModelString } from 'apps/charge-api-service/src/api-keys/api-keys.constants';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import base64url from 'base64url';
@@ -10,7 +10,7 @@ import { RpcException } from '@nestjs/microservices';
 @Injectable()
 export class ApiKeysService {
   constructor(
-    @Inject(constants.apiKeyModelString)
+    @Inject(apiKeyModelString)
     private apiKeyModel: Model<ApiKey>,
   ) {}
 

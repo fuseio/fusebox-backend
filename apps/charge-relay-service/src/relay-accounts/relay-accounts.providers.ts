@@ -3,7 +3,7 @@ import { relayAccountModelString } from '@app/relay-service/relay-accounts/relay
 import { databaseConnectionString } from '@app/common/constants/database.constants'
 import { RelayAccountSchema } from '@app/relay-service/relay-accounts/schemas/relay-accounts.schema'
 
-export const relayProviders = [
+export const relayAccountsProviders = [
   {
     provide: relayAccountModelString,
     useFactory: (connection: Connection) =>

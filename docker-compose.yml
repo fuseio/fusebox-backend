@@ -54,6 +54,8 @@ services:
       dockerfile: ./apps/charge-relay-service/Dockerfile
       target: development
     command: npm run start:dev charge-relay-service
+    env_file:
+      - ./apps/charge-relay-service/.env
     environment:
       - RELAY_PORT
       - MONGO_URI=${RELAY_MONGO_URI}

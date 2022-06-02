@@ -1,27 +1,27 @@
-import * as mongoose from 'mongoose';
-const { ObjectId, String } = mongoose.Schema.Types;
+import * as mongoose from 'mongoose'
+const { ObjectId, String } = mongoose.Schema.Types
 
 export const RelayAccountSchema = new mongoose.Schema(
   {
     projectId: {
       type: ObjectId,
       ref: 'Project',
-      required: true,
+      required: true
     },
     address: {
       type: String,
-      required: true,
+      required: true
     },
     childIndex: {
       type: Number,
-      required: [true, "can't be blank"],
+      required: [true, "can't be blank"]
     },
     nonce: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   {
-    timestamps: true,
-  },
-);
+    timestamps: true
+  }
+)

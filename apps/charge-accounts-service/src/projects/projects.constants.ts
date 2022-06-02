@@ -1,1 +1,1 @@
-export const projectModelString = 'PROJECT_MODEL';
+export const projectModelString = 'PROJECT_MODEL'

@@ -1,1 +1,1 @@
-export const apiKeyModelString = 'API_KEY_MODEL';
+export const apiKeyModelString = 'API_KEY_MODEL'

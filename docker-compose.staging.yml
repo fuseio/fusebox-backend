@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
-    command: npm run start:prod
+    command: npm run start:prod --service=charge-accounts-service
     env_file:
       - .env
     networks:
@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
-    command: npm run start:prod
+    command: npm run start:prod --service=charge-api-service
     env_file:
       - .env
     networks:
@@ -29,7 +29,7 @@ services:
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
-    command: npm run start:prod
+    command: npm run start:prod --service=charge-relay-service
     env_file:
       - ./apps/charge-relay-service/.env
       - .env

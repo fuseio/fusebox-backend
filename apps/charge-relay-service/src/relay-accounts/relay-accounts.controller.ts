@@ -4,7 +4,7 @@ import { MessagePattern } from '@nestjs/microservices'
 
 @Controller()
 export class RelayAccountsController {
-  constructor (private readonly relayAccountsService: RelayAccountsService) {}
+  constructor (private readonly relayAccountsService: RelayAccountsService) { }
 
   /**
    * Creates an Relay account for the given project
@@ -13,7 +13,6 @@ export class RelayAccountsController {
    */
   @MessagePattern('create_account')
   createAccount (projectId: string) {
-    console.log('create_account' + projectId)
     return this.relayAccountsService.createAccount(projectId)
   }
 }

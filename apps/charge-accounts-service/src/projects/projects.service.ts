@@ -20,7 +20,7 @@ export class ProjectsService {
     @Inject(projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService
-  ) {}
+  ) { }
 
   async create (createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto)
@@ -58,7 +58,16 @@ export class ProjectsService {
   }
 
   async checkIfSecretExists (projectId: string) {
-    return this.callMSFunction(this.apiClient, 'check_secret', projectId)
+    const apiKeysInfo = await this.callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
+
+    if (apiKeysInfo?.secretLastFourChars) {
+      return true
+    }
+    return false
+  }
+
+  async getApiKeysInfo (projectId: string) {
+    return this.callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
   }
 
   async updateSecret (projectId: string) {

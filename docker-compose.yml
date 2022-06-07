@@ -32,9 +32,12 @@ services:
       dockerfile: ./apps/charge-api-service/Dockerfile
       target: development
     command: npm run start:dev charge-api-service
+    env_file:
+      - ./apps/charge-api-service/.env
     environment:
       - API_PORT
       - MONGO_URI=${API_MONGO_URI}
+      - FUSE_STUDIO_ACCOUNTS_API_URL
     depends_on:
       - charge-relay-service
       - mongo

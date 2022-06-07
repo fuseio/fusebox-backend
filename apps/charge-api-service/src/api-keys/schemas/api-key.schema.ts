@@ -11,6 +11,7 @@ export const ApiKeySchema = new mongoose.Schema(
     secretHash: { type: String },
     secretPrefix: { type: String },
     secretLastFourChars: { type: String },
+    encryptedLegacyJwt: { type: String },
     isTest: { type: Boolean, default: false }
   },
   {

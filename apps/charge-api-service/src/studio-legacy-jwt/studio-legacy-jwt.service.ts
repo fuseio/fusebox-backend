@@ -1,6 +1,5 @@
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
-import { AxiosRequestConfig } from 'axios'
 import { lastValueFrom, map } from 'rxjs'
 import * as CryptoJS from 'crypto-js'
 
@@ -11,13 +10,6 @@ export class StudioLegacyJwtService {
   async createLegacyJwt (
     appName = 'chargeApp'
   ): Promise<string> {
-    const requestConfig: AxiosRequestConfig = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.FUSE_STUDIO_ADMIN_JWT}`
-      }
-    }
-
     const requestBody = {
       role: 'communityAdmin',
       bridgeType: 'home',
@@ -29,8 +21,7 @@ export class StudioLegacyJwtService {
       this.httpService
         .post(
           `${process.env.FUSE_STUDIO_ACCOUNTS_API_URL}`,
-          requestBody,
-          requestConfig
+          requestBody
         )
         .pipe(
           map((response) => {

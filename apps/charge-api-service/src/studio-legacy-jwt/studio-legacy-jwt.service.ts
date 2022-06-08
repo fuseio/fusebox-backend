@@ -28,9 +28,9 @@ export class StudioLegacyJwtService {
     const responseData = await lastValueFrom(
       this.httpService
         .post(
-                    `${process.env.FUSE_STUDIO_ACCOUNTS_API_URL}`,
-                    requestBody,
-                    requestConfig
+          `${process.env.FUSE_STUDIO_ACCOUNTS_API_URL}`,
+          requestBody,
+          requestConfig
         )
         .pipe(
           map((response) => {
@@ -38,9 +38,6 @@ export class StudioLegacyJwtService {
           })
         )
     )
-
-    console.log(JSON.stringify(responseData))
-    console.log(typeof (responseData?.data?.jwt))
 
     const legacyJwt = responseData?.data?.jwt
 

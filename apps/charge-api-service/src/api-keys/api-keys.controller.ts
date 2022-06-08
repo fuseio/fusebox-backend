@@ -53,7 +53,6 @@ export class ApiKeysController {
    */
   @MessagePattern('get_public')
   getPublic (projectId: string) {
-    console.log('get public on api side')
     return this.apiKeysService.getPublicKey(projectId)
   }
 }

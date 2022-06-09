@@ -42,7 +42,7 @@ export class ApiKeysService {
   }
 
   async getPublicKey (projectId: string) {
-    const apiKeys = await this.findOne(projectId)
+    const apiKeys = await this.findOne({ projectId })
 
     if (apiKeys && apiKeys?.publicKey) {
       return { publicKey: apiKeys?.publicKey }
@@ -51,8 +51,8 @@ export class ApiKeysService {
     throw new RpcException('Not Found')
   }
 
-  async findOne (projectId: string) {
-    return this.apiKeyModel.findOne({ projectId, isTest: false })
+  async findOne (query: object) {
+    return this.apiKeyModel.findOne(query)
   }
 
   async createSecretKey (projectId: string) {
@@ -88,26 +88,6 @@ export class ApiKeysService {
     throw new RpcException('Internal Server Error')
   }
 
-  async updatePublicKey (projectId: string) {
-    const newPublicKey = `pk_${await this.generateRandomToken()}`
-
-    const result = await this.apiKeyModel.findOneAndUpdate(
-      {
-        projectId
-      },
-      {
-        publicKey: newPublicKey
-      },
-      { upsert: true, new: true }
-    )
-
-    if (result) {
-      return {
-        publicKey: newPublicKey
-      }
-    }
-  }
-
   async updateSecretKey (projectId: string) {
     const { secretKey, secretPrefix, secretLastFourChars } = await this.generateSecretKey()
     const saltRounds = await bcrypt.genSalt()
@@ -136,7 +116,7 @@ export class ApiKeysService {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId
     })
-      .select('-secretHash')
+      .select('-secretHash -encryptedLegacyJwt')
 
     return projectApiKeys || {}
   }

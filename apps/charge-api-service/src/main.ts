@@ -13,6 +13,7 @@ async function bootstrap () {
       port: process.env.API_TCP_PORT
     }
   }
+  app.setGlobalPrefix('api')
 
   app.connectMicroservice(microServiceOptions)
   await app.startAllMicroservices()

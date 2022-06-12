@@ -20,7 +20,7 @@ export class StudioLegacyJwtService {
     const responseData = await lastValueFrom(
       this.httpService
         .post(
-          `${process.env.FUSE_STUDIO_ACCOUNTS_API_URL}`,
+          `${process.env.LEGACY_FUSE_STUDIO_API_URL}/api/v2/accounts/`,
           requestBody
         )
         .pipe(

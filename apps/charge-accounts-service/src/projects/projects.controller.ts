@@ -18,7 +18,7 @@ import { ProjectsService } from '@app/accounts-service/projects/projects.service
 
 @Controller({ path: 'projects', version: '1' })
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) { }
+  constructor (private readonly projectsService: ProjectsService) { }
 
   /**
    * Creates a new project for the authenticated user
@@ -26,7 +26,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
+  create (@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto)
   }
 
@@ -35,7 +35,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@User('sub') auth0Id: string) {
+  findAll (@User('sub') auth0Id: string) {
     return this.projectsService.findAll(auth0Id)
   }
 
@@ -46,7 +46,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne (@Param('id') id: string) {
     return this.projectsService.findOne(id)
   }
 
@@ -58,7 +58,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
+  update (@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(id, updateProjectDto)
   }
 
@@ -69,7 +69,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/secret/:projectId')
-  createSecret(@Param('projectId') projectId: string) {
+  createSecret (@Param('projectId') projectId: string) {
     return this.projectsService.createSecret(projectId)
   }
 
@@ -80,7 +80,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/secret/:projectId')
-  checkIfSecretExists(@Param('projectId') projectId: string) {
+  checkIfSecretExists (@Param('projectId') projectId: string) {
     return this.projectsService.checkIfSecretExists(projectId)
   }
 
@@ -91,7 +91,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/apikeysinfo/:projectId')
-  getApiKeysInfo(@Param('projectId') projectId: string) {
+  getApiKeysInfo (@Param('projectId') projectId: string) {
     return this.projectsService.getApiKeysInfo(projectId)
   }
 
@@ -102,7 +102,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Put('/secret/:projectId')
-  updateSecret(@Param('projectId') projectId: string) {
+  updateSecret (@Param('projectId') projectId: string) {
     return this.projectsService.updateSecret(projectId)
   }
 
@@ -113,7 +113,7 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/public/:projectId')
-  getPublic(@Param('projectId') projectId: string) {
+  getPublic (@Param('projectId') projectId: string) {
     return this.projectsService.getPublic(projectId)
   }
 }

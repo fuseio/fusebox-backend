@@ -6,12 +6,14 @@ import * as bcrypt from 'bcryptjs'
 import * as crypto from 'crypto'
 import base64url from 'base64url'
 import { RpcException } from '@nestjs/microservices'
+import { StudioLegacyJwtService } from '@app/api-service/studio-legacy-jwt/studio-legacy-jwt.service'
 
 @Injectable()
 export class ApiKeysService {
   constructor (
     @Inject(apiKeyModelString)
-    private apiKeyModel: Model<ApiKey>
+    private apiKeyModel: Model<ApiKey>,
+    private studioLegacyJwtService: StudioLegacyJwtService
   ) { }
 
   async createPublicKey (projectId: string) {
@@ -64,12 +66,15 @@ export class ApiKeysService {
     const saltRounds = await bcrypt.genSalt()
     const secretHash = await bcrypt.hash(secretKey, saltRounds)
 
+    const encryptedLegacyJwt = await this.studioLegacyJwtService.createLegacyJwt(`chargeApp_${projectId}`)
+
     const result = await this.apiKeyModel.findOneAndUpdate(
       { projectId },
       {
         secretHash,
         secretPrefix,
-        secretLastFourChars
+        secretLastFourChars,
+        encryptedLegacyJwt
       },
       { upsert: true, new: true }
     )

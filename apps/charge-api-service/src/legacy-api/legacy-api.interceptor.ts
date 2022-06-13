@@ -1,14 +1,16 @@
 import { ApiKeysService } from '@app/api-service/api-keys/api-keys.service'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
   constructor (
-        private apiKeysService: ApiKeysService,
-        private httpService: HttpService) { }
+    private apiKeysService: ApiKeysService,
+    private httpService: HttpService,
+    private configService: ConfigService) { }
 
   async intercept (context: ExecutionContext, next: CallHandler): Promise<any> {
     const request = context.switchToHttp().getRequest()
@@ -19,10 +21,12 @@ export class LegacyApiInterceptor implements NestInterceptor {
     const params = request.params
     const body = request.body
 
-    let baseUrl: string = ''
-    let headers: Record<string, any> = request.headers
+    // Get the configuration for the relevant Legacy API
+    const config = this.configService.get<Record<string, any>>(ctxClassName)
 
-    if (ctxClassName === 'LegacyStudioApiController' || ctxClassName === 'LegacyJobsApiController') {
+    // Replace headers if needed based on the configuration
+    let headers: Record<string, any> = request.headers
+    if (config.replaceHeaders) {
       const projectJwt = await this.apiKeysService.getProjectJwt({ apiKey: query?.apiKey })
       headers = {
         Authorization: `Bearer ${projectJwt}`,
@@ -30,35 +34,24 @@ export class LegacyApiInterceptor implements NestInterceptor {
       }
     }
 
-    if (ctxClassName === 'LegacyStudioApiController') {
-      baseUrl = `${process.env.LEGACY_FUSE_STUDIO_API_URL}/api/v2/admin`
-    } else if (ctxClassName === 'LegacyJobsApiController') {
-      baseUrl = `${process.env.LEGACY_FUSE_STUDIO_API_URL}/api/v2/jobs`
-    } else if (ctxClassName === 'LegacyWalletApiController') {
-      baseUrl = `${process.env.LEGACY_FUSE_WALLET_API_URL}/api/v1`
-    } else if (ctxClassName === 'LegacyFuseswapApiController') {
-      baseUrl = `${process.env.LEGACY_FUSE_SWAP_API_URL}/api/v1`
-    }
-
-    const config: Record<string, any> = {
-      url: `${baseUrl}/${params[0]}`,
+    // Build the final request configuration
+    const requestConfig: Record<string, any> = {
+      url: `${config?.baseUrl}/${params[0]}`,
       method: ctxHandlerName,
       headers
     }
 
     if (Object.keys(body).length !== 0) {
-      config.data = body
+      requestConfig.data = body
     }
 
     if (Object.keys(query).length !== 0) {
-      config.params = query
+      requestConfig.params = query
     }
-
-    console.log(config)
 
     const response = await lastValueFrom(this.httpService
       .request(
-        config
+        requestConfig
       )
       .pipe(
         map((response) => {

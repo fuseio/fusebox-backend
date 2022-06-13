@@ -6,15 +6,19 @@ import { HttpModule } from '@nestjs/axios'
 import { LegacyJobsApiController } from '@app/api-service/legacy-api/legacy-jobs-api/legacy-jobs-api.controller'
 import { ConfigModule } from '@nestjs/config'
 import configuration from '@app/api-service/legacy-api/config/configuration'
+import { LegacyFuseswapApiController } from '@app/api-service/legacy-api/legacy-fuseswap-api/legacy-fuseswap-api.controller'
 
 @Module({
   imports: [
     ApiKeyModule,
     HttpModule,
-    ConfigModule.forRoot({
-      load: [configuration]
-    })
+    ConfigModule.forFeature(configuration)
   ],
-  controllers: [LegacyWalletApiController, LegacyStudioApiController, LegacyJobsApiController]
+  controllers: [
+    LegacyWalletApiController,
+    LegacyStudioApiController,
+    LegacyJobsApiController,
+    LegacyFuseswapApiController
+  ]
 })
 export class LegacyApiModule { }

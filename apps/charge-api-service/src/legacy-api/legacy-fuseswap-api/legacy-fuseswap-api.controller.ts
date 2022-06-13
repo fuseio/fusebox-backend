@@ -5,7 +5,7 @@ import { IsValidApiKeysGuard } from '@app/api-service/api-keys/guards/is-valid-a
 @UseGuards(IsValidApiKeysGuard)
 @UseInterceptors(LegacyApiInterceptor)
 @Controller({ path: 'v0/fuseswap/*' })
-export class LegacyWalletApiController {
+export class LegacyFuseswapApiController {
   @Get()
   get () {
   }

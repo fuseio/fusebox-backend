@@ -88,6 +88,12 @@ export class ApiKeysService {
     throw new RpcException('Internal Server Error')
   }
 
+  async getProjectJwt (query: object) {
+    const projectApiKeys = await this.apiKeyModel.findOne(query)
+    const projectEncryptedJwt = projectApiKeys?.encryptedLegacyJwt
+    return this.studioLegacyJwtService.decryptEncryptedJWT(projectEncryptedJwt)
+  }
+
   async updateSecretKey (projectId: string) {
     const { secretKey, secretPrefix, secretLastFourChars } = await this.generateSecretKey()
     const saltRounds = await bcrypt.genSalt()

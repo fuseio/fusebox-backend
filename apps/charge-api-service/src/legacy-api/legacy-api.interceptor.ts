@@ -4,15 +4,16 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpExcepti
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
+import { isEmpty } from "lodash"
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
-  constructor (
+  constructor(
     private apiKeysService: ApiKeysService,
     private httpService: HttpService,
     private configService: ConfigService) { }
 
-  async intercept (context: ExecutionContext, next: CallHandler): Promise<any> {
+  async intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
     const request = context.switchToHttp().getRequest()
 
     const ctxClassName = context.getClass().name
@@ -41,11 +42,11 @@ export class LegacyApiInterceptor implements NestInterceptor {
       headers
     }
 
-    if (Object.keys(body).length !== 0) {
+    if (!isEmpty(body)) {
       requestConfig.data = body
     }
 
-    if (Object.keys(query).length !== 0) {
+    if (!isEmpty(query)) {
       requestConfig.params = query
     }
 

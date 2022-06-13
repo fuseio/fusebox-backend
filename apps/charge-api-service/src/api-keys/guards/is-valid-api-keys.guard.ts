@@ -11,7 +11,7 @@ export class IsValidApiKeysGuard implements CanActivate {
     const { query }: { query: { apiKey: string } } = request
     const projectApiKey = await this.apiKeysService.findOne({ publicKey: query?.apiKey, isTest: false })
     const projectSecretHash = projectApiKey?.secretHash
-    const secretKey = request.header('Authorization')?.replace('Bearer ', '')
+    const secretKey = request.header('API-SECRET')
 
     if (projectSecretHash && secretKey) {
       return await bcrypt.compare(secretKey, projectSecretHash)

@@ -4,9 +4,9 @@ import { LegacyApiInterceptor } from '../legacy-api.interceptor'
 @UseInterceptors(LegacyApiInterceptor)
 @Controller({ path: 'v0/studio/*' })
 export class LegacyStudioApiController {
-    @Get()
+  @Get()
   get () { }
 
-    @Post()
-    post () { }
+  @Post()
+  post () { }
 }

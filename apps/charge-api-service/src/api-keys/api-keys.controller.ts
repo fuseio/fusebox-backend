@@ -1,7 +1,6 @@
-import { Controller, Get, UseGuards } from '@nestjs/common'
+import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service'
-import { IsValidApiKeysGuard } from './guards/is-valid-api-keys.guard'
 
 @Controller()
 export class ApiKeysController {
@@ -55,15 +54,5 @@ export class ApiKeysController {
   @MessagePattern('get_public')
   getPublic (projectId: string) {
     return this.apiKeysService.getPublicKey(projectId)
-  }
-
-  /**
-   * TODO - Just for demonstrating the usage of IsValidApiKeysGuard.
-   * Remove this once we have actual APIs that use the Guard
-   */
-  @Get('/checkApiKeysValidity')
-  @UseGuards(IsValidApiKeysGuard)
-  checkApiKeys () {
-    return true
   }
 }

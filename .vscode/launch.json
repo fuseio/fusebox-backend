@@ -7,7 +7,18 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug: Charge",
+            "name": "Debug: Charge API",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
+            "port": 9227,
+            "restart": true,
+            "address": "0.0.0.0",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug: Charge Accounts",
             "remoteRoot": "/usr/src/app",
             "localRoot": "${workspaceFolder}",
             "port": 9229,

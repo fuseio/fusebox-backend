@@ -4,17 +4,18 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpExcepti
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, tap } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { isEmpty } from "lodash"
+import { isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
-  constructor(
+  constructor (
     private apiKeysService: ApiKeysService,
     private httpService: HttpService,
-    private configService: ConfigService) { }
+    private configService: ConfigService
+  ) { }
 
-  async intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
+  async intercept (context: ExecutionContext, next: CallHandler): Promise<any> {
     const request = context.switchToHttp().getRequest()
 
     const ctxClassName = context.getClass().name

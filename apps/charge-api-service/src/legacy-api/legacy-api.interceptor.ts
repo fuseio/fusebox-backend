@@ -2,9 +2,10 @@ import { ApiKeysService } from '@app/api-service/api-keys/api-keys.service'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { lastValueFrom } from 'rxjs'
+import { lastValueFrom, tap } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { isEmpty } from "lodash"
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
@@ -21,22 +22,29 @@ export class LegacyApiInterceptor implements NestInterceptor {
     const query = request.query
     const params = request.params
     const body = request.body
+    const requestHeaders = request.headers
 
     // Get the configuration for the relevant Legacy API
     const config = this.configService.get<Record<string, any>>(ctxClassName)
 
     // Replace headers if needed based on the configuration
-    let headers: Record<string, any> = request.headers
+    let headers: Record<string, any> = {
+      'Content-Type': 'application/json'
+    }
+
     if (config.replaceHeaders) {
       const projectJwt = await this.apiKeysService.getProjectJwt({ apiKey: query?.apiKey })
       headers = {
-        Authorization: `Bearer ${projectJwt}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${projectJwt}`
+      }
+    } else if (requestHeaders?.Authorization) {
+      headers = {
+        Authorization: requestHeaders.Authorization
       }
     }
 
     // Build the final request configuration
-    const requestConfig: Record<string, any> = {
+    const requestConfig: AxiosRequestConfig = {
       url: `${config?.baseUrl}/${params[0]}`,
       method: ctxHandlerName,
       headers
@@ -55,8 +63,9 @@ export class LegacyApiInterceptor implements NestInterceptor {
         requestConfig
       )
       .pipe(
-        map((response) => {
-          return response.data
+        tap(val => console.log(`BEFORE MAP: ${val}`)),
+        map((axiosResponse: AxiosResponse) => {
+          return axiosResponse.data
         })
       )
       .pipe(

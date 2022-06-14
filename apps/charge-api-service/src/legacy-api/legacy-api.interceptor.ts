@@ -64,7 +64,6 @@ export class LegacyApiInterceptor implements NestInterceptor {
         requestConfig
       )
       .pipe(
-        tap(val => console.log(`BEFORE MAP: ${val}`)),
         map((axiosResponse: AxiosResponse) => {
           return axiosResponse.data
         })

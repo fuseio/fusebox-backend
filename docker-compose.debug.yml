@@ -2,4 +2,8 @@ version: '3.7'
 
 services:
   charge-accounts-service:
-    command: npm run start:debug
+    command: npm run start:debug --service=charge-accounts-service --port=9229
+  charge-api-service:
+    command: npm run start:debug --service=charge-api-service --port=9227
+  charge-relay-service:
+    command: npm run start:debug --service charge-relay-service --port=9226

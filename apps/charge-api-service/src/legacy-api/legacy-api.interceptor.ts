@@ -2,9 +2,9 @@ import { ApiKeysService } from '@app/api-service/api-keys/api-keys.service'
 import { HttpService } from '@nestjs/axios'
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { lastValueFrom, tap } from 'rxjs'
+import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { isEmpty } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
@@ -38,9 +38,9 @@ export class LegacyApiInterceptor implements NestInterceptor {
       headers = {
         Authorization: `Bearer ${projectJwt}`
       }
-    } else if (requestHeaders?.Authorization) {
+    } else if (get(requestHeaders, 'authorization')) {
       headers = {
-        Authorization: requestHeaders.Authorization
+        Authorization: get(requestHeaders, 'authorization')
       }
     }
 

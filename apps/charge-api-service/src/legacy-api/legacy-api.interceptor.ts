@@ -34,7 +34,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
     }
 
     if (config.replaceHeaders) {
-      const projectJwt = await this.apiKeysService.getProjectJwt({ apiKey: query?.apiKey })
+      const projectJwt = await this.apiKeysService.getProjectJwt({ publicKey: query?.apiKey })
       headers = {
         Authorization: `Bearer ${projectJwt}`
       }

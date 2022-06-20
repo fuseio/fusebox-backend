@@ -37,9 +37,9 @@ services:
     environment:
       - API_PORT
       - MONGO_URI=${API_MONGO_URI}
-      - LEGACY_FUSE_STUDIO_API_URL
+      - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
-      - LEGACY_FUSE_SWAP_API_URL
+      - LEGACY_FUSE_TRADE_API_URL
     depends_on:
       - charge-relay-service
       - mongo

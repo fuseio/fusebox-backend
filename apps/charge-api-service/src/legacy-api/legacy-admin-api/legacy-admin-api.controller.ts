@@ -4,8 +4,8 @@ import { LegacyApiInterceptor } from '@app/api-service/legacy-api/legacy-api.int
 
 @UseGuards(IsValidApiKeysGuard)
 @UseInterceptors(LegacyApiInterceptor)
-@Controller({ path: 'v0/studio/*' })
-export class LegacyStudioApiController {
+@Controller({ path: 'v0/admin/*' })
+export class LegacyAdminApiController {
   @Get()
   get () { }
 

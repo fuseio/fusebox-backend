@@ -4,8 +4,8 @@ import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-va
 
 @UseGuards(IsValidPublicApiKeyGuard)
 @UseInterceptors(LegacyApiInterceptor)
-@Controller({ path: 'v0/fuseswap/*' })
-export class LegacyFuseswapApiController {
+@Controller({ path: 'v0/trade/*' })
+export class LegacyTradeApiController {
   @Get()
   get () {
   }

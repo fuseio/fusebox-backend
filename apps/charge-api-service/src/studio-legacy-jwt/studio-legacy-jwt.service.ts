@@ -30,8 +30,6 @@ export class StudioLegacyJwtService {
         )
     )
 
-    console.log(JSON.stringify(responseData))
-
     const legacyJwt = responseData?.data?.jwt
     const legacyBackendAccount = responseData?.data?.account?.address
 

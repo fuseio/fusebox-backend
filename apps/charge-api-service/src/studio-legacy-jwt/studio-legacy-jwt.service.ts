@@ -9,7 +9,7 @@ export class StudioLegacyJwtService {
 
   async createLegacyJwt (
     appName = 'chargeApp'
-  ): Promise<string> {
+  ): Promise<Record<string, any>> {
     const requestBody = {
       role: 'communityAdmin',
       bridgeType: 'home',
@@ -31,10 +31,11 @@ export class StudioLegacyJwtService {
     )
 
     const legacyJwt = responseData?.data?.jwt
+    const legacyBackendAccount = responseData?.data?.account?.address
 
-    const encryptedLegacyJwt = CryptoJS.AES.encrypt(legacyJwt, process.env.LEGACY_JWT_SECRET)
+    const encryptedLegacyJwt = CryptoJS.AES.encrypt(legacyJwt, process.env.LEGACY_JWT_SECRET).toString()
 
-    return encryptedLegacyJwt.toString()
+    return { encryptedLegacyJwt, legacyBackendAccount }
   }
 
   // To be used internally when requests will be forwarded to the Legacy Admin API

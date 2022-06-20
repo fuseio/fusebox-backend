@@ -7,5 +7,6 @@ export interface ApiKey extends Document {
   readonly secretPrefix: string;
   readonly secretLastFourChars: string;
   readonly encryptedLegacyJwt: string;
+  readonly legacyBackendAccount: string;
   readonly isTest: boolean;
 }

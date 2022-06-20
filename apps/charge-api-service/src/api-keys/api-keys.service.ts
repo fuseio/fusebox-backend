@@ -66,7 +66,7 @@ export class ApiKeysService {
     const saltRounds = await bcrypt.genSalt()
     const secretHash = await bcrypt.hash(secretKey, saltRounds)
 
-    const encryptedLegacyJwt = await this.studioLegacyJwtService.createLegacyJwt(`chargeApp_${projectId}`)
+    const { encryptedLegacyJwt, legacyBackendAccount } = await this.studioLegacyJwtService.createLegacyJwt(`chargeApp_${projectId}`)
 
     const result = await this.apiKeyModel.findOneAndUpdate(
       { projectId },
@@ -74,7 +74,8 @@ export class ApiKeysService {
         secretHash,
         secretPrefix,
         secretLastFourChars,
-        encryptedLegacyJwt
+        encryptedLegacyJwt,
+        legacyBackendAccount
       },
       { upsert: true, new: true }
     )

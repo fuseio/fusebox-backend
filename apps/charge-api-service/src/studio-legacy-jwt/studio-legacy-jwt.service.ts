@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios'
-import { Injectable } from '@nestjs/common'
-import { lastValueFrom, map } from 'rxjs'
+import { HttpException, Injectable } from '@nestjs/common'
+import { catchError, lastValueFrom, map } from 'rxjs'
 import * as CryptoJS from 'crypto-js'
 
 @Injectable()
@@ -20,12 +20,20 @@ export class StudioLegacyJwtService {
     const responseData = await lastValueFrom(
       this.httpService
         .post(
-          `${process.env.LEGACY_FUSE_STUDIO_API_URL}/api/v2/accounts/`,
+          `${process.env.LEGACY_FUSE_ADMIN_API_URL}/api/v2/accounts/`,
           requestBody
         )
         .pipe(
           map((response) => {
             return response.data
+          })
+        )
+        .pipe(
+          catchError(e => {
+            throw new HttpException(
+              `${e?.response?.statusText}: ${e?.response?.data?.error}`,
+              e?.response?.status
+            )
           })
         )
     )

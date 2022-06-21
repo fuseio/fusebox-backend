@@ -70,7 +70,10 @@ export class LegacyApiInterceptor implements NestInterceptor {
       )
       .pipe(
         catchError(e => {
-          throw new HttpException(e?.response?.statusText, e?.response?.status)
+          throw new HttpException(
+            `${e?.response?.statusText}: ${e?.response?.data?.error}`,
+            e?.response?.status
+          )
         })
       )
     )

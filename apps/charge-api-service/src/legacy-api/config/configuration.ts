@@ -9,7 +9,8 @@ export default () => ({
   },
   LegacyWalletApiController: {
     baseUrl: `${process.env.LEGACY_FUSE_WALLET_API_URL}/api/v1`,
-    replaceHeaders: false
+    replaceHeaders: false,
+    addCommunityAddressForPostRequests: true
   },
   LegacyTradeApiController: {
     baseUrl: `${process.env.LEGACY_FUSE_TRADE_API_URL}/api/v1`,

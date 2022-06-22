@@ -7,6 +7,7 @@ import * as crypto from 'crypto'
 import base64url from 'base64url'
 import { RpcException } from '@nestjs/microservices'
 import { StudioLegacyJwtService } from '@app/api-service/studio-legacy-jwt/studio-legacy-jwt.service'
+import { isEmpty } from 'lodash'
 
 @Injectable()
 export class ApiKeysService {
@@ -119,6 +120,17 @@ export class ApiKeysService {
     }
   }
 
+  async getProjectIdByPublicKey(publicKey: any) {
+    const projectApiKeys: ApiKey | null = await (await this.apiKeyModel.findOne({ publicKey }))
+    const projectId: string = projectApiKeys?.projectId?.toString()
+
+    if (isEmpty(projectId)) {
+      return new Error('Project not found')
+    }
+
+    return projectId
+  }
+  
   async getApiKeysInfo (projectId: string) {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId

@@ -16,13 +16,41 @@ export class LegacyApiInterceptor implements NestInterceptor {
   ) { }
 
   async intercept (context: ExecutionContext, next: CallHandler): Promise<any> {
+    const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(context)
+
+    const response = await lastValueFrom(this.httpService
+      .request(
+        requestConfig
+      )
+      .pipe(
+        map((axiosResponse: AxiosResponse) => {
+          return axiosResponse.data
+        })
+      )
+      .pipe(
+        catchError(e => {
+          const errorReason = e?.response?.data?.error || 
+          e?.response?.data?.errors?.message || ''
+
+          throw new HttpException(
+            `${e?.response?.statusText}: ${errorReason}`,
+            e?.response?.status
+          )
+        })
+      )
+    )
+
+    return response
+  }
+
+  private async prepareRequestConfig(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
 
     const ctxClassName = context.getClass().name
     const ctxHandlerName = context.getHandler().name
     const query = request.query
     const params = request.params
-    const body = request.body
+    const body = request.body || {}
     const requestHeaders = request.headers
 
     // Get the configuration for the relevant Legacy API
@@ -44,6 +72,13 @@ export class LegacyApiInterceptor implements NestInterceptor {
       }
     }
 
+    if (config.addCommunityAddressForPostRequests &&
+      ctxHandlerName == 'post' &&
+      isEmpty(body?.communityAddress)) {
+      const projectId = await this.apiKeysService.getProjectIdByPublicKey(query?.apiKey)
+      body.communityAddress = projectId
+    }
+
     // Build the final request configuration
     const requestConfig: AxiosRequestConfig = {
       url: `${config?.baseUrl}/${params[0]}`,
@@ -58,26 +93,6 @@ export class LegacyApiInterceptor implements NestInterceptor {
     if (!isEmpty(query)) {
       requestConfig.params = query
     }
-
-    const response = await lastValueFrom(this.httpService
-      .request(
-        requestConfig
-      )
-      .pipe(
-        map((axiosResponse: AxiosResponse) => {
-          return axiosResponse.data
-        })
-      )
-      .pipe(
-        catchError(e => {
-          throw new HttpException(
-            `${e?.response?.statusText}: ${e?.response?.data?.error}`,
-            e?.response?.status
-          )
-        })
-      )
-    )
-
-    return response
+    return requestConfig
   }
 }

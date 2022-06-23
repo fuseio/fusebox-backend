@@ -29,7 +29,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
       )
       .pipe(
         catchError(e => {
-          const errorReason = e?.response?.data?.error || 
+          const errorReason = e?.response?.data?.error ||
           e?.response?.data?.errors?.message || ''
 
           throw new HttpException(
@@ -43,7 +43,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
     return response
   }
 
-  private async prepareRequestConfig(context: ExecutionContext) {
+  private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
 
     const ctxClassName = context.getClass().name
@@ -73,7 +73,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
     }
 
     if (config.addCommunityAddressForPostRequests &&
-      ctxHandlerName == 'post' &&
+      ctxHandlerName === 'post' &&
       isEmpty(body?.communityAddress)) {
       const projectId = await this.apiKeysService.getProjectIdByPublicKey(query?.apiKey)
       body.communityAddress = projectId

@@ -120,8 +120,8 @@ export class ApiKeysService {
     }
   }
 
-  async getProjectIdByPublicKey(publicKey: any) {
-    const projectApiKeys: ApiKey | null = await (await this.apiKeyModel.findOne({ publicKey }))
+  async getProjectIdByPublicKey (publicKey: any) {
+    const projectApiKeys: ApiKey | null = await this.apiKeyModel.findOne({ publicKey })
     const projectId: string = projectApiKeys?.projectId?.toString()
 
     if (isEmpty(projectId)) {
@@ -130,7 +130,7 @@ export class ApiKeysService {
 
     return projectId
   }
-  
+
   async getApiKeysInfo (projectId: string) {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId

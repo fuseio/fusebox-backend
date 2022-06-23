@@ -130,7 +130,6 @@ export class ApiKeysService {
 
     return projectId
   }
-
   async getApiKeysInfo (projectId: string) {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId

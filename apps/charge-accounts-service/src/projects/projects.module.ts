@@ -7,9 +7,7 @@ import { UsersModule } from '@app/accounts-service/users/users.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import {
   apiService,
-  apiServiceHost,
-  relayService,
-  relayServiceHost
+  relayService
 } from '@app/common/constants/microservices.constants'
 
 @Module({
@@ -21,7 +19,7 @@ import {
         name: apiService,
         transport: Transport.TCP,
         options: {
-          host: apiServiceHost,
+          host: process.env.API_HOST,
           port: parseInt(process.env.API_TCP_PORT)
         }
       }
@@ -31,7 +29,7 @@ import {
         name: relayService,
         transport: Transport.TCP,
         options: {
-          host: relayServiceHost,
+          host: process.env.RELAY_HOST,
           port: parseInt(process.env.RELAY_TCP_PORT)
         }
       }

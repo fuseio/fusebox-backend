@@ -9,6 +9,9 @@ services:
       target: development
     command: npm run start:dev charge-accounts-service
     environment:
+      - ACCOUNTS_HOST
+      - API_HOST
+      - RELAY_HOST
       - ACCOUNTS_PORT
       - MONGO_URI=${ACCOUNTS_MONGO_URI}
       - AUTH0_ISSUER_URL
@@ -35,6 +38,7 @@ services:
     env_file:
       - ./apps/charge-api-service/.env
     environment:
+      - API_HOST
       - API_PORT
       - MONGO_URI=${API_MONGO_URI}
       - LEGACY_FUSE_ADMIN_API_URL
@@ -62,6 +66,7 @@ services:
     env_file:
       - ./apps/charge-relay-service/.env
     environment:
+      - RELAY_HOST
       - RELAY_PORT
       - MONGO_URI=${RELAY_MONGO_URI}
     depends_on:

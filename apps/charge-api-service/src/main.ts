@@ -1,7 +1,6 @@
 import { Transport } from '@nestjs/microservices'
 import { NestFactory } from '@nestjs/core'
 import { ChargeApiServiceModule } from 'apps/charge-api-service/src/charge-api-service.module'
-import { apiServiceHost } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
   const app = await NestFactory.create(ChargeApiServiceModule)
@@ -9,7 +8,7 @@ async function bootstrap () {
   const microServiceOptions = {
     transpot: Transport.TCP,
     options: {
-      host: apiServiceHost,
+      host: process.env.API_HOST,
       port: process.env.API_TCP_PORT
     }
   }

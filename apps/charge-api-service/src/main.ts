@@ -1,6 +1,9 @@
 import { Transport } from '@nestjs/microservices'
-import { NestFactory } from '@nestjs/core'
+import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeApiServiceModule } from 'apps/charge-api-service/src/charge-api-service.module'
+import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
+import { Logger } from '@nestjs/common'
+import { apiServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
   const app = await NestFactory.create(ChargeApiServiceModule)
@@ -16,6 +19,11 @@ async function bootstrap () {
 
   app.connectMicroservice(microServiceOptions)
   await app.startAllMicroservices()
+
+  const httpAdapterHost = app.get(HttpAdapterHost)
+  const logger = new Logger(apiServiceLoggerContext)
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
+
   await app.listen(process.env.API_PORT)
 }
 bootstrap()

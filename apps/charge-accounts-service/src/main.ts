@@ -1,11 +1,14 @@
-import { NestFactory } from '@nestjs/core'
+import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { AppModule } from '@app/accounts-service/app.module'
-import { ValidationPipe, VersioningType } from '@nestjs/common'
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import Helmet from 'helmet'
 import { Transport } from '@nestjs/microservices'
+import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
+import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
   const app = await NestFactory.create(AppModule)
+
   app.connectMicroservice({
     transport: Transport.TCP,
     options: {
@@ -30,6 +33,10 @@ async function bootstrap () {
     type: VersioningType.URI,
     defaultVersion: '1'
   })
+
+  const httpAdapterHost = app.get(HttpAdapterHost)
+  const logger = new Logger(accountsServiceLoggerContext)
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
 
   await app.listen(process.env.ACCOUNTS_PORT)
 }

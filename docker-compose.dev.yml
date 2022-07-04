@@ -9,6 +9,9 @@ services:
       - ./node_modules:/usr/src/app/node_modules
     ports:
       - 9229:9229
+    depends_on:
+      - mongo
+      - charge-api-service
     command: npm run start:dev charge-accounts-service
     networks:
       - chargenet
@@ -20,6 +23,9 @@ services:
       - ./node_modules:/usr/src/app/node_modules
     ports:
       - 9227:9227
+    depends_on:
+      - charge-relay-service
+      - mongo
     command: npm run start:dev charge-api-service
     networks:
       - chargenet
@@ -31,6 +37,20 @@ services:
       - ./node_modules:/usr/src/app/node_modules
     ports:
       - 9226:9226
+    depends_on:
+      - mongo
     command: npm run start:dev charge-relay-service
     networks:
       - chargenet
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - chargenet
+    restart: always
+    volumes:
+      - ./data:/data/db
+networks:
+  chargenet:

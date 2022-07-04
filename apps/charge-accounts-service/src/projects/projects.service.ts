@@ -8,15 +8,15 @@ import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-proj
 import { Project } from '@app/accounts-service/projects/interfaces/project.interface'
 import { projectModelString } from '@app/accounts-service/projects/projects.constants'
 import {
-  apiService,
-  relayService
+  apiService
+  // relayService
 } from '@app/common/constants/microservices.constants'
 
 @Injectable()
 export class ProjectsService {
   constructor (
     @Inject(apiService) private readonly apiClient: ClientProxy,
-    @Inject(relayService) private readonly relayClient: ClientProxy,
+    // @Inject(relayService) private readonly relayClient: ClientProxy,
     @Inject(projectModelString)
     private projectModel: Model<Project>,
     private usersService: UsersService
@@ -51,9 +51,9 @@ export class ProjectsService {
 
   async createSecret (projectId: string) {
     const secret = await this.callMSFunction(this.apiClient, 'create_secret', projectId)
-    if (secret) {
-      this.callMSFunction(this.relayClient, 'create_account', projectId)
-    }
+    // if (secret) {
+    //   this.callMSFunction(this.relayClient, 'create_account', projectId)
+    // }
     return secret
   }
 

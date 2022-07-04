@@ -70,3 +70,5 @@ services:
       - ${RELAY_PORT}:${RELAY_PORT}
       - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
     restart: always
+networks:
+  chargenet:

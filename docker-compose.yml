@@ -17,7 +17,6 @@ services:
       - AUTH0_ISSUER_URL
       - AUTH0_AUDIENCE
     depends_on:
-      - mongo
       - charge-api-service
     volumes:
       - .:/usr/src/app
@@ -25,8 +24,6 @@ services:
     ports:
       - ${ACCOUNTS_PORT}:${ACCOUNTS_PORT}
       - ${ACCOUNTS_TCP_PORT}:${ACCOUNTS_TCP_PORT}
-    networks:
-      - chargenet
     restart: always
   charge-api-service:
     container_name: charge-api-service
@@ -46,15 +43,12 @@ services:
       - LEGACY_FUSE_TRADE_API_URL
     depends_on:
       - charge-relay-service
-      - mongo
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - ${API_PORT}:${API_PORT}
       - ${API_TCP_PORT}:${API_TCP_PORT}
-    networks:
-      - chargenet
     restart: always
   charge-relay-service:
     container_name: charge-relay-service
@@ -69,26 +63,10 @@ services:
       - RELAY_HOST
       - RELAY_PORT
       - MONGO_URI=${RELAY_MONGO_URI}
-    depends_on:
-      - mongo
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - ${RELAY_PORT}:${RELAY_PORT}
       - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
-    networks:
-      - chargenet
     restart: always
-  mongo:
-    container_name: mongo
-    image: mongo
-    ports:
-      - '27017:27017'
-    networks:
-      - chargenet
-    restart: always
-    volumes:
-      - ./data:/data/db
-networks:
-  chargenet:

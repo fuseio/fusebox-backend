@@ -6,8 +6,8 @@ import { projectsProviders } from '@app/accounts-service/projects/projects.provi
 import { UsersModule } from '@app/accounts-service/users/users.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import {
-  apiService,
-  relayService
+  apiService
+  // relayService
 } from '@app/common/constants/microservices.constants'
 
 @Module({
@@ -23,17 +23,17 @@ import {
           port: parseInt(process.env.API_TCP_PORT)
         }
       }
-    ]),
-    ClientsModule.register([
-      {
-        name: relayService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.RELAY_HOST,
-          port: parseInt(process.env.RELAY_TCP_PORT)
-        }
-      }
     ])
+    // ClientsModule.register([
+    //   {
+    //     name: relayService,
+    //     transport: Transport.TCP,
+    //     options: {
+    //       host: process.env.RELAY_HOST,
+    //       port: parseInt(process.env.RELAY_TCP_PORT)
+    //     }
+    //   }
+    // ])
   ],
   controllers: [ProjectsController],
   providers: [ProjectsService, ...projectsProviders],

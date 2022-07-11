@@ -44,6 +44,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/charge-relay-service/tsconfig.app.json"
       }
+    },
+    "charge-notifications-service": {
+      "type": "application",
+      "root": "apps/charge-notifications-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-notifications-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-notifications-service/tsconfig.app.json"
+      }
     }
   }
 }

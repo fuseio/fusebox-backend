@@ -60,11 +60,16 @@ services:
     container_name: redis
     image: 'bitnami/redis:latest'
     environment:
+      - REDIS_PORT_NUMBER=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ./data/redis:/bitnami/redis/data
     ports:
       - '${REDIS_PORT}:${REDIS_PORT}'
+    networks:
+      - chargenet
+    restart: always
   mongo:
     container_name: mongo
     image: mongo

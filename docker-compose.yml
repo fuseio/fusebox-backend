@@ -61,6 +61,10 @@ services:
     env_file:
       - ./apps/charge-notifications-service/.env
     environment:
+      - REDIS_HOST
+      - REDIS_PORT
+      - REDIS_PASSWORD
+      - REDIS_DB
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_PORT
       - MONGO_URI=${NOTIFICATIONS_MONGO_URI}

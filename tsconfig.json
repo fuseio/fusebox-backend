@@ -30,6 +30,9 @@
       "@app/api-service/*": [
         "apps/charge-api-service/src/*"
       ],
+      "@app/notifications-service/*": [
+        "apps/charge-notifications-service/src/*"
+      ],
       "@app/relay-service/*": [
         "apps/charge-relay-service/src/*"
       ]

@@ -2,7 +2,7 @@ import { Transport } from '@nestjs/microservices'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeNotificationsServiceModule } from 'apps/charge-notifications-service/src/charge-notifications-service.module'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
-import { Logger } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import { notificationsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
@@ -16,6 +16,12 @@ async function bootstrap () {
     }
   }
   app.setGlobalPrefix('notifications')
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true
+    })
+  )
 
   app.connectMicroservice(microServiceOptions)
   await app.startAllMicroservices()

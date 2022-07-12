@@ -5,5 +5,7 @@ services:
     command: npm run start:debug --service=charge-accounts-service --port=9229
   charge-api-service:
     command: npm run start:debug --service=charge-api-service --port=9227
+  charge-notifications-service:
+    command: npm run start:debug --service=charge-notifications-service --port=9230
   charge-relay-service:
     command: npm run start:debug --service charge-relay-service --port=9226

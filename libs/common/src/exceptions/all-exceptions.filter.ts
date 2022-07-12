@@ -7,8 +7,9 @@ import {
   Logger
 } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
+import { MongoServerError } from 'mongodb'
 
-  @Catch()
+@Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor (
     private readonly httpAdapterHost: HttpAdapterHost,
@@ -28,6 +29,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       httpStatus = exception.getStatus()
       errorMessage = exception.getResponse()
+    } else if (exception instanceof MongoServerError) {
+      if (exception.code === 11000) {
+        httpStatus = HttpStatus.BAD_REQUEST
+        errorMessage = `${Object.keys(exception?.keyValue)} must be unique`
+      }
     } else {
       httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
       errorMessage = 'Critical Internal Server Error Occurred'

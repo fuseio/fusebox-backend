@@ -58,13 +58,13 @@ services:
       - chargenet
   redis:
     container_name: redis
-    image: 'bitnami/redis:latest'
+    image: 'redis/redis-stack:latest'
     environment:
       - REDIS_PORT_NUMBER=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - ./data/redis:/bitnami/redis/data
+      - ./data/redis:/data
     ports:
       - '${REDIS_PORT}:${REDIS_PORT}'
     networks:

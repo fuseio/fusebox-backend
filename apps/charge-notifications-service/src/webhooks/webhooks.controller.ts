@@ -12,7 +12,7 @@ export class WebhooksController {
     return this.webhooksService.ping()
   }
 
-  @Post('create')
+  @Post()
   create (@Body() createWebhookDto: CreateWebhookDto) {
     return this.webhooksService.create(createWebhookDto)
   }

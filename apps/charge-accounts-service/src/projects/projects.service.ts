@@ -1,16 +1,16 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
-import { ClientProxy } from '@nestjs/microservices'
-import { Model } from 'mongoose'
-import { catchError, lastValueFrom, takeLast } from 'rxjs'
-import { UsersService } from '@app/accounts-service/users/users.service'
 import { CreateProjectDto } from '@app/accounts-service/projects/dto/create-project.dto'
 import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-project.dto'
 import { Project } from '@app/accounts-service/projects/interfaces/project.interface'
 import { projectModelString } from '@app/accounts-service/projects/projects.constants'
+import { UsersService } from '@app/accounts-service/users/users.service'
 import {
   apiService
   // relayService
 } from '@app/common/constants/microservices.constants'
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
+import { ClientProxy } from '@nestjs/microservices'
+import { Model } from 'mongoose'
+import { catchError, lastValueFrom, takeLast } from 'rxjs'
 
 @Injectable()
 export class ProjectsService {

@@ -1,13 +1,12 @@
 import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
+  ArgumentsHost, Catch, ExceptionFilter, HttpException,
   HttpStatus,
   Logger
 } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
+import { ServerResponse } from 'http'
 import { MongoServerError } from 'mongodb'
+import { throwError } from 'rxjs'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -16,12 +15,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
     private readonly logger: Logger
   ) {}
 
-  catch (exception: unknown, host: ArgumentsHost): void {
+  catch (exception: any, host: ArgumentsHost): any {
     // In certain situations `httpAdapter` might not be available in the
     // constructor method, thus we should resolve it here.
     const { httpAdapter } = this.httpAdapterHost
 
     const ctx = host.switchToHttp()
+    const response : ServerResponse = ctx.getResponse()
 
     let httpStatus: HttpStatus
     let errorMessage: string | object
@@ -47,6 +47,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: httpAdapter.getRequestUrl(ctx.getRequest())
     }
 
-    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus)
+    if (host.getType() === 'rpc') {
+      return throwError(() => ({ message: errorMessage, status: httpStatus }))
+    }
+
+    httpAdapter.reply(response, responseBody, httpStatus)
   }
 }

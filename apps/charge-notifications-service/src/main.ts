@@ -23,12 +23,12 @@ async function bootstrap () {
     })
   )
 
-  app.connectMicroservice(microServiceOptions)
-  await app.startAllMicroservices()
-
   const httpAdapterHost = app.get(HttpAdapterHost)
   const logger = new Logger(notificationsServiceLoggerContext)
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
+  app.connectMicroservice(microServiceOptions, { inheritAppConfig: true })
+
+  await app.startAllMicroservices()
 
   await app.listen(process.env.NOTIFICATIONS_PORT)
 }

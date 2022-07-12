@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common'
-import { ApiKeyModule } from 'apps/charge-api-service/src/api-keys/api-keys.module'
 import { ChargeApiServiceController } from '@app/api-service/charge-api-service.controller'
 import { ChargeApiServiceService } from '@app/api-service/charge-api-service.service'
 import { LegacyApiModule } from '@app/api-service/legacy-api/legacy-api.module'
+import { Module } from '@nestjs/common'
+import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
+import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
 
 @Module({
-  imports: [ApiKeyModule, LegacyApiModule],
+  imports: [ApiKeyModule, LegacyApiModule, NotificationsModule],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]
 })

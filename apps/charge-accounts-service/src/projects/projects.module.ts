@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common'
-import { ProjectsService } from '@app/accounts-service/projects/projects.service'
 import { ProjectsController } from '@app/accounts-service/projects/projects.controller'
-import { DatabaseModule } from '@app/common'
 import { projectsProviders } from '@app/accounts-service/projects/projects.providers'
+import { ProjectsService } from '@app/accounts-service/projects/projects.service'
 import { UsersModule } from '@app/accounts-service/users/users.module'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { DatabaseModule } from '@app/common'
 import {
   apiService
   // relayService
 } from '@app/common/constants/microservices.constants'
+import { Module } from '@nestjs/common'
+import { ClientsModule, Transport } from '@nestjs/microservices'
 
 @Module({
   imports: [

@@ -2,7 +2,7 @@ import { Transport } from '@nestjs/microservices'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeApiServiceModule } from 'apps/charge-api-service/src/charge-api-service.module'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
-import { Logger } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import { apiServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
@@ -17,12 +17,18 @@ async function bootstrap () {
   }
   app.setGlobalPrefix('api')
 
-  app.connectMicroservice(microServiceOptions)
-  await app.startAllMicroservices()
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true
+    })
+  )
 
   const httpAdapterHost = app.get(HttpAdapterHost)
   const logger = new Logger(apiServiceLoggerContext)
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
+  app.connectMicroservice(microServiceOptions, { inheritAppConfig: true })
+
+  await app.startAllMicroservices()
 
   await app.listen(process.env.API_PORT)
 }

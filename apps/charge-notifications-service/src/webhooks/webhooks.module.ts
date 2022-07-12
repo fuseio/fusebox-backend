@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common'
-import { ConfigService, ConfigModule } from '@nestjs/config'
-import { RedisModule } from '@liaoliaots/nestjs-redis'
-import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { WebhooksController } from '@app/notifications-service/webhooks/webhooks.controller'
-import redis from '@app/notifications-service/config/redis-config'
 import { DatabaseModule } from '@app/common'
+import redis from '@app/notifications-service/config/redis-config'
+import { WebhooksController } from '@app/notifications-service/webhooks/webhooks.controller'
 import { webhookssProviders } from '@app/notifications-service/webhooks/webhooks.providers'
+import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
+import { RedisModule } from '@liaoliaots/nestjs-redis'
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
-import { InjectRedis } from '@liaoliaots/nestjs-redis'
-import Redis from 'ioredis'
+// import { InjectRedis } from '@liaoliaots/nestjs-redis'
+// import Redis from 'ioredis'
 import { webhookModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { Model } from 'mongoose'
 import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
@@ -13,13 +13,13 @@ import { getDifference, getUnion } from '@app/common/utils/set-functions'
 export class WebhooksService {
   constructor (
     @Inject(webhookModelString)
-    private webhookModel: Model<Webhook>,
-    @InjectRedis() private readonly redis: Redis
+    private webhookModel: Model<Webhook>
+    // @InjectRedis() private readonly redis: Redis
   ) { }
 
-  async ping (): Promise<string> {
-    return this.redis.ping()
-  }
+  // async ping (): Promise<string> {
+  //   return this.redis.ping()
+  // }
 
   async create (createWebhookDto: CreateWebhookDto): Promise<Webhook> {
     createWebhookDto.watchAddresses = [...new Set(createWebhookDto.watchAddresses)]

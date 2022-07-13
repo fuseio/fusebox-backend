@@ -40,6 +40,11 @@ services:
     depends_on:
       - mongo
       - redis
+    environment:
+      - REDIS_HOST
+      - REDIS_PORT
+      - REDIS_PASSWORD
+      - REDIS_DB
     command: npm run start:dev charge-notifications-service
     networks:
       - chargenet

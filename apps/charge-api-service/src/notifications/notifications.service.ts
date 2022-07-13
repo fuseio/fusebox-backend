@@ -23,6 +23,18 @@ export class NotificationsService {
     return this.callMSFunction(this.notificationsClient, 'update_webhook', updateWebhookDto)
   }
 
+  async deleteWebhook (webhookId: string): Promise<Webhook> {
+    return this.callMSFunction(this.notificationsClient, 'delete_webhook', webhookId)
+  }
+
+  async getWebhook (webhookId: string): Promise<Webhook> {
+    return this.callMSFunction(this.notificationsClient, 'get_webhook', webhookId)
+  }
+
+  async getAllWebhooks (projectId: string): Promise<Webhook[]> {
+    return this.callMSFunction(this.notificationsClient, 'get_all_webhooks', projectId)
+  }
+
   private async callMSFunction (client: ClientProxy, pattern: string, data: any) {
     return lastValueFrom(
       client

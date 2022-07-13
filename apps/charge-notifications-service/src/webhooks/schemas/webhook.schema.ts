@@ -11,7 +11,6 @@ export const WebhookSchema = new mongoose.Schema(
       immutable: true
     },
     webhookUrl: { type: String, required: true },
-    watchAddresses: { type: [String] },
     eventType: { type: String, enum: eventTypes, default: 'ALL' }
   },
   {

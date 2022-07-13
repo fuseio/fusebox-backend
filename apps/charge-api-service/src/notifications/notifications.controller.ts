@@ -4,6 +4,7 @@ import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 import { IsValidApiKeysGuard } from '@app/api-service/api-keys/guards/is-valid-api-keys.guard'
 import { IsApiKeyProjectMatchGuard } from '@app/api-service/api-keys/guards/is-api-key-project-owner.guard'
+import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 
 @UseGuards(IsApiKeyProjectMatchGuard)
 @UseGuards(IsValidApiKeysGuard)
@@ -21,8 +22,8 @@ export class NotificationsController {
     return this.notificationsService.updateWebhook(updateWebhookDto)
   }
 
-  @Delete('webhook/:webhookId')
-  delete (@Param('webhookId') webhookId: string) {
+  @Delete('webhook')
+  delete (@Body('webhookId') webhookId: string) {
     return this.notificationsService.deleteWebhook(webhookId)
   }
 
@@ -34,5 +35,20 @@ export class NotificationsController {
   @Get('webhooks/:projectId')
   getAll (@Param('projectId') projectId: string) {
     return this.notificationsService.getAllWebhooks(projectId)
+  }
+
+  @Post('webhook/addresses')
+  createAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
+    return this.notificationsService.createAddresses(createWebhookAddressesDto)
+  }
+
+  @Get('webhook/addresses/:webhookId')
+  getAddresses (@Param('webhookId') webhookId: string) {
+    return this.notificationsService.getAddresses(webhookId)
+  }
+
+  @Delete('webhook/addresses')
+  deleteAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
+    return this.notificationsService.deleteAddresses(createWebhookAddressesDto)
   }
 }

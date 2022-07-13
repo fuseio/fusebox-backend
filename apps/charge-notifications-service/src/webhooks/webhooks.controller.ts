@@ -1,3 +1,4 @@
+import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
@@ -31,5 +32,20 @@ export class WebhooksController {
   @MessagePattern('get_all_webhooks')
   getAll (@Body() projectId: string) {
     return this.webhooksService.getAllByProjectId(projectId)
+  }
+
+  @MessagePattern('create_addresses')
+  createAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
+    return this.webhooksService.createAddresses(createWebhookAddressesDto)
+  }
+
+  @MessagePattern('get_addresses')
+  getAddresses (@Body() webhookId: string) {
+    return this.webhooksService.getAddresses(webhookId)
+  }
+
+  @MessagePattern('delete_addresses')
+  deleteAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
+    return this.webhooksService.deleteAddresses(createWebhookAddressesDto)
   }
 }

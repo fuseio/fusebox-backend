@@ -4,7 +4,7 @@ import { WebhookAddressSchema } from '@app/notifications-service/webhooks/schema
 import { webhookModelString, webhookAddressModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { databaseConnectionString } from '@app/common/constants/database.constants'
 
-export const webhookssProviders = [
+export const webhooksProviders = [
   {
     provide: webhookModelString,
     useFactory: (connection: Connection) =>

@@ -1,7 +1,7 @@
 import { DatabaseModule } from '@app/common'
 // import redis from '@app/notifications-service/config/redis-config'
 import { WebhooksController } from '@app/notifications-service/webhooks/webhooks.controller'
-import { webhookssProviders } from '@app/notifications-service/webhooks/webhooks.providers'
+import { webhooksProviders } from '@app/notifications-service/webhooks/webhooks.providers'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 // import { RedisModule } from '@liaoliaots/nestjs-redis'
 import { Module } from '@nestjs/common'
@@ -19,7 +19,7 @@ import { Module } from '@nestjs/common'
     //   inject: [ConfigService]
     // })
   ],
-  providers: [WebhooksService, ...webhookssProviders],
+  providers: [WebhooksService, ...webhooksProviders],
   controllers: [WebhooksController]
 })
 export class WebhooksModule {}

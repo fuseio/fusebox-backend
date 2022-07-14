@@ -2,7 +2,7 @@ import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/d
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { Body, Controller } from '@nestjs/common'
+import { Body, Controller, Get, Param } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 
 @Controller('webhooks')
@@ -47,5 +47,11 @@ export class WebhooksController {
   @MessagePattern('delete_addresses')
   deleteAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
     return this.webhooksService.deleteAddresses(createWebhookAddressesDto)
+  }
+
+  @Get('address-watchers/:address')
+  @MessagePattern('get_address_watchers')
+  getAddressWatchers (@Param('address') address: string) {
+    return this.webhooksService.getAddressWatchers(address)
   }
 }

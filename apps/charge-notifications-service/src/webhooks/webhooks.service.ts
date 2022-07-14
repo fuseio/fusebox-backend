@@ -40,7 +40,7 @@ export class WebhooksService {
     const result = await this.webhookModel.findByIdAndDelete(webhookId)
 
     if (!isEmpty(result)) {
-      await this.webhookAddressModel.deleteMany(webhookId)
+      await this.webhookAddressModel.deleteMany({webhookId})
     }
 
     return result
@@ -74,7 +74,7 @@ export class WebhooksService {
   }
 
   async getAddresses (webhookId: string) {
-    return this.webhookAddressModel.find({ webhookId }).populate('webhookId')
+    return this.webhookAddressModel.find({ webhookId })
   }
 
   async deleteAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {

@@ -37,7 +37,7 @@ export class NotificationsController {
     return this.notificationsService.getAllWebhooks(projectId)
   }
 
-  @Post('webhook/addresses')
+  @Post('webhook/add-addresses')
   createAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
     return this.notificationsService.createAddresses(createWebhookAddressesDto)
   }
@@ -47,7 +47,7 @@ export class NotificationsController {
     return this.notificationsService.getAddresses(webhookId)
   }
 
-  @Delete('webhook/addresses')
+  @Post('webhook/delete-addresses')
   deleteAddresses (@Body() createWebhookAddressesDto: CreateWebhookAddressesDto) {
     return this.notificationsService.deleteAddresses(createWebhookAddressesDto)
   }

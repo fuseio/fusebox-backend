@@ -1,0 +1,945 @@
+{
+	"info": {
+		"_postman_id": "e96ea014-583a-4afc-b2d0-534026cd8977",
+		"name": "Notifications API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20885446"
+	},
+	"item": [
+		{
+			"name": "Webhooks",
+			"item": [
+				{
+					"name": "Create Webhook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"value": "{{secretKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"projectId\": \"62ce87c8131bbffe0f83af65\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n\t\"eventType\": \"ALL\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"value": "{{secretKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"projectId\": \"62ce87c8131bbffe0f83af65\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n\t\"eventType\": \"ALL\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "250"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fa-nHZyv4M2Yp54DHZF8RMLfvd+J74\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:29:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"projectId\": \"62ce87c8131bbffe0f83af65\",\n    \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n    \"eventType\": \"ALL\",\n    \"_id\": \"62d3f2aa15a8393bd802c313\",\n    \"createdAt\": \"2022-07-17T11:29:46.459Z\",\n    \"updatedAt\": \"2022-07-17T11:29:46.459Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"value": "{{secretKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"projectId\": \"62ce87c8131bbffe0f83af65\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n\t\"eventType\": \"ALL\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "177"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b1-jhBpjK8G99u388YFVvvNIbfJ3+s\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:27:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 403,\n    \"errorMessage\": {\n        \"statusCode\": 403,\n        \"message\": \"Forbidden resource\",\n        \"error\": \"Forbidden\"\n    },\n    \"path\": \"/api/v0/notifications/webhook?apiKey=pk_fPI_B8UbTnpPmH5UgQl2E7VI\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Webhook",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook/:webhookId?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook",
+								":webhookId"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "webhookId",
+									"value": "62d3f2aa15a8393bd802c313"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook/:webhookId?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook",
+										":webhookId"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "webhookId",
+											"value": "62d3f2aa15a8393bd802c313"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "250"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fa-VGxSfz6wmDqGvHS/MfsUIcRO90Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:30:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"62d3f2aa15a8393bd802c313\",\n    \"projectId\": \"62ce87c8131bbffe0f83af65\",\n    \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n    \"eventType\": \"ALL\",\n    \"createdAt\": \"2022-07-17T11:29:46.459Z\",\n    \"updatedAt\": \"2022-07-17T11:29:46.459Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Webhooks for Project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhooks/:projectId?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhooks",
+								":projectId"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": "62ce87c8131bbffe0f83af65"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhooks/:projectId?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhooks",
+										":projectId"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "projectId",
+											"value": "62ce87c8131bbffe0f83af65"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1507"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5e3-lWYvVAmu6K/xBm3NSvNl4CpBkMc\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:30:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"62cfd9b84c800bc28528e65f\",\n        \"projectId\": \"62ce87c8131bbffe0f83af65\",\n        \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n        \"eventType\": \"ALL\",\n        \"createdAt\": \"2022-07-14T08:54:16.249Z\",\n        \"updatedAt\": \"2022-07-14T08:54:16.249Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"62cfd9b94c800bc28528e661\",\n        \"projectId\": \"62ce87c8131bbffe0f83af65\",\n        \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n        \"eventType\": \"ALL\",\n        \"createdAt\": \"2022-07-14T08:54:17.540Z\",\n        \"updatedAt\": \"2022-07-14T08:54:17.540Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"62cfd9ba4c800bc28528e663\",\n        \"projectId\": \"62ce87c8131bbffe0f83af65\",\n        \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n        \"eventType\": \"ALL\",\n        \"createdAt\": \"2022-07-14T08:54:18.590Z\",\n        \"updatedAt\": \"2022-07-14T08:54:18.590Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"62cfd9bb4c800bc28528e665\",\n        \"projectId\": \"62ce87c8131bbffe0f83af65\",\n        \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n        \"eventType\": \"ALL\",\n        \"createdAt\": \"2022-07-14T08:54:19.697Z\",\n        \"updatedAt\": \"2022-07-14T08:54:19.697Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"62cfd9bc4c800bc28528e667\",\n        \"projectId\": \"62ce87c8131bbffe0f83af65\",\n        \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n        \"eventType\": \"ALL\",\n        \"createdAt\": \"2022-07-14T08:54:20.687Z\",\n        \"updatedAt\": \"2022-07-14T08:54:20.687Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"62d3f2aa15a8393bd802c313\",\n        \"projectId\": \"62ce87c8131bbffe0f83af65\",\n        \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n        \"eventType\": \"ALL\",\n        \"createdAt\": \"2022-07-17T11:29:46.459Z\",\n        \"updatedAt\": \"2022-07-17T11:29:46.459Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Update Webhook",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3\",\n\t\"eventType\": \"ERC20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3\",\n\t\"eventType\": \"ERC20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "252"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fc-tHP1bnridhe6KGKlnlheOBKE59Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:31:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"62d3f2aa15a8393bd802c313\",\n    \"projectId\": \"62ce87c8131bbffe0f83af65\",\n    \"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3\",\n    \"eventType\": \"ERC20\",\n    \"createdAt\": \"2022-07-17T11:29:46.459Z\",\n    \"updatedAt\": \"2022-07-17T11:31:22.776Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Webhook",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhookId\": \"62cfd9bd4c800bc28528e669\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook/?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook",
+								""
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Webhook Addresses",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"addresses\": [\n\t\t\"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\",\n\t\t\"0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF\",\n\t\t\"0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30\",\n\t\t\"0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD\",\n\t\t\"0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook/add-addresses?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook",
+								"add-addresses"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"addresses\": [\n\t\t\"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\",\n\t\t\"0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF\",\n\t\t\"0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30\",\n\t\t\"0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD\",\n\t\t\"0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook/add-addresses?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook",
+										"add-addresses"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1506"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5e2-8hnfL4sMiml3d6harwh/l5rxVDU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:31:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\",\n        \"_id\": \"62d3f32415a8393bd802c31b\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.413Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.413Z\"\n    },\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\",\n        \"_id\": \"62d3f32415a8393bd802c31c\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.413Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.413Z\"\n    },\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\",\n        \"_id\": \"62d3f32415a8393bd802c31e\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF\",\n        \"_id\": \"62d3f32415a8393bd802c31f\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30\",\n        \"_id\": \"62d3f32415a8393bd802c320\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD\",\n        \"_id\": \"62d3f32415a8393bd802c321\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534\",\n        \"_id\": \"62d3f32415a8393bd802c322\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.415Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.415Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Delete Webhook Addresses",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"addresses\": [\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook/delete-addresses?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook",
+								"delete-addresses"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"addresses\": [\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook/delete-addresses?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook",
+										"delete-addresses"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-fgR5yLHQ1Hpp6zDESHaY9wJreYE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 14:37:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"acknowledged\": true,\n    \"deletedCount\": 1\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Webhook Addresses for Webhook Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"type": "text",
+								"value": "{{secretKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"webhookId\": \"62ce8a7128fe854028083445\",\n\t\"addresses\": [\"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\", \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/notifications/webhook/addresses/:webhookId?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"notifications",
+								"webhook",
+								"addresses",
+								":webhookId"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "webhookId",
+									"value": "62d3f2aa15a8393bd802c313"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"webhookId\": \"62ce8a7128fe854028083445\",\n\t\"addresses\": [\"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\", \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrlAPI}}/notifications/webhook/addresses/:webhookId?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrlAPI}}"
+									],
+									"path": [
+										"notifications",
+										"webhook",
+										"addresses",
+										":webhookId"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "webhookId",
+											"value": "62d3f2aa15a8393bd802c313"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1291"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"50b-1mCb8rNJmNvJqXJxhmslBmweUkE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 17 Jul 2022 11:32:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"62d3f32415a8393bd802c31e\",\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"_id\": \"62d3f32415a8393bd802c322\",\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.415Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.415Z\"\n    },\n    {\n        \"_id\": \"62d3f32415a8393bd802c31f\",\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"_id\": \"62d3f32415a8393bd802c321\",\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"_id\": \"62d3f32415a8393bd802c320\",\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.414Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.414Z\"\n    },\n    {\n        \"_id\": \"62d3f32415a8393bd802c31b\",\n        \"webhookId\": \"62d3f2aa15a8393bd802c313\",\n        \"address\": \"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\",\n        \"__v\": 0,\n        \"createdAt\": \"2022-07-17T11:31:48.413Z\",\n        \"updatedAt\": \"2022-07-17T11:31:48.413Z\"\n    }\n]"
+						}
+					]
+				}
+			]
+		}
+	]
+}

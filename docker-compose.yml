@@ -65,6 +65,10 @@ services:
     environment:
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_PORT
+      - RPC_URL
+      - NETWORK_NAME
+      - CHAIN_ID
+      - TIMEOUT_INTERVAL
       - MONGO_URI=${NOTIFICATIONS_MONGO_URI}
     volumes:
       - .:/usr/src/app

@@ -1,0 +1,1 @@
+export const NATIVE_FUSE_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'

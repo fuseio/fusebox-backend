@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common'
 // import { InjectRedis } from '@liaoliaots/nestjs-redis'
 // import Redis from 'ioredis'
-import { webhookModelString, webhookAddressModelString } from '@app/notifications-service/webhooks/webhooks.constants'
-import { Model } from 'mongoose'
-import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
-import { WebhookAddress, WebhookAddressModel } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
+import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
-import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
+import { WebhookAddress, WebhookAddressModel } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
+import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
+import { webhookAddressModelString, webhookModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { isEmpty } from 'lodash'
+import { Model } from 'mongoose'
 
 @Injectable()
 export class WebhooksService {

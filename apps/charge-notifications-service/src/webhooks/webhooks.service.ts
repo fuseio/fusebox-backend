@@ -40,7 +40,7 @@ export class WebhooksService {
     const result = await this.webhookModel.findByIdAndDelete(webhookId)
 
     if (!isEmpty(result)) {
-      await this.webhookAddressModel.deleteMany({webhookId})
+      await this.webhookAddressModel.deleteMany({ webhookId })
     }
 
     return result
@@ -90,9 +90,21 @@ export class WebhooksService {
     return this.webhookAddressModel.deleteMany(query)
   }
 
-  async getAddressWatchers (address: string) {
-    return this.webhookAddressModel.find({ address })
-      .populate('webhookId', 'webhookUrl eventType')
+  async getAddressWatchers (address: string): Promise<any> {
+    let addressWatchers = await this.webhookAddressModel.find({ address })
+      .populate('webhookId', 'webhookUrl eventType projectId')
+
+    addressWatchers = addressWatchers.map(watcher => {
+      const watcherJson = watcher.toJSON()
+
+      if (!isEmpty(watcherJson.webhookId)) {
+        return { ...watcherJson, ...watcherJson.webhookId }
+      }
+
+      return watcherJson
+    })
+
+    return addressWatchers
   }
 
   private buildDocs (createWebhookAddressesDto: CreateWebhookAddressesDto) {

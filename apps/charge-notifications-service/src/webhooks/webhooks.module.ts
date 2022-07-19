@@ -20,6 +20,7 @@ import { Module } from '@nestjs/common'
     // })
   ],
   providers: [WebhooksService, ...webhooksProviders],
-  controllers: [WebhooksController]
+  controllers: [WebhooksController],
+  exports: [WebhooksService]
 })
 export class WebhooksModule {}

@@ -9,6 +9,6 @@ export class CreateWebhookDto {
     webhookUrl: string
 
   @IsString()
-  @IsIn(eventTypes)
+  @IsIn(Object.values(eventTypes))
     eventType: string
 }

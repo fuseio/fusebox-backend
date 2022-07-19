@@ -1,6 +1,11 @@
 import * as mongoose from 'mongoose'
 
-export const eventTypes = ['ALL', 'FUSE', 'ERC20', 'ERC721']
+export enum eventTypes {
+  ALL = 'ALL',
+  FUSE = 'FUSE',
+  ERC20 = 'ERC-20',
+  ERC721 = 'ERC-721'
+}
 
 export const WebhookSchema = new mongoose.Schema(
   {

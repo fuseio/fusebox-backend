@@ -1,25 +1,22 @@
 import { performance } from 'perf_hooks'
 
-export function logPerformance(
+export function logPerformance (
   logPrefix?: string
 ): MethodDecorator {
-  return function decorator(
+  return function decorator (
     target: any,
     _propertyKey: string,
     descriptor: PropertyDescriptor
   ): void {
     const method = descriptor.value
 
-    descriptor.value = async function wrapper(...args: any[]) {
+    descriptor.value = async function wrapper (...args: any[]) {
       const start = performance.now()
       const result = await method.apply(this, args)
       const finish = performance.now()
-  
-      if (finish - start > 10000) {
-        console.log('!!!!');
-      }
+
       console.log(`${logPrefix} Execution time: ${finish - start} ms`)
       return result
-    } 
+    }
   }
 }

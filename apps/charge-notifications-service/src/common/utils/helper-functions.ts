@@ -23,6 +23,7 @@ export const sleep = (time: number) => {
 
 export const getTransferEventTokenType = (log: Log) => {
   const topics = log.topics.slice(1).length
+
   return topics === 3 ? TokenType.ERC721 : TokenType.ERC20
 }
 

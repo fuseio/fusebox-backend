@@ -68,6 +68,7 @@ services:
       - RPC_URL
       - NETWORK_NAME
       - CHAIN_ID
+      - MAX_BLOCKS
       - TIMEOUT_INTERVAL
       - MONGO_URI=${NOTIFICATIONS_MONGO_URI}
     volumes:

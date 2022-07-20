@@ -2,8 +2,6 @@ import { BroadcasterService } from '@app/notifications-service/broadcaster/broad
 import { ERC20_TRANSFER_EVENT_HASH } from '@app/notifications-service/common/constants/events'
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import erc20TransferToFilter from '@app/notifications-service/common/filters/erc20-transfer-to-filter'
-import IEventFilter from '@app/notifications-service/common/interfaces/event-filter.interface'
 import { getTokenTypeAbi, getTransferEventTokenType, parseLog, sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { eventsScannerStatusModelString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { EventsScannerStatus } from '@app/notifications-service/events-scanner/interfaces/events-scaner-status.interface'
@@ -15,7 +13,6 @@ import { BaseProvider, InjectEthersProvider, Log } from 'nestjs-ethers'
 @Injectable()
 export class EventsScannerService {
   private readonly logger = new Logger(EventsScannerService.name)
-  eventfilters: Array<any> = []
 
   constructor (
         @Inject(eventsScannerStatusModelString)
@@ -27,16 +24,14 @@ export class EventsScannerService {
   ) { }
 
   async onModuleInit (): Promise<void> {
-    this.eventfilters.push(erc20TransferToFilter)
     await this.start()
   }
 
   async start () {
     while (true) {
       try {
-        const { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
+        let { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
 
-        // TODO: If there are too many blocks, separate it in smaller chunks
         const status = await this.getStatus('events')
         const fromBlockNumber = status.blockNumber
           ? status.blockNumber + 1
@@ -46,6 +41,8 @@ export class EventsScannerService {
           const timeout: number = this.configService.get('rpcConfig').timeoutInterval
 
           await sleep(timeout)
+        } else if (toBlockNumber - fromBlockNumber > this.configService.get('maxBlocksToProcess')) {
+          toBlockNumber = fromBlockNumber + this.configService.get('maxBlocksToProcess')
         }
 
         await this.processBlocks(
@@ -79,7 +76,7 @@ export class EventsScannerService {
     await this.eventsScannerStatusModel.updateOne({ filter }, { blockNumber }, { upsert: true })
   }
 
-    @logPerformance('EventScanner::ProcessBlocks')
+  @logPerformance('EventScanner::ProcessBlocks')
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
@@ -89,7 +86,7 @@ export class EventsScannerService {
 
     for (const log of logs) {
       try {
-        await this.processEvent(log, erc20TransferToFilter)
+        await this.processEvent(log)
       } catch (error) {
         this.logger.error('Failed to process log:')
         this.logger.error({ log })
@@ -99,37 +96,30 @@ export class EventsScannerService {
   }
 
     @logPerformance('EventScanner::ProcessEvent')
-    async processEvent (log: Log, filter: IEventFilter) {
-      if (filter.name === erc20TransferToFilter.name) {
-        await this.processErc20TransferEvent(log)
-      }
+  async processEvent (log: Log) {
+    const tokenType = getTransferEventTokenType(log)
+    const abi = getTokenTypeAbi(tokenType)
+
+    const parsedLog = parseLog(log, abi)
+    const fromAddress = parsedLog.args[0]
+    const toAddress = parsedLog.args[1]
+
+    const data: Record<string, any> = {
+      to: toAddress,
+      from: fromAddress,
+      txHash: parsedLog.transactionHash,
+      tokenAddress: parsedLog.address,
+      blockNumber: log.blockNumber,
+      blockHash: log.blockHash,
+      tokenType: tokenType?.valueOf()
     }
 
-    @logPerformance('EventScanner::ProcessERC20Event')
-    async processErc20TransferEvent (log: Log) {
-      const tokenType = getTransferEventTokenType(log)
-      const abi = getTokenTypeAbi(tokenType)
-
-      const parsedLog = parseLog(log, abi)
-      const fromAddress = parsedLog.args[0]
-      const toAddress = parsedLog.args[1]
-
-      const data: Record<string, any> = {
-        to: toAddress,
-        from: fromAddress,
-        txHash: parsedLog.transactionHash,
-        tokenAddress: parsedLog.address,
-        blockNumber: log.blockNumber,
-        blockHash: log.blockHash,
-        tokenType: tokenType?.valueOf()
-      }
-
-      if (tokenType === TokenType.ERC20) {
-        data.value = parsedLog.args[2].toString()
-      } else {
-        data.tokenId = parseInt(parsedLog.args.tokenId?._hex)
-      }
-
-      await this.broadcasterService.broadCastEvent(data)
+    if (tokenType === TokenType.ERC20) {
+      data.value = parsedLog.args[2].toString()
+    } else {
+      data.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
+
+    await this.broadcasterService.broadCastEvent(data)
+  }
 }

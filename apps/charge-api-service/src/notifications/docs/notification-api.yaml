@@ -17,6 +17,16 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                projectId: 
+                  type: string
+                  example: 62ce87c8131bbffe0f83af65
+                webhookUrl: 
+                  type: string
+                  example: https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1
+                eventType: 
+                  type: string
+                  example: ALL
               example:
                 projectId: 62ce87c8131bbffe0f83af65
                 webhookUrl: https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1
@@ -70,6 +80,16 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                webhookId: 
+                  type: string
+                  example: 62d3f2aa15a8393bd802c313
+                webhookUrl: 
+                  type: string
+                  example: https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3
+                eventType: 
+                  type: string
+                  example: ERC20
               example:
                 webhookId: 62d3f2aa15a8393bd802c313
                 webhookUrl: https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3
@@ -240,17 +260,22 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                webhookId: 
+                  type: string
+                  example: 62d3f2aa15a8393bd802c313
+                addresses:
+                  type: array
+                  items:
+                    type: string
+                    example: 
+                    - '0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534'
               example:
                 webhookId: 62d3f2aa15a8393bd802c313
                 addresses:
-                  - '0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430'
-                  - '0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2'
                   - '0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2'
                   - '0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3'
                   - '0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF'
-                  - '0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30'
-                  - '0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD'
-                  - '0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534'
       parameters:
         - name: API-SECRET
           in: header
@@ -322,6 +347,14 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                webhookId: 
+                  type: string
+                  example: 62d3f2aa15a8393bd802c313
+                addresses:
+                  type: array
+                  example: 
+                  - '0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3'
               example:
                 webhookId: 62d3f2aa15a8393bd802c313
                 addresses:

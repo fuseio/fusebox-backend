@@ -101,12 +101,12 @@ export class EventsScannerService {
     @logPerformance('EventScanner::ProcessEvent')
     async processEvent (log: Log, filter: IEventFilter) {
       if (filter.name === erc20TransferToFilter.name) {
-        await this.processErc20TransferEvent(log, filter)
+        await this.processErc20TransferEvent(log)
       }
     }
 
     @logPerformance('EventScanner::ProcessERC20Event')
-    async processErc20TransferEvent (log: Log, filter: IEventFilter) {
+    async processErc20TransferEvent (log: Log) {
       const tokenType = getTransferEventTokenType(log)
       const abi = getTokenTypeAbi(tokenType)
 

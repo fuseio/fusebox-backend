@@ -32,13 +32,20 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                name: 
+                  type: string
+                  example: My Cool Token
+                symbol: 
+                  type: string
+                  example: MCT
+                initialSupply: 
+                  type: string
+                  example: '0'
               example:
                 name: My Cool Token
                 symbol: MCT
                 initialSupply: '0'
-                expiryTimestamp: 1939300629
-                spendabilityIds: a,b,c
-                networkType: fuse
       parameters:
         - name: API-SECRET
           in: header
@@ -128,6 +135,16 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '1000'
+                toAddress: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
               example:
                 tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
                 networkType: fuse
@@ -209,12 +226,20 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '10'
+                from: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
               example:
                 tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                networkType: fuse
                 amount: '10'
                 from: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-                correlationId: '1003'
       parameters:
         - name: API-SECRET
           in: header
@@ -298,9 +323,21 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '10'
+                from: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                to: 
+                  type: string
+                  example: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
               example:
                 tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                networkType: fuse
                 amount: '10'
                 from: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
                 to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
@@ -376,6 +413,10 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                phoneNumber: 
+                  type: string
+                  example: '+972777777778'
               example:
                 phoneNumber: '+972777777778'
       parameters:

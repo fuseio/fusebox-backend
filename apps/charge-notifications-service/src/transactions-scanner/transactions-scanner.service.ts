@@ -5,10 +5,12 @@ import { logPerformance } from '@app/notifications-service/common/decorators/log
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { TransactionsScannerStatus } from '@app/notifications-service/transactions-scanner/interfaces/transactions-scaner-status.interface'
 import { transactionsScannerStatusModelString } from '@app/notifications-service/transactions-scanner/transactions-scanner.constants'
+import Web3ProviderService from '@app/notifications-service/transactions-scanner/web3-provider.service'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Model } from 'mongoose'
-import { BaseProvider, InjectEthersProvider, TransactionResponse } from 'nestjs-ethers'
+import { BaseProvider, BigNumber, InjectEthersProvider, TransactionResponse } from 'nestjs-ethers'
+import { Transaction } from 'web3-core'
 
 @Injectable()
 export class TransactionsScannerService {
@@ -19,9 +21,14 @@ export class TransactionsScannerService {
         private transactionsScannerStatusModel: Model<TransactionsScannerStatus>,
         @InjectEthersProvider()
         private readonly rpcProvider: BaseProvider,
+        private readonly web3ProviderService: Web3ProviderService,
         private configService: ConfigService,
         private broadcasterService: BroadcasterService
   ) { }
+
+  get web3Provider () {
+    return this.web3ProviderService.getProvider()
+  }
 
   async onModuleInit (): Promise<void> {
     this.start()
@@ -83,6 +90,7 @@ export class TransactionsScannerService {
     this.logger.log(`TransactionsScanner: Processing blocks from ${fromBlock} to ${toBlock}`)
 
     for (let i = fromBlock; i <= toBlock; i++) {
+      this.logger.log(`Processing block ${i}`)
       await this.processBlock(i)
       await this.updateStatus('transactions', i)
     }
@@ -90,9 +98,11 @@ export class TransactionsScannerService {
 
   @logPerformance('TransactionsScanner::ProcessBlock')
   async processBlock (blockNumber: number) {
-    const block = await this.rpcProvider.getBlockWithTransactions(blockNumber)
+    // const block = await this.rpcProvider.getBlockWithTransactions(blockNumber)
+    const block = await this.web3Provider.eth.getBlock(blockNumber, true)
 
-    const filteredTransactions = block.transactions.filter((transaction) => transaction.value.gt(0))
+    const filteredTransactions = block.transactions.filter(
+      (transaction) => BigNumber.from(transaction.value).gt(0))
 
     for (const transaction of filteredTransactions) {
       try {
@@ -106,7 +116,7 @@ export class TransactionsScannerService {
   }
 
   @logPerformance('TransactionsScanner::ProcessEvent')
-  async processTransaction (transaction: TransactionResponse) {
+  async processTransaction (transaction: TransactionResponse | Transaction) {
     const data: Record<string, any> = {
       to: transaction.to,
       from: transaction.from,

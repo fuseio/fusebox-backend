@@ -1,5 +1,5 @@
-import * as ERC20_ABI from '@app/notifications-service/common/constants/abi/erc20.json'
-import * as ERC721_ABI from '@app/notifications-service/common/constants/abi/erc721.json'
+import ERC20_ABI from '@app/notifications-service/common/constants/abi/erc20.json'
+import ERC721_ABI from '@app/notifications-service/common/constants/abi/erc721.json'
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { Interface } from '@ethersproject/abi'
 import { Log } from '@ethersproject/providers'

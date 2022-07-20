@@ -1,0 +1,1 @@
+export const transactionsScannerStatusModelString = 'TRANSACTIONS_SCANNER_STATUS_MODEL'

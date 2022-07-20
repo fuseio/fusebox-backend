@@ -24,7 +24,7 @@ export class EventsScannerService {
   ) { }
 
   async onModuleInit (): Promise<void> {
-    await this.start()
+    this.start()
   }
 
   async start () {
@@ -82,7 +82,10 @@ export class EventsScannerService {
 
     this.logger.log(`EventFilter: Processing blocks from ${fromBlock} to ${toBlock}`)
 
-    const logs = await this.rpcProvider.getLogs({ fromBlock, toBlock, topics: [ERC20_TRANSFER_EVENT_HASH] })
+    const logs = await this.rpcProvider.getLogs({ 
+      fromBlock, 
+      toBlock, 
+      topics: [ERC20_TRANSFER_EVENT_HASH] })
 
     for (const log of logs) {
       try {

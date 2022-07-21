@@ -5,10 +5,25 @@ import { transactionsScannerProviders } from '@app/notifications-service/transac
 import { TransactionsScannerService } from '@app/notifications-service/transactions-scanner/transactions-scanner.service'
 import Web3ProviderService from '@app/notifications-service/transactions-scanner/web3-provider.service'
 import { Logger, Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { EthersModule } from 'nestjs-ethers'
 
 @Module({
   imports: [
+    EthersModule.forRootAsync({
+      imports: [ConfigModule.forFeature(rpcConfig)],
+      inject: [ConfigService],
+      token: 'full-archive-node',
+      useFactory: async (configService: ConfigService) => {
+        const config = configService.get('rpcConfig')
+        console.log('Rpc config ' + JSON.stringify(config))
+        return {
+          network: { name: config.rpc.networkName, chainId: config.rpc.chainId },
+          custom: config.fullArchiveRpc.url || 'https://explorer-node.fuse.io',
+          useDefaultProvider: false
+        }
+      }
+    }),
     DatabaseModule,
     ConfigModule.forFeature(rpcConfig),
     BroadcasterModule

@@ -65,7 +65,9 @@ services:
     environment:
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_PORT
+      - NOTIFICATIONS_TCP_PORT
       - RPC_URL
+      - FULL_ARCHIVE_RPC_URL
       - NETWORK_NAME
       - CHAIN_ID
       - MAX_BLOCKS

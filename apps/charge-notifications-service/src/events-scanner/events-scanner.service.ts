@@ -17,7 +17,7 @@ export class EventsScannerService {
   constructor (
         @Inject(eventsScannerStatusModelString)
         private eventsScannerStatusModel: Model<EventsScannerStatus>,
-        @InjectEthersProvider()
+        @InjectEthersProvider('regular-node')
         private readonly rpcProvider: BaseProvider,
         private configService: ConfigService,
         private broadcasterService: BroadcasterService

@@ -91,7 +91,8 @@ export class WebhooksService {
   }
 
   async getAddressWatchers (address: string): Promise<any> {
-    let addressWatchers = await this.webhookAddressModel.find({ address })
+    let addressWatchers = await this.webhookAddressModel
+      .find({ address: { $regex: new RegExp(address, 'i') } })
       .populate('webhookId', 'webhookUrl eventType projectId')
 
     addressWatchers = addressWatchers.map(watcher => {

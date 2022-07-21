@@ -8,8 +8,9 @@ import { transactionsScannerStatusModelString } from '@app/notifications-service
 import Web3ProviderService from '@app/notifications-service/transactions-scanner/web3-provider.service'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
-import { BaseProvider, BigNumber, InjectEthersProvider, TransactionResponse } from 'nestjs-ethers'
+import { BigNumber, InjectEthersProvider, JsonRpcProvider, TransactionResponse } from 'nestjs-ethers'
 import { Transaction } from 'web3-core'
 
 @Injectable()
@@ -19,8 +20,8 @@ export class TransactionsScannerService {
   constructor (
         @Inject(transactionsScannerStatusModelString)
         private transactionsScannerStatusModel: Model<TransactionsScannerStatus>,
-        @InjectEthersProvider()
-        private readonly rpcProvider: BaseProvider,
+        @InjectEthersProvider('full-archive-node')
+        private readonly rpcProvider: JsonRpcProvider,
         private readonly web3ProviderService: Web3ProviderService,
         private configService: ConfigService,
         private broadcasterService: BroadcasterService
@@ -92,13 +93,13 @@ export class TransactionsScannerService {
     for (let i = fromBlock; i <= toBlock; i++) {
       this.logger.log(`Processing block ${i}`)
       await this.processBlock(i)
+      await this.processBlockTraces(i)
       await this.updateStatus('transactions', i)
     }
   }
 
   @logPerformance('TransactionsScanner::ProcessBlock')
   async processBlock (blockNumber: number) {
-    // const block = await this.rpcProvider.getBlockWithTransactions(blockNumber)
     const block = await this.web3Provider.eth.getBlock(blockNumber, true)
 
     const filteredTransactions = block.transactions.filter(
@@ -115,6 +116,28 @@ export class TransactionsScannerService {
     }
   }
 
+  @logPerformance('TransactionsScanner::ProcessTraces')
+  async processBlockTraces (blockNumber: number) {
+    const blockHash = BigNumber.from(blockNumber).toHexString()
+    const blockTraces = await this.rpcProvider.send('trace_block', [blockHash])
+
+    if (!isEmpty(blockTraces)) {
+      const filteredBlockTraces = blockTraces.filter(
+        (blockTrace) => blockTrace.action.callType === 'call' &&
+        BigNumber.from(blockTrace.action.value).gt(0))
+
+      for (const trace of filteredBlockTraces) {
+        try {
+          await this.processTrace(trace)
+        } catch (error) {
+          this.logger.error('Failed to process transaction:')
+          this.logger.error({ trace })
+          this.logger.error(error)
+        }
+      }
+    }
+  }
+
   @logPerformance('TransactionsScanner::ProcessEvent')
   async processTransaction (transaction: TransactionResponse | Transaction) {
     const data: Record<string, any> = {
@@ -126,6 +149,23 @@ export class TransactionsScannerService {
       blockHash: transaction.blockHash,
       tokenType: TokenType.FUSE,
       tokenAddress: NATIVE_FUSE_ADDRESS
+    }
+
+    await this.broadcasterService.broadCastEvent(data)
+  }
+
+  @logPerformance('TransactionsScanner::ProcessTrace')
+  async processTrace (trace: any) {
+    const data: Record<string, any> = {
+      to: trace.action.to,
+      from: trace.action.from,
+      value: trace.action.value.toString(),
+      txHash: trace.transactionHash,
+      blockNumber: trace.blockNumber,
+      blockHash: trace.blockHash,
+      tokenType: TokenType.FUSE,
+      tokenAddress: NATIVE_FUSE_ADDRESS,
+      isInternalTransaction: true
     }
 
     await this.broadcasterService.broadCastEvent(data)

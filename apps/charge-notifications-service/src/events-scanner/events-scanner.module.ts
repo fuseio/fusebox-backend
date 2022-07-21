@@ -12,6 +12,7 @@ import { EthersModule } from 'nestjs-ethers'
     EthersModule.forRootAsync({
       imports: [ConfigModule.forFeature(rpcConfig)],
       inject: [ConfigService],
+      token: 'regular-node',
       useFactory: async (configService: ConfigService) => {
         const config = configService.get('rpcConfig')
         console.log('Rpc config ' + JSON.stringify(config))

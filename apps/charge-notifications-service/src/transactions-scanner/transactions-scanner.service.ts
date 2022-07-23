@@ -143,7 +143,7 @@ export class TransactionsScannerService {
     const data: Record<string, any> = {
       to: transaction.to,
       from: transaction.from,
-      value: transaction.value.toString(),
+      value: parseInt(transaction.value.toString()),
       txHash: transaction.hash,
       blockNumber: transaction.blockNumber,
       blockHash: transaction.blockHash,

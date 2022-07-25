@@ -18,7 +18,7 @@ export class IsApiKeyProjectMatchGuard implements CanActivate {
 
     let projectId = params?.projectId || body?.projectId
 
-    if (isEmpty(params?.projectId) && isEmpty(body?.projectId)) {
+    if (isEmpty(projectId)) {
       const webhookId = params?.webhookId || body?.webhookId
       const webhook = await this.notificationService.getWebhook(webhookId)
 

@@ -7,18 +7,7 @@ import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.se
 import { Module } from '@nestjs/common'
 
 @Module({
-  imports: [
-    DatabaseModule
-    // Removing Redis for now as we will use only Mongo initially
-    // RedisModule.forRootAsync({
-    //   useFactory: (configService: ConfigService) => {
-    //     console.log('Redis config ' + JSON.stringify(configService.get('redis')))
-    //     return { config: configService.get('redis') }
-    //   },
-    //   imports: [ConfigModule.forFeature(redis)],
-    //   inject: [ConfigService]
-    // })
-  ],
+  imports: [DatabaseModule],
   providers: [WebhooksService, ...webhooksProviders],
   controllers: [WebhooksController],
   exports: [WebhooksService]

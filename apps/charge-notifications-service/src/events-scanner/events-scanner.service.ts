@@ -99,7 +99,7 @@ export class EventsScannerService {
     }
   }
 
-    @logPerformance('EventScanner::ProcessEvent')
+  @logPerformance('EventScanner::ProcessEvent')
   async processEvent (log: Log) {
     const tokenType = getTransferEventTokenType(log)
     const abi = getTokenTypeAbi(tokenType)

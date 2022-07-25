@@ -9,12 +9,7 @@ export enum eventTypes {
 
 export const WebhookSchema = new mongoose.Schema(
   {
-    projectId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project',
-      required: true,
-      immutable: true
-    },
+    projectId: { type: String, required: true, immutable: true },
     webhookUrl: { type: String, required: true },
     eventType: { type: String, enum: eventTypes, default: 'ALL' }
   },

@@ -31,8 +31,7 @@ export class IsApiKeyProjectMatchGuard implements CanActivate {
 
     const projectApiKey = await this.apiKeysService.findOne({
       publicKey: query?.apiKey,
-      projectId,
-      isTest: false
+      projectId
     })
 
     if (!isEmpty(projectApiKey)) {

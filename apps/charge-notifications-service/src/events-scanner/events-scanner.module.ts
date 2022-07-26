@@ -18,7 +18,7 @@ import { EthersModule } from 'nestjs-ethers'
         console.log('Rpc config ' + JSON.stringify(config))
         return {
           network: { name: config.rpc.networkName, chainId: config.rpc.chainId },
-          custom: config.rpc.url || 'https://rpc.fuse.io',
+          custom: config.rpc.url,
           useDefaultProvider: false
         }
       }

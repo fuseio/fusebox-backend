@@ -19,7 +19,7 @@ import { EthersModule } from 'nestjs-ethers'
         console.log('Rpc config ' + JSON.stringify(config))
         return {
           network: { name: config.rpc.networkName, chainId: config.rpc.chainId },
-          custom: config.fullArchiveRpc.url || 'https://explorer-node.fuse.io',
+          custom: config.fullArchiveRpc.url,
           useDefaultProvider: false
         }
       }

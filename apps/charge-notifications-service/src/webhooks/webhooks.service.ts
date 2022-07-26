@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common'
-// import { InjectRedis } from '@liaoliaots/nestjs-redis'
-// import Redis from 'ioredis'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
@@ -17,12 +15,7 @@ export class WebhooksService {
     private webhookModel: Model<Webhook>,
     @Inject(webhookAddressModelString)
     private webhookAddressModel: Model<WebhookAddress, WebhookAddressModel>
-    // @InjectRedis() private readonly redis: Redis
   ) { }
-
-  // async ping (): Promise<string> {
-  //   return this.redis.ping()
-  // }
 
   async create (createWebhookDto: CreateWebhookDto): Promise<Webhook> {
     return this.webhookModel.create(createWebhookDto)

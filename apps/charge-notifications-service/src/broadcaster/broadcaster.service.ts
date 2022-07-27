@@ -15,6 +15,7 @@ export class BroadcasterService {
         private httpService: HttpService
   ) {}
 
+  // TODO: Implement a queue to handle broadcasts asynchronously
   async broadCastEvent (eventData: any) {
     const toAddress = eventData?.to
     const fromAddress = eventData?.from
@@ -86,6 +87,7 @@ export class BroadcasterService {
   }
 
   isRelevantEvent (tokenType: string, eventType: string): boolean {
+    // TODO: Choose better naming to make it clearer what each variable is
     if (eventType === eventTypes.ALL || tokenType === eventType) {
       return true
     }

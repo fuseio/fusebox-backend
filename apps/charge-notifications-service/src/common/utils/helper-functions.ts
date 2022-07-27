@@ -21,6 +21,7 @@ export const sleep = (time: number) => {
   return new Promise((resolve) => setTimeout(resolve, time))
 }
 
+// TODO: Find a better way to determine the token type of the event
 export const getTransferEventTokenType = (log: Log) => {
   const topics = log.topics.slice(1).length
 

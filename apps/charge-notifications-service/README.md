@@ -18,6 +18,4 @@ The Micro Service consists of several components:
 For a visual representation of the moving parts, see: https://miro.com/app/board/uXjVOnPsWts=/?share_link_id=270636867995
 
 
-
-
-
+<img width="1592" alt="image" src="https://user-images.githubusercontent.com/7058328/181231218-541e97d1-77c6-4b16-984d-af9fe884adf6.png">

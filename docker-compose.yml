@@ -38,10 +38,13 @@ services:
       - API_HOST
       - API_PORT
       - MONGO_URI=${API_MONGO_URI}
+      - NOTIFICATIONS_HOST
+      - NOTIFICATIONS_TCP_PORT
       - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
       - LEGACY_FUSE_TRADE_API_URL
     depends_on:
+      - charge-notifications-service
       - charge-relay-service
     volumes:
       - .:/usr/src/app
@@ -49,6 +52,33 @@ services:
     ports:
       - ${API_PORT}:${API_PORT}
       - ${API_TCP_PORT}:${API_TCP_PORT}
+    restart: always
+  charge-notifications-service:
+    container_name: charge-notifications-service
+    build:
+      context: .
+      dockerfile: ./apps/charge-notifications-service/Dockerfile
+      target: development
+    command: npm run start:dev charge-notifications-service
+    env_file:
+      - ./apps/charge-notifications-service/.env
+    environment:
+      - NOTIFICATIONS_HOST
+      - NOTIFICATIONS_PORT
+      - NOTIFICATIONS_TCP_PORT
+      - RPC_URL
+      - FULL_ARCHIVE_RPC_URL
+      - NETWORK_NAME
+      - CHAIN_ID
+      - MAX_BLOCKS
+      - TIMEOUT_INTERVAL
+      - MONGO_URI=${NOTIFICATIONS_MONGO_URI}
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${NOTIFICATIONS_PORT}:${NOTIFICATIONS_PORT}
+      - ${NOTIFICATIONS_TCP_PORT}:${NOTIFICATIONS_TCP_PORT}
     restart: always
   charge-relay-service:
     container_name: charge-relay-service

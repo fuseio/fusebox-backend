@@ -29,6 +29,25 @@ services:
     command: npm run start:dev charge-api-service
     networks:
       - chargenet
+  charge-notifications-service:
+    build:
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    ports:
+      - 9230:9230
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      - REDIS_HOST
+      - REDIS_PORT
+      - REDIS_PASSWORD
+      - REDIS_DB
+    command: npm run start:dev charge-notifications-service
+    networks:
+      - chargenet
   charge-relay-service:
     build:
       target: development
@@ -42,6 +61,20 @@ services:
     command: npm run start:dev charge-relay-service
     networks:
       - chargenet
+  redis:
+    container_name: redis
+    image: 'redis/redis-stack:latest'
+    environment:
+      - REDIS_PORT_NUMBER=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    networks:
+      - chargenet
+    restart: always
   mongo:
     container_name: mongo
     image: mongo

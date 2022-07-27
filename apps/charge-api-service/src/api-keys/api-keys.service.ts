@@ -7,7 +7,7 @@ import * as crypto from 'crypto'
 import base64url from 'base64url'
 import { RpcException } from '@nestjs/microservices'
 import { StudioLegacyJwtService } from '@app/api-service/studio-legacy-jwt/studio-legacy-jwt.service'
-import { isEmpty } from 'lodash'
+import { isEmpty, has } from 'lodash'
 
 @Injectable()
 export class ApiKeysService {
@@ -52,7 +52,10 @@ export class ApiKeysService {
     throw new RpcException('Not Found')
   }
 
-  async findOne (query: object) {
+  async findOne (query: Record<string, any>) {
+    if (!has(query, 'isTest')) {
+      query.isTest = false
+    }
     return this.apiKeyModel.findOne(query)
   }
 

@@ -1,6 +1,6 @@
 import { ApiKeysService } from '@app/api-service/api-keys/api-keys.service'
 import { HttpService } from '@nestjs/axios'
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpException } from '@nestjs/common'
+import { Injectable, NestInterceptor, ExecutionContext, HttpException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
@@ -15,7 +15,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
     private configService: ConfigService
   ) { }
 
-  async intercept (context: ExecutionContext, next: CallHandler): Promise<any> {
+  async intercept (context: ExecutionContext): Promise<any> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(context)
 
     const response = await lastValueFrom(this.httpService

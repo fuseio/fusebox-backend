@@ -11,7 +11,7 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build charge-accounts-service && nest build charge-api-service && nest build charge-relay-service",
+    "build": "nest build charge-accounts-service && nest build charge-api-service && nest build charge-notifications-service && nest build charge-relay-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@compodoc/compodoc": "^1.1.19",
+    "@liaoliaots/nestjs-redis": "^8.2.2",
     "@nestjs/axios": "0.0.8",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.1",
@@ -48,14 +49,18 @@
     "dotenv": "^16.0.0",
     "ethereumjs-wallet": "^1.0.2",
     "helmet": "^5.0.2",
+    "ioredis": "^5.2.0",
     "jwks-rsa": "^2.1.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.3.2",
+    "nestjs-ethers": "^1.0.3",
     "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
+    "perf_hooks": "^0.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "web3": "^1.7.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

@@ -33,7 +33,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"projectId\": \"62ce87c8131bbffe0f83af65\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n\t\"eventType\": \"ALL\"\n}",
+							"raw": "{\n\t\"projectId\": \"62caedf9e2719e72815d0703\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1\",\n\t\"eventType\": \"ALL\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,7 +55,8 @@
 									"value": "{{publicKey}}"
 								}
 							]
-						}
+						},
+						"description": "Create a webhook associated with a Charge project"
 					},
 					"response": [
 						{
@@ -239,7 +240,8 @@
 									"value": "62d3f2aa15a8393bd802c313"
 								}
 							]
-						}
+						},
+						"description": "Find a webhook by id"
 					},
 					"response": [
 						{
@@ -345,10 +347,11 @@
 							"variable": [
 								{
 									"key": "projectId",
-									"value": "62ce87c8131bbffe0f83af65"
+									"value": "62caedf9e2719e72815d0703"
 								}
 							]
-						}
+						},
+						"description": "Find and fetch all the webhooks associated with a project by projectId"
 					},
 					"response": [
 						{
@@ -437,7 +440,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"webhookUrl\": \"https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3\",\n\t\"eventType\": \"ERC20\"\n}",
+							"raw": "{\n\t\"webhookId\": \"62da85e69b1568215223a9dd\",\n\t\"webhookUrl\": \"https://webhook.site/03521015-b7f6-4a43-9ad9-eb5d2e6ca15b\",\n\t\"eventType\": \"ALL\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -459,7 +462,8 @@
 									"value": "{{publicKey}}"
 								}
 							]
-						}
+						},
+						"description": "Update webhook's `webhookUrl` or `eventType`"
 					},
 					"response": [
 						{
@@ -590,7 +594,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"webhookId\": \"62d3f2aa15a8393bd802c313\",\n\t\"addresses\": [\n\t\t\"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\",\n\t\t\"0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF\",\n\t\t\"0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30\",\n\t\t\"0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD\",\n\t\t\"0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534\"]\n}",
+							"raw": "{\n\t\"webhookId\": \"62da85e69b1568215223a9dd\",\n\t\"addresses\": [\n\t\t\"0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2\", \n\t\t\"0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3\",\n\t\t\"0x285029e7a50F9e2d9dAa4e1BFd2e5573fa3D3DCF\",\n\t\t\"0x7A3B4B45D9efFFa2629Ad07288Ee3FD0Ed161A30\",\n\t\t\"0x44fcF21eff7B4EEa363cc5235a4715a42B4C28FD\",\n\t\t\"0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534\",\n\t\t\"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n\t\t\"0xfa8497A207f652E60AEfd0dd69f9dAea75D983D4\",\n        \"0x046fDFd961Fc0ad73f7AD0c5828264A74dEEf511\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -613,7 +617,8 @@
 									"value": "{{publicKey}}"
 								}
 							]
-						}
+						},
+						"description": "Add new addresses to a webhook"
 					},
 					"response": [
 						{
@@ -728,7 +733,8 @@
 									"value": "{{publicKey}}"
 								}
 							]
-						}
+						},
+						"description": "Delete addresses from a webhook"
 					},
 					"response": [
 						{
@@ -853,7 +859,8 @@
 									"value": "62d3f2aa15a8393bd802c313"
 								}
 							]
-						}
+						},
+						"description": "Get all the addresses associated with a webhook"
 					},
 					"response": [
 						{

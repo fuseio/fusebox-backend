@@ -12,6 +12,7 @@ paths:
       tags:
         - Webhooks
       summary: Create Webhook
+      description: Create a webhook associated with a Charge project
       requestBody:
         content:
           application/json:
@@ -28,7 +29,7 @@ paths:
                   type: string
                   example: ALL
               example:
-                projectId: 62ce87c8131bbffe0f83af65
+                projectId: 62caedf9e2719e72815d0703
                 webhookUrl: https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e1
                 eventType: ALL
       parameters:
@@ -75,6 +76,7 @@ paths:
       tags:
         - Webhooks
       summary: Update Webhook
+      description: Update webhook's `webhookUrl` or `eventType`
       requestBody:
         content:
           application/json:
@@ -91,9 +93,9 @@ paths:
                   type: string
                   example: ERC20
               example:
-                webhookId: 62d3f2aa15a8393bd802c313
-                webhookUrl: https://webhook.site/d7a716ac-8119-4114-9586-f0667c2cb1e3
-                eventType: ERC20
+                webhookId: 62da85e69b1568215223a9dd
+                webhookUrl: https://webhook.site/03521015-b7f6-4a43-9ad9-eb5d2e6ca15b
+                eventType: ALL
       parameters:
         - name: API-SECRET
           in: header
@@ -125,6 +127,7 @@ paths:
       tags:
         - Webhooks
       summary: Get Webhook
+      description: Find a webhook by id
       parameters:
         - name: API-SECRET
           in: header
@@ -162,6 +165,7 @@ paths:
       tags:
         - Webhooks
       summary: Get Webhooks for Project
+      description: Find and fetch all the webhooks associated with a project by projectId
       parameters:
         - name: API-SECRET
           in: header
@@ -178,7 +182,7 @@ paths:
           schema:
             type: string
           required: true
-          example: 62ce87c8131bbffe0f83af65
+          example: 62caedf9e2719e72815d0703
       responses:
         '200':
           description: OK
@@ -255,6 +259,7 @@ paths:
       tags:
         - Webhooks
       summary: Add Webhook Addresses
+      description: Add new addresses to a webhook
       requestBody:
         content:
           application/json:
@@ -271,7 +276,7 @@ paths:
                     example: 
                     - '0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534'
               example:
-                webhookId: 62d3f2aa15a8393bd802c313
+                webhookId: 62da85e69b1568215223a9dd
                 addresses:
                   - '0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc2'
                   - '0x14E138F31b38847Fd7E3462fFfae6b6F91867Fc3'
@@ -342,6 +347,7 @@ paths:
       tags:
         - Webhooks
       summary: Delete Webhook Addresses
+      description: Delete addresses from a webhook
       requestBody:
         content:
           application/json:
@@ -385,6 +391,7 @@ paths:
       tags:
         - Webhooks
       summary: Get Webhook Addresses for Webhook Id
+      description: Get all the addresses associated with a webhook
       parameters:
         - name: API-SECRET
           in: header

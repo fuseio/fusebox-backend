@@ -12,6 +12,7 @@ import { BaseProvider, InjectEthersProvider, Log } from 'nestjs-ethers'
 
 @Injectable()
 export class EventsScannerService {
+  // TODO: Create a Base class for events scanner and transaction scanner services
   private readonly logger = new Logger(EventsScannerService.name)
 
   constructor (

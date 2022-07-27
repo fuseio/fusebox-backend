@@ -25,4 +25,6 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
+RUN apk --no-cache add curl
+
 CMD ["node", "dist/apps/charge-relay-service/main"]

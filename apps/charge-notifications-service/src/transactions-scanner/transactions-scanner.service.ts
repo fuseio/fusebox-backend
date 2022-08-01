@@ -45,12 +45,14 @@ export class TransactionsScannerService {
           ? status.blockNumber + 1
           : toBlockNumber
 
+        const maxBlocksToProcess = this.configService.get('rpcConfig').rpc.maxBlocksToProcess
+
         if (fromBlockNumber >= toBlockNumber) {
           const timeout: number = this.configService.get('rpcConfig').timeoutInterval
 
           await sleep(timeout)
-        } else if (toBlockNumber - fromBlockNumber > this.configService.get('maxBlocksToProcess')) {
-          toBlockNumber = fromBlockNumber + this.configService.get('maxBlocksToProcess')
+        } else if (toBlockNumber - fromBlockNumber > maxBlocksToProcess) {
+          toBlockNumber = fromBlockNumber + maxBlocksToProcess
         }
 
         await this.processBlocks(

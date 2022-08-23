@@ -667,3 +667,31 @@ paths:
                       __v: 0
                       accountAddress: '0xaeBDf18Dc2f383704d60FB16e359A375A1212cE8'
                       lastFinishedAt: '2022-06-21T07:58:40.873Z'
+  /jobs/external:
+    get:
+      tags:
+        - Jobs API
+      summary: Get Job by External Id
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: externalId
+          in: query
+          schema:
+            type: string
+          example: '{{externalId}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

@@ -308,7 +308,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"tokenAddress\": \"0xaf03155DF641f77917803C634E9e4d808ea42ae4\",\n  \"networkType\": \"fuse\",\n  \"amount\": \"1000\",\n  \"toAddress\": \"0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C\"\n}",
+									"raw": "{\n  \"tokenAddress\": \"0x6F353A3A737bF3f6442BEc6246411E513285882E\",\n  \"amount\": \"1000\",\n  \"toAddress\": \"0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -566,7 +566,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"tokenAddress\": \"0xaf03155DF641f77917803C634E9e4d808ea42ae4\",\n    \"networkType\": \"fuse\",\n    \"amount\": \"10\",\n    \"from\": \"0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C\",\n    \"correlationId\": \"1003\"\n}",
+									"raw": "{\n  \"tokenAddress\": \"0x6F353A3A737bF3f6442BEc6246411E513285882E\",\n  \"amount\": \"500\",\n  \"from\": \"0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1352,7 +1352,7 @@
 							"variable": [
 								{
 									"key": "jobId",
-									"value": "62b197348c26160014943a14",
+									"value": "62f2ce42398a1f0013150fcc",
 									"description": "(Required) The Id of the created job"
 								}
 							]
@@ -1601,6 +1601,45 @@
 							"body": "{\n    \"data\": {\n        \"status\": \"succeeded\",\n        \"_id\": \"62b179ee8c26160014940e7f\",\n        \"name\": \"createWallet\",\n        \"data\": {\n            \"owner\": \"0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2\",\n            \"phoneNumber\": \"+972777777777\",\n            \"_id\": \"62b179ee8c26160014940e7d\",\n            \"salt\": \"0xed097dfc637a8e5b3ab141691c2477fbb456deff41d51537a41d8b2be067c966\",\n            \"txHash\": \"0x9dfe4e7ee54d75b3eaa058b0735f0ff10dcf40989f878c20be1a9f395f3e6eee\",\n            \"transactionBody\": {\n                \"status\": \"confirmed\",\n                \"blockNumber\": 17670507\n            },\n            \"txFee\": {\n                \"$numberDecimal\": \"554842000000000\"\n            },\n            \"walletAddress\": \"0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C\"\n        },\n        \"createdAt\": \"2022-06-21T07:57:34.503Z\",\n        \"updatedAt\": \"2022-06-21T07:58:40.875Z\",\n        \"__v\": 0,\n        \"accountAddress\": \"0xaeBDf18Dc2f383704d60FB16e359A375A1212cE8\",\n        \"lastFinishedAt\": \"2022-06-21T07:58:40.873Z\"\n    }\n}"
 						}
 					]
+				},
+				{
+					"name": "Get Job by External Id",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"value": "{{secretKey}}",
+								"description": "(Required) You Secret API key",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/jobs/external?externalId={{externalId}}&apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"jobs",
+								"external"
+							],
+							"query": [
+								{
+									"key": "externalId",
+									"value": "{{externalId}}"
+								},
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						},
+						"description": "Check the status of a job you created by jobId"
+					},
+					"response": []
 				}
 			],
 			"description": "You can use the Jobs API to check the status of asyncronuous Admin API tasks that you have created."

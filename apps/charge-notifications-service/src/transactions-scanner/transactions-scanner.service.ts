@@ -5,7 +5,7 @@ import { logPerformance } from '@app/notifications-service/common/decorators/log
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { TransactionsScannerStatus } from '@app/notifications-service/transactions-scanner/interfaces/transactions-scaner-status.interface'
 import { transactionsScannerStatusModelString } from '@app/notifications-service/transactions-scanner/transactions-scanner.constants'
-import Web3ProviderService from '@app/notifications-service/transactions-scanner/web3-provider.service'
+import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'

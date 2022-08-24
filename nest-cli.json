@@ -53,6 +53,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/charge-notifications-service/tsconfig.app.json"
       }
+    },
+    "charge-defi-service": {
+      "type": "application",
+      "root": "apps/charge-defi-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-defi-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-defi-service/tsconfig.app.json"
+      }
     }
   }
 }

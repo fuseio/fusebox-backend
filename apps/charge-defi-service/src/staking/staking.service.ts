@@ -22,43 +22,58 @@ export class StakingService {
   }
 
   async getBlockRewardAmount () {
-    const consensusContract = new this.web3Provider.eth.Contract(BlockRewardABI as any, this.configService.get('blockRewardAddress'))
-    const rewardPerBlock = await consensusContract.methods.getBlockRewardAmount().call()
+    const blockRewardContract = new this.web3Provider.eth.Contract(BlockRewardABI as any, this.configService.get('blockRewardAddress'))
+    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call()
+
     return rewardPerBlock
+  }
+
+  async validatorFee (validator: string) {
+    const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
+    const fee = await consensusContract.methods.validatorFee(validator).call()
+
+    return fee
   }
 
   async getEstimatedAPR () {
     const rewardPerBlock = await this.getBlockRewardAmount()
-    const totalStakeAmount = await this.getTotalStakeAmount()
-    const numberOfValidators = (await this.getValidators()).length
+    const { totalStakeAmount } = await this.getTotalStakeAmount()
+    const numberOfValidators = (await this.getValidators()).validators.length
     const amount = parseUnits('1')
-    // 15% fixed fee; 1 - 0.15 =0.85;
-    const fee = '850000000000000000'
+    const fee = formatEther((await this.validatorFee(this.configService.get('defaultValidator'))))
 
     const rewardPerYourBlocks = this.calcRewardPerYourBlocks(
       rewardPerBlock,
       amount,
       numberOfValidators,
       totalStakeAmount,
-      fee
+      parseUnits((1 - parseFloat(fee)).toString())
     )
 
     const average = rewardPerYourBlocks.div(numberOfValidators)
     const rewardPerYear = average.mul(BLOCKS_IN_YEAR)
     const estimatedAPR = rewardPerYear.div(amount)
-    return formatEther(estimatedAPR)
+    return {
+      estimatedAPR: formatEther(estimatedAPR)
+    }
   }
 
   async getValidators () {
     const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
     const validators = await consensusContract.methods.getValidators().call()
-    return validators
+
+    return {
+      validators
+    }
   }
 
   async getTotalStakeAmount () {
     const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
     const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call()
-    return totalStakeAmount
+
+    return {
+      totalStakeAmount
+    }
   }
 
   async withdraw (withdrawDto: WithdrawDto) {
@@ -70,7 +85,9 @@ export class StakingService {
       data
     }
 
-    return transactionObject
+    return {
+      transactionObject
+    }
   }
 
   async delegate (delegateDto: DelegateDto) {
@@ -82,14 +99,18 @@ export class StakingService {
       data
     }
 
-    return transactionObject
+    return {
+      transactionObject
+    }
   }
 
   async getDelegatedAmount (delegatedAmountDto: DelegatedAmountDto) {
     const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
-    const delegatedAmount = await consensusContract.methods.delegatedAmount(delegatedAmountDto.delegatorAddress, delegatedAmountDto.validatorAddress).encodeABI()
+    const delegatedAmount = await consensusContract.methods.delegatedAmount(delegatedAmountDto.delegatorAddress, delegatedAmountDto.validatorAddress).call()
 
-    return delegatedAmount
+    return {
+      delegatedAmount
+    }
   }
 
   calcRewardPerYourBlocks (
@@ -103,7 +124,7 @@ export class StakingService {
       .mul(stakeAmount)
       .mul(BigNumber.from(numberOfValidators))
       .div(BigNumber.from(totalStakeAmount))
-      .mul(BigNumber.from(fee))
+      .mul(fee)
 
     return result
   }

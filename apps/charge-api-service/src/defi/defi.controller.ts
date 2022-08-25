@@ -25,7 +25,7 @@ export class DeFiController {
     return this.defiService.delegate(delegateDto)
   }
 
-  @Post('delegated_Amount')
+  @Post('delegated_amount')
   delegatedAmount (@Body() delegatedAmountDto: DelegatedAmountDto) {
     return this.defiService.getDelegatedAmount(delegatedAmountDto)
   }

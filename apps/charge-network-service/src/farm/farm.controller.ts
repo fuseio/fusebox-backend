@@ -5,8 +5,8 @@ import { FarmService } from './farm.service'
 @Controller('farm')
 export class FarmController {
   constructor (private readonly farmService: FarmService) { }
-  @MessagePattern('stake')
-  stake () { }
+  @MessagePattern('deposit')
+  deposit () { }
 
   @MessagePattern('withdraw')
   withdraw () { }

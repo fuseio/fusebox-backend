@@ -4,10 +4,10 @@ import { LegacyApiModule } from '@app/api-service/legacy-api/legacy-api.module'
 import { Module } from '@nestjs/common'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
-import { DeFiModule } from './defi/defi.module'
+import { NetworkModule } from './network/network.module'
 
 @Module({
-  imports: [ApiKeyModule, LegacyApiModule, NotificationsModule, DeFiModule],
+  imports: [ApiKeyModule, LegacyApiModule, NotificationsModule, NetworkModule],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]
 })

@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  charge-defi-service:
+  charge-network-service:
     build:
       target: development
     volumes:
@@ -9,7 +9,7 @@ services:
       - ./node_modules:/usr/src/app/node_modules
     ports:
       - 9225:9225
-    command: npm run start:dev charge-defi-service
+    command: npm run start:dev charge-network-service
     networks:
       - chargenet
   charge-accounts-service:

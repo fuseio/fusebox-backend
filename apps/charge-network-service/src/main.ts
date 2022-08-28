@@ -1,20 +1,20 @@
 import { Transport } from '@nestjs/microservices'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
-import { ChargeDeFiServiceModule } from 'apps/charge-defi-service/src/charge-defi-service.module'
+import { ChargeNetworkServiceModule } from '@app/network-service/charge-network-service.module'
 import { Logger, ValidationPipe } from '@nestjs/common'
-import { defiServiceContext } from '@app/common/constants/microservices.constants'
+import { networkServiceContext } from '@app/common/constants/microservices.constants'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 
 async function bootstrap () {
-  const app = await NestFactory.create(ChargeDeFiServiceModule)
+  const app = await NestFactory.create(ChargeNetworkServiceModule)
   const microServiceOptions = {
     transpot: Transport.TCP,
     options: {
-      host: process.env.DEFI_HOST,
-      port: process.env.DEFI_TCP_PORT
+      host: process.env.NETWORK_HOST,
+      port: process.env.NETWORK_TCP_PORT
     }
   }
-  app.setGlobalPrefix('defi')
+  app.setGlobalPrefix('network')
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,13 +23,13 @@ async function bootstrap () {
   )
 
   const httpAdapterHost = app.get(HttpAdapterHost)
-  const logger = new Logger(defiServiceContext)
+  const logger = new Logger(networkServiceContext)
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
 
   app.connectMicroservice(microServiceOptions, { inheritAppConfig: true })
 
   await app.startAllMicroservices()
 
-  await app.listen(process.env.DEFI_PORT)
+  await app.listen(process.env.NETWORK_PORT)
 }
 bootstrap()

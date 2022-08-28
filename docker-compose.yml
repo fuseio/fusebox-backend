@@ -40,14 +40,14 @@ services:
       - MONGO_URI=${API_MONGO_URI}
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_TCP_PORT
-      - DEFI_HOST
-      - DEFI_TCP_PORT
+      - NETWORK_HOST
+      - NETWORK_TCP_PORT
       - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
       - LEGACY_FUSE_TRADE_API_URL
     depends_on:
       - charge-notifications-service
-      - charge-defi-service
+      - charge-network-service
       - charge-relay-service
     volumes:
       - .:/usr/src/app
@@ -83,23 +83,23 @@ services:
       - ${NOTIFICATIONS_PORT}:${NOTIFICATIONS_PORT}
       - ${NOTIFICATIONS_TCP_PORT}:${NOTIFICATIONS_TCP_PORT}
     restart: always
-  charge-defi-service:
-    container_name: charge-defi-service
+  charge-network-service:
+    container_name: charge-network-service
     build:
       context: .
-      dockerfile: ./apps/charge-defi-service/Dockerfile
+      dockerfile: ./apps/charge-network-service/Dockerfile
       target: development
-    command: npm run start:dev charge-defi-service
+    command: npm run start:dev charge-network-service
     environment:
-      - DEFI_HOST
-      - DEFI_PORT
-      - DEFI_TCP_PORT
+      - NETWORK_HOST
+      - NETWORK_PORT
+      - NETWORK_TCP_PORT
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - ${DEFI_PORT}:${DEFI_PORT}
-      - ${DEFI_TCP_PORT}:${DEFI_TCP_PORT}
+      - ${NETWORK_PORT}:${NETWORK_PORT}
+      - ${NETWORK_TCP_PORT}:${NETWORK_TCP_PORT}
     restart: always
   charge-relay-service:
     container_name: charge-relay-service

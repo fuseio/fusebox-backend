@@ -29,4 +29,4 @@ COPY --from=development /usr/src/app/dist ./dist
 
 RUN apk --no-cache add curl
 
-CMD ["node", "dist/apps/charge-defi-service/main"]
+CMD ["node", "dist/apps/charge-network-service/main"]

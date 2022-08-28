@@ -38,8 +38,8 @@
       "@app/relay-service/*": [
         "apps/charge-relay-service/src/*"
       ],
-      "@app/defi-service/*": [
-        "apps/charge-defi-service/src/*"
+      "@app/network-service/*": [
+        "apps/charge-network-service/src/*"
       ]
     }
   }

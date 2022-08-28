@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { ConfigService } from '@nestjs/config'
 import ConsensusABI from '../common/constants/abi/Consensus.json'
+import MasterChefABI from '../common/constants/abi/MasterChef.json'
 import BlockRewardABI from '../common/constants/abi/BlockReward.json'
-import { DelegateDto } from '@app/defi-service/staking/dto/delegate.dto'
-import { DelegatedAmountDto } from '@app/defi-service/staking/dto/delegated_amount.dto'
-import { WithdrawDto } from '@app/defi-service/staking/dto/withdraw.dto'
-import { BigNumber, formatEther, parseUnits } from 'nestjs-ethers'
+import { formatEther, parseUnits } from 'nestjs-ethers'
+import { WithdrawDto } from './dto/withdraw.dto'
+import { DepositDto } from './dto/deposit.dto'
 
 const BLOCKS_IN_YEAR = 6307200
 
 @Injectable()
-export class StakingService {
+export class FarmService {
   constructor (
     private readonly web3ProviderService: Web3ProviderService,
     private configService: ConfigService
@@ -77,8 +77,8 @@ export class StakingService {
   }
 
   async withdraw (withdrawDto: WithdrawDto) {
-    const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
-    const data = await consensusContract.methods.withdraw(withdrawDto.validatorAddress, withdrawDto.amount).encodeABI()
+    const masterChefContract = new this.web3Provider.eth.Contract(MasterChefABI as any, this.configService.get('masterChefVoltV3Address'))
+    const data = await masterChefContract.methods.withdraw(withdrawDto.pid, withdrawDto.amount).encodeABI()
     const transactionObject = {
       to: this.configService.get('consensusAddress'),
       value: withdrawDto.amount,
@@ -90,12 +90,12 @@ export class StakingService {
     }
   }
 
-  async delegate (delegateDto: DelegateDto) {
-    const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
-    const data = await consensusContract.methods.delegate(delegateDto.validatorAddress).encodeABI()
+  async deposit (depositDto: DepositDto) {
+    const masterChefContract = new this.web3Provider.eth.Contract(MasterChefABI as any, this.configService.get('masterChefVoltV3Address'))
+    const data = await masterChefContract.methods.deposit(depositDto.pid, depositDto.amount).encodeABI()
     const transactionObject = {
       to: this.configService.get('consensusAddress'),
-      value: delegateDto.amount,
+      value: depositDto.amount,
       data
     }
 
@@ -104,28 +104,26 @@ export class StakingService {
     }
   }
 
-  async getDelegatedAmount (delegatedAmountDto: DelegatedAmountDto) {
-    const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
-    const delegatedAmount = await consensusContract.methods.delegatedAmount(delegatedAmountDto.delegatorAddress, delegatedAmountDto.validatorAddress).call()
+  async withdrawReward (depositDto: DepositDto) {
+    const masterChefContract = new this.web3Provider.eth.Contract(MasterChefABI as any, this.configService.get('masterChefVoltV3Address'))
+    const data = await masterChefContract.methods.deposit(depositDto.pid, 0).encodeABI()
+    const transactionObject = {
+      to: this.configService.get('consensusAddress'),
+      value: depositDto.amount,
+      data
+    }
 
     return {
-      delegatedAmount
+      transactionObject
     }
   }
 
-  calcRewardPerYourBlocks (
-    rewardPerBlock,
-    stakeAmount,
-    numberOfValidators,
-    totalStakeAmount,
-    fee
-  ) {
-    const result = BigNumber.from(rewardPerBlock)
-      .mul(stakeAmount)
-      .mul(BigNumber.from(numberOfValidators))
-      .div(BigNumber.from(totalStakeAmount))
-      .mul(fee)
+  // async getDelegatedAmount (delegatedAmountDto: DelegatedAmountDto) {
+  //   const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.configService.get('consensusAddress'))
+  //   const delegatedAmount = await consensusContract.methods.delegatedAmount(delegatedAmountDto.delegatorAddress, delegatedAmountDto.validatorAddress).call()
 
-    return result
-  }
+  //   return {
+  //     delegatedAmount
+  //   }
+  // }
 }

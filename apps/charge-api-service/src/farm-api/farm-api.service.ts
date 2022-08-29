@@ -18,7 +18,6 @@ export class FarmAPIService {
   }
 
   async deposit (depositDto: DepositDto): Promise<any> {
-    console.log('depositDto', { ...depositDto })
     return this.callMSFunction(this.farmClient, 'deposit', depositDto)
   }
 

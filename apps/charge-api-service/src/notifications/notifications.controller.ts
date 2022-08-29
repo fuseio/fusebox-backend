@@ -22,8 +22,8 @@ export class NotificationsController {
     return this.notificationsService.updateWebhook(updateWebhookDto)
   }
 
-  @Delete('webhook')
-  delete (@Body('webhookId') webhookId: string) {
+  @Delete('webhook/:webhookId')
+  delete (@Param('webhookId') webhookId: string) {
     return this.notificationsService.deleteWebhook(webhookId)
   }
 

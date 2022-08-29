@@ -160,6 +160,42 @@ paths:
                 createdAt: '2022-07-17T11:29:46.459Z'
                 updatedAt: '2022-07-17T11:29:46.459Z'
                 __v: 0
+    delete:
+      tags:
+        - Webhooks
+      summary: Delete Webhook
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          example: '{{secretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+        - name: webhookId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 630bce35495c43af6627cbfa
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                _id: 630bce35495c43af6627cbfa
+                projectId: 62ce87c8131bbffe0f83af65
+                webhookUrl: https://webhook.site/3a27d99c-ccd2-496d-a50b-8ffd073c7e44
+                eventType: ALL
+                createdAt: '2022-08-28T20:21:09.710Z'
+                updatedAt: '2022-08-28T20:21:09.710Z'
+                __v: 0
   /notifications/webhooks/{projectId}:
     get:
       tags:
@@ -233,27 +269,6 @@ paths:
                   createdAt: '2022-07-17T11:29:46.459Z'
                   updatedAt: '2022-07-17T11:29:46.459Z'
                   __v: 0
-  /notifications/webhook/:
-    delete:
-      tags:
-        - Webhooks
-      summary: Delete Webhook
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          example: '{{secretKey}}'
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          example: '{{publicKey}}'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
   /notifications/webhook/add-addresses:
     post:
       tags:
@@ -273,8 +288,6 @@ paths:
                   type: array
                   items:
                     type: string
-                    example: 
-                    - '0x245C4eDa9E358A8cE83CBEDFB2b516dc80A07534'
               example:
                 webhookId: 62da85e69b1568215223a9dd
                 addresses:

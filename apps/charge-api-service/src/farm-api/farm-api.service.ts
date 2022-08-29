@@ -26,7 +26,7 @@ export class FarmAPIService {
   }
 
   async getStakerInfo (stakerInfoDto: StakerInfoDto): Promise<any> {
-    return this.callMSFunction(this.farmClient, 'user_info', stakerInfoDto)
+    return this.callMSFunction(this.farmClient, 'get_staker_info', stakerInfoDto)
   }
 
   private async callMSFunction (client: ClientProxy, pattern: string, data: any) {

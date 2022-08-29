@@ -2,7 +2,7 @@ import { IsNumber, IsEthereumAddress } from 'class-validator'
 
 export class StakerInfoDto {
   @IsEthereumAddress()
-    account: string
+    accountAddress: string
 
   @IsNumber()
     pid: number

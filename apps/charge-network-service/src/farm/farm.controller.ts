@@ -1,10 +1,10 @@
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
-import { DepositDto } from './dto/deposit.dto'
-import { StakerInfoDto } from './dto/staker_info.dto'
-import { WithdrawDto } from './dto/withdraw.dto'
-import { WithdrawRewardDto } from './dto/withdraw_reward.dto'
-import { FarmService } from './farm.service'
+import { DepositDto } from '@app/network-service/farm/dto/deposit.dto'
+import { StakerInfoDto } from '@app/network-service/farm/dto/staker_info.dto'
+import { WithdrawDto } from '@app/network-service/farm/dto/withdraw.dto'
+import { WithdrawRewardDto } from '@app/network-service/farm/dto/withdraw_reward.dto'
+import { FarmService } from '@app/network-service/farm/farm.service'
 
 @Controller('farm')
 export class FarmController {
@@ -25,7 +25,7 @@ export class FarmController {
     return this.farmService.withdrawReward(withdrawRewardDto)
   }
 
-  @MessagePattern('user_info')
+  @MessagePattern('get_staker_info')
   getStakerInfo (stakerInfoDto: StakerInfoDto) {
     return this.farmService.getStakerInfo(stakerInfoDto)
   }

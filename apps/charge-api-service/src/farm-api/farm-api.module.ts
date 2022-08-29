@@ -3,7 +3,7 @@ import { networkServiceContext } from '@app/common/constants/microservices.const
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { FarmApiController } from '@app/api-service/farm-api/farm-api.controller'
-import { FarmAPIService } from '../farm-api/farm-api.service'
+import { FarmAPIService } from '@app/api-service/farm-api/farm-api.service'
 
 @Module({
   imports: [

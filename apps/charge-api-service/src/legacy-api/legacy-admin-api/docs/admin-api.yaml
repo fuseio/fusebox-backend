@@ -416,9 +416,9 @@ paths:
               properties:
                 phoneNumber: 
                   type: string
-                  example: '+972777777778'
+                  example: '+15554443322'
               example:
-                phoneNumber: '+972777777778'
+                phoneNumber: '+15554443322'
       parameters:
         - name: API-SECRET
           in: header
@@ -484,6 +484,295 @@ paths:
               schema:
                 type: string
               example: ''
+  /admin/wallets/{phoneNumber}:
+    get:
+      tags:
+        - Admin API > Wallets
+      summary: Get Latest Wallet by Phone Number
+      description: Creates a custodial wallet owned by project's backend account
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+        - name: phoneNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Phone Number
+          example: '+15554443322'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Successful response with latest wallet for phone number
+                  value:
+                    data:
+                      myReferrals: []
+                      guardians: []
+                      _id: 630ddffec5c0490013b527cb
+                      isContractDeployed: false
+                      firebaseTokens: []
+                      backup: false
+                      salt: >-
+                        0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb
+                      networks:
+                        - fuse
+                      pendingNetworks: []
+                      balancesOnForeign: {}
+                      upgradesInstalled: []
+                      version: 1.7.0
+                      paddedVersion: 0001.0007.0000
+                      phoneNumber: '+15554443322'
+                      accountAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                      walletOwnerOriginalAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                      walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                      walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                      walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                      walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                      walletModulesOriginal:
+                        GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                        LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                        RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                        ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                        TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                        TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                        CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                        WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                        DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                      walletModules:
+                        GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                        LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                        RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                        ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                        TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                        TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                        CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                        WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                        DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                      appName: chargeApp_62ce87c8131bbffe0f83af65
+                      createdAt: '2022-08-30T10:01:34.903Z'
+                      updatedAt: '2022-08-30T10:01:41.223Z'
+                      __v: 0
+                      walletAddress: '0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8'
+                example-1:
+                  summary: No wallets found
+                  value:
+                    data: null
+  /admin/wallets/all/{phoneNumber}:
+    get:
+      tags:
+        - Admin API > Wallets
+      summary: Get All Wallets by Phone Number
+      description: Creates a custodial wallet owned by project's backend account
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+        - name: phoneNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Phone Number
+          example: '+15554443322'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - myReferrals: []
+                    guardians: []
+                    _id: 630ddffec5c0490013b527cb
+                    isContractDeployed: false
+                    firebaseTokens: []
+                    backup: false
+                    salt: >-
+                      0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb
+                    networks:
+                      - fuse
+                    pendingNetworks: []
+                    balancesOnForeign: {}
+                    upgradesInstalled: []
+                    version: 1.7.0
+                    paddedVersion: 0001.0007.0000
+                    phoneNumber: '+15554443322'
+                    accountAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                    walletOwnerOriginalAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                    walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletModulesOriginal:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    walletModules:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    appName: chargeApp_62ce87c8131bbffe0f83af65
+                    createdAt: '2022-08-30T10:01:34.903Z'
+                    updatedAt: '2022-08-30T10:01:41.223Z'
+                    __v: 0
+                    walletAddress: '0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8'
+                  - myReferrals: []
+                    guardians: []
+                    _id: 62cc053d140b8600131a7890
+                    isContractDeployed: false
+                    firebaseTokens: []
+                    backup: false
+                    salt: >-
+                      0x3b226d1f54680801e178ba8295dfd15992ecc1a2068fb04fba8d905761dac955
+                    networks:
+                      - fuse
+                    pendingNetworks: []
+                    balancesOnForeign: {}
+                    upgradesInstalled: []
+                    version: 1.7.0
+                    paddedVersion: 0001.0007.0000
+                    phoneNumber: '+15554443322'
+                    accountAddress: '0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF'
+                    walletOwnerOriginalAddress: '0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF'
+                    walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletModulesOriginal:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    walletModules:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    appName: chargeApp_62cc04e57b4f4d8db92cde5f
+                    createdAt: '2022-07-11T11:10:53.204Z'
+                    updatedAt: '2022-07-11T11:10:55.542Z'
+                    __v: 0
+                    walletAddress: '0xc3323f754BA8B2899f4Dce24fAeDdC1bC3B478bB'
+  /admin/wallets/exists/{walletAddress}:
+    get:
+      tags:
+        - Admin API > Wallets
+      summary: Check if Wallet Exists
+      description: Creates a custodial wallet owned by project's backend account
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+        - name: walletAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf9'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Wallet exists
+                  value:
+                    data: true
+                example-1:
+                  summary: Wallet does not exist
+                  value:
+                    data: false
   /jobs/{jobId}:
     get:
       tags:
@@ -509,7 +798,7 @@ paths:
             type: string
           required: true
           description: (Required) The Id of the created job
-          example: 62b197348c26160014943a14
+          example: 62f2ce42398a1f0013150fcc
       responses:
         '200':
           description: OK

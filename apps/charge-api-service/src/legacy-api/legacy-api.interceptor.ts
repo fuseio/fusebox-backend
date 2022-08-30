@@ -80,10 +80,22 @@ export class LegacyApiInterceptor implements NestInterceptor {
     }
 
     // Build the final request configuration
-    const requestConfig: AxiosRequestConfig = {
-      url: `${config?.baseUrl}/${params[0]}`,
-      method: ctxHandlerName,
-      headers
+    let requestConfig: AxiosRequestConfig
+
+    // Handle the special case of fetching wallets for Admin API through legacy Wallets API
+    if (ctxHandlerName === 'getWallets') {
+      const baseUrl = this.configService.get<Record<string, any>>('LegacyWalletApiController')?.baseUrl
+      requestConfig = {
+        url: `${baseUrl}/wallets/${params[0]}`,
+        method: 'get',
+        headers
+      }
+    } else {
+      requestConfig = {
+        url: `${config?.baseUrl}/${params[0]}`,
+        method: ctxHandlerName,
+        headers
+      }
     }
 
     if (!isEmpty(body)) {

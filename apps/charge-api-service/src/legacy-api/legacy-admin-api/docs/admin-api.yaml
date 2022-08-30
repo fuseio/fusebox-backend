@@ -146,10 +146,9 @@ paths:
                   type: string
                   example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
               example:
-                tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                networkType: fuse
+                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
                 amount: '1000'
-                toAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                toAddress: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
       parameters:
         - name: API-SECRET
           in: header
@@ -237,9 +236,9 @@ paths:
                   type: string
                   example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
               example:
-                tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                amount: '10'
-                from: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                amount: '500'
+                from: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
       parameters:
         - name: API-SECRET
           in: header
@@ -489,7 +488,7 @@ paths:
       tags:
         - Admin API > Wallets
       summary: Get Latest Wallet by Phone Number
-      description: Creates a custodial wallet owned by project's backend account
+      description: Get the last wallet created for the `phoneNumber` if exists
       parameters:
         - name: API-SECRET
           in: header
@@ -588,7 +587,7 @@ paths:
       tags:
         - Admin API > Wallets
       summary: Get All Wallets by Phone Number
-      description: Creates a custodial wallet owned by project's backend account
+      description: Get all the wallets created for the `phoneNumber` is exist
       parameters:
         - name: API-SECRET
           in: header
@@ -727,7 +726,7 @@ paths:
       tags:
         - Admin API > Wallets
       summary: Check if Wallet Exists
-      description: Creates a custodial wallet owned by project's backend account
+      description: Check if the given `walletAddress` exists
       parameters:
         - name: API-SECRET
           in: header

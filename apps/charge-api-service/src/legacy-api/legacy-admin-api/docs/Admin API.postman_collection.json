@@ -16,11 +16,10 @@
 							"name": "Create an ERC20 Token",
 							"protocolProfileBehavior": {
 								"disabledSystemHeaders": {
-									"content-length": true,
-									"host": true,
 									"accept": true,
 									"accept-encoding": true,
-									"connection": true
+									"connection": true,
+									"user-agent": true
 								}
 							},
 							"request": {
@@ -1353,7 +1352,7 @@
 										}
 									]
 								},
-								"description": "Creates a custodial wallet owned by project's backend account"
+								"description": "Get the last wallet created for the `phoneNumber` if exists"
 							},
 							"response": [
 								{
@@ -1565,7 +1564,7 @@
 										}
 									]
 								},
-								"description": "Creates a custodial wallet owned by project's backend account"
+								"description": "Get all the wallets created for the `phoneNumber` is exist"
 							},
 							"response": [
 								{
@@ -1696,7 +1695,7 @@
 										}
 									]
 								},
-								"description": "Creates a custodial wallet owned by project's backend account"
+								"description": "Check if the given `walletAddress` exists"
 							},
 							"response": [
 								{

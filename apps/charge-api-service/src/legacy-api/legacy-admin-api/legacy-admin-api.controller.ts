@@ -4,11 +4,14 @@ import { LegacyApiInterceptor } from '@app/api-service/legacy-api/legacy-api.int
 
 @UseGuards(IsValidApiKeysGuard)
 @UseInterceptors(LegacyApiInterceptor)
-@Controller({ path: 'v0/admin/*' })
+@Controller({ path: 'v0/admin' })
 export class LegacyAdminApiController {
-  @Get()
+  @Get('/wallets/*')
+  getWallets() {}
+  
+  @Get('/*')
   get () { }
 
-  @Post()
+  @Post('/*')
   post () { }
 }

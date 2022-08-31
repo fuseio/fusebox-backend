@@ -8,6 +8,9 @@ import { LegacyApiInterceptor } from '@app/api-service/legacy-api/legacy-api.int
 export class LegacyAdminApiController {
   @Get('/wallets/*')
   getWallets() {}
+
+  @Get('/tokens/*')
+  getTokens() {}
   
   @Get('/*')
   get () { }

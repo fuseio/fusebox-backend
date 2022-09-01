@@ -90,6 +90,14 @@ export class LegacyApiInterceptor implements NestInterceptor {
         method: 'get',
         headers
       }
+    // Handle the special case of fetching tokens for Admin API through legacy v1 Tokens API
+    } else if (ctxHandlerName === 'getTokens') {
+      const baseUrl = this.configService.get<Record<string, any>>('LegacyV1ApiUrl')
+      requestConfig = {
+        url: `${baseUrl}/tokens/${params[0]}`,
+        method: 'get',
+        headers
+      }
     } else {
       requestConfig = {
         url: `${config?.baseUrl}/${params[0]}`,

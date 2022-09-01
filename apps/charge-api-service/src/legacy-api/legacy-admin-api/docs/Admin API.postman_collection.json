@@ -1056,6 +1056,228 @@
 									"body": ""
 								}
 							]
+						},
+						{
+							"name": "Get Tokens by Owner",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"value": "{{secretKey}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/admin/tokens/owner/:ownerAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"tokens",
+										"owner",
+										":ownerAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "ownerAddress",
+											"value": "0xFDf589954F97b376F0794990d47948371f6824B1"
+										}
+									]
+								},
+								"description": "Get a list of tokens that belong to an `ownerAddress`"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "API-SECRET",
+												"value": "{{secretKey}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/admin/tokens/owner/:ownerAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"tokens",
+												"owner",
+												":ownerAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											],
+											"variable": [
+												{
+													"key": "ownerAddress",
+													"value": "0xFDf589954F97b376F0794990d47948371f6824B1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "460"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1cc-rKcvGoYiNGFhwMthszn6wjLICJw\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 31 Aug 2022 10:35:13 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"object\": \"list\",\n    \"data\": [\n        {\n            \"decimals\": 18,\n            \"spendabilityIds\": [\n                \"a\",\n                \"b\",\n                \"c\"\n            ],\n            \"_id\": \"62f2cddd78f2e5001415f396\",\n            \"address\": \"0x6F353A3A737bF3f6442BEc6246411E513285882E\",\n            \"name\": \"My Cool Token\",\n            \"symbol\": \"MCT\",\n            \"tokenURI\": \"\",\n            \"totalSupply\": \"0\",\n            \"owner\": \"0xFDf589954F97b376F0794990d47948371f6824B1\",\n            \"blockNumber\": 18521317,\n            \"tokenType\": \"expirable\",\n            \"networkType\": \"home\",\n            \"expiryTimestamp\": 1939300629,\n            \"createdAt\": \"2022-08-09T21:13:01.405Z\",\n            \"updatedAt\": \"2022-08-09T21:13:01.405Z\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Tokens by Address",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "API-SECRET",
+										"type": "text",
+										"value": "{{secretKey}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/admin/tokens/:tokenAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"tokens",
+										":tokenAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "tokenAddress",
+											"value": "0x6F353A3A737bF3f6442BEc6246411E513285882E"
+										}
+									]
+								},
+								"description": "Get a token by `tokenAddress`"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "API-SECRET",
+												"type": "text",
+												"value": "{{secretKey}}"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/admin/tokens/:tokenAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"tokens",
+												":tokenAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											],
+											"variable": [
+												{
+													"key": "tokenAddress",
+													"value": "0x6F353A3A737bF3f6442BEc6246411E513285882E"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "442"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1ba-2s/FS2x4fxXwfX+OgtbwpavDu10\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 31 Aug 2022 10:35:26 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"decimals\": 18,\n        \"spendabilityIds\": [\n            \"a\",\n            \"b\",\n            \"c\"\n        ],\n        \"_id\": \"62f2cddd78f2e5001415f396\",\n        \"address\": \"0x6F353A3A737bF3f6442BEc6246411E513285882E\",\n        \"name\": \"My Cool Token\",\n        \"symbol\": \"MCT\",\n        \"tokenURI\": \"\",\n        \"totalSupply\": \"0\",\n        \"owner\": \"0xFDf589954F97b376F0794990d47948371f6824B1\",\n        \"blockNumber\": 18521317,\n        \"tokenType\": \"expirable\",\n        \"networkType\": \"home\",\n        \"expiryTimestamp\": 1939300629,\n        \"createdAt\": \"2022-08-09T21:13:01.405Z\",\n        \"updatedAt\": \"2022-08-09T21:13:01.405Z\"\n    }\n}"
+								}
+							]
 						}
 					],
 					"description": "With Admin Tokens API, you can create a new ERC20 token, mint or burn it, and transfer it between your users' wallets"

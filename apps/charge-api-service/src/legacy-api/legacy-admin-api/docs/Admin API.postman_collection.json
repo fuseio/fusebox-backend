@@ -8,6 +8,826 @@
 	},
 	"item": [
 		{
+			"name": "Wallets",
+			"item": [
+				{
+					"name": "Create a Custodial Wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "(Required) You Secret API key",
+								"key": "API-SECRET",
+								"value": "{{secretKey}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phoneNumber\": \"+15554443322\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/wallets/create?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"wallets",
+								"create"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}",
+									"description": "(Required) You Public API key"
+								}
+							]
+						},
+						"description": "Creates a custodial wallet owned by project's backend account"
+					},
+					"response": [
+						{
+							"name": "Job Successfully Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "•••••••"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"phoneNumber\": \"+972777777777\"\n}"
+								},
+								"url": {
+									"raw": "https://charge-api.fuse.io/api/v0/admin/wallets/create?apiKey=pk_fPI_B8UbTnpPmH5UgQl2E7VI",
+									"protocol": "https",
+									"host": [
+										"charge-api",
+										"fuse",
+										"io"
+									],
+									"path": [
+										"api",
+										"v0",
+										"admin",
+										"wallets",
+										"create"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "pk_fPI_B8UbTnpPmH5UgQl2E7VI",
+											"description": "(Required) You Public API key"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"job\": {\n        \"status\": \"pending\",\n        \"_id\": \"62b179ee8c26160014940e7f\",\n        \"name\": \"createWallet\",\n        \"data\": {\n            \"owner\": \"0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2\",\n            \"phoneNumber\": \"+972777777777\",\n            \"_id\": \"62b179ee8c26160014940e7d\",\n            \"salt\": \"0xed097dfc637a8e5b3ab141691c2477fbb456deff41d51537a41d8b2be067c966\"\n        },\n        \"createdAt\": \"2022-06-21T07:57:34.503Z\",\n        \"updatedAt\": \"2022-06-21T07:57:34.503Z\",\n        \"__v\": 0\n    }\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "sk_d6gdywebcq6gq78h8q74q8347"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"phoneNumber\": \"+972554443322\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/create?apiKey=pk_47568247fdjf44br344rjnr4r",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										"create"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "pk_47568247fdjf44br344rjnr4r"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "sk_d6gdywebcq6gq78h8q74q8347"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"phoneNumber\": \"mollit dolo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/create?apiKey=pk_47568247fdjf44br344rjnr4r",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										"create"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "pk_47568247fdjf44br344rjnr4r"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden resource",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "sk_d6gdywebcq6gq78h8q74q8347"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"phoneNumber\": \"mollit dolo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/create?apiKey=pk_47568247fdjf44br344rjnr4r",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										"create"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "pk_47568247fdjf44br344rjnr4r"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get Latest Wallet by Phone Number",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "(Required) You Secret API key",
+								"key": "API-SECRET",
+								"value": "{{secretKey}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/wallets/:phoneNumber?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"wallets",
+								":phoneNumber"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}",
+									"description": "(Required) You Public API key"
+								}
+							],
+							"variable": [
+								{
+									"key": "phoneNumber",
+									"value": "+15554443322",
+									"description": "(Required) Phone Number"
+								}
+							]
+						},
+						"description": "Get the last wallet created for the `phoneNumber` if exists"
+					},
+					"response": [
+						{
+							"name": "Successful response with latest wallet for phone number",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "•••••••"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://charge-api.fuse.io/api/v0/admin/wallets/:phoneNumber?apiKey=pk_fPI_B8UbTnpPmH5UgQl2E7VI",
+									"protocol": "https",
+									"host": [
+										"charge-api",
+										"fuse",
+										"io"
+									],
+									"path": [
+										"api",
+										"v0",
+										"admin",
+										"wallets",
+										":phoneNumber"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "pk_fPI_B8UbTnpPmH5UgQl2E7VI",
+											"description": "(Required) You Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "phoneNumber",
+											"value": "+15554443322",
+											"description": "(Required) Phone Number"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2214"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8a6-bbY4OYevL5rooLNXCPe0dx1TbFw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Aug 2022 10:07:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"myReferrals\": [],\n        \"guardians\": [],\n        \"_id\": \"630ddffec5c0490013b527cb\",\n        \"isContractDeployed\": false,\n        \"firebaseTokens\": [],\n        \"backup\": false,\n        \"salt\": \"0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb\",\n        \"networks\": [\n            \"fuse\"\n        ],\n        \"pendingNetworks\": [],\n        \"balancesOnForeign\": {},\n        \"upgradesInstalled\": [],\n        \"version\": \"1.7.0\",\n        \"paddedVersion\": \"0001.0007.0000\",\n        \"phoneNumber\": \"+15554443322\",\n        \"accountAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n        \"walletOwnerOriginalAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n        \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletModulesOriginal\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"walletModules\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"appName\": \"chargeApp_62ce87c8131bbffe0f83af65\",\n        \"createdAt\": \"2022-08-30T10:01:34.903Z\",\n        \"updatedAt\": \"2022-08-30T10:01:41.223Z\",\n        \"__v\": 0,\n        \"walletAddress\": \"0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8\"\n    }\n}"
+						},
+						{
+							"name": "No wallets found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "{{secretKey}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/:phoneNumber?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										":phoneNumber"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) You Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "phoneNumber",
+											"value": "+15554443323",
+											"description": "(Required) Phone Number"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "13"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d-XXcxLjB/sjfS0AB6+CxvXcLGrm4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Aug 2022 10:08:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Wallets by Phone Number",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "(Required) You Secret API key",
+								"key": "API-SECRET",
+								"value": "{{secretKey}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/wallets/all/:phoneNumber?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"wallets",
+								"all",
+								":phoneNumber"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}",
+									"description": "(Required) You Public API key"
+								}
+							],
+							"variable": [
+								{
+									"key": "phoneNumber",
+									"value": "+15554443322",
+									"description": "(Required) Phone Number"
+								}
+							]
+						},
+						"description": "Get all the wallets created for the `phoneNumber` is exist"
+					},
+					"response": [
+						{
+							"name": "Successful response with array of wallets",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "{{secretKey}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/all/:phoneNumber?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										"all",
+										":phoneNumber"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) You Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "phoneNumber",
+											"value": "+15554443322",
+											"description": "(Required) Phone Number"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "4422"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1146-xugXVrip7IY4DI2AGgC7+p7LS7E\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Aug 2022 10:05:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"myReferrals\": [],\n            \"guardians\": [],\n            \"_id\": \"630ddffec5c0490013b527cb\",\n            \"isContractDeployed\": false,\n            \"firebaseTokens\": [],\n            \"backup\": false,\n            \"salt\": \"0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb\",\n            \"networks\": [\n                \"fuse\"\n            ],\n            \"pendingNetworks\": [],\n            \"balancesOnForeign\": {},\n            \"upgradesInstalled\": [],\n            \"version\": \"1.7.0\",\n            \"paddedVersion\": \"0001.0007.0000\",\n            \"phoneNumber\": \"+15554443322\",\n            \"accountAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n            \"walletOwnerOriginalAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n            \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletModulesOriginal\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"walletModules\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"appName\": \"chargeApp_62ce87c8131bbffe0f83af65\",\n            \"createdAt\": \"2022-08-30T10:01:34.903Z\",\n            \"updatedAt\": \"2022-08-30T10:01:41.223Z\",\n            \"__v\": 0,\n            \"walletAddress\": \"0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8\"\n        },\n        {\n            \"myReferrals\": [],\n            \"guardians\": [],\n            \"_id\": \"62cc053d140b8600131a7890\",\n            \"isContractDeployed\": false,\n            \"firebaseTokens\": [],\n            \"backup\": false,\n            \"salt\": \"0x3b226d1f54680801e178ba8295dfd15992ecc1a2068fb04fba8d905761dac955\",\n            \"networks\": [\n                \"fuse\"\n            ],\n            \"pendingNetworks\": [],\n            \"balancesOnForeign\": {},\n            \"upgradesInstalled\": [],\n            \"version\": \"1.7.0\",\n            \"paddedVersion\": \"0001.0007.0000\",\n            \"phoneNumber\": \"+15554443322\",\n            \"accountAddress\": \"0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF\",\n            \"walletOwnerOriginalAddress\": \"0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF\",\n            \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletModulesOriginal\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"walletModules\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"appName\": \"chargeApp_62cc04e57b4f4d8db92cde5f\",\n            \"createdAt\": \"2022-07-11T11:10:53.204Z\",\n            \"updatedAt\": \"2022-07-11T11:10:55.542Z\",\n            \"__v\": 0,\n            \"walletAddress\": \"0xc3323f754BA8B2899f4Dce24fAeDdC1bC3B478bB\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Check if Wallet Exists",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "(Required) You Secret API key",
+								"key": "API-SECRET",
+								"value": "{{secretKey}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/wallets/exists/:walletAddress?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"wallets",
+								"exists",
+								":walletAddress"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}",
+									"description": "(Required) You Public API key"
+								}
+							],
+							"variable": [
+								{
+									"key": "walletAddress",
+									"value": "0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf9"
+								}
+							]
+						},
+						"description": "Check if the given `walletAddress` exists"
+					},
+					"response": [
+						{
+							"name": "Wallet exists",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "{{secretKey}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/exists/:walletAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										"exists",
+										":walletAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) You Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "walletAddress",
+											"value": "0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "13"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d-AZMLZIkhLL6zV6brmxWwd5pv3rs\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Aug 2022 10:10:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": true\n}"
+						},
+						{
+							"name": "Wallet does not exist",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "(Required) You Secret API key",
+										"key": "API-SECRET",
+										"value": "{{secretKey}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/admin/wallets/exists/:walletAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"wallets",
+										"exists",
+										":walletAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) You Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "walletAddress",
+											"value": "0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf9"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "14"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e-66Kg1i/Prnika7fkvfgOCHV/pA8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Aug 2022 10:11:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": false\n}"
+						}
+					]
+				}
+			],
+			"description": "With Admin Wallet API, you can create new wallets for your users."
+		},
+		{
 			"name": "Tokens",
 			"item": [
 				{
@@ -852,7 +1672,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tokenAddress\": \"0xaf03155DF641f77917803C634E9e4d808ea42ae4\",\n    \"networkType\": \"fuse\",\n    \"amount\": \"10\",\n    \"from\": \"0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C\",\n    \"to\": \"0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F\"\n}",
+							"raw": "{\n    \"tokenAddress\": \"0xaf03155DF641f77917803C634E9e4d808ea42ae4\",\n    \"amount\": \"10\",\n    \"from\": \"0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C\",\n    \"to\": \"0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1279,826 +2099,6 @@
 				}
 			],
 			"description": "With Admin Tokens API, you can create a new ERC20 token, mint or burn it, and transfer it between your users' wallets"
-		},
-		{
-			"name": "Wallets",
-			"item": [
-				{
-					"name": "Create a Custodial Wallet",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"description": "(Required) You Secret API key",
-								"key": "API-SECRET",
-								"value": "{{secretKey}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"phoneNumber\": \"+15554443322\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/admin/wallets/create?apiKey={{publicKey}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"wallets",
-								"create"
-							],
-							"query": [
-								{
-									"key": "apiKey",
-									"value": "{{publicKey}}",
-									"description": "(Required) You Public API key"
-								}
-							]
-						},
-						"description": "Creates a custodial wallet owned by project's backend account"
-					},
-					"response": [
-						{
-							"name": "Job Successfully Created",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "•••••••"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"phoneNumber\": \"+972777777777\"\n}"
-								},
-								"url": {
-									"raw": "https://charge-api.fuse.io/api/v0/admin/wallets/create?apiKey=pk_fPI_B8UbTnpPmH5UgQl2E7VI",
-									"protocol": "https",
-									"host": [
-										"charge-api",
-										"fuse",
-										"io"
-									],
-									"path": [
-										"api",
-										"v0",
-										"admin",
-										"wallets",
-										"create"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "pk_fPI_B8UbTnpPmH5UgQl2E7VI",
-											"description": "(Required) You Public API key"
-										}
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [],
-							"cookie": [],
-							"body": "{\n    \"job\": {\n        \"status\": \"pending\",\n        \"_id\": \"62b179ee8c26160014940e7f\",\n        \"name\": \"createWallet\",\n        \"data\": {\n            \"owner\": \"0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2\",\n            \"phoneNumber\": \"+972777777777\",\n            \"_id\": \"62b179ee8c26160014940e7d\",\n            \"salt\": \"0xed097dfc637a8e5b3ab141691c2477fbb456deff41d51537a41d8b2be067c966\"\n        },\n        \"createdAt\": \"2022-06-21T07:57:34.503Z\",\n        \"updatedAt\": \"2022-06-21T07:57:34.503Z\",\n        \"__v\": 0\n    }\n}"
-						},
-						{
-							"name": "Bad Request",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "sk_d6gdywebcq6gq78h8q74q8347"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"phoneNumber\": \"+972554443322\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/create?apiKey=pk_47568247fdjf44br344rjnr4r",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										"create"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "pk_47568247fdjf44br344rjnr4r"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Unauthorized",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "sk_d6gdywebcq6gq78h8q74q8347"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"phoneNumber\": \"mollit dolo\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/create?apiKey=pk_47568247fdjf44br344rjnr4r",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										"create"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "pk_47568247fdjf44br344rjnr4r"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Forbidden resource",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "sk_d6gdywebcq6gq78h8q74q8347"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"phoneNumber\": \"mollit dolo\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/create?apiKey=pk_47568247fdjf44br344rjnr4r",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										"create"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "pk_47568247fdjf44br344rjnr4r"
-										}
-									]
-								}
-							},
-							"status": "Forbidden",
-							"code": 403,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
-					"name": "Get Latest Wallet by Phone Number",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"description": "(Required) You Secret API key",
-								"key": "API-SECRET",
-								"value": "{{secretKey}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/admin/wallets/:phoneNumber?apiKey={{publicKey}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"wallets",
-								":phoneNumber"
-							],
-							"query": [
-								{
-									"key": "apiKey",
-									"value": "{{publicKey}}",
-									"description": "(Required) You Public API key"
-								}
-							],
-							"variable": [
-								{
-									"key": "phoneNumber",
-									"value": "+15554443322",
-									"description": "(Required) Phone Number"
-								}
-							]
-						},
-						"description": "Get the last wallet created for the `phoneNumber` if exists"
-					},
-					"response": [
-						{
-							"name": "Successful response with latest wallet for phone number",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "•••••••"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://charge-api.fuse.io/api/v0/admin/wallets/:phoneNumber?apiKey=pk_fPI_B8UbTnpPmH5UgQl2E7VI",
-									"protocol": "https",
-									"host": [
-										"charge-api",
-										"fuse",
-										"io"
-									],
-									"path": [
-										"api",
-										"v0",
-										"admin",
-										"wallets",
-										":phoneNumber"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "pk_fPI_B8UbTnpPmH5UgQl2E7VI",
-											"description": "(Required) You Public API key"
-										}
-									],
-									"variable": [
-										{
-											"key": "phoneNumber",
-											"value": "+15554443322",
-											"description": "(Required) Phone Number"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "2214"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"8a6-bbY4OYevL5rooLNXCPe0dx1TbFw\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 30 Aug 2022 10:07:18 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": {\n        \"myReferrals\": [],\n        \"guardians\": [],\n        \"_id\": \"630ddffec5c0490013b527cb\",\n        \"isContractDeployed\": false,\n        \"firebaseTokens\": [],\n        \"backup\": false,\n        \"salt\": \"0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb\",\n        \"networks\": [\n            \"fuse\"\n        ],\n        \"pendingNetworks\": [],\n        \"balancesOnForeign\": {},\n        \"upgradesInstalled\": [],\n        \"version\": \"1.7.0\",\n        \"paddedVersion\": \"0001.0007.0000\",\n        \"phoneNumber\": \"+15554443322\",\n        \"accountAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n        \"walletOwnerOriginalAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n        \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletModulesOriginal\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"walletModules\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"appName\": \"chargeApp_62ce87c8131bbffe0f83af65\",\n        \"createdAt\": \"2022-08-30T10:01:34.903Z\",\n        \"updatedAt\": \"2022-08-30T10:01:41.223Z\",\n        \"__v\": 0,\n        \"walletAddress\": \"0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8\"\n    }\n}"
-						},
-						{
-							"name": "No wallets found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "{{secretKey}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/:phoneNumber?apiKey={{publicKey}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										":phoneNumber"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "{{publicKey}}",
-											"description": "(Required) You Public API key"
-										}
-									],
-									"variable": [
-										{
-											"key": "phoneNumber",
-											"value": "+15554443323",
-											"description": "(Required) Phone Number"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "13"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"d-XXcxLjB/sjfS0AB6+CxvXcLGrm4\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 30 Aug 2022 10:08:25 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": null\n}"
-						}
-					]
-				},
-				{
-					"name": "Get All Wallets by Phone Number",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"description": "(Required) You Secret API key",
-								"key": "API-SECRET",
-								"value": "{{secretKey}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/admin/wallets/all/:phoneNumber?apiKey={{publicKey}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"wallets",
-								"all",
-								":phoneNumber"
-							],
-							"query": [
-								{
-									"key": "apiKey",
-									"value": "{{publicKey}}",
-									"description": "(Required) You Public API key"
-								}
-							],
-							"variable": [
-								{
-									"key": "phoneNumber",
-									"value": "+15554443322",
-									"description": "(Required) Phone Number"
-								}
-							]
-						},
-						"description": "Get all the wallets created for the `phoneNumber` is exist"
-					},
-					"response": [
-						{
-							"name": "Successful response with array of wallets",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "{{secretKey}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/all/:phoneNumber?apiKey={{publicKey}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										"all",
-										":phoneNumber"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "{{publicKey}}",
-											"description": "(Required) You Public API key"
-										}
-									],
-									"variable": [
-										{
-											"key": "phoneNumber",
-											"value": "+15554443322",
-											"description": "(Required) Phone Number"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "4422"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"1146-xugXVrip7IY4DI2AGgC7+p7LS7E\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 30 Aug 2022 10:05:44 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"myReferrals\": [],\n            \"guardians\": [],\n            \"_id\": \"630ddffec5c0490013b527cb\",\n            \"isContractDeployed\": false,\n            \"firebaseTokens\": [],\n            \"backup\": false,\n            \"salt\": \"0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb\",\n            \"networks\": [\n                \"fuse\"\n            ],\n            \"pendingNetworks\": [],\n            \"balancesOnForeign\": {},\n            \"upgradesInstalled\": [],\n            \"version\": \"1.7.0\",\n            \"paddedVersion\": \"0001.0007.0000\",\n            \"phoneNumber\": \"+15554443322\",\n            \"accountAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n            \"walletOwnerOriginalAddress\": \"0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C\",\n            \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletModulesOriginal\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"walletModules\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"appName\": \"chargeApp_62ce87c8131bbffe0f83af65\",\n            \"createdAt\": \"2022-08-30T10:01:34.903Z\",\n            \"updatedAt\": \"2022-08-30T10:01:41.223Z\",\n            \"__v\": 0,\n            \"walletAddress\": \"0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8\"\n        },\n        {\n            \"myReferrals\": [],\n            \"guardians\": [],\n            \"_id\": \"62cc053d140b8600131a7890\",\n            \"isContractDeployed\": false,\n            \"firebaseTokens\": [],\n            \"backup\": false,\n            \"salt\": \"0x3b226d1f54680801e178ba8295dfd15992ecc1a2068fb04fba8d905761dac955\",\n            \"networks\": [\n                \"fuse\"\n            ],\n            \"pendingNetworks\": [],\n            \"balancesOnForeign\": {},\n            \"upgradesInstalled\": [],\n            \"version\": \"1.7.0\",\n            \"paddedVersion\": \"0001.0007.0000\",\n            \"phoneNumber\": \"+15554443322\",\n            \"accountAddress\": \"0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF\",\n            \"walletOwnerOriginalAddress\": \"0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF\",\n            \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n            \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n            \"walletModulesOriginal\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"walletModules\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"appName\": \"chargeApp_62cc04e57b4f4d8db92cde5f\",\n            \"createdAt\": \"2022-07-11T11:10:53.204Z\",\n            \"updatedAt\": \"2022-07-11T11:10:55.542Z\",\n            \"__v\": 0,\n            \"walletAddress\": \"0xc3323f754BA8B2899f4Dce24fAeDdC1bC3B478bB\"\n        }\n    ]\n}"
-						}
-					]
-				},
-				{
-					"name": "Check if Wallet Exists",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"description": "(Required) You Secret API key",
-								"key": "API-SECRET",
-								"value": "{{secretKey}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/admin/wallets/exists/:walletAddress?apiKey={{publicKey}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"wallets",
-								"exists",
-								":walletAddress"
-							],
-							"query": [
-								{
-									"key": "apiKey",
-									"value": "{{publicKey}}",
-									"description": "(Required) You Public API key"
-								}
-							],
-							"variable": [
-								{
-									"key": "walletAddress",
-									"value": "0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf9"
-								}
-							]
-						},
-						"description": "Check if the given `walletAddress` exists"
-					},
-					"response": [
-						{
-							"name": "Wallet exists",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "{{secretKey}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/exists/:walletAddress?apiKey={{publicKey}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										"exists",
-										":walletAddress"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "{{publicKey}}",
-											"description": "(Required) You Public API key"
-										}
-									],
-									"variable": [
-										{
-											"key": "walletAddress",
-											"value": "0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "13"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"d-AZMLZIkhLL6zV6brmxWwd5pv3rs\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 30 Aug 2022 10:10:44 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": true\n}"
-						},
-						{
-							"name": "Wallet does not exist",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"description": "(Required) You Secret API key",
-										"key": "API-SECRET",
-										"value": "{{secretKey}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/admin/wallets/exists/:walletAddress?apiKey={{publicKey}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"admin",
-										"wallets",
-										"exists",
-										":walletAddress"
-									],
-									"query": [
-										{
-											"key": "apiKey",
-											"value": "{{publicKey}}",
-											"description": "(Required) You Public API key"
-										}
-									],
-									"variable": [
-										{
-											"key": "walletAddress",
-											"value": "0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf9"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "14"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"e-66Kg1i/Prnika7fkvfgOCHV/pA8\""
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 30 Aug 2022 10:11:02 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"data\": false\n}"
-						}
-					]
-				}
-			],
-			"description": "With Admin Wallet API, you can create new wallets for your users."
 		},
 		{
 			"name": "Jobs API",

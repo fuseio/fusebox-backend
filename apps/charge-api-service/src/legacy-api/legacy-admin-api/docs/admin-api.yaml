@@ -9,12 +9,12 @@ info:
 servers:
   - url: https://api.chargeweb3.com/api/v0
 tags:
+  - name: Wallets
+    description: With Admin Wallet API, you can create new wallets for your users.
   - name: Tokens
     description: >-
       With Admin Tokens API, you can create a new ERC20 token, mint or burn it,
       and transfer it between your users' wallets
-  - name: Wallets
-    description: With Admin Wallet API, you can create new wallets for your users.
   - name: Jobs API
     description: >-
       You can use the Jobs API to check the status of asyncronuous Admin API

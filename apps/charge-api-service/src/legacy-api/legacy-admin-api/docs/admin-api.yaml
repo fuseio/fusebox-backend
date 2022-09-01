@@ -1,511 +1,29 @@
 openapi: 3.0.0
 info:
   title: Admin API
+  description: >-
+    With Charge Admin API you can create and manage custodial wallets for your
+    users to offer a Web2-like experience, as well as create, mint, and burn
+    tokens for your economies/communities.
   version: 1.0.0
 servers:
   - url: https://api.chargeweb3.com/api/v0
 tags:
-  - name: Admin API
-    description: >-
-      With Charge Admin API you can create and manage custodial wallets for your
-      users to offer a Web2 like experience, as well as create, mint and burn
-      tokens for your communities.
-  - name: Admin API > Tokens
+  - name: Tokens
     description: >-
       With Admin Tokens API, you can create a new ERC20 token, mint or burn it,
       and transfer it between your users' wallets
-  - name: Admin API > Wallets
+  - name: Wallets
     description: With Admin Wallet API, you can create new wallets for your users.
   - name: Jobs API
     description: >-
       You can use the Jobs API to check the status of asyncronuous Admin API
       tasks that you have created.
 paths:
-  /admin/tokens/create:
-    post:
-      tags:
-        - Admin API > Tokens
-      summary: Create an ERC20 Token
-      description: Creates an ERC20 token owned and managed by project's backend account
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name: 
-                  type: string
-                  example: My Cool Token
-                symbol: 
-                  type: string
-                  example: MCT
-                initialSupply: 
-                  type: string
-                  example: '0'
-              example:
-                name: My Cool Token
-                symbol: MCT
-                initialSupply: '0'
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          description: (Required) You Secret API key
-          example: '{{secretKey}}'
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: Accept
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          description: (Required) You Public API key
-          example: '{{publicKey}}'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                job:
-                  status: pending
-                  _id: 62b175498c261600149409e1
-                  name: createToken
-                  data:
-                    bridgeType: home
-                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
-                    name: My Cool Token
-                    symbol: MCT
-                    initialSupplyInWei: '0'
-                    tokenURI: ''
-                    expiryTimestamp: 1939300629
-                    spendabilityIdsArr:
-                      - a
-                      - b
-                      - c
-                  createdAt: '2022-06-21T07:37:45.626Z'
-                  updatedAt: '2022-06-21T07:37:45.626Z'
-                  __v: 0
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '401':
-          description: Unauthorized
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '403':
-          description: Forbidden
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-  /admin/tokens/mint:
-    post:
-      tags:
-        - Admin API > Tokens
-      summary: Mint an ERC20 token
-      description: >-
-        Mints an ERC20 token
-
-
-        *   Token must be owned by project's backend account
-
-        *   toAddress is optional and when provided, then newly minted tokens
-        will be transferred to that address
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                tokenAddress: 
-                  type: string
-                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                amount: 
-                  type: string
-                  example: '1000'
-                toAddress: 
-                  type: string
-                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-              example:
-                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
-                amount: '1000'
-                toAddress: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          description: (Required) You Secret API key
-          example: '{{secretKey}}'
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: Accept
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          description: (Required) You Public API key
-          example: '{{publicKey}}'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                job:
-                  status: pending
-                  _id: 62b17a6c8c26160014940e84
-                  name: mint
-                  data:
-                    tokenAddress: 0xaf03155DF641f77917803C634E9e4d808ea42ae4s
-                    bridgeType: home
-                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
-                    amount: '1000000000000000000000'
-                    toAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-                  createdAt: '2022-06-21T07:59:40.927Z'
-                  updatedAt: '2022-06-21T07:59:40.927Z'
-                  __v: 0
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '401':
-          description: Unauthorized
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '403':
-          description: Forbidden
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-  /admin/tokens/burn:
-    post:
-      tags:
-        - Admin API > Tokens
-      summary: Burn an ERC20 token
-      description: Burns an ERC20 token - Token must be owned by project's backend account
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                tokenAddress: 
-                  type: string
-                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                amount: 
-                  type: string
-                  example: '10'
-                from: 
-                  type: string
-                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-              example:
-                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
-                amount: '500'
-                from: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          description: (Required) Your Secret API key
-          example: '{{secretKey}}'
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: Accept
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          description: (Required) You Public API key
-          example: '{{publicKey}}'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                job:
-                  status: pending
-                  _id: 62b196528c261600149439f7
-                  name: adminApprove
-                  data:
-                    tokenAddress: '0xD5BB30E6BBc3409AD934111C419b04c3874d3059'
-                    bridgeType: home
-                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
-                    amount: '10000000000000000000'
-                    wallet: '0xe3c7034E90FF8548773FfdCD6897761D2742cD0d'
-                    spender: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
-                    burnFromAddress: '0xe3c7034E90FF8548773FfdCD6897761D2742cD0d'
-                    correlationId: 1001-1
-                  createdAt: '2022-06-21T09:58:42.238Z'
-                  updatedAt: '2022-06-21T09:58:42.238Z'
-                  __v: 0
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                statusCode: 400
-                message: Bad Request
-        '401':
-          description: Unauthorized
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '403':
-          description: Forbidden
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-  /admin/tokens/transfer:
-    post:
-      tags:
-        - Admin API > Tokens
-      summary: Transfer an ERC20 token
-      description: >-
-        Transfers an ERC20 token - The "from" address must be owned by project's
-        backend account
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                tokenAddress: 
-                  type: string
-                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                amount: 
-                  type: string
-                  example: '10'
-                from: 
-                  type: string
-                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-                to: 
-                  type: string
-                  example: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
-              example:
-                tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                amount: '10'
-                from: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-                to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          description: (Required) You Secret API key
-          example: '{{secretKey}}'
-        - name: Accept
-          in: header
-          schema:
-            type: string
-          example: application/json
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          description: (Required) You Public API key
-          example: '{{publicKey}}'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                job:
-                  status: pending
-                  _id: 62b1806f8c26160014941777
-                  name: adminTransfer
-                  data:
-                    tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
-                    bridgeType: home
-                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
-                    amount: '10000000000000000000'
-                    wallet: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
-                    to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
-                  createdAt: '2022-06-21T08:25:19.066Z'
-                  updatedAt: '2022-06-21T08:25:19.066Z'
-                  __v: 0
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '401':
-          description: Unauthorized
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-        '403':
-          description: Forbidden
-          content:
-            text/plain:
-              schema:
-                type: string
-              example: ''
-  /admin/tokens/owner/{ownerAddress}:
-    get:
-      tags:
-        - Admin API > Tokens
-      summary: Get Tokens by Owner
-      description: Get a list of tokens that belong to an `ownerAddress`
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          example: '{{secretKey}}'
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          example: '{{publicKey}}'
-        - name: ownerAddress
-          in: path
-          schema:
-            type: string
-          required: true
-          example: '0xFDf589954F97b376F0794990d47948371f6824B1'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                object: list
-                data:
-                  - decimals: 18
-                    spendabilityIds:
-                      - a
-                      - b
-                      - c
-                    _id: 62f2cddd78f2e5001415f396
-                    address: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
-                    name: My Cool Token
-                    symbol: MCT
-                    tokenURI: ''
-                    totalSupply: '0'
-                    owner: '0xFDf589954F97b376F0794990d47948371f6824B1'
-                    blockNumber: 18521317
-                    tokenType: expirable
-                    networkType: home
-                    expiryTimestamp: 1939300629
-                    createdAt: '2022-08-09T21:13:01.405Z'
-                    updatedAt: '2022-08-09T21:13:01.405Z'
-  /admin/tokens/{tokenAddress}:
-    get:
-      tags:
-        - Admin API > Tokens
-      summary: Get Tokens by Address
-      description: Get a token by `tokenAddress`
-      parameters:
-        - name: API-SECRET
-          in: header
-          schema:
-            type: string
-          example: '{{secretKey}}'
-        - name: apiKey
-          in: query
-          schema:
-            type: string
-          example: '{{publicKey}}'
-        - name: tokenAddress
-          in: path
-          schema:
-            type: string
-          required: true
-          example: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                data:
-                  decimals: 18
-                  spendabilityIds:
-                    - a
-                    - b
-                    - c
-                  _id: 62f2cddd78f2e5001415f396
-                  address: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
-                  name: My Cool Token
-                  symbol: MCT
-                  tokenURI: ''
-                  totalSupply: '0'
-                  owner: '0xFDf589954F97b376F0794990d47948371f6824B1'
-                  blockNumber: 18521317
-                  tokenType: expirable
-                  networkType: home
-                  expiryTimestamp: 1939300629
-                  createdAt: '2022-08-09T21:13:01.405Z'
-                  updatedAt: '2022-08-09T21:13:01.405Z'
   /admin/wallets/create:
     post:
       tags:
-        - Admin API > Wallets
+        - Wallets
       summary: Create a Custodial Wallet
       description: Creates a custodial wallet owned by project's backend account
       requestBody:
@@ -587,7 +105,7 @@ paths:
   /admin/wallets/{phoneNumber}:
     get:
       tags:
-        - Admin API > Wallets
+        - Wallets
       summary: Get Latest Wallet by Phone Number
       description: Get the last wallet created for the `phoneNumber` if exists
       parameters:
@@ -686,7 +204,7 @@ paths:
   /admin/wallets/all/{phoneNumber}:
     get:
       tags:
-        - Admin API > Wallets
+        - Wallets
       summary: Get All Wallets by Phone Number
       description: Get all the wallets created for the `phoneNumber` is exist
       parameters:
@@ -825,7 +343,7 @@ paths:
   /admin/wallets/exists/{walletAddress}:
     get:
       tags:
-        - Admin API > Wallets
+        - Wallets
       summary: Check if Wallet Exists
       description: Check if the given `walletAddress` exists
       parameters:
@@ -873,6 +391,487 @@ paths:
                   summary: Wallet does not exist
                   value:
                     data: false
+  /admin/tokens/create:
+    post:
+      tags:
+        - Tokens
+      summary: Create an ERC20 Token
+      description: Creates an ERC20 token owned and managed by project's backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: 
+                  type: string
+                  example: My Cool Token
+                symbol: 
+                  type: string
+                  example: MCT
+                initialSupply: 
+                  type: string
+                  example: '0'
+              example:
+                name: My Cool Token
+                symbol: MCT
+                initialSupply: '0'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b175498c261600149409e1
+                  name: createToken
+                  data:
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    name: My Cool Token
+                    symbol: MCT
+                    initialSupplyInWei: '0'
+                    tokenURI: ''
+                    expiryTimestamp: 1939300629
+                    spendabilityIdsArr:
+                      - a
+                      - b
+                      - c
+                  createdAt: '2022-06-21T07:37:45.626Z'
+                  updatedAt: '2022-06-21T07:37:45.626Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/mint:
+    post:
+      tags:
+        - Tokens
+      summary: Mint an ERC20 token
+      description: >-
+        Mints an ERC20 token
+
+
+        *   Token must be owned by project's backend account
+
+        *   toAddress is optional and when provided, then newly minted tokens
+        will be transferred to that address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '1000'
+                toAddress: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+              example:
+                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                amount: '1000'
+                toAddress: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b17a6c8c26160014940e84
+                  name: mint
+                  data:
+                    tokenAddress: 0xaf03155DF641f77917803C634E9e4d808ea42ae4s
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    amount: '1000000000000000000000'
+                    toAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                  createdAt: '2022-06-21T07:59:40.927Z'
+                  updatedAt: '2022-06-21T07:59:40.927Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/burn:
+    post:
+      tags:
+        - Tokens
+      summary: Burn an ERC20 token
+      description: Burns an ERC20 token - Token must be owned by project's backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '10'
+                from: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+              example:
+                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                amount: '500'
+                from: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) Your Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b196528c261600149439f7
+                  name: adminApprove
+                  data:
+                    tokenAddress: '0xD5BB30E6BBc3409AD934111C419b04c3874d3059'
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    amount: '10000000000000000000'
+                    wallet: '0xe3c7034E90FF8548773FfdCD6897761D2742cD0d'
+                    spender: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    burnFromAddress: '0xe3c7034E90FF8548773FfdCD6897761D2742cD0d'
+                    correlationId: 1001-1
+                  createdAt: '2022-06-21T09:58:42.238Z'
+                  updatedAt: '2022-06-21T09:58:42.238Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 400
+                message: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/transfer:
+    post:
+      tags:
+        - Tokens
+      summary: Transfer an ERC20 token
+      description: >-
+        Transfers an ERC20 token - The "from" address must be owned by project's
+        backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '10'
+                from: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                to: 
+                  type: string
+                  example: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+              example:
+                tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: '10'
+                from: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b1806f8c26160014941777
+                  name: adminTransfer
+                  data:
+                    tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    amount: '10000000000000000000'
+                    wallet: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                    to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+                  createdAt: '2022-06-21T08:25:19.066Z'
+                  updatedAt: '2022-06-21T08:25:19.066Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/owner/{ownerAddress}:
+    get:
+      tags:
+        - Tokens
+      summary: Get Tokens by Owner
+      description: Get a list of tokens that belong to an `ownerAddress`
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          example: '{{secretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+        - name: ownerAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0xFDf589954F97b376F0794990d47948371f6824B1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                object: list
+                data:
+                  - decimals: 18
+                    spendabilityIds:
+                      - a
+                      - b
+                      - c
+                    _id: 62f2cddd78f2e5001415f396
+                    address: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                    name: My Cool Token
+                    symbol: MCT
+                    tokenURI: ''
+                    totalSupply: '0'
+                    owner: '0xFDf589954F97b376F0794990d47948371f6824B1'
+                    blockNumber: 18521317
+                    tokenType: expirable
+                    networkType: home
+                    expiryTimestamp: 1939300629
+                    createdAt: '2022-08-09T21:13:01.405Z'
+                    updatedAt: '2022-08-09T21:13:01.405Z'
+  /admin/tokens/{tokenAddress}:
+    get:
+      tags:
+        - Tokens
+      summary: Get Tokens by Address
+      description: Get a token by `tokenAddress`
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          example: '{{secretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  decimals: 18
+                  spendabilityIds:
+                    - a
+                    - b
+                    - c
+                  _id: 62f2cddd78f2e5001415f396
+                  address: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                  name: My Cool Token
+                  symbol: MCT
+                  tokenURI: ''
+                  totalSupply: '0'
+                  owner: '0xFDf589954F97b376F0794990d47948371f6824B1'
+                  blockNumber: 18521317
+                  tokenType: expirable
+                  networkType: home
+                  expiryTimestamp: 1939300629
+                  createdAt: '2022-08-09T21:13:01.405Z'
+                  updatedAt: '2022-08-09T21:13:01.405Z'
   /jobs/{jobId}:
     get:
       tags:

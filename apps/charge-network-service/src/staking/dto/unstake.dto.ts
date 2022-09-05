@@ -1,9 +1,12 @@
 import { IsNumber, IsEthereumAddress } from 'class-validator'
 
-export class StakerInfoDto {
+export class UnstakeDto {
   @IsEthereumAddress()
     accountAddress: string
 
   @IsNumber()
-    pid: number
+    tokenAmount: string
+
+  @IsEthereumAddress()
+    tokenAddress: string
 }

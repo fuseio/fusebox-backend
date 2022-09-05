@@ -3,9 +3,11 @@ export default () => ({
   consensusAddress: '0x3014ca10b91cb3D0AD85fEf7A3Cb95BCAc9c0f79',
   defaultValidator: '0x28C32719Fe055cb959404f9c783eF731f1150DCE',
   masterChefVoltV3Address: '0xE3e184a7b75D0Ae6E17B58F5283b91B4E0A2604F',
+  voltBarAddress: '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1',
   rpcConfig: {
     rpc: {
       url: process.env.RPC_URL || 'https://rpc.fuse.io'
     }
-  }
+  },
+  tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL
 })

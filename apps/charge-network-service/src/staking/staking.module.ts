@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { FarmController } from '@app/network-service/farm/farm.controller'
-import { FarmService } from '@app/network-service/farm/farm.service'
+import { StakingController } from '@app/network-service/staking/staking.controller'
+import { StakingService } from '@app/network-service/staking/staking.service'
 import { ConfigModule } from '@nestjs/config'
 import configuration from 'apps/charge-network-service/src/common/config/configuration'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
@@ -9,8 +9,8 @@ import Web3ProviderService from '@app/common/services/web3-provider.service'
   imports: [
     ConfigModule.forFeature(configuration)
   ],
-  controllers: [FarmController],
-  providers: [FarmService, Web3ProviderService],
-  exports: [FarmService]
+  controllers: [StakingController],
+  providers: [StakingService, Web3ProviderService],
+  exports: [StakingService]
 })
-export class FarmModule {}
+export class StakingModule {}

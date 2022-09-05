@@ -26,7 +26,7 @@ export class StakingApiController {
     return this.stakingAPIService.unStake(unstakeDto)
   }
 
-  @Post('staked_tokens/:accountAddress')
+  @Get('staked_tokens/:accountAddress')
   stakedTokens (@Param('accountAddress') accountAddress: string) {
     return this.stakingAPIService.stakedTokens(accountAddress)
   }

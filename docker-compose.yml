@@ -90,10 +90,13 @@ services:
       dockerfile: ./apps/charge-network-service/Dockerfile
       target: development
     command: npm run start:dev charge-network-service
+    env_file:
+      - ./apps/charge-network-service/.env
     environment:
       - NETWORK_HOST
       - NETWORK_PORT
       - NETWORK_TCP_PORT
+      - LEGACY_FUSE_TRADE_API_URL
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

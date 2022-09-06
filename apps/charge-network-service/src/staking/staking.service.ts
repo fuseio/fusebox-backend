@@ -4,9 +4,9 @@ import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { StakingOption, StakingProvider } from './interfaces'
 import VoltBarService from './staking-providers/volt-bar.service'
-import { voltBarId } from '../common/constants/staking-providers'
-import { stakingOptions } from '../common/constants/staking-options'
+import { stakingOptions } from '@app/network-service/common/constants/staking-options'
 import { sumBy } from 'lodash'
+import { voltBarId } from '../common/constants/staking-providers'
 
 @Injectable()
 export class StakingService {
@@ -20,19 +20,19 @@ export class StakingService {
   }
 
   async stakingOptions () {
-    const stakingOptions: Array<StakingOption> = []
+    const stakingOptionsData: Array<StakingOption> = []
 
     for (const stakingOption of stakingOptions) {
       const stakingProvider = this.getStakingProvider(stakingOption)
-      const stakingApr = await stakingProvider.stakingApr()
+      const stakingApr = await stakingProvider.stakingApr(stakingOption)
 
-      stakingOptions.push({
+      stakingOptionsData.push({
         ...stakingOption,
         stakingApr
       })
     }
 
-    return stakingOptions
+    return stakingOptionsData
   }
 
   async stake (stakeDto: StakeDto) {
@@ -62,7 +62,9 @@ export class StakingService {
       const stakingProvider = this.getStakingProvider(stakingOption)
       const stakedToken = await stakingProvider.stakedToken(accountAddress, stakingOption)
 
-      if (stakedToken.stakedAmount > 0) stakedTokens.push(stakedToken)
+      if (stakedToken.stakedAmount > 0) {
+        stakedTokens.push(stakedToken)
+      }
     }
 
     return {

@@ -1,10 +1,10 @@
-import { IsEthereumAddress, IsNumber } from 'class-validator'
+import { IsEthereumAddress, IsString } from 'class-validator'
 
 export class StakeDto {
   @IsEthereumAddress()
     accountAddress: string
 
-  @IsNumber()
+  @IsString()
     tokenAmount: string
 
   @IsEthereumAddress()

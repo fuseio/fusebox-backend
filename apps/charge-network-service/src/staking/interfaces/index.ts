@@ -1,5 +1,5 @@
-import { StakeDto } from '../dto/stake.dto'
-import { UnstakeDto } from '../dto/unstake.dto'
+import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
+import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 
 interface Token {
     tokenAddress: string
@@ -30,5 +30,5 @@ export interface StakingProvider {
     stake: (stakeDto: StakeDto) => string
     unStake: (unStakeDto: UnstakeDto) => string
     stakedToken: (accountAddress: string, stakingOption: StakingOption) => Promise<StakedToken>
-    stakingApr: () => Promise<number>
+    stakingApr: (stakingOption: StakingOption) => Promise<number>
 }

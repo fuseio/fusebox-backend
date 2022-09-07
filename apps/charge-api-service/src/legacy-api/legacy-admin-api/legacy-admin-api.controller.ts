@@ -7,11 +7,11 @@ import { LegacyApiInterceptor } from '@app/api-service/legacy-api/legacy-api.int
 @Controller({ path: 'v0/admin' })
 export class LegacyAdminApiController {
   @Get('/wallets/*')
-  getWallets() {}
+  getWallets () {}
 
   @Get('/tokens/*')
-  getTokens() {}
-  
+  getTokens () {}
+
   @Get('/*')
   get () { }
 

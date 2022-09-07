@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
-import { StakingOption, StakingProvider } from './interfaces'
-import VoltBarService from './staking-providers/volt-bar.service'
+import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
+import VoltBarService from '@app/network-service/staking/staking-providers/volt-bar.service'
 import { sumBy } from 'lodash'
-import { voltBarId } from '../common/constants/staking-providers'
+import { voltBarId } from '@app/network-service/common/constants'
 import { ConfigService } from '@nestjs/config'
 
 @Injectable()

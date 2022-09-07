@@ -7,10 +7,12 @@ import { Injectable } from '@nestjs/common'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 import GraphService from '@app/network-service/staking/graph.service'
 import { ConfigService } from '@nestjs/config'
-import { voltBarId } from '@app/network-service/common/constants/staking-providers'
+import { daysInYear, voltageProtocolFee, voltBarId } from '@app/network-service/common/constants'
 import TradeService from '@app/common/services/trade.service'
-import { getBar, getBarUser, getBlock, getFactories } from '@app/network-service/common/constants/graphql-queries'
 import { startOfMinute, subDays, getUnixTime, addSeconds } from 'date-fns'
+import { getBar, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
+import { getBlock } from '@app/network-service/common/constants/graph-queries/fuse-blocks'
+import { getFactories } from '@app/network-service/common/constants/graph-queries/voltage-exchange'
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {
@@ -102,7 +104,7 @@ export default class VoltBarService implements StakingProvider {
     const xVoltSupply = bar?.bar?.totalSupply
     const xVoltPrice = voltPrice * bar?.bar?.ratio
 
-    return (((totalVolumeUSD - totalVolumeUSD1d) * 0.0005 * 365) / (Number(xVoltSupply) * xVoltPrice)) * 100
+    return (((totalVolumeUSD - totalVolumeUSD1d) * voltageProtocolFee * daysInYear) / (Number(xVoltSupply) * xVoltPrice)) * 100
   }
 
   private async getStakingData (accountAddress: string) {

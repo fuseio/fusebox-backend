@@ -6,13 +6,13 @@ import Web3 from 'web3'
 export default class Web3ProviderService {
   private readonly provider: Web3
 
-  constructor (
+  constructor(
     private configService: ConfigService
   ) {
     this.provider = new Web3(this.configService.get('rpcConfig').rpc.url)
   }
 
-  getProvider () {
+  getProvider() {
     return this.provider
   }
 }

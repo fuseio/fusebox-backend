@@ -1,8 +1,9 @@
 import { BroadcasterService } from '@app/notifications-service/broadcaster/broadcaster.service'
 import { ERC20_TRANSFER_EVENT_HASH } from '@app/notifications-service/common/constants/events'
-import { TokenType } from '@app/notifications-service/common/constants/token-types'
+import { TokenType } from '@app/common/constants/abi/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import { getTokenTypeAbi, getTransferEventTokenType, parseLog, sleep } from '@app/notifications-service/common/utils/helper-functions'
+import { sleep } from '@app/notifications-service/common/utils/helper-functions'
+import { getTokenTypeAbi, getTransferEventTokenType, parseLog } from '@app/common/utils/helper-functions'
 import { eventsScannerStatusModelString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { EventsScannerStatus } from '@app/notifications-service/events-scanner/interfaces/events-scaner-status.interface'
 import { Inject, Injectable, Logger } from '@nestjs/common'
@@ -15,20 +16,20 @@ export class EventsScannerService {
   // TODO: Create a Base class for events scanner and transaction scanner services
   private readonly logger = new Logger(EventsScannerService.name)
 
-  constructor (
-        @Inject(eventsScannerStatusModelString)
-        private eventsScannerStatusModel: Model<EventsScannerStatus>,
-        @InjectEthersProvider('regular-node')
-        private readonly rpcProvider: BaseProvider,
-        private configService: ConfigService,
-        private broadcasterService: BroadcasterService
+  constructor(
+    @Inject(eventsScannerStatusModelString)
+    private eventsScannerStatusModel: Model<EventsScannerStatus>,
+    @InjectEthersProvider('regular-node')
+    private readonly rpcProvider: BaseProvider,
+    private configService: ConfigService,
+    private broadcasterService: BroadcasterService
   ) { }
 
-  async onModuleInit (): Promise<void> {
+  async onModuleInit(): Promise<void> {
     this.start()
   }
 
-  async start () {
+  async start() {
     while (true) {
       try {
         let { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
@@ -60,7 +61,7 @@ export class EventsScannerService {
     }
   }
 
-  async getStatus (filter: string) {
+  async getStatus(filter: string) {
     const status = await this.eventsScannerStatusModel.findOne({
       filter
     })
@@ -75,12 +76,12 @@ export class EventsScannerService {
     return newStatus
   }
 
-  async updateStatus (filter: string, blockNumber: number) {
+  async updateStatus(filter: string, blockNumber: number) {
     await this.eventsScannerStatusModel.updateOne({ filter }, { blockNumber }, { upsert: true })
   }
 
   @logPerformance('EventScanner::ProcessBlocks')
-  async processBlocks (fromBlock: number, toBlock: number) {
+  async processBlocks(fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
     this.logger.log(`EventFilter: Processing blocks from ${fromBlock} to ${toBlock}`)
@@ -103,7 +104,7 @@ export class EventsScannerService {
   }
 
   @logPerformance('EventScanner::ProcessEvent')
-  async processEvent (log: Log) {
+  async processEvent(log: Log) {
     const tokenType = getTransferEventTokenType(log)
     const abi = getTokenTypeAbi(tokenType)
 

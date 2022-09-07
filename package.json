@@ -48,6 +48,7 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",
     "ethereumjs-wallet": "^1.0.2",
+    "ethers": "^5.7.0",
     "helmet": "^5.0.2",
     "ioredis": "^5.2.0",
     "jwks-rsa": "^2.1.0",

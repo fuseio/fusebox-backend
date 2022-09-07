@@ -4,25 +4,30 @@ import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { StakingOption, StakingProvider } from './interfaces'
 import VoltBarService from './staking-providers/volt-bar.service'
-import { stakingOptions } from '@app/network-service/common/constants/staking-options'
 import { sumBy } from 'lodash'
 import { voltBarId } from '../common/constants/staking-providers'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class StakingService {
   constructor (
     private readonly web3ProviderService: Web3ProviderService,
-    private readonly voltBarService: VoltBarService
+    private readonly voltBarService: VoltBarService,
+    private readonly configService: ConfigService
   ) { }
 
   get web3Provider () {
     return this.web3ProviderService.getProvider()
   }
 
+  get stakingOptionsConfig () {
+    return this.configService.get('stakingOptions') as Array<StakingOption>
+  }
+
   async stakingOptions () {
     const stakingOptionsData: Array<StakingOption> = []
 
-    for (const stakingOption of stakingOptions) {
+    for (const stakingOption of this.stakingOptionsConfig) {
       const stakingProvider = this.getStakingProvider(stakingOption)
       const stakingApr = await stakingProvider.stakingApr(stakingOption)
 
@@ -58,7 +63,7 @@ export class StakingService {
   async stakedTokens (accountAddress: string) {
     const stakedTokens = []
 
-    for (const stakingOption of stakingOptions) {
+    for (const stakingOption of this.stakingOptionsConfig) {
       const stakingProvider = this.getStakingProvider(stakingOption)
       const stakedToken = await stakingProvider.stakedToken(accountAddress, stakingOption)
 
@@ -75,7 +80,7 @@ export class StakingService {
   }
 
   private getStakingOption (tokenAddress: string) {
-    return stakingOptions.find(stakingOption => stakingOption.tokenAddress === tokenAddress)
+    return this.stakingOptionsConfig.find(stakingOption => stakingOption.tokenAddress === tokenAddress)
   }
 
   private getStakingProvider (stakingOption: StakingOption): StakingProvider {

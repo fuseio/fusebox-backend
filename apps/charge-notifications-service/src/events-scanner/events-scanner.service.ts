@@ -120,7 +120,7 @@ export class EventsScannerService {
     let decimals: number
 
     try {
-      [name, symbol, decimals] = await this.getTokenInfo(tokenAddress, abi)
+      [name, symbol, decimals] = await this.getTokenInfo(tokenAddress, abi, tokenType)
     } catch (err) {
       this.logger.error(`Unable to get token info at address ${tokenAddress}`)
     }
@@ -130,16 +130,16 @@ export class EventsScannerService {
       from: fromAddress,
       txHash: parsedLog.transactionHash,
       tokenAddress: parsedLog.address,
-      tokenDecimals: decimals,
-      tokenName: name,
-      tokenSymbol: symbol,
       blockNumber: log.blockNumber,
       blockHash: log.blockHash,
-      tokenType: tokenType?.valueOf()
+      tokenType: tokenType?.valueOf(),
+      tokenName: name,
+      tokenSymbol: symbol
     }
 
     if (tokenType === TokenType.ERC20) {
       data.value = BigNumber.from(parsedLog.args[2]).toNumber()
+      data.tokenDecimals = decimals
     } else {
       data.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
@@ -147,13 +147,17 @@ export class EventsScannerService {
     await this.broadcasterService.broadCastEvent(data)
   }
 
-  private async getTokenInfo (tokenAddress: string, abi: any) {
+  private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
     const contract: Contract = this.ethersContract.create(
       tokenAddress,
       abi
     )
 
-    const decimals = await contract.decimals()
+    let decimals: string
+
+    if (tokenType === TokenType.ERC20) {
+      decimals = await contract.decimals()
+    }
     const name = await contract.name()
     const symbol = await contract.symbol()
 

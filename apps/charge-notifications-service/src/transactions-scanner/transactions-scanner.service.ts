@@ -122,8 +122,7 @@ export class TransactionsScannerService {
 
   @logPerformance('TransactionsScanner::ProcessTrace')
   async processTrace (trace: any) {
-    
-    let data: Record<string, any> = {
+    const data: Record<string, any> = {
       to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
       from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
       value: BigNumber.from(trace.action.value).toString(),

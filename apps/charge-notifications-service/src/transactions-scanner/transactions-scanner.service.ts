@@ -141,6 +141,5 @@ export class TransactionsScannerService {
     }
 
     await this.broadcasterService.broadCastEvent(data)
-
   }
 }

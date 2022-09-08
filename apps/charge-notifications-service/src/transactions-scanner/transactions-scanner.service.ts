@@ -10,7 +10,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
-import { BigNumber, InjectEthersProvider, JsonRpcProvider, TransactionResponse } from 'nestjs-ethers'
+import { BigNumber, InjectEthersProvider, JsonRpcProvider, TransactionResponse, formatEther } from 'nestjs-ethers'
 import { Transaction } from 'web3-core'
 
 @Injectable()
@@ -143,9 +143,10 @@ export class TransactionsScannerService {
   @logPerformance('TransactionsScanner::ProcessEvent')
   async processTransaction (transaction: TransactionResponse | Transaction) {
     const data: Record<string, any> = {
-      to: transaction.to,
-      from: transaction.from,
-      value: parseInt(transaction.value.toString()),
+      to: this.web3Provider.utils.toChecksumAddress(transaction.to),
+      from: this.web3Provider.utils.toChecksumAddress(transaction.from),
+      value: transaction.value.toString(),
+      valueEth: formatEther(BigNumber.from(transaction.value.toString())),
       txHash: transaction.hash,
       blockNumber: transaction.blockNumber,
       blockHash: transaction.blockHash,
@@ -158,18 +159,21 @@ export class TransactionsScannerService {
 
   @logPerformance('TransactionsScanner::ProcessTrace')
   async processTrace (trace: any) {
-    const data: Record<string, any> = {
-      to: trace.action.to,
-      from: trace.action.from,
-      value: trace.action.value.toString(),
-      txHash: trace.transactionHash,
-      blockNumber: trace.blockNumber,
-      blockHash: trace.blockHash,
-      tokenType: TokenType.FUSE,
-      tokenAddress: NATIVE_FUSE_ADDRESS,
-      isInternalTransaction: true
-    }
+    if (trace.subtraces > 0) {
+      const data: Record<string, any> = {
+        to: trace.action.to,
+        from: trace.action.from,
+        value: BigNumber.from(trace.action.value).toString(),
+        valueEth: formatEther(BigNumber.from(trace.action.value)),
+        txHash: trace.transactionHash,
+        blockNumber: trace.blockNumber,
+        blockHash: trace.blockHash,
+        tokenType: TokenType.FUSE,
+        tokenAddress: NATIVE_FUSE_ADDRESS,
+        isInternalTransaction: true
+      }
 
-    await this.broadcasterService.broadCastEvent(data)
+      await this.broadcasterService.broadCastEvent(data)
+    }
   }
 }

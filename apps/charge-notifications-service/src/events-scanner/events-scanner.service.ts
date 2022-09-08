@@ -8,7 +8,7 @@ import { EventsScannerStatus } from '@app/notifications-service/events-scanner/i
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Model } from 'mongoose'
-import { BaseProvider, InjectEthersProvider, Log } from 'nestjs-ethers'
+import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider } from 'nestjs-ethers'
 
 @Injectable()
 export class EventsScannerService {
@@ -20,6 +20,8 @@ export class EventsScannerService {
         private eventsScannerStatusModel: Model<EventsScannerStatus>,
         @InjectEthersProvider('regular-node')
         private readonly rpcProvider: BaseProvider,
+        @InjectContractProvider('regular-node')
+        private readonly ethersContract: EthersContract,
         private configService: ConfigService,
         private broadcasterService: BroadcasterService
   ) { }
@@ -111,6 +113,18 @@ export class EventsScannerService {
     const fromAddress = parsedLog.args[0]
     const toAddress = parsedLog.args[1]
 
+    const tokenAddress = parsedLog.address
+
+    let name: String
+    let symbol: String
+    let decimals: number
+
+    try {
+      [name, symbol, decimals] = await this.getTokenInfo(tokenAddress, abi, tokenType)
+    } catch (err) {
+      this.logger.error(`Unable to get token info at address ${tokenAddress}`)
+    }
+
     const data: Record<string, any> = {
       to: toAddress,
       from: fromAddress,
@@ -118,15 +132,35 @@ export class EventsScannerService {
       tokenAddress: parsedLog.address,
       blockNumber: log.blockNumber,
       blockHash: log.blockHash,
-      tokenType: tokenType?.valueOf()
+      tokenType: tokenType?.valueOf(),
+      tokenName: name,
+      tokenSymbol: symbol
     }
 
     if (tokenType === TokenType.ERC20) {
-      data.value = parsedLog.args[2].toString()
+      data.value = BigNumber.from(parsedLog.args[2]).toNumber()
+      data.tokenDecimals = decimals
     } else {
       data.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
 
     await this.broadcasterService.broadCastEvent(data)
+  }
+
+  private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
+    const contract: Contract = this.ethersContract.create(
+      tokenAddress,
+      abi
+    )
+
+    let decimals: string
+
+    if (tokenType === TokenType.ERC20) {
+      decimals = await contract.decimals()
+    }
+    const name = await contract.name()
+    const symbol = await contract.symbol()
+
+    return [name, symbol, decimals]
   }
 }

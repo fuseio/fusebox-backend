@@ -10,8 +10,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
-import { BigNumber, InjectEthersProvider, JsonRpcProvider, TransactionResponse, formatEther } from 'nestjs-ethers'
-import { Transaction } from 'web3-core'
+import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'nestjs-ethers'
 
 @Injectable()
 export class TransactionsScannerService {
@@ -94,27 +93,8 @@ export class TransactionsScannerService {
 
     for (let i = fromBlock; i <= toBlock; i++) {
       this.logger.log(`Processing block ${i}`)
-      await this.processBlock(i)
       await this.processBlockTraces(i)
       await this.updateStatus('transactions', i)
-    }
-  }
-
-  @logPerformance('TransactionsScanner::ProcessBlock')
-  async processBlock (blockNumber: number) {
-    const block = await this.web3Provider.eth.getBlock(blockNumber, true)
-
-    const filteredTransactions = block.transactions.filter(
-      (transaction) => BigNumber.from(transaction.value).gt(0))
-
-    for (const transaction of filteredTransactions) {
-      try {
-        await this.processTransaction(transaction)
-      } catch (error) {
-        this.logger.error('Failed to process transaction:')
-        this.logger.error({ transaction })
-        this.logger.error(error)
-      }
     }
   }
 
@@ -140,40 +120,25 @@ export class TransactionsScannerService {
     }
   }
 
-  @logPerformance('TransactionsScanner::ProcessEvent')
-  async processTransaction (transaction: TransactionResponse | Transaction) {
+  @logPerformance('TransactionsScanner::ProcessTrace')
+  async processTrace (trace: any) {
     const data: Record<string, any> = {
-      to: this.web3Provider.utils.toChecksumAddress(transaction.to),
-      from: this.web3Provider.utils.toChecksumAddress(transaction.from),
-      value: transaction.value.toString(),
-      valueEth: formatEther(BigNumber.from(transaction.value.toString())),
-      txHash: transaction.hash,
-      blockNumber: transaction.blockNumber,
-      blockHash: transaction.blockHash,
+      to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
+      from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
+      value: BigNumber.from(trace.action.value).toString(),
+      valueEth: formatEther(BigNumber.from(trace.action.value)),
+      txHash: trace.transactionHash,
+      blockNumber: trace.blockNumber,
+      blockHash: trace.blockHash,
       tokenType: TokenType.FUSE,
-      tokenAddress: NATIVE_FUSE_ADDRESS
+      tokenAddress: NATIVE_FUSE_ADDRESS,
+      isInternalTransaction: false
+    }
+
+    if (trace.subtraces > 0 || trace.traceAddress.length > 0) {
+      data.isInternalTransaction = true
     }
 
     await this.broadcasterService.broadCastEvent(data)
-  }
-
-  @logPerformance('TransactionsScanner::ProcessTrace')
-  async processTrace (trace: any) {
-    if (trace.subtraces > 0) {
-      const data: Record<string, any> = {
-        to: trace.action.to,
-        from: trace.action.from,
-        value: BigNumber.from(trace.action.value).toString(),
-        valueEth: formatEther(BigNumber.from(trace.action.value)),
-        txHash: trace.transactionHash,
-        blockNumber: trace.blockNumber,
-        blockHash: trace.blockHash,
-        tokenType: TokenType.FUSE,
-        tokenAddress: NATIVE_FUSE_ADDRESS,
-        isInternalTransaction: true
-      }
-
-      await this.broadcasterService.broadCastEvent(data)
-    }
   }
 }

@@ -138,7 +138,7 @@ export class EventsScannerService {
     }
 
     if (tokenType === TokenType.ERC20) {
-      data.value = BigNumber.from(parsedLog.args[2]).toNumber()
+      data.value = BigNumber.from(parsedLog.args[2]).toString()
       data.tokenDecimals = decimals
     } else {
       data.tokenId = parseInt(parsedLog.args.tokenId?._hex)

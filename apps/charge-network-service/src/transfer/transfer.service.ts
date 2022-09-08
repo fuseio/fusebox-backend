@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common'
 import { TransferDto } from '@app/network-service/transfer/dto/trasfer.dto'
+import { AddressDto } from '@app/network-service/transfer/dto/walletAddress.dto'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
-import erc20 from '@app/common/constants/abi/erc20.json'
+// import erc20 from '@app/common/constants/abi/erc20.json'
 import { TokenType } from '@app/common/constants/abi/token-types'
 import { getTokenTypeAbi, getTransferEventTokenType, parseLog } from '@app/common/utils/helper-functions'
 import { hexZeroPad } from 'nestjs-ethers'
 import { HttpService } from '@nestjs/axios'
 import { ConfigService } from '@nestjs/config'
 import _ from 'lodash'
-
+import { map, lastValueFrom } from 'rxjs'
 @Injectable()
 export class TransferService {
     constructor(
@@ -24,25 +25,72 @@ export class TransferService {
 
     transferEventHash = this.configService.get('transferEventHash')
 
-    async transferPost(transferDto: TransferDto) {
+    async transfersPost(transferDto: TransferDto) {
         const logs = await this.queryCreate(transferDto)
         const promisesLog = logs.map(async (log) => await this.processEvent(log as any))
         const mappedlog = await Promise.all(promisesLog)
         return mappedlog
     }
 
-    // transferPost(transferDto: TransferDto) {
-    //     return this.httpService.get(FUSE_URL + `?module=account&action=pendingtxlist&address=${transferDto.fromAddress}`).pipe(
-    //         map(response => response.data)
-    //     );
-    //  }
+    tokenListPost(addressDto: AddressDto) {
+        return this.httpService.get(this.configService.get('fuseExplorerUrl') + `?module=account&action=tokenlist&address=${addressDto.address}`).pipe(
+            map(response => response.data)
+        );
+    }
+    tokenHoldersPost(addressDto: AddressDto) {
+        return this.httpService.get(this.configService.get('fuseExplorerUrl') + `?module=token&action=getTokenHolders&contractaddress=${addressDto.address}`).pipe(
+            map(response => response.data)
+        );
+    }
+
+    async allWalletTransactions(addressDto: AddressDto): Promise<any> {
+        // const regularTxns = await lastValueFrom(this.httpService.get(
+        //     this.configService.get('fuseExplorerUrl') + `?module=account&action=txlist&address=${addressDto.address}`
+        // ).pipe(map(response => { return response.data }))
+        // )
+
+        // const tokenTxns = await lastValueFrom(this.httpService.get(
+        //     this.configService.get('fuseExplorerUrl') + `?module=account&action=tokentx&address=${addressDto.address}`
+        // ).pipe(map(response => { return response.data }))
+        // )
+        // const internalTxns = await lastValueFrom(this.httpService.get(
+        //     this.configService.get('fuseExplorerUrl') + `?module=account&action=txlistinternal&address=${addressDto.address}`
+        // ).pipe(map(response => { return response.data }))
+        // )
+
+
+        const [regularTxns, tokenTxns, internalTxns] = await Promise.all([
+            lastValueFrom(this.httpService.get(
+                this.configService.get('fuseExplorerUrl') + `?module=account&action=txlist&address=${addressDto.address}`
+            ).pipe(map(response => { return response.data.result }))
+            ),
+            lastValueFrom(this.httpService.get(
+                this.configService.get('fuseExplorerUrl') + `?module=account&action=tokentx&address=${addressDto.address}`
+            ).pipe(map(response => { return response.data.result }))
+            ),
+            lastValueFrom(this.httpService.get(
+                this.configService.get('fuseExplorerUrl') + `?module=account&action=txlistinternal&address=${addressDto.address}`
+            ).pipe(map(response => { return response.data.result }))
+            )
+        ])
+
+        return {
+            regularTransactions: regularTxns,
+            tokenTransactions: tokenTxns,
+            internalTransactions: internalTxns
+        }
+    }
+
+
+
+
 
     async queryCreate(transferDto: TransferDto) {
         const toAddress = transferDto.toAddress
         const fromAddress = transferDto.fromAddress
         const toBlock = this.blockExCheck(transferDto.toBlock)
         const fromBlock = this.blockExCheck(transferDto.fromBlock)
-        if (!_.isEmpty(transferDto.minted) && !_.isEmpty(toAddress)) {
+        if (transferDto.minted && !_.isEmpty(toAddress)) {
             return await this.web3Provider.eth.getPastLogs({
                 fromBlock: fromBlock,
                 toBlock: transferDto.toBlock,
@@ -52,13 +100,13 @@ export class TransferService {
                 hexZeroPad(transferDto.toAddress, 32)]
             })
         }
-        if (!_.isEmpty(transferDto.minted)) {
+        if (transferDto.minted) {
             return await this.web3Provider.eth.getPastLogs({
                 fromBlock: fromBlock,
                 toBlock: toBlock,
                 address: transferDto.tokenAddress.toLowerCase(),
                 topics: [this.transferEventHash,
-                hexZeroPad('0x0000000000000000000000000000000000000000', 32)]
+                hexZeroPad('0x0000000000000000000000000000000000000000', 32), undefined]
             })
         }
         if (!_.isEmpty(fromAddress) && !_.isEmpty(toAddress)) {

@@ -1,24 +1,25 @@
 import { IsString, IsEthereumAddress, IsOptional, IsBoolean } from 'class-validator'
 
 export class TransferDto {
+    @IsOptional()
     @IsString()
-      fromBlock: string
-
+    fromBlock: string
+    @IsOptional()
     @IsString()
-      toBlock: string
+    toBlock: string
 
     @IsOptional()
     @IsEthereumAddress()
-      fromAddress: string
+    fromAddress: string
 
     @IsOptional()
     @IsEthereumAddress()
-      toAddress: string
+    toAddress: string
 
     @IsString()
-      tokenAddress: string
+    tokenAddress: string
 
     @IsOptional()
     @IsBoolean()
-      minted: boolean
+    minted: boolean
 }

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { networkServiceContext } from '@app/common/constants/microservices.constants'
+import { networkService } from '@app/common/constants/microservices.constants'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { StakingApiController } from '@app/api-service/staking-api/staking-api.controller'
@@ -9,7 +9,7 @@ import { StakingAPIService } from '@app/api-service/staking-api/staking-api.serv
   imports: [
     ClientsModule.register([
       {
-        name: networkServiceContext,
+        name: networkService,
         transport: Transport.TCP,
         options: {
           host: process.env.NETWORK_HOST,

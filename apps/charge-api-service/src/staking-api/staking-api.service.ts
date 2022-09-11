@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { networkServiceContext } from '@app/common/constants/microservices.constants'
+import { networkService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
@@ -9,7 +9,7 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 @Injectable()
 export class StakingAPIService {
   constructor (
-    @Inject(networkServiceContext) private readonly stakingClient: ClientProxy
+    @Inject(networkService) private readonly stakingClient: ClientProxy
   ) { }
 
   async stakingOptions (): Promise<Array<StakingOption>> {

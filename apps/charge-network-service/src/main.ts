@@ -2,7 +2,7 @@ import { Transport } from '@nestjs/microservices'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeNetworkServiceModule } from '@app/network-service/charge-network-service.module'
 import { Logger, ValidationPipe } from '@nestjs/common'
-import { networkServiceContext } from '@app/common/constants/microservices.constants'
+import { networkServiceLoggerContext } from '@app/common/constants/microservices.constants'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 
 async function bootstrap () {
@@ -23,7 +23,7 @@ async function bootstrap () {
   )
 
   const httpAdapterHost = app.get(HttpAdapterHost)
-  const logger = new Logger(networkServiceContext)
+  const logger = new Logger(networkServiceLoggerContext)
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
 
   app.connectMicroservice(microServiceOptions, { inheritAppConfig: true })

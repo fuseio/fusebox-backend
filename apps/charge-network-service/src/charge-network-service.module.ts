@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
 import { ChargeNetworkServiceController } from '@app/network-service/charge-network-service.controller'
-import { FarmModule } from '@app/network-service/farm/farm.module'
+import { StakingModule } from '@app/network-service/staking/staking.module'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
-  imports: [FarmModule],
+  imports: [StakingModule, HttpModule],
   controllers: [ChargeNetworkServiceController]
 })
 export class ChargeNetworkServiceModule {}

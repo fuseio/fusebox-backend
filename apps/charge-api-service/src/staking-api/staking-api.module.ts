@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common'
 import { networkServiceContext } from '@app/common/constants/microservices.constants'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
-import { FarmApiController } from '@app/api-service/farm-api/farm-api.controller'
-import { FarmAPIService } from '@app/api-service/farm-api/farm-api.service'
+import { StakingApiController } from '@app/api-service/staking-api/staking-api.controller'
+import { StakingAPIService } from '@app/api-service/staking-api/staking-api.service'
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { FarmAPIService } from '@app/api-service/farm-api/farm-api.service'
     ]),
     ApiKeyModule
   ],
-  providers: [FarmAPIService],
-  controllers: [FarmApiController]
+  providers: [StakingAPIService],
+  controllers: [StakingApiController]
 })
-export class FarmAPIModule {}
+export class StakingAPIModule {}

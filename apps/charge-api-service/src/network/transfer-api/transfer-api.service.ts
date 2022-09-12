@@ -4,6 +4,7 @@ import { AddressDto } from '@app/network-service/transfer/dto/walletAddress.dto'
 import { ClientProxy } from '@nestjs/microservices'
 import { catchError, lastValueFrom, takeLast } from 'rxjs'
 import { TransferDto } from '@app/network-service/transfer/dto/trasfer.dto'
+import { allTransactionsDto } from '@app/network-service/transfer/dto/allTransactions.dto'
 
 @Injectable()
 export class TransferApiService {
@@ -23,8 +24,8 @@ export class TransferApiService {
     return this.callMSFunction(this.networkClient, 'tokenHoldersPost', addressDto)
   }
 
-  async allWalletTransactions (addressDto: AddressDto): Promise<any> {
-    return this.callMSFunction(this.networkClient, 'allWalletTransactions', addressDto)
+  async allWalletTransactions (allTransactionsDto: allTransactionsDto): Promise<any> {
+    return this.callMSFunction(this.networkClient, 'allWalletTransactions', allTransactionsDto)
   }
 
   private async callMSFunction (client: ClientProxy, pattern: string, data: any) {

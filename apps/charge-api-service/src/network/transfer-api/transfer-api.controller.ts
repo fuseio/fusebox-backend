@@ -1,9 +1,10 @@
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { TransferDto } from '@app/network-service/transfer/dto/trasfer.dto'
-import { AddressDto } from '@app/network-service/transfer/dto/walletAddress.dto'
+import { WalletAddressDto } from '@app/network-service/transfer/dto/walletAddress.dto'
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 import { TransferApiService } from '@app/api-service/network/transfer-api/transfer-api.service'
 import { allTransactionsDto } from '@app/network-service/transfer/dto/allTransactions.dto'
+import { ContractAddressDto } from '@app/network-service/transfer/dto/contractAddress.dto'
 
 // @UseGuards(IsValidPublicApiKeyGuard)
 @Controller('v0/transfers')
@@ -16,13 +17,13 @@ export class TransferApiController {
   }
 
   @Post('/wallet-token-list')
-  tokenListPost (@Body() addressDto: AddressDto) {
-    return this.transferService.tokenListPost(addressDto)
+  tokenListPost (@Body() walletAddressDto: WalletAddressDto) {
+    return this.transferService.tokenListPost(walletAddressDto)
   }
 
   @Post('/token-holders')
-  tokenHoldersPost (@Body() addressDto: AddressDto) {
-    return this.transferService.tokenHoldersPost(addressDto)
+  tokenHoldersPost (@Body() contractAddressDto: ContractAddressDto) {
+    return this.transferService.tokenHoldersPost(contractAddressDto)
   }
 
   @Post('/all-transactions')

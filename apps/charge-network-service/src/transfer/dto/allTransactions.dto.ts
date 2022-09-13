@@ -10,11 +10,11 @@ export class allTransactionsDto {
 
     @IsOptional()
     @IsString()
-      fromBlock: string
+      startblock: string
 
     @IsOptional()
     @IsString()
-      toBlock: string
+      endblock: string
 
     @IsOptional()
     @IsString()

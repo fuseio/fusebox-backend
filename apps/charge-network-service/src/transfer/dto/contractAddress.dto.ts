@@ -1,15 +1,15 @@
 import { Optional } from '@nestjs/common'
 import { IsEthereumAddress, IsOptional, IsString } from 'class-validator'
 
-export class AddressDto {
+export class ContractAddressDto {
     @IsEthereumAddress()
       address: string
 
-    @Optional()
+    @IsOptional()
     @IsString()
       page: string
 
-    @Optional()
+    @IsOptional()
     @IsString()
       offset: string
 }

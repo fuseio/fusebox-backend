@@ -2,8 +2,9 @@ import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { TransferService } from '@app/network-service/transfer/transfer.service'
 import { TransferDto } from '@app/network-service/transfer/dto/trasfer.dto'
-import { AddressDto } from '@app/network-service/transfer/dto/walletAddress.dto'
+import { WalletAddressDto } from '@app/network-service/transfer/dto/walletAddress.dto'
 import { allTransactionsDto } from '@app/network-service/transfer/dto/allTransactions.dto'
+import { ContractAddressDto } from '@app/network-service/transfer/dto/contractAddress.dto'
 
 @Controller('transfer')
 export class TransferController {
@@ -14,13 +15,13 @@ export class TransferController {
   }
 
   @MessagePattern('tokenListPost')
-  tokenBalancePost (addressDto: AddressDto) {
-    return this.transferService.tokenListPost(addressDto)
+  tokenBalancePost (walletAddressDto: WalletAddressDto) {
+    return this.transferService.tokenListPost(walletAddressDto)
   }
 
   @MessagePattern('tokenHoldersPost')
-  tokenHoldersPost (addressDto: AddressDto) {
-    return this.transferService.tokenHoldersPost(addressDto)
+  tokenHoldersPost (contractAddressDto: ContractAddressDto) {
+    return this.transferService.tokenHoldersPost(contractAddressDto)
   }
 
   @MessagePattern('allWalletTransactions')

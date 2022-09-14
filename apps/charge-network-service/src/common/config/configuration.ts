@@ -12,5 +12,16 @@ export default () => ({
     fullArchiveRpc: {
       url: 'https://explorer-node.fuse.io'
     }
+  },
+  getTokenHolders: {
+    action: 'getTokenHolders',
+    module: 'token',
+    addressType: 'contractaddress'
+
+  },
+  tokenlist: {
+    action: 'tokenlist',
+    module: 'account',
+    addressType: 'address'
   }
 })

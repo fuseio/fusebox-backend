@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+  charge-network-service:
+    build:
+      target: production
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-network-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
   charge-accounts-service:
     build:
       target: production

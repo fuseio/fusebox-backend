@@ -53,6 +53,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/charge-notifications-service/tsconfig.app.json"
       }
+    },
+    "charge-network-service": {
+      "type": "application",
+      "root": "apps/charge-network-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-network-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-network-service/tsconfig.app.json"
+      }
     }
   }
 }

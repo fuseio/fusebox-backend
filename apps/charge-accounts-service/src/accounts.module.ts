@@ -4,7 +4,7 @@ import { UsersModule } from '@app/accounts-service/users/users.module'
 import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
 import { AccountsController } from '@app/accounts-service/accounts.controller'
 import { ConfigModule } from '@nestjs/config'
-import { AppStoreModule } from './app-store/app-store.module';
+import { AppStoreModule } from '@app/accounts-service/app-store/app-store.module'
 
 @Module({
   imports: [

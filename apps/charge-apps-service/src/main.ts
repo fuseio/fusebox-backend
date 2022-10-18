@@ -1,14 +1,13 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { ChargeAppsServiceModule } from '@app/apps-service/charge-apps-service.module';
-import { Transport } from '@nestjs/microservices';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core'
+import { ChargeAppsServiceModule } from '@app/apps-service/charge-apps-service.module'
+import { Transport } from '@nestjs/microservices'
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { appStoreServiceLoggerContext } from '@app/common/constants/microservices.constants'
-import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter';
+import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 
+async function bootstrap () {
+  const app = await NestFactory.create(ChargeAppsServiceModule)
 
-async function bootstrap() {
-  const app = await NestFactory.create(ChargeAppsServiceModule);
-  
   const microServiceOptions = {
     transpot: Transport.TCP,
     options: {
@@ -38,4 +37,4 @@ async function bootstrap() {
 
   await app.listen(process.env.APPS_PORT)
 }
-bootstrap();
+bootstrap()

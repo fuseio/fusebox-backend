@@ -1,9 +1,8 @@
 export default () => ({
-    availableApps: [
-        {
-            appName: 'payments',
-            hasApi: true
-        }
-    ]
-  })
-  
+  availableApps: [
+    {
+      appName: 'payments',
+      hasApi: true
+    }
+  ]
+})

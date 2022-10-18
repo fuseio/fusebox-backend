@@ -40,6 +40,19 @@ services:
     command: npm run start:dev charge-api-service
     networks:
       - chargenet
+  charge-apps-service:
+    build:
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    ports:
+      - 9231:9231
+    depends_on:
+      - mongo
+    command: npm run start:dev charge-apps-service
+    networks:
+      - chargenet
   charge-notifications-service:
     build:
       target: development

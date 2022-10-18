@@ -18,6 +18,7 @@ services:
       - AUTH0_AUDIENCE
     depends_on:
       - charge-api-service
+      - charge-apps-service
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -103,6 +104,26 @@ services:
     ports:
       - ${NETWORK_PORT}:${NETWORK_PORT}
       - ${NETWORK_TCP_PORT}:${NETWORK_TCP_PORT}
+    restart: always
+  charge-apps-service:
+    container_name: charge-apps-service
+    build:
+      context: .
+      dockerfile: ./apps/charge-apps-service/Dockerfile
+      target: development
+    command: npm run start:dev charge-apps-service
+    env_file:
+      - ./apps/charge-apps-service/.env
+    environment:
+      - APPS_HOST
+      - APPS_PORT
+      - APPS_TCP_PORT
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${APPS_PORT}:${APPS_PORT}
+      - ${APPS_TCP_PORT}:${APPS_TCP_PORT}
     restart: always
   charge-relay-service:
     container_name: charge-relay-service

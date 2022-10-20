@@ -54,6 +54,12 @@ export class AppStoreController {
       return this.appStoreService.updateSecret(appName, auth0Id)
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('payments/allowed_tokens')
+    getPaymentsAllowedTokens() {
+      return this.appStoreService.getPaymentsAllowedTokens()
+    }
+
     /***
       * Creates a payment link for the account
       */

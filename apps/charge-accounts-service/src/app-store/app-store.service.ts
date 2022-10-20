@@ -91,4 +91,8 @@ export class AppStoreService {
 
     return callMSFunction(this.appStoreClient, 'get_payment_links', ownerId)
   }
+
+  async getPaymentsAllowedTokens() {
+    return callMSFunction(this.appStoreClient, 'get_allowed_tokens', '')
+  }
 }

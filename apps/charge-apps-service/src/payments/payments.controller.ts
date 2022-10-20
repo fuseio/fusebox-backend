@@ -8,6 +8,11 @@ import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-even
 export class PaymentsController {
   constructor (private readonly paymentsService: PaymentsService) { }
 
+  @MessagePattern('get_allowed_tokens')
+  getAllowedTokens() {
+    return this.paymentsService.getPaymentsAllowedTokens()
+  }
+  
   @MessagePattern('create_payment_account')
   createPaymentAccount (ownerId: string) {
     return this.paymentsService.createPaymentAccount(ownerId)

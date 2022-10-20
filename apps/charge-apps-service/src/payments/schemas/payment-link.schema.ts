@@ -6,7 +6,7 @@ export enum availableTokens {
 }
 
 export enum status {
-  NEW = 'NEW',
+  PENDING = 'PENDING',
   SUCCESSFUL = 'SUCCESSFUL',
   OVERPAID = 'OVERPAID',
   UNDERPAID = 'UNDERPAID',
@@ -30,7 +30,7 @@ export const PaymentLinkSchema = new mongoose.Schema(
       ref: 'BackendWallet',
       required: true
     },
-    status: { type: String, required: true, enum: status, default: 'NEW'},
+    status: { type: String, required: true, enum: status, default: 'PENDING'},
     receivedTokenSymbol: { type: String},
     receivedTokenAddress: { type: String},
     receivedAmount: { type: String }

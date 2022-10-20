@@ -8,6 +8,7 @@ import { PaymentLink } from '@app/apps-service/payments/interfaces/payment-link.
 import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema';
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface';
 import { status } from '@app/apps-service/payments/schemas/payment-link.schema';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaymentsService {
@@ -18,8 +19,13 @@ export class PaymentsService {
         @Inject(paymentAccountModelString)
         private paymentAccountModel: Model<PaymentAccount>,
         @Inject(paymentLinkModelString)
-        private paymentLinkModel: Model<PaymentLink> 
+        private paymentLinkModel: Model<PaymentLink>,
+        private readonly configService: ConfigService
     ) { }
+
+    async getPaymentsAllowedTokens() {
+        return this.configService.get('paymentsAllowedTokens')
+    }
 
     async createPaymentAccount(ownerId: string) {
         const backendWallet = await this.chargeApiService.createBackendWallet(walletTypes.PAYMENT_ACCOUNT)

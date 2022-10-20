@@ -121,6 +121,11 @@ services:
       - APPS_PORT
       - APPS_TCP_PORT
       - MONGO_URI=${APPS_MONGO_URI}
+      - CHARGE_WALLET_PHONE_NUMBER
+      - CHARGE_BASE_URL
+      - CHARGE_PUBLIC_KEY
+      - CHARGE_SECRET_KEY
+      - JOB_SLEEP_MS
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

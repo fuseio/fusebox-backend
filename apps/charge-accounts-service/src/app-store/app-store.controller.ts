@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 import { AppStoreService } from '@app/accounts-service/app-store/app-store.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { User } from '@app/accounts-service/users/user.decorator'
+import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 
 @Controller('app-store')
 export class AppStoreController {
@@ -52,4 +53,22 @@ export class AppStoreController {
     updateSecret (@Param('appName') appName: string, @User('sub') auth0Id: string) {
       return this.appStoreService.updateSecret(appName, auth0Id)
     }
+
+    /***
+      * Creates a payment link for the account
+      */
+    @UseGuards(JwtAuthGuard)
+    @Post('payment_link')
+    createPaymentLink (@Body() createPaymentLinkDto: CreatePaymentLinkDto, @User('sub') auth0Id: string) {
+      return this.appStoreService.createPaymentLink(auth0Id, createPaymentLinkDto)
+    }
+
+    /***
+      * Gets all payment links for the account
+      */
+     @UseGuards(JwtAuthGuard)
+     @Get('payment_links')
+     getPaymentLinks (@User('sub') auth0Id: string) {
+       return this.appStoreService.getPaymentLinks(auth0Id)
+     }
 }

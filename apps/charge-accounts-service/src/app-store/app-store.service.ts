@@ -9,6 +9,7 @@ import { appStoreService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ApiKeysDto } from '@app/apps-service/api-keys/dto/api-keys.dto'
+import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 
 @Injectable()
 export class AppStoreService {
@@ -37,6 +38,7 @@ export class AppStoreService {
 
     try {
       await callMSFunction(this.appStoreClient, 'create_public', { ownerId, appName } as ApiKeysDto)
+      await callMSFunction(this.appStoreClient, 'create_payment_account', ownerId)
     } catch (err) {
       return err
     }
@@ -74,5 +76,19 @@ export class AppStoreService {
     const ownerId = await this.getUserId(auth0Id)
 
     return callMSFunction(this.appStoreClient, 'update_secret', { ownerId, appName } as ApiKeysDto)
+  }
+
+  async createPaymentLink(auth0Id: string, createPaymentLinkDto: CreatePaymentLinkDto) {
+    const ownerId = await this.getUserId(auth0Id)
+
+    createPaymentLinkDto.ownerId = ownerId
+
+    return callMSFunction(this.appStoreClient, 'create_payment_link', createPaymentLinkDto)
+  }
+
+  async getPaymentLinks(auth0Id: string) {
+    const ownerId = await this.getUserId(auth0Id)
+
+    return callMSFunction(this.appStoreClient, 'get_payment_links', ownerId)
   }
 }

@@ -9,8 +9,7 @@ export class ApiKeysController {
 
   /**
    * Creates an API key secret for the given project
-   * @param ownerId
-   * @param appName
+   * @param apiKeysDto
    * @returns the generated API key secret or error if secret already exists
    */
   @MessagePattern('create_secret')
@@ -20,8 +19,7 @@ export class ApiKeysController {
 
   /**
    * Gets the api_key's for the given projectId
-   * @param ownerId
-   * @param appName
+   * @param apiKeysDto
    * @returns an object consisting unsensitive fields of the api_keys of the project
    */
   @MessagePattern('get_api_keys_info')
@@ -31,8 +29,7 @@ export class ApiKeysController {
 
   /**
    * Revokes the old API key secret and generates a new one for the given project
-   * @param ownerId
-   * @param appName
+   * @param apiKeysDto
    * @returns the new API key secret
    */
   @MessagePattern('update_secret')
@@ -42,8 +39,7 @@ export class ApiKeysController {
 
   /**
    * Creates the public API key associated with the project
-   * @param ownerId
-   * @param appName
+   * @param apiKeysDto
    * @returns the public API key associated with the given project
    */
   @MessagePattern('create_public')
@@ -53,8 +49,7 @@ export class ApiKeysController {
 
   /**
    * Gets the public API key associated with the project
-   * @param ownerId
-   * @param appName
+   * @param apiKeysDto
    * @returns the public API key associated with the given project
    */
   @MessagePattern('get_public')

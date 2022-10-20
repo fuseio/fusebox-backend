@@ -1,10 +1,5 @@
 import * as mongoose from 'mongoose'
 
-export enum availableTokens {
-  USDC = 'USDC',
-  FUSE = 'FUSE'
-}
-
 export enum status {
   PENDING = 'PENDING',
   SUCCESSFUL = 'SUCCESSFUL',
@@ -22,7 +17,7 @@ export const PaymentLinkSchema = new mongoose.Schema(
     },
     title: { type: String, required: true },
     description: { type: String, required: false },
-    tokenSymbol: { type: String, enum: availableTokens, required: true },
+    tokenSymbol: { type: String, required: true },
     tokenAddress: { type: String, required: true },
     amount: { type: String, required: true },
     backendWalletId: { 

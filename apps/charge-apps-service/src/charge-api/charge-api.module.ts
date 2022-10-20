@@ -1,8 +1,8 @@
 import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { BackendWalletService } from '@app/apps-service/backend-wallet/backend-wallet.service'
-import { backendWalletProviders } from '@app/apps-service/backend-wallet/backend-wallet.providers'
+import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
+import { backendWalletProviders } from '@app/apps-service/charge-api/backend-wallet.providers'
 import { DatabaseModule } from '@app/common'
 
 @Module({
@@ -19,7 +19,7 @@ import { DatabaseModule } from '@app/common'
       inject: [ConfigService]
     })
   ],
-  providers: [BackendWalletService, ConfigService, ...backendWalletProviders],
-  exports: [BackendWalletService]
+  providers: [ChargeApiService, ConfigService, ...backendWalletProviders],
+  exports: [ChargeApiService]
 })
-export class BackendWalletModule { }
+export class ChargeApiModule { }

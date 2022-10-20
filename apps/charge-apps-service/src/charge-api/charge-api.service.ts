@@ -3,13 +3,13 @@ import { HttpException, Inject, Injectable } from '@nestjs/common'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { isEmpty } from 'lodash'
 import { ConfigService } from '@nestjs/config'
-import { backendWalletModelString } from '@app/apps-service/backend-wallet/backend-wallet.constants'
+import { backendWalletModelString } from '@app/apps-service/charge-api/backend-wallet.constants'
 import { Model } from 'mongoose'
-import { BackendWallet } from '@app/apps-service/backend-wallet/interfaces/backend-wallet.interface'
-import { walletTypes } from '@app/apps-service/backend-wallet/schemas/backend-wallet.schema'
+import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface'
+import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema'
 
 @Injectable()
-export class BackendWalletService {
+export class ChargeApiService {
   constructor (
     private httpService: HttpService,
     private configService: ConfigService,
@@ -23,6 +23,10 @@ export class BackendWalletService {
 
   get chargePublicKey() {
     return this.configService.get('CHARGE_PUBLIC_KEY')
+  }
+
+  get chargeWebhookId() {
+    return this.configService.get('CHARGE_WEBHOOK_ID')
   }
 
   get walletPhoneNumber() {
@@ -65,6 +69,10 @@ export class BackendWalletService {
     return backendWallet
   }
 
+  async getBackendWalletByAddress(address: string) {
+    return this.backendWalletModel.findOne({walletAddress: address})
+  }
+
   async getUpdatedJobData(jobData: any) {
     const jobId = jobData?._id
 
@@ -73,6 +81,17 @@ export class BackendWalletService {
     const responseData = await this.httpProxyGet(url)
 
     return responseData
+  }
+
+  async addWebhookAddress(address: string) {
+    const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${this.chargePublicKey}`
+
+    const requestBody = {
+      webhookId: this.chargeWebhookId,
+      addresses: [address]
+    }
+
+    await this.httpProxyPost(url, requestBody)
   }
 
   async httpProxyPost(url: string, requestBody: any) {

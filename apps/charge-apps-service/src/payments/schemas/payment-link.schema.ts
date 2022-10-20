@@ -24,13 +24,16 @@ export const PaymentLinkSchema = new mongoose.Schema(
     description: { type: String, required: false },
     tokenSymbol: { type: String, enum: availableTokens, required: true },
     tokenAddress: { type: String, required: true },
-    amount: { type: Number, required: true },
+    amount: { type: String, required: true },
     backendWalletId: { 
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BackendWallet',
       required: true
     },
-    status: { type: String, required: true, enum: status, default: 'NEW'}
+    status: { type: String, required: true, enum: status, default: 'NEW'},
+    receivedTokenSymbol: { type: String},
+    receivedTokenAddress: { type: String},
+    receivedAmount: { type: String }
   },
   {
     timestamps: true

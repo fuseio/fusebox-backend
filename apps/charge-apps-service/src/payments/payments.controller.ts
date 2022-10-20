@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { PaymentsService } from '@app/apps-service/payments/payments.service'
 import { MessagePattern } from '@nestjs/microservices'
+import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 
 @Controller('payments')
 export class PaymentsController {
@@ -27,5 +28,10 @@ export class PaymentsController {
   @MessagePattern('get_payment_links')
   getPaymentLinks (ownerId: string) {
     return this.paymentsService.getPaymentLinks(ownerId)
+  }
+
+  @Post('webhook') 
+  webhook(@Body() webhookEvent: WebhookEvent) {
+    this.paymentsService.handleWebhook(webhookEvent)
   }
 }

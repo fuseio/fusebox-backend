@@ -8,7 +8,7 @@ import { EventsScannerStatus } from '@app/notifications-service/events-scanner/i
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Model } from 'mongoose'
-import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider } from 'nestjs-ethers'
+import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
 
 @Injectable()
 export class EventsScannerService {
@@ -122,7 +122,7 @@ export class EventsScannerService {
     try {
       [name, symbol, decimals] = await this.getTokenInfo(tokenAddress, abi, tokenType)
     } catch (err) {
-      this.logger.error(`Unable to get token info at address ${tokenAddress}`)
+      this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
     const data: Record<string, any> = {
@@ -140,6 +140,7 @@ export class EventsScannerService {
     if (tokenType === TokenType.ERC20) {
       data.value = BigNumber.from(parsedLog.args[2]).toString()
       data.tokenDecimals = decimals
+      data.valueEth = formatUnits(data.value, data.tokenDecimals)
     } else {
       data.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }

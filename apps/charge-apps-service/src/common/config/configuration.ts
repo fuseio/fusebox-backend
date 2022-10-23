@@ -7,6 +7,10 @@ export default () => ({
         {
             tokenSymbol: 'FUSE',
             tokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+        },
+        {
+            tokenSymbol: 'G$',
+            tokenAddress: '0x495d133B938596C9984d462F007B676bDc57eCEC'
         }
     ]
   })

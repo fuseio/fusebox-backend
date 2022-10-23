@@ -10,6 +10,7 @@ import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ApiKeysDto } from '@app/apps-service/api-keys/dto/api-keys.dto'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
+import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 
 @Injectable()
 export class AppStoreService {
@@ -100,5 +101,12 @@ export class AppStoreService {
     const ownerId = await this.getUserId(auth0Id)
 
     return callMSFunction(this.appStoreClient, 'get_wallet_balance', ownerId)
+  }
+
+  async transferTokensFromPaymentsAccount (auth0Id: string, transferTokensDto: TransferTokensDto) {
+    const ownerId = await this.getUserId(auth0Id)
+    transferTokensDto.ownerId = ownerId
+
+    return callMSFunction(this.appStoreClient, 'transfer_tokens', transferTokensDto)
   }
 }

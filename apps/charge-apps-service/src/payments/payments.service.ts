@@ -11,6 +11,7 @@ import { status } from '@app/apps-service/payments/schemas/payment-link.schema';
 import { ConfigService } from '@nestjs/config';
 import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface';
 import { isEmpty } from 'lodash';
+import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -74,6 +75,18 @@ export class PaymentsService {
         return this.chargeApiService.getWalletBalance(paymentAccount.backendWalletId.walletAddress)
     }
 
+    async transferTokens(transferTokensDto: TransferTokensDto) {
+        if (isEmpty(transferTokensDto.from)) {
+            const paymentAccount = await this.paymentAccountModel.
+            findOne({ownerId: transferTokensDto.ownerId}).
+            populate<{ backendWalletId: BackendWallet }>('backendWalletId')
+
+            transferTokensDto.from = paymentAccount.backendWalletId.walletAddress
+        }
+        
+        return this.chargeApiService.transferTokens(transferTokensDto)
+    }
+
     async handleWebhook(webhookEvent: WebhookEvent) {
         if (webhookEvent.direction === 'incoming') {
             const backendWallet = await this.chargeApiService.getBackendWalletByAddress(webhookEvent.to)
@@ -107,12 +120,12 @@ export class PaymentsService {
             populate<{ backendWalletId: BackendWallet }>('backendWalletId')
 
             try {
-                await this.chargeApiService.transferTokensToMainAccount(
-                    paymentLink.receivedTokenAddress,
-                    backendWallet.walletAddress,
-                    paymentAccount.backendWalletId.walletAddress,
-                    paymentLink.receivedAmount
-                )
+                await this.transferTokens({
+                    tokenAddress: paymentLink.receivedTokenAddress,
+                    from: backendWallet.walletAddress,
+                    to: paymentAccount.backendWalletId.walletAddress,
+                    amount: paymentLink.receivedAmount
+                } as TransferTokensDto)
             } catch (error) {
                 this.logger.error(`Failed to send funds to main account: ${error}`)
             }

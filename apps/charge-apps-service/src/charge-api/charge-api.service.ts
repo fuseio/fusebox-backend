@@ -7,6 +7,7 @@ import { backendWalletModelString } from '@app/apps-service/charge-api/backend-w
 import { Model } from 'mongoose'
 import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface'
 import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema'
+import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 
 @Injectable()
 export class ChargeApiService {
@@ -79,14 +80,14 @@ export class ChargeApiService {
     return backendWallet
   }
 
-  async transferTokensToMainAccount(tokenAddress: string, from: string, to: string, amount: string) {
+  async transferTokens(transferTokensDto: TransferTokensDto) {
     const url = `${this.chargeBaseUrl}/api/v0/admin/tokens/transfer?apiKey=${this.chargePublicKey}`
 
     const requestBody = {
-      from: from,
-      to: to,
-      amount: amount,
-      tokenAddress: tokenAddress
+      from: transferTokensDto.from,
+      to: transferTokensDto.to,
+      amount: transferTokensDto.amount,
+      tokenAddress: transferTokensDto.tokenAddress
     }
 
     const responseData = await this.httpProxyPost(url, requestBody)

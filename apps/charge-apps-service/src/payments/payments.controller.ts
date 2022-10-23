@@ -5,6 +5,7 @@ import { MessagePattern } from '@nestjs/microservices'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { IsValidApiKeysGuard } from '@app/apps-service/api-keys/guards/is-valid-api-keys.guard'
 import { UserId } from '@app/apps-service/common/config/decorators/user.decorator'
+import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 
 @Controller('payments')
 export class PaymentsController {
@@ -49,5 +50,10 @@ export class PaymentsController {
   @MessagePattern('get_wallet_balance')
   getWalletBalance (@UserId() userId: string, @Body() ownerId: string) {
     return this.paymentsService.getWalletBalance(userId || ownerId)
+  }
+
+  @MessagePattern('transfer_tokens')
+  transferTokens (@Body() transferTokensDto: TransferTokensDto) {
+    return this.paymentsService.transferTokens(transferTokensDto)
   }
 }

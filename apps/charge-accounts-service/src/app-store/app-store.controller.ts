@@ -3,6 +3,7 @@ import { AppStoreService } from '@app/accounts-service/app-store/app-store.servi
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
+import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 
 @Controller('app-store')
 export class AppStoreController {
@@ -82,5 +83,11 @@ export class AppStoreController {
      @Get('payments/account/balance')
      getWalletBalance (@User('sub') auth0Id: string) {
        return this.appStoreService.getWalletBalance(auth0Id)
+     }
+
+     @UseGuards(JwtAuthGuard)
+     @Post('payments/account/transfer_tokens')
+     transferTokensFromPaymentsAccount (@User('sub') auth0Id: string, @Body() transferTokensDto: TransferTokensDto) {
+       return this.appStoreService.transferTokensFromPaymentsAccount(auth0Id, transferTokensDto)
      }
 }

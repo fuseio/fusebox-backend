@@ -127,6 +127,8 @@ services:
       - CHARGE_SECRET_KEY
       - CHARGE_WEBHOOK_ID
       - JOB_SLEEP_MS
+      - UNMARSHAL_BASE_URL
+      - UNMARSHAL_AUTH_KEY
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

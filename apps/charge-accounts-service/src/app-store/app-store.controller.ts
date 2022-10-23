@@ -77,4 +77,10 @@ export class AppStoreController {
      getPaymentLinks (@User('sub') auth0Id: string) {
        return this.appStoreService.getPaymentLinks(auth0Id)
      }
+
+     @UseGuards(JwtAuthGuard)
+     @Get('payments/account/balance')
+     getWalletBalance (@User('sub') auth0Id: string) {
+       return this.appStoreService.getWalletBalance(auth0Id)
+     }
 }

@@ -9,6 +9,7 @@ import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface';
 import { status } from '@app/apps-service/payments/schemas/payment-link.schema';
 import { ConfigService } from '@nestjs/config';
+import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface';
 
 @Injectable()
 export class PaymentsService {
@@ -61,6 +62,13 @@ export class PaymentsService {
         return this.paymentLinkModel.find({ownerId})
     }
 
+    async getWalletBalance(ownerId: string) {
+        const paymentAccount = await this.paymentAccountModel.findOne({ownerId: ownerId}).
+            populate<{ backendWalletId: BackendWallet }>('backendWalletId')
+        
+        return this.chargeApiService.getWalletBalance(paymentAccount.backendWalletId.walletAddress)
+    }
+
     async handleWebhook(webhookEvent: WebhookEvent) {
         if (webhookEvent.direction === 'incoming') {
             const backendWallet = await this.chargeApiService.getBackendWalletByAddress(webhookEvent.to)
@@ -87,6 +95,21 @@ export class PaymentsService {
                 await paymentLink.save()
             } catch (error) {
                 this.logger.error(`Failed to save payment link: ${error}`)
+            }
+
+            const ownerId = paymentLink.ownerId
+            const paymentAccount = await this.paymentAccountModel.findOne({ownerId: ownerId}).
+            populate<{ backendWalletId: BackendWallet }>('backendWalletId')
+
+            try {
+                await this.chargeApiService.transferTokensToMainAccount(
+                    paymentLink.receivedTokenAddress,
+                    backendWallet.walletAddress,
+                    paymentAccount.backendWalletId.walletAddress,
+                    paymentLink.receivedAmount
+                )
+            } catch (error) {
+                this.logger.error(`Failed to send funds to main account: ${error}`)
             }
         }
         

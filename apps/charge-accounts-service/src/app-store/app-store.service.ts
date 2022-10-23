@@ -95,4 +95,10 @@ export class AppStoreService {
   async getPaymentsAllowedTokens() {
     return callMSFunction(this.appStoreClient, 'get_allowed_tokens', '')
   }
+
+  async getWalletBalance (auth0Id: string) {
+    const ownerId = await this.getUserId(auth0Id)
+
+    return callMSFunction(this.appStoreClient, 'get_wallet_balance', ownerId)
+  }
 }

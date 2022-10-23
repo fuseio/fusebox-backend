@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { HttpException, Inject, Injectable } from '@nestjs/common'
+import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { isEmpty } from 'lodash'
 import { ConfigService } from '@nestjs/config'
@@ -10,6 +10,8 @@ import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet
 
 @Injectable()
 export class ChargeApiService {
+  private readonly logger = new Logger(ChargeApiService.name)
+  
   constructor (
     private httpService: HttpService,
     private configService: ConfigService,
@@ -19,6 +21,14 @@ export class ChargeApiService {
 
   get chargeBaseUrl() {
     return this.configService.get('CHARGE_BASE_URL')
+  }
+
+  get unmarshalBaseUrl() {
+    return this.configService.get('UNMARSHAL_BASE_URL')
+  }
+
+  get unmarshalAuthKey() {
+    return this.configService.get('UNMARSHAL_AUTH_KEY')
   }
 
   get chargePublicKey() {
@@ -67,6 +77,37 @@ export class ChargeApiService {
     backendWallet.save()
 
     return backendWallet
+  }
+
+  async transferTokensToMainAccount(tokenAddress: string, from: string, to: string, amount: string) {
+    const url = `${this.chargeBaseUrl}/api/v0/admin/tokens/transfer?apiKey=${this.chargePublicKey}`
+
+    const requestBody = {
+      from: from,
+      to: to,
+      amount: amount,
+      tokenAddress: tokenAddress
+    }
+
+    const responseData = await this.httpProxyPost(url, requestBody)
+
+    let jobData = responseData?.job
+
+    await this.sleep(this.getSleepMS)
+
+    jobData = await this.getUpdatedJobData(jobData)
+
+    this.logger.log(JSON.stringify(jobData))
+
+    return jobData
+  }
+
+  async getWalletBalance(address: string) {
+    const tokensBalanceUrl = `${this.unmarshalBaseUrl}/v1/fuse/address/${address}/assets?chainId=122&token=false&auth_key=${this.unmarshalAuthKey}`
+
+    const tokensBalance = await this.httpProxyGet(tokensBalanceUrl)
+
+    return tokensBalance
   }
 
   async getBackendWalletByAddress(address: string) {

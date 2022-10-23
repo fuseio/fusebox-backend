@@ -39,4 +39,9 @@ export class PaymentsController {
   webhook(@Body() webhookEvent: WebhookEvent) {
     this.paymentsService.handleWebhook(webhookEvent)
   }
+
+  @MessagePattern('get_wallet_balance')
+  getWalletBalance (ownerId: string) {
+    return this.paymentsService.getWalletBalance(ownerId)
+  }
 }

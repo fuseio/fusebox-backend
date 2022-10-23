@@ -10,6 +10,7 @@ import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-even
 import { status } from '@app/apps-service/payments/schemas/payment-link.schema';
 import { ConfigService } from '@nestjs/config';
 import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface';
+import { isEmpty } from 'lodash';
 
 @Injectable()
 export class PaymentsService {
@@ -40,7 +41,11 @@ export class PaymentsService {
         return paymentAccount
     }
 
-    async createPaymentLink(createPaymentLinkDto: CreatePaymentLinkDto) {
+    async createPaymentLink(userId: string, createPaymentLinkDto: CreatePaymentLinkDto) {
+        if (isEmpty(createPaymentLinkDto.ownerId)) {
+            createPaymentLinkDto.ownerId = userId
+        }
+
         const backendWallet = await this.chargeApiService.createBackendWallet(walletTypes.PAYMENT_LINK)
 
         createPaymentLinkDto.backendWalletId = backendWallet._id

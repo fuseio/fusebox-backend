@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { PaymentsService } from '@app/apps-service/payments/payments.service'
 import { MessagePattern } from '@nestjs/microservices'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
+import { IsValidApiKeysGuard } from '@app/apps-service/api-keys/guards/is-valid-api-keys.guard'
+import { UserId } from '@app/apps-service/common/config/decorators/user.decorator'
 
 @Controller('payments')
 export class PaymentsController {
@@ -18,11 +20,11 @@ export class PaymentsController {
     return this.paymentsService.createPaymentAccount(ownerId)
   }
 
-  // TODO: Add Auth Guard for API where we can get the ownerId also
+  @UseGuards(IsValidApiKeysGuard)
   @Post('payment_link')
   @MessagePattern('create_payment_link')
-  createPaymentLink (@Body() createPaymentLinkDto: CreatePaymentLinkDto) {
-    return this.paymentsService.createPaymentLink(createPaymentLinkDto)
+  createPaymentLink (@UserId() userId: string, @Body() createPaymentLinkDto: CreatePaymentLinkDto) {
+    return this.paymentsService.createPaymentLink(userId, createPaymentLinkDto)
   }
 
   @Get('payment_link/:paymentLinkId') 
@@ -30,9 +32,11 @@ export class PaymentsController {
     return this.paymentsService.getPaymentLink(paymentLinkId)
   }
 
+  @UseGuards(IsValidApiKeysGuard)
+  @Get('payment_links')
   @MessagePattern('get_payment_links')
-  getPaymentLinks (ownerId: string) {
-    return this.paymentsService.getPaymentLinks(ownerId)
+  getPaymentLinks (@UserId() userId: string, @Body() ownerId: string) {
+    return this.paymentsService.getPaymentLinks(userId || ownerId)
   }
 
   @Post('webhook') 
@@ -40,8 +44,10 @@ export class PaymentsController {
     this.paymentsService.handleWebhook(webhookEvent)
   }
 
+  @UseGuards(IsValidApiKeysGuard)
+  @Get('account_balance')
   @MessagePattern('get_wallet_balance')
-  getWalletBalance (ownerId: string) {
-    return this.paymentsService.getWalletBalance(ownerId)
+  getWalletBalance (@UserId() userId: string, @Body() ownerId: string) {
+    return this.paymentsService.getWalletBalance(userId || ownerId)
   }
 }

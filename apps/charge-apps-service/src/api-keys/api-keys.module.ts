@@ -8,6 +8,6 @@ import { ApiKeysService } from '@app/apps-service/api-keys/api-keys.service'
   imports: [DatabaseModule],
   controllers: [ApiKeysController],
   providers: [...apiKeysProviders, ApiKeysService],
-  exports: []
+  exports: [ApiKeysService]
 })
 export class ApiKeysModule {}

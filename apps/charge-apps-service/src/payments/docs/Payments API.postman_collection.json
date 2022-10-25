@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "fb6635ea-7e7d-488f-90f1-5013b3670f15",
+		"name": "Payments API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20885446"
+	},
+	"item": [
+		{
+			"name": "Create Payment Link",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Title\",\n    \"description\": \"Description\",\n    \"amount\": \"10\",\n    \"tokenAddress\": \"0x495d133B938596C9984d462F007B676bDc57eCEC\",\n    \"tokenSymbol\": \"G$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_link"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment Links",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_links?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_links"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment Link",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link/:paymentLinkId",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_link",
+						":paymentLinkId"
+					],
+					"variable": [
+						{
+							"key": "paymentLinkId",
+							"value": "635539a59b40a1154fb2d0c0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account Balance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/account_balance?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"account_balance"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

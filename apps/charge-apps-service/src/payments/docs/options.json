@@ -1,0 +1,6 @@
+{
+    "defaultTag": "payments",
+    "responseHeaders": false,
+    "replaceVars": true,
+    "servers": [{"url": "https://api.chargeweb3.com/api/v0"}]
+}

@@ -51,9 +51,10 @@ export class AppStoreService {
     const ownerId = await this.getUserId(auth0Id)
     const appDocs = await this.applicationModel.find({ ownerId, isActivated: true })
     const apps = appDocs.map(app => app.toObject() as Application)
-    const extendedApps = merge(keyBy(apps, 'appName'), keyBy(this.availableApps, 'appName'))
+    let extendedApps = values(merge(keyBy(apps, 'appName'), keyBy(this.availableApps, 'appName')))
+    extendedApps = extendedApps.filter(app => app?.isActivated === true)
 
-    return values(extendedApps)
+    return extendedApps
   }
 
   async getUserId (auth0Id: string) {

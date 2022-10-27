@@ -16,6 +16,7 @@ async function bootstrap () {
     }
   }
   app.setGlobalPrefix('app-store')
+  app.enableCors()
 
   app.useGlobalPipes(
     new ValidationPipe({

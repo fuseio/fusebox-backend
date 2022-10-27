@@ -122,13 +122,13 @@ export class ChargeApiService {
 
     const paymentsAllowedTokens = this.getPaymentsAllowedTokens
 
-    let extendedTokensBalance = values(merge(keyBy(tokensBalance, 'contract_address'), keyBy(paymentsAllowedTokens, 'tokenAddress')))
+    let extendedTokensBalance = values(merge(keyBy(tokensBalance, 'contract_address'), keyBy(paymentsAllowedTokens, 'contract_address')))
 
     for(let [index, token] of extendedTokensBalance.entries()) {
       if (isEmpty(token.balance)) {
         token.balance = "0"
       }
-      
+
       if (isEmpty(token.verified)) {
         const priceData = await this.getPriceFromTradeApi(token.tokenAddress || token.contract_address)
         token.quote_rate = priceData.data.price

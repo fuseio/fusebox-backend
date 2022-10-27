@@ -61,19 +61,26 @@ export class ChargeApiService {
 
     const responseData = await this.httpProxyPost(url, requestBody)
 
-    let jobData = responseData?.job
-
-    await this.sleep(this.getSleepMS)
-
-    jobData = await this.getUpdatedJobData(jobData)
+    const jobData = responseData?.job
+    const walletAddress = jobData?.data?.walletAddress
 
     const backendWallet = await this.backendWalletModel.create({
-      jobId: jobData.data._id,
-      walletAddress: jobData.data.data.walletAddress,
-      accountAddress: jobData.data.accountAddress,
-      ownerAddress: jobData.data.data.owner,
+      jobId: jobData._id,
+      walletAddress: walletAddress,
       walletType
     })
+
+    setTimeout(async () => {
+      const updatedJobData = await this.getUpdatedJobData(jobData)
+      await this.backendWalletModel.findByIdAndUpdate(
+        backendWallet._id,
+        {
+          walletAddress: updatedJobData.data.walletAddress,
+          accountAddress: updatedJobData.data.accountAddress,
+          ownerAddress: updatedJobData.data.data.owner
+        }
+      )
+    }, this.getSleepMS)
 
     backendWallet.save()
 

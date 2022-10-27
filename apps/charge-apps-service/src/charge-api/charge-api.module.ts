@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
 import { backendWalletProviders } from '@app/apps-service/charge-api/backend-wallet.providers'
 import { DatabaseModule } from '@app/common'
+import configuration from '@app/apps-service/common/config/configuration'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { DatabaseModule } from '@app/common'
         }
       }),
       inject: [ConfigService]
-    })
+    }),
+    ConfigModule.forFeature(configuration)
   ],
   providers: [ChargeApiService, ConfigService, ...backendWalletProviders],
   exports: [ChargeApiService]

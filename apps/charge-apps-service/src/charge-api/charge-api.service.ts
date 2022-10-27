@@ -1,13 +1,14 @@
 import { HttpService } from '@nestjs/axios'
 import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
 import { catchError, lastValueFrom, map } from 'rxjs'
-import { isEmpty } from 'lodash'
+import { isEmpty, keyBy, merge, values } from 'lodash'
 import { ConfigService } from '@nestjs/config'
 import { backendWalletModelString } from '@app/apps-service/charge-api/backend-wallet.constants'
 import { Model } from 'mongoose'
 import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface'
 import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema'
 import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
+import { formatUnits } from 'nestjs-ethers'
 
 @Injectable()
 export class ChargeApiService {
@@ -19,6 +20,10 @@ export class ChargeApiService {
     @Inject(backendWalletModelString)
     private backendWalletModel: Model<BackendWallet>
     ) { }
+
+  get getPaymentsAllowedTokens() {
+      return this.configService.get('paymentsAllowedTokens')
+  }
 
   get chargeBaseUrl() {
     return this.configService.get('CHARGE_BASE_URL')
@@ -115,7 +120,26 @@ export class ChargeApiService {
 
     const tokensBalance = await this.httpProxyGet(tokensBalanceUrl)
 
-    return tokensBalance
+    const paymentsAllowedTokens = this.getPaymentsAllowedTokens
+
+    let extendedTokensBalance = values(merge(keyBy(tokensBalance, 'contract_address'), keyBy(paymentsAllowedTokens, 'tokenAddress')))
+
+    for(let [index, token] of extendedTokensBalance.entries()) {
+      if (isEmpty(token.balance)) {
+        token.balance = "0"
+      }
+      
+      if (isEmpty(token.verified)) {
+        const priceData = await this.getPriceFromTradeApi(token.tokenAddress || token.contract_address)
+        token.quote_rate = priceData.data.price
+        const formattedBalance = formatUnits(token.balance, token.contract_decimals)
+        token.quote = (parseFloat(formattedBalance) * parseFloat(token.quote_rate)).toString()
+        
+        extendedTokensBalance[index] = token
+      }      
+    }
+    
+    return extendedTokensBalance
   }
 
   async getBackendWalletByAddress(address: string) {
@@ -141,6 +165,12 @@ export class ChargeApiService {
     }
 
     await this.httpProxyPost(url, requestBody)
+  }
+
+  async getPriceFromTradeApi(tokenAddress: string) {
+    const url = `${this.chargeBaseUrl}/api/v0/trade/price/${tokenAddress}?apiKey=${this.chargePublicKey}`
+    const response = await this.httpProxyGet(url)
+    return response
   }
 
   async httpProxyPost(url: string, requestBody: any) {

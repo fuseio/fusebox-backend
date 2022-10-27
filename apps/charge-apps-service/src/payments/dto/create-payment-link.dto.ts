@@ -11,7 +11,7 @@ export class CreatePaymentLinkDto {
   @IsString()
     description: string
 
-  @IsString()
+  @IsNumber()
     amount: string
 
   @IsEthereumAddress()

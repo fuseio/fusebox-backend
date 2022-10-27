@@ -6,7 +6,7 @@ export interface PaymentLink extends Document {
   readonly description: string;
   readonly tokenSymbol: string;
   readonly tokenAddress: string;
-  readonly amount: string;
+  readonly amount: number;
   readonly backendWalletId: string;
   status: string;
   receivedTokenSymbol: string;

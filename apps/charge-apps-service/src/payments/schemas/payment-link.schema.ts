@@ -19,7 +19,7 @@ export const PaymentLinkSchema = new mongoose.Schema(
     description: { type: String, required: false },
     tokenSymbol: { type: String, required: true },
     tokenAddress: { type: String, required: true },
-    amount: { type: String, required: true },
+    amount: { type: Number, required: true },
     backendWalletId: { 
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BackendWallet',

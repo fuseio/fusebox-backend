@@ -96,7 +96,7 @@ export class PaymentsService {
             paymentLink.receivedTokenAddress = webhookEvent.tokenAddress
             paymentLink.receivedTokenSymbol = webhookEvent.tokenSymbol
 
-            const amountFloat = parseFloat(paymentLink.amount)
+            const amountFloat = paymentLink.amount
             const receivedAmountFloat = parseFloat(paymentLink.receivedAmount)
             
             if (!this.isTokenMatch(paymentLink, webhookEvent)) {

@@ -12,6 +12,28 @@ paths:
       tags:
         - Payments
       summary: Create Payment Link
+      description: >-
+        Create a new payment request link.
+
+
+        Body params:
+
+
+        | **Param** | **Type** | **Description** | **isRequired?** |
+
+        | --- | --- | --- | --- |
+
+        | title | string | Title of payment link | true |
+
+        | description | string | Description for the requested payment | false |
+
+        | amount | float | Requested amount | true |
+
+        | tokenAddress | string | Ethereum contract address for the requested
+        token (Check `Get Allowed Tokens List` request) | true |
+
+        | tokenSymbol | string | Symbol of requested token (Check `Get Allowed
+        Tokens List` request) | true |
       requestBody:
         content:
           application/json:
@@ -36,87 +58,237 @@ paths:
               example:
                 title: Title
                 description: Description
-                amount: '10'
-                tokenAddress: '0x495d133B938596C9984d462F007B676bDc57eCEC'
-                tokenSymbol: G$
-      security:
-        - bearerAuth: []
+                amount: 10
+                tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                tokenSymbol: USDC
       parameters:
         - name: API-SECRET
           in: header
           schema:
             type: string
+          description: (Required) Your Payments API Secret Key
           example: '{{paymentsSecretKey}}'
         - name: apiKey
           in: query
           schema:
             type: string
+          description: (Required) Your Payments API Public Key
           example: '{{paymentsPublicKey}}'
       responses:
-        '200':
-          description: Successful response
+        '201':
+          description: Created
           content:
-            application/json: {}
-  /app-store/v1/payments/payment_links:
+            application/json:
+              schema:
+                type: object
+              example:
+                ownerId: 63458300becbd35a8c2a2703
+                title: Title
+                description: Description
+                tokenSymbol: USDC
+                tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                amount: 10
+                backendWalletId: 635fe010b21d669df1d9fbd8
+                status: Not Paid
+                _id: 635fe010b21d669df1d9fbda
+                createdAt: '2022-10-31T14:47:44.709Z'
+                updatedAt: '2022-10-31T14:47:44.709Z'
+                __v: 0
+  /app-store/v1/payments/payment_link/allowed_tokens:
     get:
       tags:
         - Payments
-      summary: Get Payment Links
-      security:
-        - bearerAuth: []
+      summary: Get Allowed Tokens List
+      description: >-
+        Get a list of allowed tokens for the creation of payment links with
+        their details.
       parameters:
         - name: API-SECRET
           in: header
           schema:
             type: string
+          description: (Required) Your Payments API Secret Key
           example: '{{paymentsSecretKey}}'
         - name: apiKey
           in: query
           schema:
             type: string
+          description: (Required) Your Payments API Public Key
           example: '{{paymentsPublicKey}}'
       responses:
         '200':
-          description: Successful response
+          description: OK
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+              example:
+                - tokenSymbol: USDC
+                  tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                  contract_address: '0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5'
+                  contract_decimals: 6
+                  logo_url: >-
+                    https://assets.unmarshal.io/tokens/fuse_0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5.png
+                - tokenSymbol: FUSE
+                  tokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+                  contract_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                  contract_decimals: 18
+                  logo_url: >-
+                    https://assets.unmarshal.io/tokens/fuse_0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.png
+                - tokenSymbol: G$
+                  tokenAddress: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                  contract_address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                  contract_decimals: 2
+                  logo_url: >-
+                    https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x495d133B938596C9984d462F007B676bDc57eCEC/logo.png
   /app-store/v1/payments/payment_link/{paymentLinkId}:
     get:
       tags:
         - Payments
       summary: Get Payment Link
+      description: Get a payment link's details including its status.
       parameters:
         - name: paymentLinkId
           in: path
           schema:
             type: string
           required: true
-          example: 635539a59b40a1154fb2d0c0
+          description: (Required) Payment link Id
+          example: 635a73541f25b1f56f7576d7
       responses:
         '200':
-          description: Successful response
+          description: OK
           content:
-            application/json: {}
-  /app-store/v1/payments/account_balance:
+            application/json:
+              schema:
+                type: object
+              example:
+                _id: 635a73541f25b1f56f7576d7
+                ownerId: 63458300becbd35a8c2a2703
+                title: My payment link
+                description: Description
+                tokenSymbol: FBXT
+                tokenAddress: '0x8AB8BBE0bdbf24e57ee4aF11B65D0486323EEbe2'
+                amount: 1.5
+                backendWalletId:
+                  _id: 635a73521f25b1f56f7576d5
+                  walletAddress: '0xB902180f8A48188E42129B5B009767C82a9fd33b'
+                status: PENDING
+                createdAt: '2022-10-27T12:02:28.359Z'
+                updatedAt: '2022-10-27T12:02:28.359Z'
+                __v: 0
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 404
+                errorMessage: Payment link with 635a5da6784cdf39a37161a5 not found
+                path: /app-store/v1/payments/payment_link/635a5da6784cdf39a37161a5
+  /app-store/v1/payments/payment_links:
     get:
       tags:
         - Payments
-      summary: Get Account Balance
-      security:
-        - bearerAuth: []
+      summary: Get Payment Links
+      description: Get the list of all payment links created under your account.
       parameters:
         - name: API-SECRET
           in: header
           schema:
             type: string
+          description: (Required) Your Payments API Secret Key
           example: '{{paymentsSecretKey}}'
         - name: apiKey
           in: query
           schema:
             type: string
+          description: (Required) Your Payments API Public Key
           example: '{{paymentsPublicKey}}'
       responses:
         '200':
-          description: Successful response
+          description: OK
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+              example:
+                - _id: 635fdb8350eec0b6ee92aabc
+                  ownerId: 63458300becbd35a8c2a2703
+                  title: My payment link
+                  description: Description
+                  tokenSymbol: USDC
+                  tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                  amount: 1.5
+                  backendWalletId: 635fdb8350eec0b6ee92aaba
+                  status: Not Paid
+                  createdAt: '2022-10-31T14:28:19.288Z'
+                  updatedAt: '2022-10-31T14:28:19.288Z'
+                  __v: 0
+                - _id: 635fe010b21d669df1d9fbda
+                  ownerId: 63458300becbd35a8c2a2703
+                  title: Title
+                  description: Description
+                  tokenSymbol: USDC
+                  tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                  amount: 10
+                  backendWalletId: 635fe010b21d669df1d9fbd8
+                  status: Not Paid
+                  createdAt: '2022-10-31T14:47:44.709Z'
+                  updatedAt: '2022-10-31T14:47:44.709Z'
+                  __v: 0
+  /app-store/v1/payments/account_balance:
+    get:
+      tags:
+        - Payments
+      summary: Get Account Balance
+      description: Get your payment account's balance.
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) Your Payments API Secret Key
+          example: '{{paymentsSecretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Payments API Public Key
+          example: '{{paymentsPublicKey}}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - tokenSymbol: USDC
+                  tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                  contract_address: '0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5'
+                  contract_decimals: 6
+                  logo_url: >-
+                    https://assets.unmarshal.io/tokens/fuse_0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5.png
+                  balance: '0'
+                  quote_rate: '0.9957980066443322'
+                  quote: '0'
+                - tokenSymbol: FUSE
+                  tokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+                  contract_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                  contract_decimals: 18
+                  logo_url: >-
+                    https://assets.unmarshal.io/tokens/fuse_0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.png
+                  balance: '0'
+                  quote_rate: '0.08825097310594551'
+                  quote: '0'
+                - tokenSymbol: G$
+                  tokenAddress: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                  contract_address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                  contract_decimals: 2
+                  logo_url: >-
+                    https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x495d133B938596C9984d462F007B676bDc57eCEC/logo.png
+                  balance: '0'
+                  quote_rate: '0.00015908263958753187'
+                  quote: '0'

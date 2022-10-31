@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose'
 
 export enum status {
-  PENDING = 'PENDING',
-  SUCCESSFUL = 'SUCCESSFUL',
-  OVERPAID = 'OVERPAID',
-  UNDERPAID = 'UNDERPAID',
-  TOKEN_MISMATCH = 'TOKEN_MISMATCH'
+  NOT_PAID = 'Not Paid',
+  SUCCESSFUL = 'Successful',
+  OVERPAID = 'Overpaid',
+  UNDERPAID = 'Underpaid',
+  WRONG_TOKEN = 'Wrong Token'
 }
 
 export const PaymentLinkSchema = new mongoose.Schema(
@@ -25,7 +25,7 @@ export const PaymentLinkSchema = new mongoose.Schema(
       ref: 'BackendWallet',
       required: true
     },
-    status: { type: String, required: true, enum: status, default: 'PENDING'},
+    status: { type: String, required: true, enum: status, default: status.NOT_PAID},
     receivedTokenSymbol: { type: String},
     receivedTokenAddress: { type: String},
     receivedAmount: { type: String }

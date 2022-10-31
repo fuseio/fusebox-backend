@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto';
 import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service';
 import { paymentAccountModelString, paymentLinkModelString } from '@app/apps-service/payments/payments.constants';
@@ -26,8 +26,34 @@ export class PaymentsService {
         private readonly configService: ConfigService
     ) { }
 
+    get allowedPaymentTokens() {
+        return this.configService.get('paymentsAllowedTokens')
+    }
+
+    get allowedTokenAddresses() {
+        return this.allowedPaymentTokens.map(token => token.tokenAddress)
+    }
+
+    get allowedTokenSymbols() {
+        return this.allowedPaymentTokens.map(token => token.tokenSymbol)
+    }
+    
     async getPaymentsAllowedTokens() {
         return this.configService.get('paymentsAllowedTokens')
+    }
+
+    isRequestedAllowedToken(createPaymentLinkDto: CreatePaymentLinkDto) {
+        
+        const isTokenAddressAllowed = this.allowedTokenAddresses.some(address => {
+            return address.toLowerCase() === createPaymentLinkDto.tokenAddress.toLowerCase()
+        })
+
+        const isTokenSymbolAllowed = this.allowedTokenSymbols.some(symbol => {
+            return symbol.toLowerCase() === createPaymentLinkDto.tokenSymbol.toLowerCase()
+        })
+        
+
+        return isTokenAddressAllowed && isTokenSymbolAllowed
     }
 
     async createPaymentAccount(ownerId: string) {
@@ -45,6 +71,13 @@ export class PaymentsService {
     async createPaymentLink(userId: string, createPaymentLinkDto: CreatePaymentLinkDto) {
         if (isEmpty(createPaymentLinkDto.ownerId)) {
             createPaymentLinkDto.ownerId = userId
+        }
+
+        if (!this.isRequestedAllowedToken(createPaymentLinkDto)) {
+            throw new HttpException(
+                `${createPaymentLinkDto.tokenSymbol} - ${createPaymentLinkDto.tokenAddress} is not allowed`, 
+                HttpStatus.BAD_REQUEST 
+                )
         }
 
         const backendWallet = await this.chargeApiService.createBackendWallet(walletTypes.PAYMENT_LINK)
@@ -100,7 +133,7 @@ export class PaymentsService {
             const receivedAmountFloat = parseFloat(paymentLink.receivedAmount)
             
             if (!this.isTokenMatch(paymentLink, webhookEvent)) {
-                paymentLink.status = status.TOKEN_MISMATCH
+                paymentLink.status = status.WRONG_TOKEN
             } else if (receivedAmountFloat === amountFloat) {
                 paymentLink.status = status.SUCCESSFUL
             } else if (receivedAmountFloat > amountFloat) {

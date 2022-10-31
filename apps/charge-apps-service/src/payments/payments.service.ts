@@ -94,7 +94,13 @@ export class PaymentsService {
     }
 
     async getPaymentLink(paymentLinkId: string) {
-        return this.paymentLinkModel.findById(paymentLinkId).populate('backendWalletId', 'walletAddress')
+        const paymentLink = await this.paymentLinkModel.findById(paymentLinkId).populate('backendWalletId', 'walletAddress')
+        
+        if (isEmpty(paymentLink)) {
+            throw new HttpException(`Payment link with id: ${paymentLinkId} was not found`,
+            HttpStatus.NOT_FOUND)
+        }
+        return paymentLink
     }
 
     async getPaymentLinks(ownerId: string) {

@@ -4,23 +4,43 @@ info:
   version: 1.0.0
 servers:
   - url: https://api.chargeweb3.com/api/v0
+tags:
+  - name: Payments
 paths:
   /app-store/v1/payments/payment_link:
     post:
       tags:
-        - payments
+        - Payments
       summary: Create Payment Link
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              properties:
+                title: 
+                  type: string
+                  example: Title
+                description: 
+                  type: string
+                  example: Description
+                amount: 
+                  type: number
+                  example: 10
+                tokenAddress: 
+                  type: string
+                  example: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                tokenSymbol: 
+                  type: string
+                  example: USDC
               example:
                 title: Title
                 description: Description
                 amount: '10'
                 tokenAddress: '0x495d133B938596C9984d462F007B676bDc57eCEC'
                 tokenSymbol: G$
+      security:
+        - bearerAuth: []
       parameters:
         - name: API-SECRET
           in: header
@@ -40,8 +60,10 @@ paths:
   /app-store/v1/payments/payment_links:
     get:
       tags:
-        - payments
+        - Payments
       summary: Get Payment Links
+      security:
+        - bearerAuth: []
       parameters:
         - name: API-SECRET
           in: header
@@ -61,7 +83,7 @@ paths:
   /app-store/v1/payments/payment_link/{paymentLinkId}:
     get:
       tags:
-        - payments
+        - Payments
       summary: Get Payment Link
       parameters:
         - name: paymentLinkId
@@ -78,8 +100,10 @@ paths:
   /app-store/v1/payments/account_balance:
     get:
       tags:
-        - payments
+        - Payments
       summary: Get Account Balance
+      security:
+        - bearerAuth: []
       parameters:
         - name: API-SECRET
           in: header

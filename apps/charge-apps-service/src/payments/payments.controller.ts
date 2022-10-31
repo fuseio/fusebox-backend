@@ -11,6 +11,8 @@ import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-token
 export class PaymentsController {
   constructor (private readonly paymentsService: PaymentsService) { }
 
+  @UseGuards(IsValidApiKeysGuard)
+  @Get('payment_link/allowed_tokens') 
   @MessagePattern('get_allowed_tokens')
   getAllowedTokens() {
     return this.paymentsService.getPaymentsAllowedTokens()

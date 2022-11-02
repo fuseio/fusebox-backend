@@ -69,6 +69,7 @@ export class BroadcasterService {
       )
       .pipe(
         map((axiosResponse: AxiosResponse) => {
+          this.logger.log(`Sent webhook to ${webhookUrl} with data: ${postBody}`)
           return axiosResponse.data
         })
       )

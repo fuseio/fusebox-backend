@@ -5,7 +5,7 @@ export class CreateWebhookDto {
   @IsString()
     projectId: string
 
-  @IsUrl({require_tld: false})
+  @IsUrl({ require_tld: false })
     webhookUrl: string
 
   @IsString()

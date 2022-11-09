@@ -57,7 +57,7 @@ export class AppStoreController {
 
     @UseGuards(JwtAuthGuard)
     @Get('payments/allowed_tokens')
-    getPaymentsAllowedTokens() {
+    getPaymentsAllowedTokens () {
       return this.appStoreService.getPaymentsAllowedTokens()
     }
 
@@ -75,9 +75,9 @@ export class AppStoreController {
       */
      @UseGuards(JwtAuthGuard)
      @Get('payment_links')
-     getPaymentLinks (@User('sub') auth0Id: string) {
-       return this.appStoreService.getPaymentLinks(auth0Id)
-     }
+    getPaymentLinks (@User('sub') auth0Id: string) {
+      return this.appStoreService.getPaymentLinks(auth0Id)
+    }
 
      @UseGuards(JwtAuthGuard)
      @Get('payments/account/balance')

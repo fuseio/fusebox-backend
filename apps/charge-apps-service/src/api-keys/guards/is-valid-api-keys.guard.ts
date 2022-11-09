@@ -12,7 +12,7 @@ export class IsValidApiKeysGuard implements CanActivate {
     if (contextType === 'rpc') {
       return true
     }
-    
+
     const request = context.switchToHttp().getRequest()
     const { query }: { query: { apiKey: string } } = request
     const appApiKey = await this.apiKeysService.findOne({ publicKey: query?.apiKey })

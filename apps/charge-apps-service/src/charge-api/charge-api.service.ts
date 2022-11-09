@@ -13,50 +13,49 @@ import { formatUnits } from 'nestjs-ethers'
 @Injectable()
 export class ChargeApiService {
   private readonly logger = new Logger(ChargeApiService.name)
-  
+
   constructor (
     private httpService: HttpService,
     private configService: ConfigService,
     @Inject(backendWalletModelString)
     private backendWalletModel: Model<BackendWallet>
-    ) { }
+  ) { }
 
-  get getPaymentsAllowedTokens() {
-      return this.configService.get('paymentsAllowedTokens')
+  get getPaymentsAllowedTokens () {
+    return this.configService.get('paymentsAllowedTokens')
   }
 
-  get chargeBaseUrl() {
+  get chargeBaseUrl () {
     return this.configService.get('CHARGE_BASE_URL')
   }
 
-  get unmarshalBaseUrl() {
+  get unmarshalBaseUrl () {
     return this.configService.get('UNMARSHAL_BASE_URL')
   }
 
-  get unmarshalAuthKey() {
+  get unmarshalAuthKey () {
     return this.configService.get('UNMARSHAL_AUTH_KEY')
   }
 
-  get chargePublicKey() {
+  get chargePublicKey () {
     return this.configService.get('CHARGE_PUBLIC_KEY')
   }
 
-  get chargeWebhookId() {
+  get chargeWebhookId () {
     return this.configService.get('CHARGE_WEBHOOK_ID')
   }
 
-  get walletPhoneNumber() {
+  get walletPhoneNumber () {
     return this.configService.get('CHARGE_WALLET_PHONE_NUMBER')
   }
 
-  get getSleepMS() {
+  get getSleepMS () {
     return this.configService.get('JOB_SLEEP_MS')
   }
 
-  sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-  
+  sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
   async createBackendWallet (walletType: walletTypes): Promise<Record<string, any>> {
-    
     const phoneNumber = this.walletPhoneNumber
     const url = `${this.chargeBaseUrl}/api/v0/admin/wallets/create?apiKey=${this.chargePublicKey}`
 
@@ -71,7 +70,7 @@ export class ChargeApiService {
 
     const backendWallet = await this.backendWalletModel.create({
       jobId: jobData._id,
-      walletAddress: walletAddress,
+      walletAddress,
       walletType
     })
 
@@ -92,7 +91,7 @@ export class ChargeApiService {
     return backendWallet
   }
 
-  async transferTokens(transferTokensDto: TransferTokensDto) {
+  async transferTokens (transferTokensDto: TransferTokensDto) {
     const url = `${this.chargeBaseUrl}/api/v0/admin/tokens/transfer?apiKey=${this.chargePublicKey}`
 
     const requestBody = {
@@ -115,18 +114,18 @@ export class ChargeApiService {
     return jobData
   }
 
-  async getWalletBalance(address: string) {
+  async getWalletBalance (address: string) {
     const tokensBalanceUrl = `${this.unmarshalBaseUrl}/v1/fuse/address/${address}/assets?chainId=122&token=false&auth_key=${this.unmarshalAuthKey}`
 
     const tokensBalance = await this.httpProxyGet(tokensBalanceUrl)
 
     const paymentsAllowedTokens = this.getPaymentsAllowedTokens
 
-    let extendedTokensBalance = values(merge(keyBy(tokensBalance, 'contract_address'), keyBy(paymentsAllowedTokens, 'contract_address')))
+    const extendedTokensBalance = values(merge(keyBy(tokensBalance, 'contract_address'), keyBy(paymentsAllowedTokens, 'contract_address')))
 
-    for(let [index, token] of extendedTokensBalance.entries()) {
+    for (const [index, token] of extendedTokensBalance.entries()) {
       if (isEmpty(token.balance)) {
-        token.balance = "0"
+        token.balance = '0'
       }
 
       if (isEmpty(token.verified)) {
@@ -134,19 +133,19 @@ export class ChargeApiService {
         token.quote_rate = priceData.data.price
         const formattedBalance = formatUnits(token.balance, token.contract_decimals)
         token.quote = (parseFloat(formattedBalance) * parseFloat(token.quote_rate)).toString()
-        
+
         extendedTokensBalance[index] = token
-      }      
+      }
     }
-    
+
     return extendedTokensBalance
   }
 
-  async getBackendWalletByAddress(address: string) {
-    return this.backendWalletModel.findOne({walletAddress: address})
+  async getBackendWalletByAddress (address: string) {
+    return this.backendWalletModel.findOne({ walletAddress: address })
   }
 
-  async getUpdatedJobData(jobData: any) {
+  async getUpdatedJobData (jobData: any) {
     const jobId = jobData?._id
 
     const url = `${this.chargeBaseUrl}/api/v0/jobs/${jobId}?apiKey=${this.chargePublicKey}`
@@ -156,7 +155,7 @@ export class ChargeApiService {
     return responseData
   }
 
-  async addWebhookAddress(address: string) {
+  async addWebhookAddress (address: string) {
     const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${this.chargePublicKey}`
 
     const requestBody = {
@@ -167,19 +166,19 @@ export class ChargeApiService {
     await this.httpProxyPost(url, requestBody)
   }
 
-  async getPriceFromTradeApi(tokenAddress: string) {
+  async getPriceFromTradeApi (tokenAddress: string) {
     const url = `${this.chargeBaseUrl}/api/v0/trade/price/${tokenAddress}?apiKey=${this.chargePublicKey}`
     const response = await this.httpProxyGet(url)
     return response
   }
 
-  async httpProxyPost(url: string, requestBody: any) {
+  async httpProxyPost (url: string, requestBody: any) {
     const responseData = await lastValueFrom(
       this.httpService.post(url, requestBody)
         .pipe(map((response) => {
-            return response.data
-          })
-          )
+          return response.data
+        })
+        )
         .pipe(
           catchError(e => {
             throw new HttpException(
@@ -193,13 +192,13 @@ export class ChargeApiService {
     return responseData
   }
 
-  async httpProxyGet(url: string) {
+  async httpProxyGet (url: string) {
     const responseData = await lastValueFrom(
       this.httpService.get(url)
         .pipe(map((response) => {
-            return response.data
-          })
-          )
+          return response.data
+        })
+        )
         .pipe(
           catchError(e => {
             throw new HttpException(

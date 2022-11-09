@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { PaymentsService } from '@app/apps-service/payments/payments.service'
 import { MessagePattern } from '@nestjs/microservices'
@@ -12,12 +12,12 @@ export class PaymentsController {
   constructor (private readonly paymentsService: PaymentsService) { }
 
   @UseGuards(IsValidApiKeysGuard)
-  @Get('payment_link/allowed_tokens') 
+  @Get('payment_link/allowed_tokens')
   @MessagePattern('get_allowed_tokens')
-  getAllowedTokens() {
+  getAllowedTokens () {
     return this.paymentsService.getPaymentsAllowedTokens()
   }
-  
+
   @MessagePattern('create_payment_account')
   createPaymentAccount (ownerId: string) {
     return this.paymentsService.createPaymentAccount(ownerId)
@@ -30,8 +30,8 @@ export class PaymentsController {
     return this.paymentsService.createPaymentLink(userId, createPaymentLinkDto)
   }
 
-  @Get('payment_link/:paymentLinkId') 
-  getPaymentLink(@Param('paymentLinkId') paymentLinkId: string) {
+  @Get('payment_link/:paymentLinkId')
+  getPaymentLink (@Param('paymentLinkId') paymentLinkId: string) {
     return this.paymentsService.getPaymentLink(paymentLinkId)
   }
 
@@ -42,8 +42,8 @@ export class PaymentsController {
     return this.paymentsService.getPaymentLinks(userId || ownerId)
   }
 
-  @Post('webhook') 
-  webhook(@Body() webhookEvent: WebhookEvent) {
+  @Post('webhook')
+  webhook (@Body() webhookEvent: WebhookEvent) {
     this.paymentsService.handleWebhook(webhookEvent)
   }
 

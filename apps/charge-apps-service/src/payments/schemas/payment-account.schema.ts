@@ -7,7 +7,7 @@ export const PaymentAccountSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
-    backendWalletId: { 
+    backendWalletId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BackendWallet',
       required: true

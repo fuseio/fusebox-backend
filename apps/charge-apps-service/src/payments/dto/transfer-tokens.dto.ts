@@ -4,10 +4,10 @@ export class TransferTokensDto {
   @IsOptional()
   @IsString()
     ownerId: string
-  
+
   @IsEthereumAddress()
     tokenAddress: string
-  
+
   @IsOptional()
   @IsEthereumAddress()
     from: string

@@ -4,7 +4,7 @@ export class CreatePaymentLinkDto {
   @IsString()
   @IsOptional()
     ownerId: string
-  
+
   @IsString()
     title: string
 

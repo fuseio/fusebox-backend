@@ -80,7 +80,7 @@ export class AppStoreService {
     return callMSFunction(this.appStoreClient, 'update_secret', { ownerId, appName } as ApiKeysDto)
   }
 
-  async createPaymentLink(auth0Id: string, createPaymentLinkDto: CreatePaymentLinkDto) {
+  async createPaymentLink (auth0Id: string, createPaymentLinkDto: CreatePaymentLinkDto) {
     const ownerId = await this.getUserId(auth0Id)
 
     createPaymentLinkDto.ownerId = ownerId
@@ -88,13 +88,13 @@ export class AppStoreService {
     return callMSFunction(this.appStoreClient, 'create_payment_link', createPaymentLinkDto)
   }
 
-  async getPaymentLinks(auth0Id: string) {
+  async getPaymentLinks (auth0Id: string) {
     const ownerId = await this.getUserId(auth0Id)
 
     return callMSFunction(this.appStoreClient, 'get_payment_links', ownerId)
   }
 
-  async getPaymentsAllowedTokens() {
+  async getPaymentsAllowedTokens () {
     return callMSFunction(this.appStoreClient, 'get_allowed_tokens', '')
   }
 

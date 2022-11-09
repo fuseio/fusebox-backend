@@ -7,10 +7,10 @@ export enum walletTypes {
 
 export const BackendWalletSchema = new mongoose.Schema(
   {
-    jobId: {type: String, required: true },
-    walletAddress: {type: String, required: true},
-    accountAddress: {type: String},
-    ownerAddress: {type: String},
+    jobId: { type: String, required: true },
+    walletAddress: { type: String, required: true },
+    accountAddress: { type: String },
+    ownerAddress: { type: String },
     walletType: { type: String, enum: walletTypes, required: true }
   },
   {

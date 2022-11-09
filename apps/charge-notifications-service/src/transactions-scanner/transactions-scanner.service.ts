@@ -131,6 +131,7 @@ export class TransactionsScannerService {
       blockNumber: trace.blockNumber,
       blockHash: trace.blockHash,
       tokenType: TokenType.FUSE,
+      tokenSymbol: 'FUSE',
       tokenAddress: NATIVE_FUSE_ADDRESS,
       isInternalTransaction: false
     }

@@ -34,6 +34,17 @@ services:
       - .env
     networks:
       - chargenet
+  charge-apps-service:
+    build:
+      target: production
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-apps-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
   charge-notifications-service:
     build:
       target: production

@@ -1,0 +1,611 @@
+{
+	"info": {
+		"_postman_id": "fb6635ea-7e7d-488f-90f1-5013b3670f15",
+		"name": "Payments API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20885446"
+	},
+	"item": [
+		{
+			"name": "Create Payment Link",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"description": "(Required) Your Payments API Secret Key",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Title\",\n    \"description\": \"Description\",\n    \"amount\": 10,\n    \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n    \"tokenSymbol\": \"USDC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_link"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}",
+							"description": "(Required) Your Payments API Public Key"
+						}
+					]
+				},
+				"description": "Create a new payment request link.\n\nBody params:\n\n| **Param** | **Type** | **Description** | **isRequired?** |\n| --- | --- | --- | --- |\n| title | string | Title of payment link | true |\n| description | string | Description for the requested payment | false |\n| amount | float | Requested amount | true |\n| tokenAddress | string | Ethereum contract address for the requested token (Check `Get Allowed Tokens List` request) | true |\n| tokenSymbol | string | Symbol of requested token (Check `Get Allowed Tokens List` request) | true |"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"value": "{{paymentsSecretKey}}",
+								"description": "(Required) Your Payments API Secret Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Title\",\n    \"description\": \"Description\",\n    \"amount\": 10,\n    \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n    \"tokenSymbol\": \"USDC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link?apiKey={{paymentsPublicKey}}",
+							"host": [
+								"{{baseUrlApps}}"
+							],
+							"path": [
+								"app-store",
+								"v1",
+								"payments",
+								"payment_link"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{paymentsPublicKey}}",
+									"description": "(Required) Your Payments API Public Key"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "359"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"167-YGCvnefjS/SOwmh3T4m+/mAN3ak\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Oct 2022 14:47:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"ownerId\": \"63458300becbd35a8c2a2703\",\n    \"title\": \"Title\",\n    \"description\": \"Description\",\n    \"tokenSymbol\": \"USDC\",\n    \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n    \"amount\": 10,\n    \"backendWalletId\": \"635fe010b21d669df1d9fbd8\",\n    \"status\": \"Not Paid\",\n    \"_id\": \"635fe010b21d669df1d9fbda\",\n    \"createdAt\": \"2022-10-31T14:47:44.709Z\",\n    \"updatedAt\": \"2022-10-31T14:47:44.709Z\",\n    \"__v\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Allowed Tokens List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"type": "text",
+						"description": "(Required) Your Payments API Secret Key"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Title\",\n    \"description\": \"Description\",\n    \"amount\": 10,\n    \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n    \"tokenSymbol\": \"USDC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link/allowed_tokens?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_link",
+						"allowed_tokens"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}",
+							"description": "(Required) Your Payments API Public Key"
+						}
+					]
+				},
+				"description": "Get a list of allowed tokens for the creation of payment links with their details."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"value": "{{paymentsSecretKey}}",
+								"type": "text",
+								"description": "(Required) Your Payments API Secret Key"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link/allowed_tokens?apiKey={{paymentsPublicKey}}",
+							"host": [
+								"{{baseUrlApps}}"
+							],
+							"path": [
+								"app-store",
+								"v1",
+								"payments",
+								"payment_link",
+								"allowed_tokens"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{paymentsPublicKey}}",
+									"description": "(Required) Your Payments API Public Key"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "841"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"349-GdeKRJxhIRsnv0X272SsQ4xWzHw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Oct 2022 14:46:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"tokenSymbol\": \"USDC\",\n        \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n        \"contract_address\": \"0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5\",\n        \"contract_decimals\": 6,\n        \"logo_url\": \"https://assets.unmarshal.io/tokens/fuse_0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5.png\"\n    },\n    {\n        \"tokenSymbol\": \"FUSE\",\n        \"tokenAddress\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n        \"contract_address\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n        \"contract_decimals\": 18,\n        \"logo_url\": \"https://assets.unmarshal.io/tokens/fuse_0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.png\"\n    },\n    {\n        \"tokenSymbol\": \"G$\",\n        \"tokenAddress\": \"0x495d133B938596C9984d462F007B676bDc57eCEC\",\n        \"contract_address\": \"0x495d133b938596c9984d462f007b676bdc57ecec\",\n        \"contract_decimals\": 2,\n        \"logo_url\": \"https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x495d133B938596C9984d462F007B676bDc57eCEC/logo.png\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Payment Link",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link/:paymentLinkId",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_link",
+						":paymentLinkId"
+					],
+					"variable": [
+						{
+							"key": "paymentLinkId",
+							"value": "635a73541f25b1f56f7576d7",
+							"description": "(Required) Payment link Id"
+						}
+					]
+				},
+				"description": "Get a payment link's details including its status."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link/:paymentLinkId",
+							"host": [
+								"{{baseUrlApps}}"
+							],
+							"path": [
+								"app-store",
+								"v1",
+								"payments",
+								"payment_link",
+								":paymentLinkId"
+							],
+							"variable": [
+								{
+									"key": "paymentLinkId",
+									"value": "635a73541f25b1f56f7576d7",
+									"description": "(Required) Payment Link Id"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "438"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1b6-qxDAOrwENmLzstT5IZefyKr05EA\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Oct 2022 15:02:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"635a73541f25b1f56f7576d7\",\n    \"ownerId\": \"63458300becbd35a8c2a2703\",\n    \"title\": \"My payment link\",\n    \"description\": \"Description\",\n    \"tokenSymbol\": \"FBXT\",\n    \"tokenAddress\": \"0x8AB8BBE0bdbf24e57ee4aF11B65D0486323EEbe2\",\n    \"amount\": 1.5,\n    \"backendWalletId\": {\n        \"_id\": \"635a73521f25b1f56f7576d5\",\n        \"walletAddress\": \"0xB902180f8A48188E42129B5B009767C82a9fd33b\"\n    },\n    \"status\": \"PENDING\",\n    \"createdAt\": \"2022-10-27T12:02:28.359Z\",\n    \"updatedAt\": \"2022-10-27T12:02:28.359Z\",\n    \"__v\": 0\n}"
+				},
+				{
+					"name": "Not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_link/:paymentLinkId",
+							"host": [
+								"{{baseUrlApps}}"
+							],
+							"path": [
+								"app-store",
+								"v1",
+								"payments",
+								"payment_link",
+								":paymentLinkId"
+							],
+							"variable": [
+								{
+									"key": "paymentLinkId",
+									"value": "635a5da6784cdf39a37161a5",
+									"description": "(Required) Payments Link Id"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "158"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"9e-u/XMI4JgrDBUiG72DF2lQQbymNU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Oct 2022 15:01:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"errorMessage\": \"Payment link with 635a5da6784cdf39a37161a5 not found\",\n    \"path\": \"/app-store/v1/payments/payment_link/635a5da6784cdf39a37161a5\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Payment Links",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"description": "(Required) Your Payments API Secret Key",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_links?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"payment_links"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}",
+							"description": "(Required) Your Payments API Public Key"
+						}
+					]
+				},
+				"description": "Get the list of all payment links created under your account."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"value": "{{paymentsSecretKey}}",
+								"description": "(Required) Your Payments API Secret Key",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlApps}}/app-store/v1/payments/payment_links?apiKey={{paymentsPublicKey}}",
+							"host": [
+								"{{baseUrlApps}}"
+							],
+							"path": [
+								"app-store",
+								"v1",
+								"payments",
+								"payment_links"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{paymentsPublicKey}}",
+									"description": "(Required) Your Payments API Public Key"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "12819"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3213-Rln5lXHlQd2rnS2YDhn94QDx9qU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Oct 2022 15:03:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"_id\": \"635fdb8350eec0b6ee92aabc\",\n        \"ownerId\": \"63458300becbd35a8c2a2703\",\n        \"title\": \"My payment link\",\n        \"description\": \"Description\",\n        \"tokenSymbol\": \"USDC\",\n        \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n        \"amount\": 1.5,\n        \"backendWalletId\": \"635fdb8350eec0b6ee92aaba\",\n        \"status\": \"Not Paid\",\n        \"createdAt\": \"2022-10-31T14:28:19.288Z\",\n        \"updatedAt\": \"2022-10-31T14:28:19.288Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"635fe010b21d669df1d9fbda\",\n        \"ownerId\": \"63458300becbd35a8c2a2703\",\n        \"title\": \"Title\",\n        \"description\": \"Description\",\n        \"tokenSymbol\": \"USDC\",\n        \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n        \"amount\": 10,\n        \"backendWalletId\": \"635fe010b21d669df1d9fbd8\",\n        \"status\": \"Not Paid\",\n        \"createdAt\": \"2022-10-31T14:47:44.709Z\",\n        \"updatedAt\": \"2022-10-31T14:47:44.709Z\",\n        \"__v\": 0\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Account Balance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "API-SECRET",
+						"value": "{{paymentsSecretKey}}",
+						"description": "(Required) Your Payments API Secret Key",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrlApps}}/app-store/v1/payments/account_balance?apiKey={{paymentsPublicKey}}",
+					"host": [
+						"{{baseUrlApps}}"
+					],
+					"path": [
+						"app-store",
+						"v1",
+						"payments",
+						"account_balance"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{paymentsPublicKey}}",
+							"description": "(Required) Your Payments API Public Key"
+						}
+					]
+				},
+				"description": "Get your payment account's balance."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "API-SECRET",
+								"value": "{{paymentsSecretKey}}",
+								"description": "(Required) Your Payments API Secret Key",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlApps}}/app-store/v1/payments/account_balance?apiKey={{paymentsPublicKey}}",
+							"host": [
+								"{{baseUrlApps}}"
+							],
+							"path": [
+								"app-store",
+								"v1",
+								"payments",
+								"account_balance"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{paymentsPublicKey}}",
+									"description": "(Required) Your Payments API Public Key"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"tokenSymbol\": \"USDC\",\n        \"tokenAddress\": \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n        \"contract_address\": \"0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5\",\n        \"contract_decimals\": 6,\n        \"logo_url\": \"https://assets.unmarshal.io/tokens/fuse_0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5.png\",\n        \"balance\": \"0\",\n        \"quote_rate\": \"0.9957980066443322\",\n        \"quote\": \"0\"\n    },\n    {\n        \"tokenSymbol\": \"FUSE\",\n        \"tokenAddress\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\",\n        \"contract_address\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n        \"contract_decimals\": 18,\n        \"logo_url\": \"https://assets.unmarshal.io/tokens/fuse_0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.png\",\n        \"balance\": \"0\",\n        \"quote_rate\": \"0.08825097310594551\",\n        \"quote\": \"0\"\n    },\n    {\n        \"tokenSymbol\": \"G$\",\n        \"tokenAddress\": \"0x495d133B938596C9984d462F007B676bDc57eCEC\",\n        \"contract_address\": \"0x495d133b938596c9984d462f007b676bdc57ecec\",\n        \"contract_decimals\": 2,\n        \"logo_url\": \"https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x495d133B938596C9984d462F007B676bDc57eCEC/logo.png\",\n        \"balance\": \"0\",\n        \"quote_rate\": \"0.00015908263958753187\",\n        \"quote\": \"0\"\n    }\n]"
+				}
+			]
+		}
+	]
+}

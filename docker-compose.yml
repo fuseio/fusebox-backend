@@ -16,8 +16,11 @@ services:
       - MONGO_URI=${ACCOUNTS_MONGO_URI}
       - AUTH0_ISSUER_URL
       - AUTH0_AUDIENCE
+      - APPS_HOST
+      - APPS_TCP_PORT
     depends_on:
       - charge-api-service
+      - charge-apps-service
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -103,6 +106,35 @@ services:
     ports:
       - ${NETWORK_PORT}:${NETWORK_PORT}
       - ${NETWORK_TCP_PORT}:${NETWORK_TCP_PORT}
+    restart: always
+  charge-apps-service:
+    container_name: charge-apps-service
+    build:
+      context: .
+      dockerfile: ./apps/charge-apps-service/Dockerfile
+      target: development
+    command: npm run start:dev charge-apps-service
+    env_file:
+      - ./apps/charge-apps-service/.env
+    environment:
+      - APPS_HOST
+      - APPS_PORT
+      - APPS_TCP_PORT
+      - MONGO_URI=${APPS_MONGO_URI}
+      - CHARGE_WALLET_PHONE_NUMBER
+      - CHARGE_BASE_URL
+      - CHARGE_PUBLIC_KEY
+      - CHARGE_SECRET_KEY
+      - CHARGE_WEBHOOK_ID
+      - JOB_SLEEP_MS
+      - UNMARSHAL_BASE_URL
+      - UNMARSHAL_AUTH_KEY
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${APPS_PORT}:${APPS_PORT}
+      - ${APPS_TCP_PORT}:${APPS_TCP_PORT}
     restart: always
   charge-relay-service:
     container_name: charge-relay-service

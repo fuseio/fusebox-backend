@@ -170,7 +170,7 @@ export class PaymentsService {
   }
 
   isTokenMatch (paymentLink: PaymentLink, webhookEvent: WebhookEvent) {
-    return paymentLink.tokenAddress === webhookEvent.tokenAddress &&
-        paymentLink.tokenSymbol === webhookEvent.tokenSymbol
+    return paymentLink.tokenAddress.toLowerCase() === webhookEvent.tokenAddress.toLowerCase() &&
+        paymentLink.tokenSymbol.toLowerCase() === webhookEvent.tokenSymbol.toLowerCase()
   }
 }

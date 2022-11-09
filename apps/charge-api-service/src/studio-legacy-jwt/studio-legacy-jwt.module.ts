@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { StudioLegacyJwtService } from './studio-legacy-jwt.service'
+import { StudioLegacyJwtService } from '@app/api-service/studio-legacy-jwt/studio-legacy-jwt.service'
 
 @Module({
   imports: [

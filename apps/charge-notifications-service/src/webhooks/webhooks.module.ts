@@ -3,10 +3,11 @@ import { WebhooksController } from '@app/notifications-service/webhooks/webhooks
 import { webhooksProviders } from '@app/notifications-service/webhooks/webhooks.providers'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { Module } from '@nestjs/common'
+import { webhookEventProviders } from '@app/notifications-service/common/providers/webhook-event.provider'
 
 @Module({
   imports: [DatabaseModule],
-  providers: [WebhooksService, ...webhooksProviders],
+  providers: [WebhooksService, ...webhooksProviders, ...webhookEventProviders],
   controllers: [WebhooksController],
   exports: [WebhooksService]
 })

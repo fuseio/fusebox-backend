@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
@@ -7,14 +7,22 @@ import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.
 import { webhookAddressModelString, webhookModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
+import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
+import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
+import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 
 @Injectable()
 export class WebhooksService {
+  private readonly logger = new Logger(WebhooksService.name)
+
   constructor (
     @Inject(webhookModelString)
     private webhookModel: Model<Webhook>,
     @Inject(webhookAddressModelString)
-    private webhookAddressModel: Model<WebhookAddress, WebhookAddressModel>
+    private webhookAddressModel: Model<WebhookAddress, WebhookAddressModel>,
+    @Inject(webhookEventModelString)
+    private webhookEventModel: Model<WebhookEvent>
   ) { }
 
   async create (createWebhookDto: CreateWebhookDto): Promise<Webhook> {
@@ -99,6 +107,46 @@ export class WebhooksService {
     })
 
     return addressWatchers
+  }
+
+  async processWebhookEvents (eventData: EventData) {
+    const toAddress = eventData?.to
+    const fromAddress = eventData?.from
+
+    const toAddressWatchers = await this.getAddressWatchers(toAddress)
+
+    await this.addRelevantWebhookEventsToQueue(toAddressWatchers, eventData, 'incoming')
+
+    const fromAddressWatchers = await this.getAddressWatchers(fromAddress)
+
+    await this.addRelevantWebhookEventsToQueue(fromAddressWatchers, eventData, 'outgoing')
+  }
+
+  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string) {
+    for (const addressWatcher of addressWatchers) {
+      const { webhookId, projectId, webhookUrl, eventType } = addressWatcher
+
+      if (!isEmpty(webhookUrl) &&
+                !isEmpty(eventType) &&
+                this.isRelevantEvent(eventData.tokenType, eventType)) {
+        try {
+          await this.webhookEventModel.create({
+            webhook: webhookId, projectId, webhookUrl, eventData, direction
+          })
+        } catch (err) {
+          this.logger.error(`Webhook event couldn't be added to the DB: ${err}`)
+        }
+      }
+    }
+  }
+
+  isRelevantEvent (tokenType: string, eventType: string): boolean {
+    // TODO: Choose better naming to make it clearer what each variable is
+    if (eventType === eventTypes.ALL || tokenType === eventType) {
+      return true
+    }
+
+    return false
   }
 
   private buildDocs (createWebhookAddressesDto: CreateWebhookAddressesDto) {

@@ -153,7 +153,6 @@ export class EventsScannerService {
       eventData.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
 
-    // await this.broadcasterService.broadCastEvent(eventData)
     await this.webhooksService.processWebhookEvents(eventData)
   }
 

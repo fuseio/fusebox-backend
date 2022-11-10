@@ -144,7 +144,6 @@ export class TransactionsScannerService {
       eventData.isInternalTransaction = true
     }
 
-    // await this.broadcasterService.broadCastEvent(eventData)
     await this.webhooksService.processWebhookEvents(eventData)
   }
 }

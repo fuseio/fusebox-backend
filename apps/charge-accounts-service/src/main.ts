@@ -1,5 +1,5 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
-import { AppModule } from '@app/accounts-service/app.module'
+import { AccountsModule } from '@app/accounts-service/accounts.module'
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import Helmet from 'helmet'
 import { Transport } from '@nestjs/microservices'
@@ -7,7 +7,7 @@ import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filte
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AccountsModule)
 
   app.connectMicroservice({
     transport: Transport.TCP,
@@ -25,7 +25,6 @@ async function bootstrap () {
   app.enableCors()
   app.useGlobalPipes(
     new ValidationPipe({
-      disableErrorMessages: true,
       transform: true
     })
   )

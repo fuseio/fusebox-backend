@@ -40,6 +40,9 @@
       ],
       "@app/network-service/*": [
         "apps/charge-network-service/src/*"
+      ],
+      "@app/apps-service/*": [
+        "apps/charge-apps-service/src/*"
       ]
     }
   }

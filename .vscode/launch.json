@@ -29,6 +29,17 @@
         {
             "type": "node",
             "request": "attach",
+            "name": "Debug: Charge Apps",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
+            "port": 9231,
+            "restart": true,
+            "address": "0.0.0.0",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "attach",
             "name": "Debug: Charge Accounts",
             "remoteRoot": "/usr/src/app",
             "localRoot": "${workspaceFolder}",

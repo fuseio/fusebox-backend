@@ -125,7 +125,7 @@ export class EventsScannerService {
     try {
       [name, symbol, decimals] = await this.getTokenInfo(tokenAddress, abi, tokenType)
     } catch (err) {
-      this.logger.error(`Unable to get token info at address ${tokenAddress}`)
+      this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
     const eventData: EventData = {

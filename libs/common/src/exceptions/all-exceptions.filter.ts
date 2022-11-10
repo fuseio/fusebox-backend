@@ -4,6 +4,7 @@ import {
   Logger
 } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
+import { RpcException } from '@nestjs/microservices'
 import { ServerResponse } from 'http'
 import { MongoServerError } from 'mongodb'
 import { throwError } from 'rxjs'
@@ -34,6 +35,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
         httpStatus = HttpStatus.BAD_REQUEST
         errorMessage = `${Object.keys(exception?.keyValue)} must be unique`
       }
+    } else if (exception instanceof RpcException) {
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+      errorMessage = exception.message
     } else {
       httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
       errorMessage = 'Critical Internal Server Error Occurred'

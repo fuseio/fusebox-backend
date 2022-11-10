@@ -11,3 +11,5 @@ services:
     command: npm run start:debug --service charge-relay-service --port=9226
   charge-network-service:
     command: npm run start:debug --service=charge-network-service --port=9225
+  charge-apps-service:
+    command: npm run start:debug --service=charge-apps-service --port=9231

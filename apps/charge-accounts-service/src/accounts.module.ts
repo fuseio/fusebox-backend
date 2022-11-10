@@ -2,17 +2,19 @@ import { Module } from '@nestjs/common'
 import { AuthModule } from '@app/accounts-service/auth/auth.module'
 import { UsersModule } from '@app/accounts-service/users/users.module'
 import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
-import { AppController } from '@app/accounts-service/app.controller'
+import { AccountsController } from '@app/accounts-service/accounts.controller'
 import { ConfigModule } from '@nestjs/config'
+import { AppStoreModule } from '@app/accounts-service/app-store/app-store.module'
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
     ProjectsModule,
-    ConfigModule.forRoot({ isGlobal: true })
+    ConfigModule.forRoot({ isGlobal: true }),
+    AppStoreModule
   ],
-  controllers: [AppController],
+  controllers: [AccountsController],
   providers: []
 })
-export class AppModule {}
+export class AccountsModule {}

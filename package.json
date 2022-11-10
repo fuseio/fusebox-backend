@@ -11,7 +11,7 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build charge-accounts-service && nest build charge-api-service && nest build charge-notifications-service && nest build charge-network-service && nest build charge-relay-service",
+    "build": "nest build charge-accounts-service && nest build charge-api-service && nest build charge-notifications-service && nest build charge-network-service && nest build charge-apps-service && nest build charge-relay-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

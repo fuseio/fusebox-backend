@@ -1,4 +1,3 @@
-import { BroadcasterService } from '@app/notifications-service/broadcaster/broadcaster.service'
 import { ERC20_TRANSFER_EVENT_HASH } from '@app/notifications-service/common/constants/events'
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
@@ -9,6 +8,8 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Model } from 'mongoose'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
+import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 
 @Injectable()
 export class EventsScannerService {
@@ -23,7 +24,7 @@ export class EventsScannerService {
         @InjectContractProvider('regular-node')
         private readonly ethersContract: EthersContract,
         private configService: ConfigService,
-        private broadcasterService: BroadcasterService
+        private webhooksService: WebhooksService
   ) { }
 
   async onModuleInit (): Promise<void> {
@@ -106,6 +107,8 @@ export class EventsScannerService {
 
   @logPerformance('EventScanner::ProcessEvent')
   async processEvent (log: Log) {
+    this.logger.log(`Processing event from block: ${log.blockNumber} & txHash: ${log.transactionHash}`)
+
     const tokenType = getTransferEventTokenType(log)
     const abi = getTokenTypeAbi(tokenType)
 
@@ -115,8 +118,8 @@ export class EventsScannerService {
 
     const tokenAddress = parsedLog.address
 
-    let name: String
-    let symbol: String
+    let name: string
+    let symbol: string
     let decimals: number
 
     try {
@@ -125,7 +128,7 @@ export class EventsScannerService {
       this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
-    const data: Record<string, any> = {
+    const eventData: EventData = {
       to: toAddress,
       from: fromAddress,
       txHash: parsedLog.transactionHash,
@@ -134,18 +137,23 @@ export class EventsScannerService {
       blockHash: log.blockHash,
       tokenType: tokenType?.valueOf(),
       tokenName: name,
-      tokenSymbol: symbol
+      tokenSymbol: symbol,
+      value: null,
+      tokenDecimals: null,
+      tokenId: null,
+      valueEth: null,
+      isInternalTransaction: false
     }
 
     if (tokenType === TokenType.ERC20) {
-      data.value = BigNumber.from(parsedLog.args[2]).toString()
-      data.tokenDecimals = decimals
-      data.valueEth = formatUnits(data.value, data.tokenDecimals)
+      eventData.value = BigNumber.from(parsedLog.args[2]).toString()
+      eventData.tokenDecimals = decimals
+      eventData.valueEth = formatUnits(eventData.value, eventData.tokenDecimals)
     } else {
-      data.tokenId = parseInt(parsedLog.args.tokenId?._hex)
+      eventData.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
 
-    await this.broadcasterService.broadCastEvent(data)
+    await this.webhooksService.processWebhookEvents(eventData)
   }
 
   private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {

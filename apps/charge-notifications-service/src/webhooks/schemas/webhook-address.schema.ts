@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import { WebhookAddress } from '../interfaces/webhook-address.interface'
+import { WebhookAddress } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
 
 export const WebhookAddressSchema = new mongoose.Schema<WebhookAddress>(
   {

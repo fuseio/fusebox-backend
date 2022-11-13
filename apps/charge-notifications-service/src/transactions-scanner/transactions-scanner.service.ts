@@ -1,4 +1,3 @@
-import { BroadcasterService } from '@app/notifications-service/broadcaster/broadcaster.service'
 import { NATIVE_FUSE_ADDRESS } from '@app/notifications-service/common/constants/addresses'
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
@@ -11,6 +10,8 @@ import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
 import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'nestjs-ethers'
+import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 
 @Injectable()
 export class TransactionsScannerService {
@@ -23,7 +24,7 @@ export class TransactionsScannerService {
         private readonly rpcProvider: JsonRpcProvider,
         private readonly web3ProviderService: Web3ProviderService,
         private configService: ConfigService,
-        private broadcasterService: BroadcasterService
+        private webhooksService: WebhooksService
   ) { }
 
   get web3Provider () {
@@ -122,7 +123,7 @@ export class TransactionsScannerService {
 
   @logPerformance('TransactionsScanner::ProcessTrace')
   async processTrace (trace: any) {
-    const data: Record<string, any> = {
+    const eventData: EventData = {
       to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
       from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
       value: BigNumber.from(trace.action.value).toString(),
@@ -133,13 +134,17 @@ export class TransactionsScannerService {
       tokenType: TokenType.FUSE,
       tokenSymbol: 'FUSE',
       tokenAddress: NATIVE_FUSE_ADDRESS,
-      isInternalTransaction: false
+      isInternalTransaction: false,
+      tokenName: 'FUSE',
+      tokenSymbol: 'FUSE',
+      tokenDecimals: 18,
+      tokenId: null
     }
 
     if (trace.subtraces > 0 || trace.traceAddress.length > 0) {
-      data.isInternalTransaction = true
+      eventData.isInternalTransaction = true
     }
 
-    await this.broadcasterService.broadCastEvent(data)
+    await this.webhooksService.processWebhookEvents(eventData)
   }
 }

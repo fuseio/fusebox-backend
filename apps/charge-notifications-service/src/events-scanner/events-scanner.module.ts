@@ -6,6 +6,8 @@ import { EventsScannerService } from '@app/notifications-service/events-scanner/
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
+import { webhookEventProviders } from '@app/notifications-service/common/providers/webhook-event.provider'
+import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.module'
 
 @Module({
   imports: [
@@ -23,10 +25,11 @@ import { EthersModule } from 'nestjs-ethers'
         }
       }
     }),
+    WebhooksModule,
     DatabaseModule,
     ConfigModule.forFeature(rpcConfig),
     BroadcasterModule
   ],
-  providers: [EventsScannerService, ...eventsScannerProviders, Logger]
+  providers: [EventsScannerService, ...eventsScannerProviders, ...webhookEventProviders, Logger]
 })
 export class EventsScannerModule {}

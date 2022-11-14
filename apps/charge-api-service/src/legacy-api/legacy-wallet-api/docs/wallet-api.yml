@@ -42,31 +42,6 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 07:43:07 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '17'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"11-GH+FJRT0QKVQAphCcqOVfnP8PKM"
           content:
             application/json:
               schema:
@@ -75,31 +50,6 @@ paths:
                 response: ok
         '400':
           description: Bad Request
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 07:44:03 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '108'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"6c-z8g716x3tbzQnqgDJg3GJul22to"
           content:
             application/json:
               schema:
@@ -111,31 +61,6 @@ paths:
                   can't be blank
         '403':
           description: Forbidden
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 07:44:38 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '69'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"45-T7Txzr/IRLfQ4TEPfbVWLpgje4Q"
           content:
             application/json:
               schema:
@@ -189,31 +114,6 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 07:47:44 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '265'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"109-BZpggiOBlCX8V0getRWrPWRziFk"
           content:
             application/json:
               schema:
@@ -223,31 +123,6 @@ paths:
                   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6Iis5NzI1MDU1OTY1NTkiLCJhY2NvdW50QWRkcmVzcyI6IjB4MWVhMWYzNzVCNWRBMTg1ZWI1MWVkY2JFRDIzRjNkNDAxZjgzaDU3cyIsInZlcmlmaWVkQnkiOiJzbXMiLCJpYXQiOjE2NTU5NzA0NjR9.zsKD1AGoAw25iuhPDeYPiCaJbfB4ppG8qTsCBWksKoM
         '400':
           description: Bad Request
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 07:49:50 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '58'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"3a-l3wLt3Cp+N5CGU2lEhGaPktwC0c"
           content:
             application/json:
               schema:
@@ -260,7 +135,15 @@ paths:
       tags:
         - Wallets
       summary: Create Wallet
-      description: Creates a wallet contract for the user.
+      description: >-
+        Creates a wallet contract for the user.
+
+
+        On a successful request, the response will include an asynchronous job
+        object which you can check its status using the [Jobs
+        API](#4ae61445-efb3-4691-9095-75455a65db95).
+      requestBody:
+        content: {}
       parameters:
         - name: Authorization
           in: header
@@ -315,6 +198,54 @@ paths:
               example:
                 statusCode: 401
                 message: 'Unauthorized: invalid token'
+    delete:
+      tags:
+        - Wallets
+      summary: Delete Wallet
+      description: >-
+        <p>Delete a specific account based on both <code>accountAddress</code>
+        and <code>phoneNumber</code>.</p>
+
+
+        <p><b>NOTE: </b>If there are more than one account addresses associated
+        with the same `phoneNumber`, they must be deleted by separate
+        requests.</p>
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received following successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber: 
+                  type: string
+                  example: '+15554443322'
+                accountAddress:
+                  type: string
+                  example: 0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s
+              example:
+                phoneNumber: '0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                response: ok
     get:
       tags:
         - Wallets
@@ -336,31 +267,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:28:56 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '2306'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"902-xf0nfxUKbK5LoIAl2iaD34Bm53o"
           content:
             application/json:
               schema:
@@ -444,31 +350,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 11:02:24 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '2306'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"902-xf0nfxUKbK5LoIAl2iaD34Bm53o"
           content:
             application/json:
               schema:
@@ -553,31 +434,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:34:14 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '634'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"27a-Gy2pJmxgkvVjF/rUTEZPT6RFgtE"
           content:
             application/json:
               schema:
@@ -646,31 +502,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:34:14 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '634'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"27a-Gy2pJmxgkvVjF/rUTEZPT6RFgtE"
           content:
             application/json:
               schema:
@@ -732,31 +563,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:52:44 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '11'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"b-EFAlOux7Kcr/ZEgGkn2r+oFAbu4"
           content:
             application/json:
               schema:
@@ -765,31 +571,6 @@ paths:
                 data: []
         '403':
           description: Forbidden
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:53:07 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '150'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"96-ySzJ1ajyCrV2Fif15+EwqwO+NdY"
           content:
             application/json:
               schema:
@@ -854,31 +635,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:52:44 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '11'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"b-EFAlOux7Kcr/ZEgGkn2r+oFAbu4"
           content:
             application/json:
               schema:
@@ -887,31 +643,6 @@ paths:
                 data: []
         '403':
           description: Forbidden
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:53:07 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '150'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"96-ySzJ1ajyCrV2Fif15+EwqwO+NdY"
           content:
             application/json:
               schema:
@@ -950,31 +681,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Date:
-              schema:
-                type: string
-                example: Thu, 23 Jun 2022 08:19:14 GMT
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: '1458'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-            ETag:
-              schema:
-                type: string
-                example: W/"5b2-jNXsaoiS9VF7RhXnwQ4ZAH1Y1Jg"
           content:
             application/json:
               schema:

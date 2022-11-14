@@ -559,6 +559,111 @@
 							]
 						},
 						{
+							"name": "Delete Wallet",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received following successful login",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phoneNumber\": \"+1554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								},
+								"description": "<p>Delete a specific account based on both <code>accountAddress</code> and <code>phoneNumber</code>.</p>\n\n<p><b>NOTE: </b>If there are more than one account addresses associated with the same `phoneNumber`, they must be deleted by separate requests.</p>"
+							},
+							"response": [
+								{
+									"name": "Deleted successfully",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"phoneNumber\": \"+1554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:43:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "17"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"11-GH+FJRT0QKVQAphCcqOVfnP8PKM\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"response\": \"ok\"\n}"
+								}
+							]
+						},
+						{
 							"name": "Get Wallet",
 							"protocolProfileBehavior": {
 								"disabledSystemHeaders": {}

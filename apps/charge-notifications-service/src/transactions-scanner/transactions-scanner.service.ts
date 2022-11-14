@@ -136,7 +136,6 @@ export class TransactionsScannerService {
       tokenAddress: NATIVE_FUSE_ADDRESS,
       isInternalTransaction: false,
       tokenName: 'FUSE',
-      tokenSymbol: 'FUSE',
       tokenDecimals: 18,
       tokenId: null
     }

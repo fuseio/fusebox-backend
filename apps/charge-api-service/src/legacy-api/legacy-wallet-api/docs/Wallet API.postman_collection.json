@@ -1,0 +1,1635 @@
+{
+	"info": {
+		"_postman_id": "75e38d7a-1240-4d21-a75f-eee7ee5224b3",
+		"name": "Wallet API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20885446"
+	},
+	"item": [
+		{
+			"name": "Wallet API",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Request SMS Verification Code",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phoneNumber\": \"+972554443322\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/wallets/login/sms/request?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"login",
+										"sms",
+										"request"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								},
+								"description": "Wallet login by SMS code. On a successful request, an SMS code will be sent to the provided phone number, which needs to be verified in a subsequent API call."
+							},
+							"response": [
+								{
+									"name": "SMS sent successfully",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"phoneNumber\": \"+972554443322\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/login/sms/request?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"login",
+												"sms",
+												"request"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:43:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "17"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"11-GH+FJRT0QKVQAphCcqOVfnP8PKM\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"response\": \"ok\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/login/sms/request?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"login",
+												"sms",
+												"request"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:44:03 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "108"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"6c-z8g716x3tbzQnqgDJg3GJul22to\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 400,\n    \"message\": \"Bad Request: PhoneVerification validation failed: phoneNumber: can't be blank\"\n}"
+								},
+								{
+									"name": "Forbidden resource",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"phoneNumber\": \"+972505596559\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/login/sms/request?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"login",
+												"sms",
+												"request"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:44:38 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "69"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"45-T7Txzr/IRLfQ4TEPfbVWLpgje4Q\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 403,\n    \"message\": \"Forbidden resource\",\n    \"error\": \"Forbidden\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Request Verify SMS",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phoneNumber\": \"+972554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\",\n\t\"code\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/wallets/login/sms/verify?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"login",
+										"sms",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									]
+								},
+								"description": "This is the subsequent call to the \"Request SMS Verification Code\" to verify the SMS code received to the provided phone number.\n\nHere you also need to provide the user's account address, which will be included in the JWT that is returned when verification is successful.\n\nMost subsequent calls in the Wallet API will require the JWT you receive back from this call."
+							},
+							"response": [
+								{
+									"name": "Successful Login",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"phoneNumber\": \"+972554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\",\n\t\"code\": \"123456\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/login/sms/verify?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"login",
+												"sms",
+												"verify"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:47:44 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "265"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"109-BZpggiOBlCX8V0getRWrPWRziFk\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6Iis5NzI1MDU1OTY1NTkiLCJhY2NvdW50QWRkcmVzcyI6IjB4MWVhMWYzNzVCNWRBMTg1ZWI1MWVkY2JFRDIzRjNkNDAxZjgzaDU3cyIsInZlcmlmaWVkQnkiOiJzbXMiLCJpYXQiOjE2NTU5NzA0NjR9.zsKD1AGoAw25iuhPDeYPiCaJbfB4ppG8qTsCBWksKoM\"\n}"
+								},
+								{
+									"name": "Bad Request: Wrong SMS Code",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"phoneNumber\": \"+972505596559\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n\t\"code\": \"177001\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/login/sms/verify?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"login",
+												"sms",
+												"verify"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:49:50 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "58"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"3a-l3wLt3Cp+N5CGU2lEhGaPktwC0c\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 400,\n    \"message\": \"Bad Request: Wrong SMS code\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Wallets",
+					"item": [
+						{
+							"name": "Create Wallet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received following successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								},
+								"description": "Creates a wallet contract for the user.\n\nOn a successful request, the response will include an asynchronous job object which you can check its status using the [Jobs API](#4ae61445-efb3-4691-9095-75455a65db95)."
+							},
+							"response": [
+								{
+									"name": "Job Successfully Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:54:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1142"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"476-RhgZh/43B28lh8RXRa/tldWDIXU\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"job\": {\n        \"name\": \"createWallet\",\n        \"data\": {\n            \"owner\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\",\n            \"walletAddress\": \"0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976\",\n            \"communityAddress\": \"62b412879db09c6a1cb429cf\",\n            \"_id\": \"62b41c213c1c8135d984b8f0\",\n            \"walletModules\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"NftTransfer\": \"0x856283dD385f53FEAd47aA981517eEa564379cFC\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"salt\": \"0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15\"\n        },\n        \"status\": \"pending\",\n        \"communityAddress\": \"62b412879db09c6a1cb429cf\",\n        \"_id\": \"62b41c213c1c8135d984b8f2\",\n        \"createdAt\": \"2022-06-23T07:54:09.084Z\",\n        \"updatedAt\": \"2022-06-23T07:54:09.084Z\",\n        \"__v\": 0\n    }\n}"
+								},
+								{
+									"name": "Unauthorized: invalid token",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:55:59 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "58"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"3a-fL+GuCZEFrxNRC7I95dkQeReGjo\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 401,\n    \"message\": \"Unauthorized: invalid token\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Wallet",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received following successful login",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phoneNumber\": \"+1554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}"
+										}
+									]
+								},
+								"description": "<p>Delete a specific account based on both <code>accountAddress</code> and <code>phoneNumber</code>.</p>\n\n<p><b>NOTE: </b>If there are more than one account addresses associated with the same `phoneNumber`, they must be deleted by separate requests.</p>"
+							},
+							"response": [
+								{
+									"name": "Deleted successfully",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"phoneNumber\": \"+1554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 07:43:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "17"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"11-GH+FJRT0QKVQAphCcqOVfnP8PKM\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"response\": \"ok\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Wallet",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}",
+													"description": "(Required) Your Public API key"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:28:56 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2306"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"902-xf0nfxUKbK5LoIAl2iaD34Bm53o\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"_id\": \"62b41c213c1c8135d984b8f0\",\n        \"phoneNumber\": \"+972505596559\",\n        \"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n        \"walletAddress\": \"0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976\",\n        \"isContractDeployed\": true,\n        \"firebaseTokens\": [],\n        \"backup\": false,\n        \"walletOwnerOriginalAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n        \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletModulesOriginal\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"NftTransfer\": \"0x856283dD385f53FEAd47aA981517eEa564379cFC\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"walletModules\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"NftTransfer\": \"0x856283dD385f53FEAd47aA981517eEa564379cFC\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"salt\": \"0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15\",\n        \"networks\": [\n            \"fuse\"\n        ],\n        \"pendingNetworks\": [],\n        \"ip\": \"3.121.234.186\",\n        \"balancesOnForeign\": {},\n        \"upgradesInstalled\": [],\n        \"version\": \"1.7.0\",\n        \"paddedVersion\": \"0001.0007.0000\",\n        \"myReferrals\": [],\n        \"guardians\": [],\n        \"createdAt\": \"2022-06-23T07:54:09.080Z\",\n        \"updatedAt\": \"2022-06-23T07:54:10.379Z\",\n        \"__v\": 0\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Wallet by Phone Number",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets/:phoneNumber?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets",
+										":phoneNumber"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "phoneNumber",
+											"value": "+972554443322"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/:phoneNumber?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												":phoneNumber"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}",
+													"description": "(Required) Your Public API key"
+												}
+											],
+											"variable": [
+												{
+													"key": "phoneNumber",
+													"value": "+972554443322"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 11:02:24 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2306"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"902-xf0nfxUKbK5LoIAl2iaD34Bm53o\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"_id\": \"62b41c213c1c8135d984b8f0\",\n        \"phoneNumber\": \"+972554443322\",\n        \"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n        \"walletAddress\": \"0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976\",\n        \"isContractDeployed\": true,\n        \"firebaseTokens\": [],\n        \"backup\": false,\n        \"walletOwnerOriginalAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n        \"walletFactoryOriginalAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletFactoryCurrentAddress\": \"0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D\",\n        \"walletImplementationOriginalAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletImplementationCurrentAddress\": \"0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc\",\n        \"walletModulesOriginal\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"NftTransfer\": \"0x856283dD385f53FEAd47aA981517eEa564379cFC\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"walletModules\": {\n            \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n            \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n            \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n            \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n            \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n            \"NftTransfer\": \"0x856283dD385f53FEAd47aA981517eEa564379cFC\",\n            \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n            \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n            \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n            \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n        },\n        \"salt\": \"0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15\",\n        \"networks\": [\n            \"fuse\"\n        ],\n        \"pendingNetworks\": [],\n        \"ip\": \"3.121.234.186\",\n        \"balancesOnForeign\": {},\n        \"upgradesInstalled\": [],\n        \"version\": \"1.7.0\",\n        \"paddedVersion\": \"0001.0007.0000\",\n        \"myReferrals\": [],\n        \"guardians\": [],\n        \"createdAt\": \"2022-06-23T07:54:09.080Z\",\n        \"updatedAt\": \"2022-06-23T07:54:10.379Z\",\n        \"__v\": 0\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Wallet Actions",
+					"item": [
+						{
+							"name": "Get Wallet Actions",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets/actions/:walletAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets",
+										"actions",
+										":walletAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "walletAddress",
+											"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976",
+											"description": "(Required) Wallet address of user"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/actions/:walletAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												"actions",
+												":walletAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}",
+													"description": "(Required) Your Public API key"
+												}
+											],
+											"variable": [
+												{
+													"key": "walletAddress",
+													"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976",
+													"description": "(Required) Wallet address of user"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:34:14 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "634"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"27a-Gy2pJmxgkvVjF/rUTEZPT6RFgtE\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"docs\": [\n            {\n                \"_id\": \"62b41c213c1c8135d984b8f4\",\n                \"name\": \"createWallet\",\n                \"communityAddress\": \"62b412879db09c6a1cb429cf\",\n                \"walletAddress\": \"0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976\",\n                \"tokenAddress\": [],\n                \"job\": \"62b41c213c1c8135d984b8f2\",\n                \"data\": {\n                    \"value\": \"0\",\n                    \"txHash\": \"0x751c450f0ca06368fe569390faa4a122e4eaf2317baf14eba83c8c81a44a440f\",\n                    \"status\": \"confirmed\",\n                    \"blockNumber\": 17704134\n                },\n                \"status\": \"confirmed\",\n                \"createdAt\": \"2022-06-23T07:54:09.128Z\",\n                \"updatedAt\": \"2022-06-23T07:54:58.547Z\",\n                \"__v\": 0\n            }\n        ],\n        \"totalDocs\": 1,\n        \"offset\": 0,\n        \"limit\": 10,\n        \"totalPages\": 1,\n        \"page\": 1,\n        \"pagingCounter\": 1,\n        \"hasPrevPage\": false,\n        \"hasNextPage\": false,\n        \"prevPage\": null,\n        \"nextPage\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Paginated Wallet Actions",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets/actions/paginated/:walletAddress?page=1&apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets",
+										"actions",
+										"paginated",
+										":walletAddress"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number"
+										},
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "walletAddress",
+											"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976",
+											"description": "(Required) Wallet address of user"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/actions/:walletAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												"actions",
+												":walletAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}",
+													"description": "(Required) Your Public API key"
+												}
+											],
+											"variable": [
+												{
+													"key": "walletAddress",
+													"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976",
+													"description": "(Required) Wallet address of user"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:34:14 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "634"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"27a-Gy2pJmxgkvVjF/rUTEZPT6RFgtE\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"docs\": [\n            {\n                \"_id\": \"62b41c213c1c8135d984b8f4\",\n                \"name\": \"createWallet\",\n                \"communityAddress\": \"62b412879db09c6a1cb429cf\",\n                \"walletAddress\": \"0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976\",\n                \"tokenAddress\": [],\n                \"job\": \"62b41c213c1c8135d984b8f2\",\n                \"data\": {\n                    \"value\": \"0\",\n                    \"txHash\": \"0x751c450f0ca06368fe569390faa4a122e4eaf2317baf14eba83c8c81a44a440f\",\n                    \"status\": \"confirmed\",\n                    \"blockNumber\": 17704134\n                },\n                \"status\": \"confirmed\",\n                \"createdAt\": \"2022-06-23T07:54:09.128Z\",\n                \"updatedAt\": \"2022-06-23T07:54:58.547Z\",\n                \"__v\": 0\n            }\n        ],\n        \"totalDocs\": 1,\n        \"offset\": 0,\n        \"limit\": 10,\n        \"totalPages\": 1,\n        \"page\": 1,\n        \"pagingCounter\": 1,\n        \"hasPrevPage\": false,\n        \"hasNextPage\": false,\n        \"prevPage\": null,\n        \"nextPage\": null\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Wallet Upgrades",
+					"item": [
+						{
+							"name": "Check Available Upgrades for Wallet",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets/upgrades/available/:walletAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets",
+										"upgrades",
+										"available",
+										":walletAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "walletAddress",
+											"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/upgrades/available/:walletAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												"upgrades",
+												"available",
+												":walletAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											],
+											"variable": [
+												{
+													"key": "walletAddress",
+													"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:52:44 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "11"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"b-EFAlOux7Kcr/ZEgGkn2r+oFAbu4\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": []\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/upgrades/available/:walletAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												"upgrades",
+												"available",
+												":walletAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											],
+											"variable": [
+												{
+													"key": "walletAddress",
+													"value": "0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:53:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "150"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"96-ySzJ1ajyCrV2Fif15+EwqwO+NdY\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 403,\n    \"message\": \"Forbidden: Wallet 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE is not owner by 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Upgrade Wallet",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"upgradeId\": \"\",\n    \"relayParams\": {\n        \"walletAddress\": \"\",\n        \"disableModuleName\": \"\",\n        \"disableModuleAddress\": \"\",\n        \"enableModuleAddress\": \"\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/wallets/wallets/upgrades/install/:walletAddress?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"wallets",
+										"upgrades",
+										"install",
+										":walletAddress"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "walletAddress",
+											"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976",
+											"description": "(Required) Wallet Address"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/upgrades/available/:walletAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												"upgrades",
+												"available",
+												":walletAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											],
+											"variable": [
+												{
+													"key": "walletAddress",
+													"value": "0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:52:44 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "11"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"b-EFAlOux7Kcr/ZEgGkn2r+oFAbu4\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": []\n}"
+								},
+								{
+									"name": "Forbidden",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/wallets/upgrades/available/:walletAddress?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"wallets",
+												"upgrades",
+												"available",
+												":walletAddress"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}"
+												}
+											],
+											"variable": [
+												{
+													"key": "walletAddress",
+													"value": "0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:53:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "150"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"96-ySzJ1ajyCrV2Fif15+EwqwO+NdY\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 403,\n    \"message\": \"Forbidden: Wallet 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE is not owner by 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Wallet Jobs",
+					"item": [
+						{
+							"name": "Get Job by Id",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt}}",
+										"description": "(Required) The JWT received upon successful login",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/wallets/jobs/:jobId?apiKey={{publicKey}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wallets",
+										"jobs",
+										":jobId"
+									],
+									"query": [
+										{
+											"key": "apiKey",
+											"value": "{{publicKey}}",
+											"description": "(Required) Your Public API key"
+										}
+									],
+									"variable": [
+										{
+											"key": "jobId",
+											"value": "62b41c213c1c8135d984b8f2",
+											"description": "(Required) The Id of the created job"
+										}
+									]
+								},
+								"description": "Check the status of a job you created by jobId"
+							},
+							"response": [
+								{
+									"name": "Successful Wallet Creation",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwt}}",
+												"description": "(Required) The JWT received upon successful login",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/wallets/jobs/:jobId?apiKey={{publicKey}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wallets",
+												"jobs",
+												":jobId"
+											],
+											"query": [
+												{
+													"key": "apiKey",
+													"value": "{{publicKey}}",
+													"description": "(Required) Your Public API key"
+												}
+											],
+											"variable": [
+												{
+													"key": "jobId",
+													"value": "62b41c213c1c8135d984b8f2",
+													"description": "(Required) The Id of the created job"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 23 Jun 2022 08:19:14 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1458"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"5b2-jNXsaoiS9VF7RhXnwQ4ZAH1Y1Jg\""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"_id\": \"62b41c213c1c8135d984b8f2\",\n        \"name\": \"createWallet\",\n        \"data\": {\n            \"owner\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE\",\n            \"walletAddress\": \"0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976\",\n            \"communityAddress\": \"62b412879db09c6a1cb429cf\",\n            \"_id\": \"62b41c213c1c8135d984b8f0\",\n            \"walletModules\": {\n                \"GuardianManager\": \"0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3\",\n                \"LockManager\": \"0x8221d124f8255f61fC5f1dbb2382364B53355574\",\n                \"RecoveryManager\": \"0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF\",\n                \"ApprovedTransfer\": \"0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366\",\n                \"TransferManager\": \"0x2B3113B752645dfAFCe690706b5eCAd9d83977CF\",\n                \"NftTransfer\": \"0x856283dD385f53FEAd47aA981517eEa564379cFC\",\n                \"TokenExchanger\": \"0xaA556969CB2782052A2eADEA32e660d40f4C4281\",\n                \"CommunityManager\": \"0x0D4926876ba1ada6E9b542e018eBeD517FFc8050\",\n                \"WalletOwnershipManager\": \"0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b\",\n                \"DAIPointsManager\": \"0x602C6FbF83f5B758365DB51f38D311B09657f72c\"\n            },\n            \"salt\": \"0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15\",\n            \"txHash\": \"0x751c450f0ca06368fe569390faa4a122e4eaf2317baf14eba83c8c81a44a440f\",\n            \"transactionBody\": {\n                \"status\": \"confirmed\",\n                \"blockNumber\": 17704134\n            },\n            \"txFee\": {\n                \"$numberDecimal\": \"611354000000000\"\n            }\n        },\n        \"status\": \"succeeded\",\n        \"communityAddress\": \"62b412879db09c6a1cb429cf\",\n        \"createdAt\": \"2022-06-23T07:54:09.084Z\",\n        \"updatedAt\": \"2022-06-23T07:54:58.534Z\",\n        \"__v\": 0,\n        \"checksPassed\": true,\n        \"accountAddress\": \"0xaeBDf18Dc2f383704d60FB16e359A375A1212cE8\",\n        \"lastFinishedAt\": \"2022-06-23T07:54:58.534Z\"\n    }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

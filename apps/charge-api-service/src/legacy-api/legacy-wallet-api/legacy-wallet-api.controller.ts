@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post, UseGuards, UseInterceptors } from '@nestjs/common'
+import { Controller, Get, Put, Post, Delete, UseGuards, UseInterceptors } from '@nestjs/common'
 import { LegacyApiInterceptor } from '@app/api-service/legacy-api/legacy-api.interceptor'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 
@@ -16,5 +16,9 @@ export class LegacyWalletApiController {
 
   @Put()
   put () {
+  }
+
+  @Delete()
+  delete () {
   }
 }

@@ -204,12 +204,8 @@ paths:
       summary: Delete Wallet
       description: >-
         <p>Delete a specific account based on both <code>accountAddress</code>
-        and <code>phoneNumber</code>.</p>
-
-
-        <p><b>NOTE: </b>If there are more than one account addresses associated
-        with the same `phoneNumber`, they must be deleted by separate
-        requests.</p>
+        and <code>phoneNumber</code> which are included in the
+        <code>JWT.</code></p>
       parameters:
         - name: Authorization
           in: header
@@ -222,21 +218,6 @@ paths:
           schema:
             type: string
           example: '{{publicKey}}'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                phoneNumber: 
-                  type: string
-                  example: '+15554443322'
-                accountAddress:
-                  type: string
-                  example: 0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s
-              example:
-                phoneNumber: '0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s'
       responses:
         '201':
           description: Created

@@ -572,7 +572,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"phoneNumber\": \"+1554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\"\n}",
+									"raw": "",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -595,7 +595,7 @@
 										}
 									]
 								},
-								"description": "<p>Delete a specific account based on both <code>accountAddress</code> and <code>phoneNumber</code>.</p>\n\n<p><b>NOTE: </b>If there are more than one account addresses associated with the same `phoneNumber`, they must be deleted by separate requests.</p>"
+								"description": "<p>Delete a specific account based on both <code>accountAddress</code> and <code>phoneNumber</code> which are included in the <code>JWT.</code></p>"
 							},
 							"response": [
 								{
@@ -605,7 +605,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"phoneNumber\": \"+1554443322\",\n\t\"accountAddress\": \"0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s\"\n}",
+											"raw": "",
 											"options": {
 												"raw": {
 													"language": "json"

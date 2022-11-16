@@ -44,7 +44,7 @@ export class PaymentsController {
 
   @Post('webhook')
   webhook (@Body() webhookEvent: WebhookEvent) {
-    this.paymentsService.handleWebhook(webhookEvent)
+    return this.paymentsService.handleWebhook(webhookEvent)
   }
 
   @UseGuards(IsValidApiKeysGuard)

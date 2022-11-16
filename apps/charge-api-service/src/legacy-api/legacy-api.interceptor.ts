@@ -4,7 +4,7 @@ import { Injectable, NestInterceptor, ExecutionContext, HttpException } from '@n
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { get, isEmpty } from 'lodash'
+import { get, isEmpty, includes } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
@@ -74,7 +74,8 @@ export class LegacyApiInterceptor implements NestInterceptor {
 
     if (config.addCommunityAddressForPostRequests &&
       ctxHandlerName === 'post' &&
-      isEmpty(body?.communityAddress)) {
+      isEmpty(body?.communityAddress) &&
+      !includes(params, 'images')) {
       const projectId = await this.apiKeysService.getProjectIdByPublicKey(query?.apiKey)
       body.communityAddress = projectId
     }

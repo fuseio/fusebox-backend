@@ -46,6 +46,7 @@ export class BroadcasterService {
           webhookEvent.success = true
         } catch (err) {
           if (err instanceof HttpException) {
+            this.logger.error(`Webhook returned error. Error message: ${err} \nStack: ${err?.stack}`)
             webhookEvent.responses.push(this.getResponseDetailsWithDate(err.getStatus(), err.getResponse().toString()))
             webhookEvent.numberOfTries++
             webhookEvent.retryAfter = new Date(this.getNewRetryAfterDate(webhookEvent))

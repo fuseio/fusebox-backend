@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { isEmpty, keyBy, merge, values } from 'lodash'
 import { ConfigService } from '@nestjs/config'
@@ -110,6 +110,13 @@ export class ChargeApiService {
     jobData = await this.getUpdatedJobData(jobData)
 
     this.logger.log(JSON.stringify(jobData))
+
+    if (jobData?.data?.status === 'failed') {
+      throw new HttpException(
+        `Transfering tokens failed. Fail reason ${jobData?.data?.failReason}`,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    }
 
     return jobData
   }

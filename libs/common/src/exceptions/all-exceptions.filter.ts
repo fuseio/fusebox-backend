@@ -55,6 +55,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       return throwError(() => ({ message: errorMessage, status: httpStatus }))
     }
 
+    response.statusCode = httpStatus
+
     httpAdapter.reply(response, responseBody, httpStatus)
   }
 }

@@ -146,12 +146,6 @@ export class PaymentsService {
         paymentLink.status = status.UNDERPAID
       }
 
-      try {
-        await paymentLink.save()
-      } catch (error) {
-        this.logger.error(`Failed to save payment link: ${error}`)
-      }
-
       const ownerId = paymentLink.ownerId
       const paymentAccount = await this.paymentAccountModel.findOne({ ownerId })
         .populate<{ backendWalletId: BackendWallet }>('backendWalletId')
@@ -164,8 +158,15 @@ export class PaymentsService {
           amount: paymentLink.receivedAmount
         } as TransferTokensDto)
       } catch (error) {
-        this.logger.error(`Failed to send funds to main account: ${error}`)
+        const errorMessage = `Failed to send funds to main account: ${error}`
+        this.logger.error(errorMessage)
+        throw new HttpException(
+          errorMessage,
+          HttpStatus.INTERNAL_SERVER_ERROR
+        )
       }
+
+      await paymentLink.save()
     }
   }
 

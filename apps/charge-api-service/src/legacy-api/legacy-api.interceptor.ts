@@ -4,8 +4,10 @@ import { Injectable, NestInterceptor, ExecutionContext, HttpException } from '@n
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { get, isEmpty } from 'lodash'
+import { get, isEmpty, includes } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import FormData from 'form-data'
+import multer from 'multer'
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
@@ -30,7 +32,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
       .pipe(
         catchError(e => {
           const errorReason = e?.response?.data?.error ||
-          e?.response?.data?.errors?.message || ''
+            e?.response?.data?.errors?.message || ''
 
           throw new HttpException(
             `${e?.response?.statusText}: ${errorReason}`,
@@ -74,7 +76,8 @@ export class LegacyApiInterceptor implements NestInterceptor {
 
     if (config.addCommunityAddressForPostRequests &&
       ctxHandlerName === 'post' &&
-      isEmpty(body?.communityAddress)) {
+      isEmpty(body?.communityAddress) &&
+      !includes(params[0], 'images')) {
       const projectId = await this.apiKeysService.getProjectIdByPublicKey(query?.apiKey)
       body.communityAddress = projectId
     }
@@ -90,7 +93,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
         method: 'get',
         headers
       }
-    // Handle the special case of fetching tokens for Admin API through legacy v1 Tokens API
+      // Handle the special case of fetching tokens for Admin API through legacy v1 Tokens API
     } else if (ctxHandlerName === 'getTokens') {
       const baseUrl = this.configService.get<Record<string, any>>('LegacyV1ApiUrl')
       requestConfig = {
@@ -106,7 +109,12 @@ export class LegacyApiInterceptor implements NestInterceptor {
       }
     }
 
-    if (!isEmpty(body)) {
+    const fileRequestConfig = await this.addFileToRequestIfExists(context, request)
+
+    if (!isEmpty(fileRequestConfig)) {
+      requestConfig.data = fileRequestConfig.data
+      requestConfig.headers = fileRequestConfig.headers
+    } else if (!isEmpty(body)) {
       requestConfig.data = body
     }
 
@@ -114,5 +122,26 @@ export class LegacyApiInterceptor implements NestInterceptor {
       requestConfig.params = query
     }
     return requestConfig
+  }
+
+  private async addFileToRequestIfExists (context: ExecutionContext, request: any) {
+    const mu = multer(Object.assign(Object.assign({}, {}), {}))
+    const ctx = context.switchToHttp()
+    await mu.single('image')(request, ctx.getResponse(), (err) => {
+      if (err) {
+        console.log({ ...err })
+      }
+    })
+    if (!isEmpty(request.file)) {
+      const data = new FormData()
+      const file = request.file
+      data.append(file.fieldname, file.buffer, file.originalname)
+      return {
+        data,
+        headers: data.getHeaders()
+      }
+    } else {
+      return null
+    }
   }
 }

@@ -34,12 +34,13 @@ export class BroadcasterService {
         {
           retryAfter: { $lte: new Date() },
           success: false,
-          numberOfTries: { $lte: 6 }
+          numberOfTries: { $lt: 6 }
         }
       ).populate<{ webhook: Webhook }>('webhook').sort({ retryAfter: -1 })
 
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
+          webhookEvent.numberOfTries++
           const response = await this.sendData(webhookEvent)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true

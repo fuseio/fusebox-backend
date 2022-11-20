@@ -42,17 +42,16 @@ export class BroadcasterService {
         try {
           const response = await this.sendData(webhookEvent)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
-          webhookEvent.numberOfTries++
           webhookEvent.success = true
         } catch (err) {
           if (err instanceof HttpException) {
             this.logger.error(`Webhook returned error. Error message: ${err} \nStack: ${err?.stack}`)
             webhookEvent.responses.push(this.getResponseDetailsWithDate(err.getStatus(), err.getResponse().toString()))
-            webhookEvent.numberOfTries++
             webhookEvent.retryAfter = new Date(this.getNewRetryAfterDate(webhookEvent))
           }
         } finally {
           try {
+            webhookEvent.numberOfTries++
             await webhookEvent.save()
           } catch (err) {
             this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)

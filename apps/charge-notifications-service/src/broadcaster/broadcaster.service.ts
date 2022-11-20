@@ -40,6 +40,7 @@ export class BroadcasterService {
 
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
+          webhookEvent.numberOfTries++
           const response = await this.sendData(webhookEvent)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true
@@ -51,7 +52,6 @@ export class BroadcasterService {
           }
         } finally {
           try {
-            webhookEvent.numberOfTries++
             await webhookEvent.save()
           } catch (err) {
             this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)

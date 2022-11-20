@@ -55,7 +55,7 @@ export class BroadcasterService {
           try {
             await webhookEvent.save()
           } catch (err) {
-            this.logger.error(`Failed to save webhookEvent: ${err}`)
+            this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)
           }
         }
       }

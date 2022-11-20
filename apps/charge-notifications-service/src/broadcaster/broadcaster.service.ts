@@ -1,6 +1,6 @@
 import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
 import { HttpService } from '@nestjs/axios'
-import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Model } from 'mongoose'
 import { catchError, lastValueFrom, map } from 'rxjs'
@@ -45,11 +45,18 @@ export class BroadcasterService {
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true
         } catch (err) {
+          var errorStatus = err.getStatus()
+          var errorResponse = err.getResponse().toString()
+          this.logger.error(`Webhook ${webhookEvent._id} returned error. Error message: ${err} \nStack: ${err?.stack}`)
           if (err instanceof HttpException) {
-            this.logger.error(`Webhook returned error. Error message: ${err} \nStack: ${err?.stack}`)
-            webhookEvent.responses.push(this.getResponseDetailsWithDate(err.getStatus(), err.getResponse().toString()))
-            webhookEvent.retryAfter = new Date(this.getNewRetryAfterDate(webhookEvent))
+            errorStatus = err.getStatus()
+            errorResponse = err.getResponse().toString()
+          } else {
+            errorStatus = HttpStatus.INTERNAL_SERVER_ERROR
+            errorResponse = JSON.stringify(err)
           }
+          webhookEvent.responses.push(this.getResponseDetailsWithDate(errorStatus, errorResponse))
+          webhookEvent.retryAfter = new Date(this.getNewRetryAfterDate(webhookEvent))
         } finally {
           try {
             await webhookEvent.save()

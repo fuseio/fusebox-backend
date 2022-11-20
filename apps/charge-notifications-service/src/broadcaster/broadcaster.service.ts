@@ -71,7 +71,7 @@ export class BroadcasterService {
   }
 
   private getNewRetryAfterDate (webhookEvent: any) {
-    const old = webhookEvent.retryAfter
+    const old = webhookEvent?.retryAfter || new Date()
     const addInterval = this.retryTimeIntervalsMS[webhookEvent.numberOfTries]
     return new Date(old.getTime() + addInterval)
   }

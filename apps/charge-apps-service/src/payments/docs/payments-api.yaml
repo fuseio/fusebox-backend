@@ -3,11 +3,11 @@ info:
   title: Payments API
   version: 1.0.0
 servers:
-  - url: https://api.chargeweb3.com/api/v0
+  - url: https://api.chargeweb3.com/app-store/v1
 tags:
   - name: Payments
 paths:
-  /app-store/v1/payments/payment_link:
+  /payments/payment_link:
     post:
       tags:
         - Payments
@@ -94,7 +94,7 @@ paths:
                 createdAt: '2022-10-31T14:47:44.709Z'
                 updatedAt: '2022-10-31T14:47:44.709Z'
                 __v: 0
-  /app-store/v1/payments/payment_link/allowed_tokens:
+  /payments/payment_link/allowed_tokens:
     get:
       tags:
         - Payments
@@ -141,7 +141,7 @@ paths:
                   contract_decimals: 2
                   logo_url: >-
                     https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x495d133B938596C9984d462F007B676bDc57eCEC/logo.png
-  /app-store/v1/payments/payment_link/{paymentLinkId}:
+  /payments/payment_link/{paymentLinkId}:
     get:
       tags:
         - Payments
@@ -186,8 +186,8 @@ paths:
               example:
                 statusCode: 404
                 errorMessage: Payment link with 635a5da6784cdf39a37161a5 not found
-                path: /app-store/v1/payments/payment_link/635a5da6784cdf39a37161a5
-  /app-store/v1/payments/payment_links:
+                path: /app-store/payments/payment_link/635a5da6784cdf39a37161a5
+  /payments/payment_links:
     get:
       tags:
         - Payments
@@ -238,7 +238,7 @@ paths:
                   createdAt: '2022-10-31T14:47:44.709Z'
                   updatedAt: '2022-10-31T14:47:44.709Z'
                   __v: 0
-  /app-store/v1/payments/account_balance:
+  /payments/account_balance:
     get:
       tags:
         - Payments

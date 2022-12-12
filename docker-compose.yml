@@ -129,6 +129,11 @@ services:
       - JOB_SLEEP_MS
       - UNMARSHAL_BASE_URL
       - UNMARSHAL_AUTH_KEY
+      - CHARGE_PAYMENTS_ETHEREUM_MNEMONIC
+      - ALCHEMY_WEBHOOK_ID
+      - ALCHEMY_AUTH_KEY
+      - ALCHEMY_BASE_URL
+      - NETWORK_NAME
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

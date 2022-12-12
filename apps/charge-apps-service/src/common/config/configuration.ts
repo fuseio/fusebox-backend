@@ -21,5 +21,23 @@ export default () => ({
       contract_decimals: 2,
       logo_url: 'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x495d133B938596C9984d462F007B676bDc57eCEC/logo.png'
     }
+  ],
+  ethereumPaymentsAllowedTokens: [
+    {
+      tokenSymbol: 'USDC',
+      tokenAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+      contract_address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      contract_decimals: 6,
+      logo_url: 'https://assets.unmarshal.io/tokens/ethereum_0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48.png'
+    }
+  ],
+  goerliPaymentsAllowedTokens: [
+    {
+      tokenSymbol: 'USDC',
+      tokenAddress: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+      contract_address: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
+      contract_decimals: 6,
+      logo_url: 'https://assets.unmarshal.io/tokens/ethereum_0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48.png'
+    }
   ]
 })

@@ -41,7 +41,7 @@ export class EthereumPaymentsService {
   }
 
   async getPaymentsAllowedTokens () {
-    return this.configService.get('paymentsAllowedTokens')
+    return this.allowedPaymentTokens
   }
 
   isRequestedAllowedToken (createPaymentLinkEthereumDto: CreateEthereumPaymentLinkDto) {

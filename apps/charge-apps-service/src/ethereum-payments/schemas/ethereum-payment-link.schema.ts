@@ -22,13 +22,15 @@ export const EthereumPaymentLinkSchema = new mongoose.Schema(
     amount: { type: Number, required: true },
     backendWalletId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'BackendWallet',
+      ref: 'EthereumBackendWallet',
       required: true
     },
     status: { type: String, required: true, enum: status, default: status.NOT_PAID },
     receivedTokenSymbol: { type: String },
     receivedTokenAddress: { type: String },
-    receivedAmount: { type: String }
+    receivedAmount: { type: String },
+    fromAddress: { type: String },
+    webhookEvent: { type: Object }
   },
   {
     timestamps: true

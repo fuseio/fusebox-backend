@@ -5,8 +5,6 @@ import { MessagePattern } from '@nestjs/microservices'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { IsValidApiKeysGuard } from '@app/apps-service/api-keys/guards/is-valid-api-keys.guard'
 import { UserId } from '@app/apps-service/common/config/decorators/user.decorator'
-import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
-
 @Controller('payments_ethereum')
 export class EthereumPaymentsController {
   constructor (private readonly paymentsEthereumService: EthereumPaymentsService) { }
@@ -44,17 +42,5 @@ export class EthereumPaymentsController {
   @Post('webhook')
   webhook (@Body() webhookEvent: WebhookEvent) {
     return this.paymentsEthereumService.handleWebhook(webhookEvent)
-  }
-
-  @UseGuards(IsValidApiKeysGuard)
-  @Get('account_balance')
-  getWalletBalance (@UserId() userId: string, @Body() ownerId: string) {
-    return this.paymentsEthereumService.getWalletBalance(userId || ownerId)
-  }
-
-  @UseGuards(IsValidApiKeysGuard)
-  @Post('transfer_tokens')
-  transferTokens (@Body() transferTokensDto: TransferTokensDto) {
-    return this.paymentsEthereumService.transferTokens(transferTokensDto)
   }
 }

@@ -9,7 +9,7 @@ export const EthereumPaymentAccountSchema = new mongoose.Schema(
     },
     backendWalletId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'BackendWallet',
+      ref: 'EthereumBackendWallet',
       required: true
     }
   },

@@ -1,7 +1,6 @@
 import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema'
 import { ethereumBackendWalletModelString } from '@app/apps-service/ethereum-payments/ethereum-backend-wallet.constants'
 import { EthereumBackendWallet } from '@app/apps-service/ethereum-payments/interfaces/ethereum-backend-wallet.interface'
-import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 import { HDNode } from '@ethersproject/hdnode'
 import { HttpService } from '@nestjs/axios'
 import { HttpException, Inject, Injectable, Logger } from '@nestjs/common'
@@ -57,7 +56,7 @@ export class BackendWalletsEthereumService {
   async createBackendWallet (walletType: walletTypes): Promise<Record<string, any>> {
     const hdNode = HDNode.fromMnemonic(this.getMnemonic)
 
-    const lastWallet = await this.backendWalletEthereumModel.findOne().sort({childIndex: -1})
+    const lastWallet = await this.backendWalletEthereumModel.findOne().sort({ childIndex: -1 })
     const newIndex = (lastWallet?.childIndex || 0) + 1
     const childNode = hdNode.derivePath("m/44'/60'/0'/0/" + newIndex)
     const childWalletAddress = childNode.address.toString()
@@ -73,12 +72,8 @@ export class BackendWalletsEthereumService {
     return backendWallet
   }
 
-  async transferTokens (transferTokensDto: TransferTokensDto) {
-    
-  }
-
-  async getWalletBalance (address: string) {
-    
+  async findWalletByAddress (walletAddress: string) {
+    return this.backendWalletEthereumModel.findOne({ walletAddress })
   }
 
   async getBackendWalletByAddress (address: string) {

@@ -1,7 +1,5 @@
 import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema'
 import { CreateEthereumPaymentLinkDto } from '@app/apps-service/ethereum-payments/dto/create-ethereum-payment-link.dto'
-import { TransferTokensEthereumDto } from '@app/apps-service/ethereum-payments/dto/transfer-tokens-ethereum.dto'
-import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
@@ -10,7 +8,9 @@ import { BackendWalletsEthereumService } from '@app/apps-service/ethereum-paymen
 import { EthereumPaymentAccount } from '@app/apps-service/ethereum-payments/interfaces/ethereum-payment-account.interface'
 import { EthereumPaymentLink } from '@app/apps-service/ethereum-payments/interfaces/ethereum-payment-link.interface'
 import { ethereumPaymentAccountModelString, ethereumPaymentLinkModelString } from '@app/apps-service/ethereum-payments/ethereum-payments.constants'
-
+import { status } from '@app/apps-service/ethereum-payments/schemas/ethereum-payment-link.schema'
+import { EthereumBackendWallet } from '@app/apps-service/ethereum-payments/interfaces/ethereum-backend-wallet.interface'
+import { getAddress } from 'nestjs-ethers'
 @Injectable()
 export class EthereumPaymentsService {
   private readonly logger = new Logger(EthereumPaymentsService.name)
@@ -27,7 +27,7 @@ export class EthereumPaymentsService {
   get networkName () {
     return this.configService.get('NETWORK_NAME')
   }
-  
+
   get allowedPaymentTokens () {
     return this.configService.get(`${this.networkName}PaymentsAllowedTokens`)
   }
@@ -70,7 +70,7 @@ export class EthereumPaymentsService {
 
   async createPaymentLink (userId: string, createPaymentLinkEthereumDto: CreateEthereumPaymentLinkDto) {
     if (isEmpty(createPaymentLinkEthereumDto.ownerId)) {
-        createPaymentLinkEthereumDto.ownerId = userId
+      createPaymentLinkEthereumDto.ownerId = userId
     }
 
     if (!this.isRequestedAllowedToken(createPaymentLinkEthereumDto)) {
@@ -90,7 +90,7 @@ export class EthereumPaymentsService {
 
     await this.backendWalletEthereumService.addWebhookAddress(backendWallet.walletAddress)
 
-    return paymentLink
+    return paymentLink.populate<{ backendWalletId: EthereumBackendWallet }>('backendWalletId')
   }
 
   async getPaymentLink (paymentLinkId: string) {
@@ -107,14 +107,45 @@ export class EthereumPaymentsService {
     return this.paymentLinkModel.find({ ownerId })
   }
 
-  async getWalletBalance (ownerId: string) {
-    
+  async handleWebhook (webhookEvent: any) {
+    const toAddress = getAddress(webhookEvent.event.activity[0].toAddress)
+    const fromAddress = getAddress(webhookEvent.event.activity[0].fromAddress)
+    const value = webhookEvent.event.activity[0].value
+    const asset = webhookEvent.event.activity[0].asset
+    const tokenAddress = getAddress(webhookEvent.event.activity[0].log.address)
+
+    const backendWallet = await this.backendWalletEthereumService.findWalletByAddress(toAddress)
+
+    if (!isEmpty(backendWallet)) {
+      const paymentLink = await this.paymentLinkModel.findOne({ backendWalletId: backendWallet._id, status: status.NOT_PAID })
+
+      if (!isEmpty(paymentLink)) {
+        paymentLink.receivedAmount = value
+        paymentLink.receivedTokenAddress = tokenAddress
+        paymentLink.receivedTokenSymbol = asset
+        paymentLink.fromAddress = fromAddress
+        paymentLink.webhookEvent = webhookEvent
+
+        const amountFloat = paymentLink.amount
+        const receivedAmountFloat = parseFloat(paymentLink.receivedAmount)
+
+        if (!this.isTokenMatch(paymentLink, tokenAddress, asset)) {
+          paymentLink.status = status.WRONG_TOKEN
+        } else if (receivedAmountFloat === amountFloat) {
+          paymentLink.status = status.SUCCESSFUL
+        } else if (receivedAmountFloat > amountFloat) {
+          paymentLink.status = status.OVERPAID
+        } else {
+          paymentLink.status = status.UNDERPAID
+        }
+
+        await paymentLink.save()
+      }
+    }
   }
 
-  async transferTokens (transferTokensEthereumDto: TransferTokensEthereumDto) {
-    
-  }
-
-  async handleWebhook (webhookEvent: WebhookEvent) {
+  isTokenMatch (paymentLink: EthereumPaymentLink, tokenAddress: string, asset: string) {
+    return paymentLink.tokenAddress.toLowerCase() === tokenAddress.toLowerCase() &&
+        paymentLink.tokenSymbol.toLowerCase() === asset.toLowerCase()
   }
 }

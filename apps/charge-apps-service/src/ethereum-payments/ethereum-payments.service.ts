@@ -25,7 +25,7 @@ export class EthereumPaymentsService {
   ) { }
 
   get networkName () {
-    return this.configService.get('NETWORK_NAME')
+    return this.configService.get('ETHEREUM_PAYMENTS_NETWORK_NAME')
   }
 
   get allowedPaymentTokens () {

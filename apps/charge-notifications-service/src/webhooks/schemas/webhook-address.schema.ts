@@ -4,7 +4,7 @@ import { WebhookAddress } from '@app/notifications-service/webhooks/interfaces/w
 export const WebhookAddressSchema = new mongoose.Schema<WebhookAddress>(
   {
     webhookId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.Mixed,
       ref: 'Webhook',
       required: true,
       immutable: true

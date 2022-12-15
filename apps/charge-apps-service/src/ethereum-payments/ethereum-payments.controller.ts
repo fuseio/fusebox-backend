@@ -11,6 +11,7 @@ export class EthereumPaymentsController {
 
   @UseGuards(IsValidApiKeysGuard)
   @Get('payment_link/allowed_tokens')
+  @MessagePattern('get_allowed_tokens')
   getAllowedTokens () {
     return this.paymentsEthereumService.getPaymentsAllowedTokens()
   }

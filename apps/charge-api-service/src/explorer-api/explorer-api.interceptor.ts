@@ -67,7 +67,6 @@ export class ExplorerApiInterceptor implements NestInterceptor {
       requestConfig.params = query
     }
 
-    console.log({ requestConfig })
     return requestConfig
   }
 }

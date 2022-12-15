@@ -45,8 +45,8 @@ export class BroadcasterService {
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true
         } catch (err) {
-          var errorStatus = err.getStatus()
-          var errorResponse = err.getResponse().toString()
+          let errorStatus = err.getStatus()
+          let errorResponse = err.getResponse().toString()
           this.logger.error(`Webhook ${webhookEvent._id} returned error. Error message: ${err} \nStack: ${err?.stack}`)
           if (err instanceof HttpException) {
             errorStatus = err.getStatus()

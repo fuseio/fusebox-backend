@@ -13,5 +13,6 @@ export interface EthereumPaymentLink extends Document {
   receivedTokenAddress: string;
   receivedAmount: string;
   fromAddress: string;
-  webhookEvent: any;
+  webhookEvent: any
+  txHash: string;
 }

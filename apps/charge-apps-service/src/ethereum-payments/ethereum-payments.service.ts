@@ -112,7 +112,8 @@ export class EthereumPaymentsService {
     const fromAddress = getAddress(webhookEvent.event.activity[0].fromAddress)
     const value = webhookEvent.event.activity[0].value
     const asset = webhookEvent.event.activity[0].asset
-    const tokenAddress = getAddress(webhookEvent.event.activity[0].log.address)
+    const txHash = webhookEvent.event.activity[0].hash
+    const tokenAddress = getAddress(webhookEvent.event.activity[0]?.log?.address || '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
     const backendWallet = await this.backendWalletEthereumService.findWalletByAddress(toAddress)
 
@@ -125,6 +126,7 @@ export class EthereumPaymentsService {
         paymentLink.receivedTokenSymbol = asset
         paymentLink.fromAddress = fromAddress
         paymentLink.webhookEvent = webhookEvent
+        paymentLink.txHash = txHash
 
         const amountFloat = paymentLink.amount
         const receivedAmountFloat = parseFloat(paymentLink.receivedAmount)

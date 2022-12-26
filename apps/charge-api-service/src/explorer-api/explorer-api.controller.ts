@@ -1,8 +1,8 @@
 import { Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common'
 import { ExplorerApiInterceptor } from '@app/api-service/explorer-api/explorer-api.interceptor'
-import { IsValidApiKeysGuard } from '@app/api-service/api-keys/guards/is-valid-api-keys.guard'
+import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 
-@UseGuards(IsValidApiKeysGuard)
+@UseGuards(IsValidPublicApiKeyGuard)
 @UseInterceptors(ExplorerApiInterceptor)
 @Controller({ path: 'v0/explorer' })
 export class ExplorerApiController {

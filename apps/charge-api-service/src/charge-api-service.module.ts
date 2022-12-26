@@ -5,10 +5,17 @@ import { Module } from '@nestjs/common'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
 import { StakingAPIModule } from '@app/api-service/staking-api/staking-api.module'
+import { ExplorerApiModule } from '@app/api-service/explorer-api/explorer-api.module'
 
 @Module({
-  imports: [ApiKeyModule, LegacyApiModule, NotificationsModule, StakingAPIModule],
+  imports: [
+    ApiKeyModule,
+    LegacyApiModule,
+    NotificationsModule,
+    StakingAPIModule,
+    ExplorerApiModule
+  ],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]
 })
-export class ChargeApiServiceModule { }
+export class ChargeApiServiceModule {}

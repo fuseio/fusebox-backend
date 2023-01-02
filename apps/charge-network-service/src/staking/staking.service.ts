@@ -5,14 +5,16 @@ import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
 import VoltBarService from '@app/network-service/staking/staking-providers/volt-bar.service'
 import { sumBy } from 'lodash'
-import { voltBarId } from '@app/network-service/common/constants'
+import { fuseLiquidStakingId, voltBarId } from '@app/network-service/common/constants'
 import { ConfigService } from '@nestjs/config'
+import FuseLiquidStakingService from './staking-providers/fuse-liquid-staking.service'
 
 @Injectable()
 export class StakingService {
   constructor (
     private readonly web3ProviderService: Web3ProviderService,
     private readonly voltBarService: VoltBarService,
+    private readonly fuseLiquidStakingService: FuseLiquidStakingService,
     private readonly configService: ConfigService
   ) { }
 
@@ -86,6 +88,8 @@ export class StakingService {
   private getStakingProvider (stakingOption: StakingOption): StakingProvider {
     if (stakingOption.stakingProviderId === voltBarId) {
       return this.voltBarService
+    } else if (stakingOption.stakingProviderId === fuseLiquidStakingId) {
+      return this.fuseLiquidStakingService
     }
   }
 }

@@ -10,3 +10,7 @@ function getFunctionAbi (abi: Array<any>, functionName: string) {
 export function encodeFunctionCall (abi: any, web3: Web3, functionName: string, params: Array<any>) {
   return web3.eth.abi.encodeFunctionCall(getFunctionAbi(abi, functionName), params)
 }
+
+export function aprToApy (interest: number, frequency: number) {
+  return ((1 + (interest / 100) / frequency) ** frequency - 1) * 100
+}

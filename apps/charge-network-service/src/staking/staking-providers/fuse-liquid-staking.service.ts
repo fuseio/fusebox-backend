@@ -1,4 +1,4 @@
-import LiquidStakingABI from '@app/network-service/common/constants/abi/VoltBar.json'
+import LiquidStakingABI from '@app/network-service/common/constants/abi/FuseLiquidStaking.json'
 import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
 import ConsensusABI from '@app/network-service/common/constants/abi/Consensus.json'
 import BlockRewardABI from '@app/network-service/common/constants/abi/BlockReward.json'
@@ -9,7 +9,6 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { UnstakeDto } from '../dto/unstake.dto'
 import { StakingOption, StakingProvider } from '../interfaces'
-import { BigNumber } from 'ethers'
 import { formatEther } from 'nestjs-ethers'
 
 @Injectable()
@@ -40,24 +39,12 @@ export default class FuseLiquidStakingService implements StakingProvider {
     return this.configService.get('wfuseAddress')
   }
 
+  get validatorFee () {
+    return this.configService.get('validatorFee')
+  }
+
   get web3Provider () {
     return this.web3ProviderService.getProvider()
-  }
-
-  get contract () {
-    return new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
-  }
-
-  get erc20Contract () {
-    return new this.web3Provider.eth.Contract(Erc20ABI as any, this.sfTokenAddress)
-  }
-
-  get consensusContract () {
-    return new this.web3Provider.eth.Contract(ConsensusABI as any, this.consensusAddress)
-  }
-
-  get blockRewardContract () {
-    return new this.web3Provider.eth.Contract(BlockRewardABI as any, this.blockRewardAddress)
   }
 
   stake () {
@@ -79,10 +66,14 @@ export default class FuseLiquidStakingService implements StakingProvider {
   }
 
   async stakedToken (accountAddress: string, { tokenAddress, tokenLogoURI, tokenName, tokenSymbol }: StakingOption) {
-    const priceRatio = await this.contract.methods.priceRatio().call()
-    const sfBalance = await this.erc20Contract.methods.balanceOf(accountAddress).call()
-    const stakedAmount = Number(formatEther(BigNumber.from(sfBalance).mul(priceRatio)))
-    const fusePrice = await this.tradeService.getTokenPrice(this.configService.get('wfuseAddress'))
+    const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
+    const sfContract = new this.web3Provider.eth.Contract(Erc20ABI as any, this.sfTokenAddress)
+
+    const priceRatio = await liquidStakingContract.methods.priceRatio().call()
+    const sfBalance = await sfContract.methods.balanceOf(accountAddress).call()
+
+    const stakedAmount = Number(formatEther(sfBalance)) * Number(formatEther(priceRatio))
+    const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
 
@@ -98,12 +89,16 @@ export default class FuseLiquidStakingService implements StakingProvider {
   }
 
   async stakingApr () {
-    const validators = await this.consensusContract.methods.getValidators().call()
-    const rewardPerBlock = await this.blockRewardContract.methods.getBlockRewardAmount().call()
-    const blocksPerYear = await this.blockRewardContract.methods.getBlocksPerYear().call()
+    const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.consensusAddress)
+    const blockRewardContract = new this.web3Provider.eth.Contract(BlockRewardABI as any, this.blockRewardAddress)
+    const validatorFee = Number(this.validatorFee)
 
-    const rewardPerValidator = Number(formatEther(rewardPerBlock)) / validators.length
-    const rewardPerYearApr = rewardPerValidator * blocksPerYear
+    const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call()
+    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call()
+    const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call()
+
+    const rewardPerYearApr = (Number(formatEther(rewardPerBlock)) * blocksPerYear * (1 - validatorFee) / Number(formatEther(totalStakeAmount))) * 100
+
     return aprToApy(rewardPerYearApr, 365)
   }
 }

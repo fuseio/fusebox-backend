@@ -6,7 +6,7 @@ export default () => ({
     }
   },
   tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,
-  voltBarGraphUrl: 'https://api.thegraph.com/subgraphs/name/diegofigs/voltfinance-bar',
+  voltBarGraphUrl: 'https://api.thegraph.com/subgraphs/name/t0mcr8se/voltbar',
   blockGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-blocks',
   voltageGraphUrl: 'https://api.thegraph.com/subgraphs/name/voltfinance/voltage-exchange',
   stakingOptions: [

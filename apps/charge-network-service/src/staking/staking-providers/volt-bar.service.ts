@@ -7,12 +7,11 @@ import { Injectable } from '@nestjs/common'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 import GraphService from '@app/network-service/staking/graph.service'
 import { ConfigService } from '@nestjs/config'
-import { daysInYear, voltageProtocolFee, voltBarId } from '@app/network-service/common/constants'
+import { daysInYear, voltBarId } from '@app/network-service/common/constants'
 import TradeService from '@app/common/services/trade.service'
-import { startOfMinute, subDays, getUnixTime, addSeconds } from 'date-fns'
-import { getBar, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
-import { getBlock } from '@app/network-service/common/constants/graph-queries/fuse-blocks'
-import { getFactories } from '@app/network-service/common/constants/graph-queries/voltage-exchange'
+import { getBarStats, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
+import { secondsInDay } from 'date-fns/constants'
+import { getUnixTime } from 'date-fns'
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {
@@ -84,27 +83,29 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async stakingApr ({ tokenAddress }: StakingOption) {
-    const date = startOfMinute(subDays(Date.now(), 1))
-    const start = getUnixTime(date)
-    const end = getUnixTime(addSeconds(date, 600))
-    const block1d = await this.blockClient.request(getBlock, {
-      timestampFrom: start,
-      timestampTo: end
-    })
-    const factories = await this.voltageClient.request(getFactories, {
-      blockNumber: Number(block1d?.blocks[0]?.number)
+  async stakingApr () {
+    const days = 31
+    const latestTimestamp = getUnixTime(new Date())
+    const startTimestamp = (latestTimestamp / secondsInDay) - days
+
+    const stats = await this.voltBarGraphClient.request(getBarStats, {
+      days,
+      startTimestamp: String(startTimestamp)
     })
 
-    const bar = await this.voltBarGraphClient.request(getBar, { barId: this.address.toLowerCase() })
-    const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+    const voltBalanceHistories = stats?.voltBalanceHistories || []
+    const bars = stats?.bars || []
 
-    const totalVolumeUSD = factories?.latestFactory?.[0]?.totalVolumeUSD
-    const totalVolumeUSD1d = factories?.historicalFactory?.[0]?.totalVolumeUSD
-    const xVoltSupply = bar?.bar?.totalSupply
-    const xVoltPrice = voltPrice * bar?.bar?.ratio
+    const totalStaked = bars?.[0]?.totalSupply
 
-    return (((totalVolumeUSD - totalVolumeUSD1d) * voltageProtocolFee * daysInYear) / (Number(xVoltSupply) * xVoltPrice)) * 100
+    const movingAverage = voltBalanceHistories
+      .map((history: any, index: number, histories: any[]) => {
+        if (index === 0) return 0
+        return history.balance - history.totalVoltStaked - (histories[index - 1].balance - histories[index - 1].totalVoltStaked)
+      })
+      .reduce((totalAverage: number, history: number) => totalAverage + history, 0) / voltBalanceHistories.length - 1
+
+    return (movingAverage * daysInYear * 100) / totalStaked
   }
 
   private async getStakingData (accountAddress: string) {

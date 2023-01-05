@@ -18,3 +18,23 @@ export const getBar = gql`
         }
     }
 `
+
+export const getBarStats = gql`
+    query barStatsQuery($startTimestamp: String!, $days: Int!) {
+        bars(first: 1) {
+            id
+            ratio
+            totalSupply
+        }
+        histories(first: $days, orderDirection: asc, orderBy: id, where: { id_gte: $startTimestamp }) {
+            id
+            ratio
+        }
+        voltBalanceHistories(first: $days, orderDirection: asc, orderBy: id, where: { id_gte: $startTimestamp }) {
+            id
+            balance
+            balanceUSD
+            totalVoltStaked
+        }
+    }
+`

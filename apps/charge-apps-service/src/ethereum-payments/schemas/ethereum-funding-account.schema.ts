@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose'
 
-export const EthereumPaymentAccountSchema = new mongoose.Schema(
+export const EthereumFundingAccountSchema = new mongoose.Schema(
   {
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,

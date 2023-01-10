@@ -1,2 +1,2 @@
 export const ethereumPaymentLinkModelString = 'ETHEREUM_PAYMENT_LINK_MODEL'
-export const ethereumPaymentAccountModelString = 'ETHEREUM_PAYMENT_ACCOUNT_MODEL'
+export const ethereumFundingAccountModelString = 'ETHEREUM_FUNDING_ACCOUNT_MODEL'

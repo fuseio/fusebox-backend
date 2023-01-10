@@ -1,9 +1,9 @@
 import { databaseConnectionString } from '@app/common/constants/database.constants'
 import { Connection } from 'mongoose'
 import { ethereumBackendWalletModelString } from '@app/apps-service/ethereum-payments/ethereum-backend-wallet.constants'
-import { ethereumPaymentAccountModelString, ethereumPaymentLinkModelString } from '@app/apps-service/ethereum-payments/ethereum-payments.constants'
+import { ethereumFundingAccountModelString, ethereumPaymentLinkModelString } from '@app/apps-service/ethereum-payments/ethereum-payments.constants'
 import { EthereumBackendWalletSchema } from '@app/apps-service/ethereum-payments/schemas/ethereum-backend-wallet.schema'
-import { EthereumPaymentAccountSchema } from '@app/apps-service/ethereum-payments/schemas/ethereum-payment-account.schema'
+import { EthereumFundingAccountSchema } from '@app/apps-service/ethereum-payments/schemas/ethereum-funding-account.schema'
 import { EthereumPaymentLinkSchema } from '@app/apps-service/ethereum-payments/schemas/ethereum-payment-link.schema'
 
 export const ethereumPaymentsProviders = [
@@ -14,9 +14,9 @@ export const ethereumPaymentsProviders = [
     inject: [databaseConnectionString]
   },
   {
-    provide: ethereumPaymentAccountModelString,
+    provide: ethereumFundingAccountModelString,
     useFactory: (connection: Connection) =>
-      connection.model('EthereumPaymentAccount', EthereumPaymentAccountSchema),
+      connection.model('EthereumFundingAccount', EthereumFundingAccountSchema),
     inject: [databaseConnectionString]
   },
   {

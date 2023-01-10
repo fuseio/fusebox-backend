@@ -7,39 +7,48 @@ import { IsValidApiKeysGuard } from '@app/apps-service/api-keys/guards/is-valid-
 import { UserId } from '@app/apps-service/common/config/decorators/user.decorator'
 @Controller('payments_ethereum')
 export class EthereumPaymentsController {
-  constructor (private readonly paymentsEthereumService: EthereumPaymentsService) { }
+  constructor(private readonly paymentsEthereumService: EthereumPaymentsService) { }
 
   @UseGuards(IsValidApiKeysGuard)
   @Get('payment_link/allowed_tokens')
-  getAllowedTokens () {
+  getAllowedTokens() {
     return this.paymentsEthereumService.getPaymentsAllowedTokens()
   }
 
-  @UseGuards(IsValidApiKeysGuard)
-  @Post('payment_account')
-  createPaymentAccount (ownerId: string) {
-    return this.paymentsEthereumService.createPaymentAccount(ownerId)
-  }
+
 
   @UseGuards(IsValidApiKeysGuard)
   @Post('payment_link')
-  createPaymentLink (@UserId() userId: string, @Body() createPaymentLinkDto: CreatePaymentLinkDto) {
+  createPaymentLink(@UserId() userId: string, @Body() createPaymentLinkDto: CreatePaymentLinkDto) {
     return this.paymentsEthereumService.createPaymentLink(userId, createPaymentLinkDto)
   }
 
   @Get('payment_link/:paymentLinkId')
-  getPaymentLink (@Param('paymentLinkId') paymentLinkId: string) {
+  getPaymentLink(@Param('paymentLinkId') paymentLinkId: string) {
     return this.paymentsEthereumService.getPaymentLink(paymentLinkId)
   }
 
   @UseGuards(IsValidApiKeysGuard)
   @Get('payment_links')
-  getPaymentLinks (@UserId() userId: string, @Body() ownerId: string) {
+  getPaymentLinks(@UserId() userId: string, @Body() ownerId: string) {
     return this.paymentsEthereumService.getPaymentLinks(userId || ownerId)
   }
 
+  @UseGuards(IsValidApiKeysGuard)
+  @Post('sweep')
+  sweepPaymentLinks(@UserId() userId: string, @Body() ownerId: string, @Param('address') sweepingAddress: string) {
+    return this.paymentsEthereumService.sweepPaymentLinks(userId, userId || ownerId, sweepingAddress)
+  }
+
+  @UseGuards(IsValidApiKeysGuard)
+  @Post('funding_account')
+  createFundingAccount(@UserId() userId: string, @Body() ownerId: string) {
+    return this.paymentsEthereumService.existCheckAndCreateFundingAccount(userId, userId || ownerId)
+  }
+
+
   @Post('webhook')
-  webhook (@Body() webhookEvent: WebhookEvent) {
+  webhook(@Body() webhookEvent: WebhookEvent) {
     return this.paymentsEthereumService.handleWebhook(webhookEvent)
   }
 }

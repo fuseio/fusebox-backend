@@ -1,0 +1,35 @@
+@startuml
+participant EveryBlock
+control GetTokenEventsAndTransactions
+control ProccessWebHookEvents
+control GetAddressWatchers
+database ChargeNotificationsDatabase
+control AddRelevantWebhookEventsToQueue
+control SendData
+participant WebHookUrl
+
+group BlockScanners(events and trasactions)
+EveryBlock -> GetTokenEventsAndTransactions:BlockLogs
+note top: endless loop
+end
+GetTokenEventsAndTransactions -> ProccessWebHookEvents:EventDataDto
+ProccessWebHookEvents -> GetAddressWatchers:To address
+GetAddressWatchers -> ChargeNotificationsDatabase:Address
+ChargeNotificationsDatabase -> GetAddressWatchers:All webhooks id`s which listens to this address
+GetAddressWatchers ->  ProccessWebHookEvents:All webhooks id`s which listens to this address
+ProccessWebHookEvents->AddRelevantWebhookEventsToQueue:Webhook id , incoming event
+AddRelevantWebhookEventsToQueue -> ChargeNotificationsDatabase:WebhookEventModel
+ProccessWebHookEvents -> GetAddressWatchers:From address
+GetAddressWatchers -> ChargeNotificationsDatabase:Address
+ChargeNotificationsDatabase -> GetAddressWatchers:All webhooks id`s which listens to this address
+GetAddressWatchers ->  ProccessWebHookEvents:All webhooks id`s which listens to this address
+ProccessWebHookEvents->AddRelevantWebhookEventsToQueue:Webhook id , outgoing event  
+AddRelevantWebhookEventsToQueue -> ChargeNotificationsDatabase:WebhookEventModel
+group Broadcaster
+
+ChargeNotificationsDatabase -> SendData :Every unsuccessed webhook event with <6 tries
+note top: endless loop
+SendData->WebHookUrl:Webhook event
+
+end
+@enduml

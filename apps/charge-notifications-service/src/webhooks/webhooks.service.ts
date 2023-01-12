@@ -112,6 +112,11 @@ export class WebhooksService {
   async processWebhookEvents (eventData: EventData) {
     const toAddress = eventData?.to
     const fromAddress = eventData?.from
+    const tokenAddress = eventData?.tokenAddress
+
+    const tokenAddressWatchers = await this.getAddressWatchers(tokenAddress)
+
+    await this.addRelevantWebhookEventsToQueue(tokenAddressWatchers, eventData, null)
 
     const toAddressWatchers = await this.getAddressWatchers(toAddress)
 
@@ -122,13 +127,13 @@ export class WebhooksService {
     await this.addRelevantWebhookEventsToQueue(fromAddressWatchers, eventData, 'outgoing')
   }
 
-  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string) {
+  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string | null) {
     for (const addressWatcher of addressWatchers) {
       const { webhookId, projectId, webhookUrl, eventType } = addressWatcher
 
       if (!isEmpty(webhookUrl) &&
-                !isEmpty(eventType) &&
-                this.isRelevantEvent(eventData.tokenType, eventType)) {
+        !isEmpty(eventType) &&
+        this.isRelevantEvent(eventData.tokenType, eventType)) {
         try {
           await this.webhookEventModel.create({
             webhook: webhookId, projectId, webhookUrl, eventData, direction

@@ -17,8 +17,7 @@ export const WebhookEventSchema = new mongoose.Schema(
       required: true
     },
     direction: {
-      type: String,
-      required: true
+      type: String
     },
     responses: {
       type: [Object]

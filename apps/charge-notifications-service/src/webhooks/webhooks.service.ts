@@ -8,7 +8,8 @@ import { webhookAddressModelString, webhookModelString } from '@app/notification
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
 import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
-import { eventTypes, addressTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
+import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
+import { addressTypes } from '@app/notifications-service/common/schemas/webhook-event.schema'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 
@@ -16,7 +17,7 @@ import { WebhookEvent } from '@app/notifications-service/common/interfaces/webho
 export class WebhooksService {
   private readonly logger = new Logger(WebhooksService.name)
 
-  constructor (
+  constructor(
     @Inject(webhookModelString)
     private webhookModel: Model<Webhook>,
     @Inject(webhookAddressModelString)
@@ -25,11 +26,11 @@ export class WebhooksService {
     private webhookEventModel: Model<WebhookEvent>
   ) { }
 
-  async create (createWebhookDto: CreateWebhookDto): Promise<Webhook> {
+  async create(createWebhookDto: CreateWebhookDto): Promise<Webhook> {
     return this.webhookModel.create(createWebhookDto)
   }
 
-  async update (updateWebhookDto: UpdateWebhookDto): Promise<Webhook> {
+  async update(updateWebhookDto: UpdateWebhookDto): Promise<Webhook> {
     return this.webhookModel.findByIdAndUpdate(
       updateWebhookDto.webhookId,
       updateWebhookDto,
@@ -37,7 +38,7 @@ export class WebhooksService {
     )
   }
 
-  async delete (webhookId): Promise<Webhook> {
+  async delete(webhookId): Promise<Webhook> {
     const result = await this.webhookModel.findByIdAndDelete(webhookId)
 
     if (!isEmpty(result)) {
@@ -47,15 +48,15 @@ export class WebhooksService {
     return result
   }
 
-  async get (webhookId): Promise<Webhook> {
+  async get(webhookId): Promise<Webhook> {
     return this.webhookModel.findById(webhookId)
   }
 
-  async getAllByProjectId (projectId): Promise<Webhook[]> {
+  async getAllByProjectId(projectId): Promise<Webhook[]> {
     return this.webhookModel.find({ projectId })
   }
 
-  async createAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
+  async createAddresses(createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
     const docs = this.buildDocs(createWebhookAddressesDto)
 
     try {
@@ -74,11 +75,11 @@ export class WebhooksService {
     }
   }
 
-  async getAddresses (webhookId: string) {
+  async getAddresses(webhookId: string) {
     return this.webhookAddressModel.find({ webhookId })
   }
 
-  async deleteAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
+  async deleteAddresses(createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
     const query = {
       address: {
         $in: createWebhookAddressesDto.addresses
@@ -91,7 +92,7 @@ export class WebhooksService {
     return this.webhookAddressModel.deleteMany(query)
   }
 
-  async getAddressWatchers (address: string): Promise<any> {
+  async getAddressWatchers(address: string): Promise<any> {
     let addressWatchers = await this.webhookAddressModel
       .find({ address: { $regex: new RegExp(address, 'i') } })
       .populate('webhookId', 'webhookUrl eventType projectId')
@@ -109,7 +110,7 @@ export class WebhooksService {
     return addressWatchers
   }
 
-  async processWebhookEvents (eventData: EventData) {
+  async processWebhookEvents(eventData: EventData) {
     const toAddress = eventData?.to
     const fromAddress = eventData?.from
     const tokenAddress = eventData?.tokenAddress
@@ -127,7 +128,7 @@ export class WebhooksService {
     await this.addRelevantWebhookEventsToQueue(fromAddressWatchers, eventData, 'outgoing', addressTypes.WALLET)
   }
 
-  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string | null, addressType) {
+  async addRelevantWebhookEventsToQueue(addressWatchers: any, eventData: EventData, direction: string | null, addressType) {
     for (const addressWatcher of addressWatchers) {
       const { webhookId, projectId, webhookUrl, eventType } = addressWatcher
 
@@ -145,7 +146,7 @@ export class WebhooksService {
     }
   }
 
-  isRelevantEvent (tokenType: string, eventType: string): boolean {
+  isRelevantEvent(tokenType: string, eventType: string): boolean {
     // TODO: Choose better naming to make it clearer what each variable is
     if (eventType === eventTypes.ALL || tokenType === eventType) {
       return true
@@ -154,7 +155,7 @@ export class WebhooksService {
     return false
   }
 
-  private buildDocs (createWebhookAddressesDto: CreateWebhookAddressesDto) {
+  private buildDocs(createWebhookAddressesDto: CreateWebhookAddressesDto) {
     return createWebhookAddressesDto.addresses.map(
       address => {
         const webhookAddress = {

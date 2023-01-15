@@ -7,7 +7,6 @@ export enum eventTypes {
   ERC721 = 'ERC-721'
 }
 
-
 export const WebhookSchema = new mongoose.Schema(
   {
     projectId: { type: String, required: true, immutable: true },

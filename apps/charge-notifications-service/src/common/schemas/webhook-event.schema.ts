@@ -28,7 +28,7 @@ export const WebhookEventSchema = new mongoose.Schema(
       type: [Object]
     },
     addressType: {
-      type: String, enum: addressTypes, default: 'Wallet-Address'
+      type: String, enum: addressTypes, default: addressTypes.WALLET
     },
     numberOfTries: {
       type: Number,

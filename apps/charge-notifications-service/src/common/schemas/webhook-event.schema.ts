@@ -22,6 +22,9 @@ export const WebhookEventSchema = new mongoose.Schema(
     responses: {
       type: [Object]
     },
+    addressType: {
+      type: String
+    },
     numberOfTries: {
       type: Number,
       required: true,

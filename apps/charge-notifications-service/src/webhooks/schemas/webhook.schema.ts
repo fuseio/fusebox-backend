@@ -6,6 +6,10 @@ export enum eventTypes {
   ERC20 = 'ERC-20',
   ERC721 = 'ERC-721'
 }
+export enum addressTypes {
+  TOKEN = 'Token-Address',
+  WALLET = 'Wallet-Address'
+}
 
 export const WebhookSchema = new mongoose.Schema(
   {

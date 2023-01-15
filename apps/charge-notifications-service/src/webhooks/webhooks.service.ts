@@ -8,7 +8,7 @@ import { webhookAddressModelString, webhookModelString } from '@app/notification
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
 import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
-import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
+import { eventTypes, addressTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 
@@ -116,18 +116,18 @@ export class WebhooksService {
 
     const tokenAddressWatchers = await this.getAddressWatchers(tokenAddress)
 
-    await this.addRelevantWebhookEventsToQueue(tokenAddressWatchers, eventData, null)
+    await this.addRelevantWebhookEventsToQueue(tokenAddressWatchers, eventData, null, addressTypes.TOKEN)
 
     const toAddressWatchers = await this.getAddressWatchers(toAddress)
 
-    await this.addRelevantWebhookEventsToQueue(toAddressWatchers, eventData, 'incoming')
+    await this.addRelevantWebhookEventsToQueue(toAddressWatchers, eventData, 'incoming', addressTypes.WALLET)
 
     const fromAddressWatchers = await this.getAddressWatchers(fromAddress)
 
-    await this.addRelevantWebhookEventsToQueue(fromAddressWatchers, eventData, 'outgoing')
+    await this.addRelevantWebhookEventsToQueue(fromAddressWatchers, eventData, 'outgoing', addressTypes.WALLET)
   }
 
-  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string | null) {
+  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string | null, addressType) {
     for (const addressWatcher of addressWatchers) {
       const { webhookId, projectId, webhookUrl, eventType } = addressWatcher
 
@@ -136,7 +136,7 @@ export class WebhooksService {
         this.isRelevantEvent(eventData.tokenType, eventType)) {
         try {
           await this.webhookEventModel.create({
-            webhook: webhookId, projectId, webhookUrl, eventData, direction
+            webhook: webhookId, projectId, webhookUrl, eventData, direction, addressType
           })
         } catch (err) {
           this.logger.error(`Webhook event couldn't be added to the DB: ${err}`)

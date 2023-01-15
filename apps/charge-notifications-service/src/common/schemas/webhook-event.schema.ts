@@ -1,5 +1,10 @@
 import * as mongoose from 'mongoose'
 
+export enum addressTypes {
+  TOKEN = 'Token-Address',
+  WALLET = 'Wallet-Address'
+}
+
 export const WebhookEventSchema = new mongoose.Schema(
   {
     webhook: {
@@ -17,11 +22,13 @@ export const WebhookEventSchema = new mongoose.Schema(
       required: true
     },
     direction: {
-      type: String,
-      required: true
+      type: String
     },
     responses: {
       type: [Object]
+    },
+    addressType: {
+      type: String, enum: addressTypes, default: addressTypes.WALLET
     },
     numberOfTries: {
       type: Number,

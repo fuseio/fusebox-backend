@@ -1,0 +1,24 @@
+@startuml uml
+participant ApiService[
+    =ApiService
+    ----
+    ""NotificationModuleController""
+]
+participant NotificationMSWebhookController
+participant NotificationMSWebhookService
+database ChargeNotificationsDatabase
+control addressMappingFunction
+
+
+ApiService -> NotificationMSWebhookController:create_webhook
+NotificationMSWebhookController -> NotificationMSWebhookService:create_webhook
+NotificationMSWebhookService->ChargeNotificationsDatabase :create_webhook(dto)
+NotificationMSWebhookService->NotificationMSWebhookController:webhook_data
+NotificationMSWebhookController->ApiService:webhook_data
+
+
+ApiService -> NotificationMSWebhookController:create_addresses_for_webhook_id
+NotificationMSWebhookController -> NotificationMSWebhookService:create_addresses_for_webhook_id
+NotificationMSWebhookService->addressMappingFunction:create_addresses_for_webhook_id
+addressMappingFunction->ChargeNotificationsDatabase:addresses_for_webhook_id 
+@enduml

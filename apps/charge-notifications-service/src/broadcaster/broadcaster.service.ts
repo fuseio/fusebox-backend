@@ -14,11 +14,11 @@ export class BroadcasterService {
   private readonly logger = new Logger(BroadcasterService.name)
 
   constructor (
-        private httpService: HttpService,
-        @Inject(webhookEventModelString)
-        private webhookEventModel: Model<WebhookEvent>,
-        private readonly configService: ConfigService
-  ) {}
+    private httpService: HttpService,
+    @Inject(webhookEventModelString)
+    private webhookEventModel: Model<WebhookEvent>,
+    private readonly configService: ConfigService
+  ) { }
 
   get retryTimeIntervalsMS () {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
@@ -87,11 +87,13 @@ export class BroadcasterService {
     const projectId = webhookEvent.projectId
     const direction = webhookEvent.direction
     const webhookUrl = webhookEvent.webhook.webhookUrl
+    const addressType = webhookEvent.addressType
 
     const postBody = {
       ...webhookEvent.eventData,
       projectId,
-      direction
+      direction,
+      addressType
     }
 
     const headers: Record<string, any> = {
@@ -118,11 +120,11 @@ export class BroadcasterService {
       .pipe(
         catchError(e => {
           const errorReason = e?.response?.data?.error ||
-                        e?.response?.data?.errors?.message || ''
+            e?.response?.data?.errors?.message || ''
 
           throw new HttpException(
-                        `${e?.response?.statusText}: ${JSON.stringify(errorReason)}`,
-                        e?.response?.status
+            `${e?.response?.statusText}: ${JSON.stringify(errorReason)}`,
+            e?.response?.status
           )
         })
       )

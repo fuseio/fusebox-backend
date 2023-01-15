@@ -4,6 +4,7 @@ import { EventData } from '@app/notifications-service/common/interfaces/event-da
 export interface WebhookEvent extends Document, Object {
   readonly webhook: string;
   readonly projectId: string;
+  readonly addressType: string;
   readonly eventData: EventData;
   readonly direction: EventData;
   numberOfTries: number;

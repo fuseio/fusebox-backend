@@ -11,7 +11,7 @@ export const WebhookSchema = new mongoose.Schema(
   {
     projectId: { type: String, required: true, immutable: true },
     webhookUrl: { type: String, required: true },
-    eventType: { type: String, enum: eventTypes, default: 'ALL' }
+    eventType: { type: String, enum: eventTypes, default: eventTypes.ALL }
   },
   {
     timestamps: true

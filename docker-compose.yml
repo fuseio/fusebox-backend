@@ -66,8 +66,6 @@ services:
       dockerfile: ./apps/charge-notifications-service/Dockerfile
       target: development
     command: npm run start:dev charge-notifications-service
-    env_file:
-      - ./apps/charge-notifications-service/.env
     environment:
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_PORT
@@ -114,8 +112,6 @@ services:
       dockerfile: ./apps/charge-apps-service/Dockerfile
       target: development
     command: npm run start:dev charge-apps-service
-    env_file:
-      - ./apps/charge-apps-service/.env
     environment:
       - APPS_HOST
       - APPS_PORT

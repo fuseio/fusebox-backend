@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose'
 import { WebhookAddress } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
 
-export const WebhookAddressSchema = new mongoose.Schema<WebhookAddress>(
+export const WebhookAddressSchema = new mongoose.Schema(
   {
     webhookId: {
-      type: mongoose.Schema.Types.Mixed,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Webhook',
       required: true,
       immutable: true

@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
-import { WebhookAddress, WebhookAddressModel } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
+import { WebhookAddress } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
 import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
 import { webhookAddressModelString, webhookModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { isEmpty } from 'lodash'
@@ -21,7 +21,7 @@ export class WebhooksService {
     @Inject(webhookModelString)
     private webhookModel: Model<Webhook>,
     @Inject(webhookAddressModelString)
-    private webhookAddressModel: Model<WebhookAddress, WebhookAddressModel>,
+    private webhookAddressModel: Model<WebhookAddress>,
     @Inject(webhookEventModelString)
     private webhookEventModel: Model<WebhookEvent>
   ) { }

@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { EthereumPaymentsService } from '@app/apps-service/ethereum-payments/ethereum-payments.service'
-import { MessagePattern } from '@nestjs/microservices'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { IsValidApiKeysGuard } from '@app/apps-service/api-keys/guards/is-valid-api-keys.guard'
 import { UserId } from '@app/apps-service/common/config/decorators/user.decorator'

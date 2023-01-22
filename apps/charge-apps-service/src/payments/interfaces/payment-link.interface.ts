@@ -12,4 +12,5 @@ export interface PaymentLink extends Document {
   receivedTokenSymbol: string;
   receivedTokenAddress: string;
   receivedAmount: string;
+  redirectionLink: string | null;
 }

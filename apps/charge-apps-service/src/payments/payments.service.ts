@@ -18,12 +18,12 @@ export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name)
 
   constructor (
-        private chargeApiService: ChargeApiService,
-        @Inject(paymentAccountModelString)
-        private paymentAccountModel: Model<PaymentAccount>,
-        @Inject(paymentLinkModelString)
-        private paymentLinkModel: Model<PaymentLink>,
-        private readonly configService: ConfigService
+    private chargeApiService: ChargeApiService,
+    @Inject(paymentAccountModelString)
+    private paymentAccountModel: Model<PaymentAccount>,
+    @Inject(paymentLinkModelString)
+    private paymentLinkModel: Model<PaymentLink>,
+    private readonly configService: ConfigService
   ) { }
 
   get allowedPaymentTokens () {
@@ -73,8 +73,8 @@ export class PaymentsService {
 
     if (!this.isRequestedAllowedToken(createPaymentLinkDto)) {
       throw new HttpException(
-                `${createPaymentLinkDto.tokenSymbol} - ${createPaymentLinkDto.tokenAddress} is not allowed`,
-                HttpStatus.BAD_REQUEST
+        `${createPaymentLinkDto.tokenSymbol} - ${createPaymentLinkDto.tokenAddress} is not allowed`,
+        HttpStatus.BAD_REQUEST
       )
     }
 
@@ -172,6 +172,6 @@ export class PaymentsService {
 
   isTokenMatch (paymentLink: PaymentLink, webhookEvent: WebhookEvent) {
     return paymentLink.tokenAddress.toLowerCase() === webhookEvent.tokenAddress.toLowerCase() &&
-        paymentLink.tokenSymbol.toLowerCase() === webhookEvent.tokenSymbol.toLowerCase()
+      paymentLink.tokenSymbol.toLowerCase() === webhookEvent.tokenSymbol.toLowerCase()
   }
 }

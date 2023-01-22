@@ -28,7 +28,8 @@ export const PaymentLinkSchema = new mongoose.Schema(
     status: { type: String, required: true, enum: status, default: status.NOT_PAID },
     receivedTokenSymbol: { type: String },
     receivedTokenAddress: { type: String },
-    receivedAmount: { type: String }
+    receivedAmount: { type: String },
+    redirectUrl: { type: String }
   },
   {
     timestamps: true

@@ -26,7 +26,8 @@
     "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve",
     "docker:staging": "docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d",
     "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
-    "docker:debug": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.debug.yml up"
+    "docker:debug": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.debug.yml up",
+    "docker:full-debug": "docker-compose -f docker-compose.yml -f docker-compose.full-dev.yml -f docker-compose.debug.yml up"
   },
   "dependencies": {
     "@compodoc/compodoc": "^1.1.19",

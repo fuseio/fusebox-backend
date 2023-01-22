@@ -28,7 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let errorMessage: string | object
 
     if (exception instanceof HttpException) {
-      httpStatus = exception.getStatus()
+      httpStatus = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
       errorMessage = exception.getResponse()
     } else if (exception instanceof MongoServerError) {
       if (exception.code === 11000) {

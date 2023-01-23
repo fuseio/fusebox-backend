@@ -3,10 +3,10 @@ import { Transport } from '@nestjs/microservices'
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { appStoreServiceLoggerContext } from '@app/common/constants/microservices.constants'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
-import { ChargeSmartAccountsService } from '@app/smart-accounts-service/charge-smart-accounts-service.service'
+import { ChargeSmartAccountsServiceModule } from '@app/smart-accounts-service/charge-smart-accounts-service.module'
 
 async function bootstrap () {
-  const app = await NestFactory.create(ChargeSmartAccountsService)
+  const app = await NestFactory.create(ChargeSmartAccountsServiceModule)
 
   const microServiceOptions = {
     transpot: Transport.TCP,
@@ -15,7 +15,7 @@ async function bootstrap () {
       port: process.env.SMART_ACCOUNTS_TCP_PORT
     }
   }
-  app.setGlobalPrefix('app-store')
+  app.setGlobalPrefix('smart-accounts')
   app.enableCors()
 
   app.useGlobalPipes(

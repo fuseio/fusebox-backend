@@ -1,0 +1,30 @@
+import { SmartAccountsAuthDto } from '@app/smart-accounts-service/dto/smart-accounts-auth.dto';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { arrayify, BaseProvider, computeAddress, hashMessage, InjectEthersProvider, recoverPublicKey } from 'nestjs-ethers';
+
+@Injectable()
+export class SmartAccountsService {
+    private readonly logger = new Logger(SmartAccountsService.name)
+
+    constructor (
+        @InjectEthersProvider('regular-node')
+        private readonly rpcProvider: BaseProvider,
+        private readonly jwtService: JwtService,
+    ) { }
+
+    async auth (smartAccountsAuthDto: SmartAccountsAuthDto) {        
+        try {
+            const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartAccountsAuthDto.hash))), smartAccountsAuthDto.sig);
+            const recoveredAddress = computeAddress(publicKey)
+    
+            if (recoveredAddress === smartAccountsAuthDto.ownerAddress) {
+                return { jwt: this.jwtService.sign({ownerAddress: recoveredAddress})}
+            } else {
+                throw new Error('Owner Address does not match recovered address in signature')
+            }
+        } catch (err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+        }
+    }
+}

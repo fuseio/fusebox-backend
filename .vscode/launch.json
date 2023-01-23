@@ -50,6 +50,17 @@
         },
         {
             "type": "node",
+            "request": "attach",
+            "name": "Debug: Charge Smart Accounts",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
+            "port": 9232,
+            "restart": true,
+            "address": "0.0.0.0",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
             "request": "launch",
             "name": "Debug Nest Framework",
             "args": [

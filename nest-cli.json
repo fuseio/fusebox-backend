@@ -71,6 +71,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/charge-apps-service/tsconfig.app.json"
       }
+    },
+    "charge-smart-accounts-service": {
+      "type": "application",
+      "root": "apps/charge-smart-accounts-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-smart-accounts-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-smart-accounts-service/tsconfig.app.json"
+      }
     }
   }
 }

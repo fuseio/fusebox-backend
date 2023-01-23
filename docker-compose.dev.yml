@@ -72,6 +72,19 @@ services:
     command: npm run start:dev charge-notifications-service
     networks:
       - chargenet
+  charge-smart-accounts-service:
+    build:
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    ports:
+      - 9232:9232
+    depends_on:
+      - mongo
+    command: npm run start:dev charge-smart-accounts-service
+    networks:
+      - chargenet
   charge-relay-service:
     build:
       target: development

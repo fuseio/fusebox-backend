@@ -34,6 +34,8 @@ paths:
 
         | tokenSymbol | string | Symbol of requested token (Check `Get Allowed
         Tokens List` request) | true |
+        
+        | redirectUrl | string | Url where user will be redirected after payment | false |
       requestBody:
         content:
           application/json:
@@ -55,12 +57,16 @@ paths:
                 tokenSymbol: 
                   type: string
                   example: USDC
+                redirectUrl: 
+                  type: string
+                  example: https://chargeweb3.com/
               example:
                 title: Title
                 description: Description
                 amount: 10
                 tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
                 tokenSymbol: USDC
+                redirectUrl: https://chargeweb3.com/
       parameters:
         - name: API-SECRET
           in: header
@@ -90,6 +96,7 @@ paths:
                 amount: 10
                 backendWalletId: 635fe010b21d669df1d9fbd8
                 status: Not Paid
+                redirectUrl: https://chargeweb3.com/
                 _id: 635fe010b21d669df1d9fbda
                 createdAt: '2022-10-31T14:47:44.709Z'
                 updatedAt: '2022-10-31T14:47:44.709Z'

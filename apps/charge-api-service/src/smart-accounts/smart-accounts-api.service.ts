@@ -1,17 +1,16 @@
-import { smartAccountsService } from '@app/common/constants/microservices.constants';
-import { SmartAccountsAuthDto } from '@app/smart-accounts-service/dto/smart-accounts-auth.dto';
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { catchError, lastValueFrom, takeLast } from 'rxjs';
-import { CreateSmartAccountDto } from '../../../charge-smart-accounts-service/src/dto/create-smart-account.dto';
+import { smartAccountsService } from '@app/common/constants/microservices.constants'
+import { SmartAccountsAuthDto } from '@app/smart-accounts-service/dto/smart-accounts-auth.dto'
+import { HttpException, Inject, Injectable } from '@nestjs/common'
+import { ClientProxy } from '@nestjs/microservices'
+import { catchError, lastValueFrom, takeLast } from 'rxjs'
 
 @Injectable()
-export class SmartAccountsService {
+export class SmartAccountsAPIService {
   constructor (
     @Inject(smartAccountsService) private readonly smartAccountsClient: ClientProxy
-) {}
+  ) {}
 
-  auth(smartAccountsAuthDto: SmartAccountsAuthDto) {
+  auth (smartAccountsAuthDto: SmartAccountsAuthDto) {
     return this.callMSFunction(this.smartAccountsClient, 'auth', smartAccountsAuthDto)
   }
 

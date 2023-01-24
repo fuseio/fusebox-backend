@@ -1,12 +1,12 @@
-import { IsEthereumAddress, IsString } from "class-validator"
+import { IsEthereumAddress, IsString } from 'class-validator'
 
 export class SmartAccountsAuthDto {
     @IsString()
-    hash: string
+      hash: string
 
     @IsString()
-    sig: string
+      sig: string
 
     @IsEthereumAddress()
-    ownerAddress: string
+      ownerAddress: string
 }

@@ -54,6 +54,7 @@ services:
       - charge-notifications-service
       - charge-network-service
       - charge-relay-service
+      - charge-smart-accounts-service
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

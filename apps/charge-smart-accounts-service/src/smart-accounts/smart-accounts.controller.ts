@@ -7,7 +7,7 @@ import { MessagePattern } from '@nestjs/microservices'
 export class SmartAccountsController {
   constructor (private readonly smartAccountsService: SmartAccountsService) { }
 
-    @MessagePattern('auth')
+  @MessagePattern('auth')
   auth (@Body() smartAccountsAuthDto: SmartAccountsAuthDto) {
     return this.smartAccountsService.auth(smartAccountsAuthDto)
   }

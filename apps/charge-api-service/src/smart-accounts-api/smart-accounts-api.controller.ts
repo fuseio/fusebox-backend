@@ -4,7 +4,7 @@ import { SmartAccountsAuthDto } from '@app/smart-accounts-service/dto/smart-acco
 import { SmartAccountsAPIService } from '@app/api-service/smart-accounts-api/smart-accounts-api.service'
 
 @UseGuards(IsValidPublicApiKeyGuard)
-@Controller('smart-accounts')
+@Controller({path: 'smart-accounts', version: '1'})
 export class SmartAccountsAPIController {
   constructor (private readonly smartAccountsService: SmartAccountsAPIService) {}
 

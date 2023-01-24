@@ -48,6 +48,8 @@ services:
       - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
       - LEGACY_FUSE_TRADE_API_URL
+      - SMART_ACCOUNTS_HOST
+      - SMART_ACCOUNTS_TCP_PORT
     depends_on:
       - charge-notifications-service
       - charge-network-service
@@ -149,6 +151,7 @@ services:
       - SMART_ACCOUNTS_PORT
       - SMART_ACCOUNTS_TCP_PORT
       - MONGO_URI=${SMART_ACCOUNTS_MONGO_URI}
+      - SMART_ACCOUNTS_JWT_SECRET
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

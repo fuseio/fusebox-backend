@@ -8,7 +8,7 @@ export async function getHashAndSig(privateKey) {
     let wallet = new ethers.Wallet(privateKey);
 
     const ethAddress = await wallet.getAddress()
-    console.log(ethAddress);
+    console.log(`wallet address: ${ethAddress}`);
 
     const hash = await ethers.utils.keccak256(ethAddress)
     console.log(`hash: ${hash}`);

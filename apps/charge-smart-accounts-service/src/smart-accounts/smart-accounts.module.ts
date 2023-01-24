@@ -9,23 +9,15 @@ import { SmartAccountsService } from './smart-accounts.service';
 
 @Module({
   imports: [
-    EthersModule.forRootAsync({
+    JwtModule.registerAsync({
       imports: [ConfigModule.forFeature(rpcConfig)],
       inject: [ConfigService],
-      token: 'regular-node',
       useFactory: async (configService: ConfigService) => {
-        const config = configService.get('rpcConfig')
-        console.log('Rpc config ' + JSON.stringify(config))
+        const jwtSecret = configService.get('SMART_ACCOUNTS_JWT_SECRET')
         return {
-          network: { name: config.rpc.networkName, chainId: config.rpc.chainId },
-          custom: config.rpc.url,
-          useDefaultProvider: false
+          secret: jwtSecret
         }
       }
-    }),
-    JwtModule.register({
-      secret: 'secretKey',
-      // signOptions: { expiresIn: '60s'}
     }),
     ConfigModule.forFeature(rpcConfig),
   ],

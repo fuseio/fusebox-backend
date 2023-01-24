@@ -8,8 +8,6 @@ export class SmartAccountsService {
     private readonly logger = new Logger(SmartAccountsService.name)
 
     constructor (
-        @InjectEthersProvider('regular-node')
-        private readonly rpcProvider: BaseProvider,
         private readonly jwtService: JwtService,
     ) { }
 
@@ -24,6 +22,7 @@ export class SmartAccountsService {
                 throw new Error('Owner Address does not match recovered address in signature')
             }
         } catch (err) {
+            this.logger.error(`An error occurred during Smart Accounts Auth. ${err}`)
             throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
         }
     }

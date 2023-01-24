@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { SmartAccountsAuthDto } from '@app/smart-accounts-service/dto/smart-accounts-auth.dto'
-import { SmartAccountsAPIService } from '@app/api-service/smart-accounts/smart-accounts-api.service'
+import { SmartAccountsAPIService } from '@app/api-service/smart-accounts-api/smart-accounts-api.service'
 
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller('smart-accounts')

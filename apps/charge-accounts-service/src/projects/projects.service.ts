@@ -3,14 +3,11 @@ import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-proj
 import { Project } from '@app/accounts-service/projects/interfaces/project.interface'
 import { projectModelString } from '@app/accounts-service/projects/projects.constants'
 import { UsersService } from '@app/accounts-service/users/users.service'
-import {
-  apiService
-  // relayService
-} from '@app/common/constants/microservices.constants'
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
+import { apiService } from '@app/common/constants/microservices.constants'
+import { Inject, Injectable } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { Model } from 'mongoose'
-import { catchError, lastValueFrom, takeLast } from 'rxjs'
+import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class ProjectsService {
@@ -26,7 +23,7 @@ export class ProjectsService {
     const createdProject = new this.projectModel(createProjectDto)
     const projectId = createdProject._id
 
-    this.callMSFunction(this.apiClient, 'create_public', projectId)
+    callMSFunction(this.apiClient, 'create_public', projectId)
 
     return createdProject.save()
   }
@@ -50,15 +47,15 @@ export class ProjectsService {
   }
 
   async createSecret (projectId: string) {
-    const secret = await this.callMSFunction(this.apiClient, 'create_secret', projectId)
+    const secret = await callMSFunction(this.apiClient, 'create_secret', projectId)
     // if (secret) {
-    //   this.callMSFunction(this.relayClient, 'create_account', projectId)
+    //   callMSFunction(this.relayClient, 'create_account', projectId)
     // }
     return secret
   }
 
   async checkIfSecretExists (projectId: string) {
-    const apiKeysInfo = await this.callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
+    const apiKeysInfo = await callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
 
     if (apiKeysInfo?.secretLastFourChars) {
       return true
@@ -67,30 +64,14 @@ export class ProjectsService {
   }
 
   async getApiKeysInfo (projectId: string) {
-    return this.callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
+    return callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
   }
 
   async updateSecret (projectId: string) {
-    return this.callMSFunction(this.apiClient, 'update_secret', projectId)
+    return callMSFunction(this.apiClient, 'update_secret', projectId)
   }
 
   async getPublic (projectId: string) {
-    return this.callMSFunction(this.apiClient, 'get_public', projectId)
-  }
-
-  private async callMSFunction (client: ClientProxy, pattern: string, data: string) {
-    return lastValueFrom(
-      client
-        .send(pattern, data)
-        .pipe(takeLast(1))
-        .pipe(
-          catchError((val) => {
-            throw new HttpException(
-              val.message,
-              HttpStatus.INTERNAL_SERVER_ERROR
-            )
-          })
-        )
-    )
+    return callMSFunction(this.apiClient, 'get_public', projectId)
   }
 }

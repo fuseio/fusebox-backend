@@ -7,7 +7,7 @@ import { catchError, lastValueFrom, map } from 'rxjs'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 import { ConfigService } from '@nestjs/config'
-import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
+import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface'
 
 @Injectable()
 export class BroadcasterService {

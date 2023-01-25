@@ -2,6 +2,7 @@ import { SmartAccountsAuthDto } from '@app/smart-accounts-service/dto/smart-acco
 import { SmartAccountsService } from '@app/smart-accounts-service/smart-accounts/smart-accounts.service'
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
+import { ISmartAccountUser } from '@app/common/interfaces/smart-account.interface'
 
 @Controller('smart-accounts')
 export class SmartAccountsController {
@@ -10,5 +11,25 @@ export class SmartAccountsController {
   @MessagePattern('auth')
   auth (@Body() smartAccountsAuthDto: SmartAccountsAuthDto) {
     return this.smartAccountsService.auth(smartAccountsAuthDto)
+  }
+
+  @MessagePattern('get_wallet')
+  getWallet (smartAccountUser: ISmartAccountUser) {
+    return this.smartAccountsService.getWallet(smartAccountUser)
+  }
+
+  @MessagePattern('create_wallet')
+  createWallet (smartAccountUser: ISmartAccountUser) {
+    return this.smartAccountsService.createWallet(smartAccountUser)
+  }
+
+  @MessagePattern('get_available_upgrades')
+  getAvailableUpgrades () {
+    return this.smartAccountsService.getAvailableUpgrades()
+  }
+
+  @MessagePattern('install_upgrade')
+  installUpgrade () {
+    return this.smartAccountsService.installUpgrade()
   }
 }

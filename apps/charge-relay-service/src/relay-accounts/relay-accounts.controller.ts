@@ -1,6 +1,6 @@
-import { RelayAccountsService } from './relay-accounts.service'
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
+import { RelayAccountsService } from '@app/relay-service/relay-accounts/relay-accounts.service'
 
 @Controller()
 export class RelayAccountsController {

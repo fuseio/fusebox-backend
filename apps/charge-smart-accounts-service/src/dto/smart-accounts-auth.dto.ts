@@ -1,12 +1,16 @@
-import { IsEthereumAddress, IsString } from 'class-validator'
+import { IsEthereumAddress, IsMongoId, IsOptional, IsString } from 'class-validator'
 
 export class SmartAccountsAuthDto {
-    @IsString()
-      hash: string
+  @IsString()
+    hash: string
 
-    @IsString()
-      sig: string
+  @IsString()
+    sig: string
 
-    @IsEthereumAddress()
-      ownerAddress: string
+  @IsEthereumAddress()
+    ownerAddress: string
+
+  @IsOptional()
+  @IsMongoId()
+    projectId
 }

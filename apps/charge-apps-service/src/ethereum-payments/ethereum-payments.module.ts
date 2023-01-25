@@ -7,7 +7,7 @@ import configuration from '@app/apps-service/common/config/configuration'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ApiKeysModule } from '@app/apps-service/api-keys/api-keys.module'
 import { HttpModule } from '@nestjs/axios'
-import { BackendWalletsEthereumService } from './backend-wallets-ethereum.service'
+import { BackendWalletsEthereumService } from '@app/apps-service/ethereum-payments/backend-wallets-ethereum.service'
 
 @Module({
   imports: [
@@ -20,8 +20,12 @@ import { BackendWalletsEthereumService } from './backend-wallets-ethereum.servic
         }
       }),
       inject: [ConfigService]
-    }), DatabaseModule, ConfigModule.forFeature(configuration), ApiKeysModule],
+    }),
+    DatabaseModule,
+    ConfigModule.forFeature(configuration),
+    ApiKeysModule
+  ],
   controllers: [EthereumPaymentsController],
   providers: [EthereumPaymentsService, BackendWalletsEthereumService, ...ethereumPaymentsProviders]
 })
-export class EthereumPaymentsModule {}
+export class EthereumPaymentsModule { }

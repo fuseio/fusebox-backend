@@ -3,7 +3,7 @@ import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/d
 import { CreateWebhookDto } from '@app/notifications-service/webhooks/dto/create-webhook.dto'
 import { UpdateWebhookDto } from '@app/notifications-service/webhooks/dto/update-webhook.dto'
 import { WebhookAddress } from '@app/notifications-service/webhooks/interfaces/webhook-address.interface'
-import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
+import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface'
 import { webhookAddressModelString, webhookModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'

@@ -45,7 +45,7 @@ export class SmartAccountsAPIController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('install__upgrade')
+  @Post('install_upgrade')
   installUpgrade (@SmartAccountOwner() user: ISmartAccountUser) {
     return this.smartAccountsAPIService.installUpgrade()
   }

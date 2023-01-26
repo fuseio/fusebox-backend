@@ -3,28 +3,32 @@ import { IsEthereumAddress, IsNumber, IsOptional, IsString, IsUrl } from 'class-
 export class CreatePaymentLinkDto {
   @IsString()
   @IsOptional()
-    ownerId: string
+  ownerId: string
 
   @IsString()
-    title: string
+  title: string
 
   @IsString()
-    description: string
+  description: string
 
   @IsNumber()
-    amount: string
+  amount: string
 
   @IsEthereumAddress()
-    tokenAddress: string
+  tokenAddress: string
 
   @IsString()
-    tokenSymbol: string
+  tokenSymbol: string
 
   @IsString()
   @IsOptional()
-    backendWalletId: string
+  backendWalletId: string
 
   @IsUrl()
   @IsOptional()
-    redirectUrl: string
+  redirectUrl: string
+
+  @IsUrl()
+  @IsOptional()
+  webhookUrl: string
 }

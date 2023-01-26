@@ -29,7 +29,8 @@ export const PaymentLinkSchema = new mongoose.Schema(
     receivedTokenSymbol: { type: String },
     receivedTokenAddress: { type: String },
     receivedAmount: { type: String },
-    redirectUrl: { type: String }
+    redirectUrl: { type: String },
+    webhookUrl: { type: String }
   },
   {
     timestamps: true

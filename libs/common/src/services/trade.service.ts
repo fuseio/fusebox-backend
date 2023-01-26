@@ -5,12 +5,12 @@ import { lastValueFrom, map } from 'rxjs'
 
 @Injectable()
 export default class TradeService {
-  constructor (
+  constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
-  ) {}
+  ) { }
 
-  async getTokenPrice (tokenAddress: string) {
+  async getTokenPrice(tokenAddress: string) {
     const observable = this.httpService
       .get(`${this.configService.get('tradeApiBaseUrl')}/api/v1/price/${tokenAddress}`)
       .pipe(map(res => res.data.data.price))

@@ -1,34 +1,33 @@
 import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
-import { HttpService } from '@nestjs/axios'
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Model } from 'mongoose'
-import { catchError, lastValueFrom, map } from 'rxjs'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 import { ConfigService } from '@nestjs/config'
 import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
+import WebhookSendService from '@app/common/services/webhook-send.service'
 
 @Injectable()
 export class BroadcasterService {
   private readonly logger = new Logger(BroadcasterService.name)
 
-  constructor (
-    private httpService: HttpService,
+  constructor(
     @Inject(webhookEventModelString)
     private webhookEventModel: Model<WebhookEvent>,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly webhookSendService: WebhookSendService
+
   ) { }
 
-  get retryTimeIntervalsMS () {
+  get retryTimeIntervalsMS() {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
   }
 
-  async onModuleInit (): Promise<void> {
+  async onModuleInit(): Promise<void> {
     this.start()
   }
 
-  async start () {
+  async start() {
     while (true) {
       const webhookEventsToSendNow = await this.webhookEventModel.find(
         {
@@ -41,7 +40,7 @@ export class BroadcasterService {
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
           webhookEvent.numberOfTries++
-          const response = await this.sendData(webhookEvent)
+          const response = await this.webhookSendService.sendData(webhookEvent)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true
         } catch (err) {
@@ -69,7 +68,7 @@ export class BroadcasterService {
     }
   }
 
-  private getResponseDetailsWithDate (status: number, statusText: string): object {
+  private getResponseDetailsWithDate(status: number, statusText: string): object {
     return {
       status,
       statusText,
@@ -77,61 +76,13 @@ export class BroadcasterService {
     }
   }
 
-  private getNewRetryAfterDate (webhookEvent: any) {
+  private getNewRetryAfterDate(webhookEvent: any) {
     const old = webhookEvent?.retryAfter || new Date()
     const addInterval = this.retryTimeIntervalsMS[webhookEvent.numberOfTries]
     return new Date(old.getTime() + addInterval)
   }
 
-  private async sendData (webhookEvent: any) {
-    const projectId = webhookEvent.projectId
-    const direction = webhookEvent.direction
-    const webhookUrl = webhookEvent.webhook.webhookUrl
-    const addressType = webhookEvent.addressType
-
-    const postBody = {
-      ...webhookEvent.eventData,
-      projectId,
-      direction,
-      addressType
-    }
-
-    const headers: Record<string, any> = {
-      'Content-Type': 'application/json'
-    }
-
-    const requestConfig: AxiosRequestConfig = {
-      method: 'post',
-      url: webhookUrl,
-      data: postBody,
-      headers
-    }
-
-    return lastValueFrom(this.httpService
-      .request(
-        requestConfig
-      )
-      .pipe(
-        map((axiosResponse: AxiosResponse) => {
-          this.logger.log(`Sent webhook to ${webhookUrl} with data: ${postBody}`)
-          return axiosResponse
-        })
-      )
-      .pipe(
-        catchError(e => {
-          const errorReason = e?.response?.data?.error ||
-            e?.response?.data?.errors?.message || ''
-
-          throw new HttpException(
-            `${e?.response?.statusText}: ${JSON.stringify(errorReason)}`,
-            e?.response?.status
-          )
-        })
-      )
-    )
-  }
-
-  isRelevantEvent (tokenType: string, eventType: string): boolean {
+  isRelevantEvent(tokenType: string, eventType: string): boolean {
     // TODO: Choose better naming to make it clearer what each variable is
     if (eventType === eventTypes.ALL || tokenType === eventType) {
       return true

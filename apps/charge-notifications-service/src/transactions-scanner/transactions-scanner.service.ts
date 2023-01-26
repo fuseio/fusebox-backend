@@ -17,7 +17,7 @@ import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.se
 export class TransactionsScannerService {
   private readonly logger = new Logger(TransactionsScannerService.name)
 
-  constructor(
+  constructor (
     @Inject(transactionsScannerStatusModelString)
     private transactionsScannerStatusModel: Model<TransactionsScannerStatus>,
     @InjectEthersProvider('full-archive-node')
@@ -27,15 +27,15 @@ export class TransactionsScannerService {
     private webhooksService: WebhooksService
   ) { }
 
-  get web3Provider() {
+  get web3Provider () {
     return this.web3ProviderService.getProvider()
   }
 
-  async onModuleInit(): Promise<void> {
+  async onModuleInit (): Promise<void> {
     this.start()
   }
 
-  async start() {
+  async start () {
     while (true) {
       try {
         let { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
@@ -67,7 +67,7 @@ export class TransactionsScannerService {
     }
   }
 
-  async getStatus(filter: string) {
+  async getStatus (filter: string) {
     const status = await this.transactionsScannerStatusModel.findOne({
       filter
     })
@@ -82,12 +82,12 @@ export class TransactionsScannerService {
     return newStatus
   }
 
-  async updateStatus(filter: string, blockNumber: number) {
+  async updateStatus (filter: string, blockNumber: number) {
     await this.transactionsScannerStatusModel.updateOne({ filter }, { blockNumber }, { upsert: true })
   }
 
   @logPerformance('TransactionsScanner::ProcessBlocks')
-  async processBlocks(fromBlock: number, toBlock: number) {
+  async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
     this.logger.log(`TransactionsScanner: Processing blocks from ${fromBlock} to ${toBlock}`)
@@ -100,7 +100,7 @@ export class TransactionsScannerService {
   }
 
   @logPerformance('TransactionsScanner::ProcessTraces')
-  async processBlockTraces(blockNumber: number) {
+  async processBlockTraces (blockNumber: number) {
     const blockHash = BigNumber.from(blockNumber).toHexString()
     const blockTraces = await this.rpcProvider.send('trace_block', [blockHash])
 
@@ -122,7 +122,7 @@ export class TransactionsScannerService {
   }
 
   @logPerformance('TransactionsScanner::ProcessTrace')
-  async processTrace(trace: any) {
+  async processTrace (trace: any) {
     const eventData: EventData = {
       to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
       from: this.web3Provider.utils.toChecksumAddress(trace.action.from),

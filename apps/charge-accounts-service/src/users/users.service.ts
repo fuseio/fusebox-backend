@@ -10,7 +10,7 @@ export class UsersService {
   constructor (
     @Inject(userModelString)
     private userModel: Model<User>
-  ) {}
+  ) { }
 
   async create (createUserDto: CreateUserDto): Promise<User> {
     // TODO: When a user already exists, throw a custom exception of user already exists instead of internal server error

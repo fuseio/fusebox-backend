@@ -18,7 +18,7 @@ import WebhookSendService from '@app/common/services/webhook-send.service'
 export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name)
 
-  constructor(
+  constructor (
     private chargeApiService: ChargeApiService,
     @Inject(paymentAccountModelString)
     private paymentAccountModel: Model<PaymentAccount>,
@@ -29,23 +29,23 @@ export class PaymentsService {
 
   ) { }
 
-  get allowedPaymentTokens() {
+  get allowedPaymentTokens () {
     return this.configService.get('paymentsAllowedTokens')
   }
 
-  get allowedTokenAddresses() {
+  get allowedTokenAddresses () {
     return this.allowedPaymentTokens.map(token => token.tokenAddress)
   }
 
-  get allowedTokenSymbols() {
+  get allowedTokenSymbols () {
     return this.allowedPaymentTokens.map(token => token.tokenSymbol)
   }
 
-  async getPaymentsAllowedTokens() {
+  async getPaymentsAllowedTokens () {
     return this.configService.get('paymentsAllowedTokens')
   }
 
-  isRequestedAllowedToken(createPaymentLinkDto: CreatePaymentLinkDto) {
+  isRequestedAllowedToken (createPaymentLinkDto: CreatePaymentLinkDto) {
     const isTokenAddressAllowed = this.allowedTokenAddresses.some(address => {
       return address.toLowerCase() === createPaymentLinkDto.tokenAddress.toLowerCase()
     })
@@ -57,7 +57,7 @@ export class PaymentsService {
     return isTokenAddressAllowed && isTokenSymbolAllowed
   }
 
-  async createPaymentAccount(ownerId: string) {
+  async createPaymentAccount (ownerId: string) {
     const backendWallet = await this.chargeApiService.createBackendWallet(walletTypes.PAYMENT_ACCOUNT)
 
     const paymentAccount = await this.paymentAccountModel.create({
@@ -69,7 +69,7 @@ export class PaymentsService {
     return paymentAccount
   }
 
-  async createPaymentLink(userId: string, createPaymentLinkDto: CreatePaymentLinkDto) {
+  async createPaymentLink (userId: string, createPaymentLinkDto: CreatePaymentLinkDto) {
     if (isEmpty(createPaymentLinkDto.ownerId)) {
       createPaymentLinkDto.ownerId = userId
     }
@@ -94,7 +94,7 @@ export class PaymentsService {
     return paymentLink
   }
 
-  async getPaymentLink(paymentLinkId: string) {
+  async getPaymentLink (paymentLinkId: string) {
     const paymentLink = await this.paymentLinkModel.findById(paymentLinkId).populate('backendWalletId', 'walletAddress')
 
     if (isEmpty(paymentLink)) {
@@ -104,18 +104,18 @@ export class PaymentsService {
     return paymentLink
   }
 
-  async getPaymentLinks(ownerId: string) {
+  async getPaymentLinks (ownerId: string) {
     return this.paymentLinkModel.find({ ownerId })
   }
 
-  async getWalletBalance(ownerId: string) {
+  async getWalletBalance (ownerId: string) {
     const paymentAccount = await this.paymentAccountModel.findOne({ ownerId })
       .populate<{ backendWalletId: BackendWallet }>('backendWalletId')
 
     return this.chargeApiService.getWalletBalance(paymentAccount.backendWalletId.walletAddress)
   }
 
-  async transferTokens(transferTokensDto: TransferTokensDto) {
+  async transferTokens (transferTokensDto: TransferTokensDto) {
     if (isEmpty(transferTokensDto.from)) {
       const paymentAccount = await this.paymentAccountModel
         .findOne({ ownerId: transferTokensDto.ownerId })
@@ -127,8 +127,7 @@ export class PaymentsService {
     return this.chargeApiService.transferTokens(transferTokensDto)
   }
 
-  async handleWebhook(webhookEvent: WebhookEvent) {
-
+  async handleWebhook (webhookEvent: WebhookEvent) {
     if (webhookEvent.direction === 'incoming') {
       const backendWallet = await this.chargeApiService.getBackendWalletByAddress(webhookEvent.to)
       const paymentLink = await this.paymentLinkModel.findOne({ backendWalletId: backendWallet._id })
@@ -155,15 +154,32 @@ export class PaymentsService {
         .populate<{ backendWalletId: BackendWallet }>('backendWalletId')
 
       try {
-        const transferToFundAccount = await this.transferTokens({
+        this.transferTokens({
           tokenAddress: paymentLink.receivedTokenAddress,
           from: backendWallet.walletAddress,
           to: paymentAccount.backendWalletId.walletAddress,
           amount: paymentLink.receivedAmount
-        } as TransferTokensDto)
-        if (paymentLink.webhookUrl) {
-          await this.webhookSendService.sendData(transferToFundAccount.data, paymentLink.webhookUrl)
-        }
+        } as TransferTokensDto).then((transferTokensRes) => {
+          if (paymentLink.webhookUrl) {
+            const paymentLinkWebhookEvent = [
+              {
+                status: paymentLink.status.toLowerCase(),
+                from: webhookEvent.from,
+                to: webhookEvent.to,
+                txHash: webhookEvent.txHash,
+                amount: webhookEvent.value
+              },
+              {
+                status: transferTokensRes.data.status,
+                from: transferTokensRes.data.data.wallet,
+                to: transferTokensRes.data.data.to,
+                txHash: transferTokensRes.data.data.txHash,
+                amount: transferTokensRes.data.data.amount
+              }
+            ]
+            this.webhookSendService.sendData(paymentLinkWebhookEvent, paymentLink.webhookUrl)
+          }
+        })
       } catch (error) {
         const errorMessage = `Failed to send funds to main account: ${error}`
         this.logger.error(errorMessage)
@@ -177,7 +193,7 @@ export class PaymentsService {
     }
   }
 
-  isTokenMatch(paymentLink: PaymentLink, webhookEvent: WebhookEvent) {
+  isTokenMatch (paymentLink: PaymentLink, webhookEvent: WebhookEvent) {
     return paymentLink.tokenAddress.toLowerCase() === webhookEvent.tokenAddress.toLowerCase() &&
       paymentLink.tokenSymbol.toLowerCase() === webhookEvent.tokenSymbol.toLowerCase()
   }

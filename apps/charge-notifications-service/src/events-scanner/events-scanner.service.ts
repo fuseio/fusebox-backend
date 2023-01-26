@@ -16,7 +16,7 @@ export class EventsScannerService {
   // TODO: Create a Base class for events scanner and transaction scanner services
   private readonly logger = new Logger(EventsScannerService.name)
 
-  constructor(
+  constructor (
     @Inject(eventsScannerStatusModelString)
     private eventsScannerStatusModel: Model<EventsScannerStatus>,
     @InjectEthersProvider('regular-node')
@@ -27,11 +27,11 @@ export class EventsScannerService {
     private webhooksService: WebhooksService
   ) { }
 
-  async onModuleInit(): Promise<void> {
+  async onModuleInit (): Promise<void> {
     this.start()
   }
 
-  async start() {
+  async start () {
     while (true) {
       try {
         let { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
@@ -63,7 +63,7 @@ export class EventsScannerService {
     }
   }
 
-  async getStatus(filter: string) {
+  async getStatus (filter: string) {
     const status = await this.eventsScannerStatusModel.findOne({
       filter
     })
@@ -78,12 +78,12 @@ export class EventsScannerService {
     return newStatus
   }
 
-  async updateStatus(filter: string, blockNumber: number) {
+  async updateStatus (filter: string, blockNumber: number) {
     await this.eventsScannerStatusModel.updateOne({ filter }, { blockNumber }, { upsert: true })
   }
 
   @logPerformance('EventScanner::ProcessBlocks')
-  async processBlocks(fromBlock: number, toBlock: number) {
+  async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
     this.logger.log(`EventFilter: Processing blocks from ${fromBlock} to ${toBlock}`)
@@ -106,7 +106,7 @@ export class EventsScannerService {
   }
 
   @logPerformance('EventScanner::ProcessEvent')
-  async processEvent(log: Log) {
+  async processEvent (log: Log) {
     this.logger.log(`Processing event from block: ${log.blockNumber} & txHash: ${log.transactionHash}`)
 
     const tokenType = getTransferEventTokenType(log)
@@ -156,7 +156,7 @@ export class EventsScannerService {
     await this.webhooksService.processWebhookEvents(eventData)
   }
 
-  private async getTokenInfo(tokenAddress: string, abi: any, tokenType: string) {
+  private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
     const contract: Contract = this.ethersContract.create(
       tokenAddress,
       abi

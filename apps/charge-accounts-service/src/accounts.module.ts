@@ -17,4 +17,4 @@ import { AppStoreModule } from '@app/accounts-service/app-store/app-store.module
   controllers: [AccountsController],
   providers: []
 })
-export class AccountsModule {}
+export class AccountsModule { }

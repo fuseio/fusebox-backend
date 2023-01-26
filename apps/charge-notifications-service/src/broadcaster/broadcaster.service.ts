@@ -11,7 +11,7 @@ import WebhookSendService from '@app/common/services/webhook-send.service'
 export class BroadcasterService {
   private readonly logger = new Logger(BroadcasterService.name)
 
-  constructor(
+  constructor (
     @Inject(webhookEventModelString)
     private webhookEventModel: Model<WebhookEvent>,
     private readonly configService: ConfigService,
@@ -19,15 +19,15 @@ export class BroadcasterService {
 
   ) { }
 
-  get retryTimeIntervalsMS() {
+  get retryTimeIntervalsMS () {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
   }
 
-  async onModuleInit(): Promise<void> {
+  async onModuleInit (): Promise<void> {
     this.start()
   }
 
-  async start() {
+  async start () {
     while (true) {
       const webhookEventsToSendNow = await this.webhookEventModel.find(
         {
@@ -70,7 +70,7 @@ export class BroadcasterService {
     }
   }
 
-  private getResponseDetailsWithDate(status: number, statusText: string): object {
+  private getResponseDetailsWithDate (status: number, statusText: string): object {
     return {
       status,
       statusText,
@@ -78,13 +78,13 @@ export class BroadcasterService {
     }
   }
 
-  private getNewRetryAfterDate(webhookEvent: any) {
+  private getNewRetryAfterDate (webhookEvent: any) {
     const old = webhookEvent?.retryAfter || new Date()
     const addInterval = this.retryTimeIntervalsMS[webhookEvent.numberOfTries]
     return new Date(old.getTime() + addInterval)
   }
 
-  isRelevantEvent(tokenType: string, eventType: string): boolean {
+  isRelevantEvent (tokenType: string, eventType: string): boolean {
     // TODO: Choose better naming to make it clearer what each variable is
     if (eventType === eventTypes.ALL || tokenType === eventType) {
       return true

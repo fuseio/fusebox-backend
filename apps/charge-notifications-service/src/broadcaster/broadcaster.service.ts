@@ -41,7 +41,9 @@ export class BroadcasterService {
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
           webhookEvent.numberOfTries++
+          this.logger.log(`Starting sending ${webhookEvent}`)
           const response = await this.sendData(webhookEvent)
+          this.logger.log(`Completed sending ${webhookEvent}`)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true
         } catch (err) {
@@ -104,7 +106,8 @@ export class BroadcasterService {
       method: 'post',
       url: webhookUrl,
       data: postBody,
-      headers
+      headers,
+      timeout: 1000 //TODO: Add value to the env
     }
 
     return lastValueFrom(this.httpService

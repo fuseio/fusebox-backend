@@ -39,7 +39,8 @@ export default class WebhookSendService {
             method: 'post',
             url: webhookUrl,
             data: postBody,
-            headers
+            headers,
+            timeout: 1000
         }
 
         return lastValueFrom(this.httpService

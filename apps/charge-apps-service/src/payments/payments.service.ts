@@ -153,41 +153,39 @@ export class PaymentsService {
       const paymentAccount = await this.paymentAccountModel.findOne({ ownerId })
         .populate<{ backendWalletId: BackendWallet }>('backendWalletId')
 
-      try {
-        this.transferTokens({
-          tokenAddress: paymentLink.receivedTokenAddress,
-          from: backendWallet.walletAddress,
-          to: paymentAccount.backendWalletId.walletAddress,
-          amount: paymentLink.receivedAmount
-        } as TransferTokensDto).then((transferTokensRes) => {
-          if (paymentLink.webhookUrl) {
-            const paymentLinkWebhookEvent = [
-              {
-                status: paymentLink.status.toLowerCase(),
-                from: webhookEvent.from,
-                to: webhookEvent.to,
-                txHash: webhookEvent.txHash,
-                amount: webhookEvent.value
-              },
-              {
-                status: transferTokensRes.data.status,
-                from: transferTokensRes.data.data.wallet,
-                to: transferTokensRes.data.data.to,
-                txHash: transferTokensRes.data.data.txHash,
-                amount: transferTokensRes.data.data.amount
-              }
-            ]
-            this.webhookSendService.sendData(paymentLinkWebhookEvent, paymentLink.webhookUrl)
-          }
-        })
-      } catch (error) {
-        const errorMessage = `Failed to send funds to main account: ${error}`
+      this.transferTokens({
+        tokenAddress: paymentLink.receivedTokenAddress,
+        from: backendWallet.walletAddress,
+        to: paymentAccount.backendWalletId.walletAddress,
+        amount: paymentLink.receivedAmount
+      } as TransferTokensDto).then((transferTokensRes) => {
+        if (paymentLink.webhookUrl) {
+          const paymentLinkWebhookEvent = [
+            {
+              status: paymentLink.status.toLowerCase(),
+              from: webhookEvent.from,
+              to: webhookEvent.to,
+              txHash: webhookEvent.txHash,
+              amount: webhookEvent.value
+            },
+            {
+              status: transferTokensRes.data.status,
+              from: transferTokensRes.data.data.wallet,
+              to: transferTokensRes.data.data.to,
+              txHash: transferTokensRes.data.data.txHash,
+              amount: transferTokensRes.data.data.amount
+            }
+          ]
+          this.webhookSendService.sendData(paymentLinkWebhookEvent, paymentLink.webhookUrl)
+        }
+      }).catch(err => {
+        const errorMessage = `Failed to send funds to main account: ${err}`
         this.logger.error(errorMessage)
         throw new HttpException(
           errorMessage,
           HttpStatus.INTERNAL_SERVER_ERROR
         )
-      }
+      })
 
       await paymentLink.save()
     }

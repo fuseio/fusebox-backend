@@ -13,11 +13,19 @@ export class SmartAccountsEventsService {
     @Inject(smartAccountString)
     private smartAccountModel: Model<SmartAccount>
   ) { }
-  // TODO:
 
-  async onCreateSmartWallet (queueJob: any) {
+  // TODO:
+  async onCreateSmartAccount (queueJob: any) {
     const { data: { walletAddress } } = queueJob
-    const smartAccountWallet = await this.smartAccountModel.findOneAndUpdate({ walletAddress }, { isContractDeployed: true }, { new: true })
+    const smartAccountWallet = await this.smartAccountModel.findOneAndUpdate({ walletAddress }, { isContractDeployed: true }, { new: true }).projection({
+      ownerAddress: 1,
+      smartAccountAddress: 1,
+      walletModules: 1,
+      networks: 1,
+      version: 1,
+      walletPaddedVersion: 1,
+      _id: 0
+    })
     return smartAccountWallet
   }
 

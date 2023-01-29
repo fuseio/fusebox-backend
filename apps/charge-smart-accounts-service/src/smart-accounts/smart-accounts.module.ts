@@ -9,7 +9,7 @@ import configuration from '@app/smart-accounts-service/common/config/configurati
 import { smartAccountsProviders } from '@app/smart-accounts-service/smart-accounts/smart-accounts.providers'
 import { HttpModule } from '@nestjs/axios'
 import { SmartAccountsEventsService } from '@app/smart-accounts-service/smart-accounts/smart-accounts-events.service'
-import RelayAPIService from '@app/smart-accounts-service/common/services/legacy.service'
+import RelayAPIService from '@app/smart-accounts-service/common/services/relay-api.service'
 
 @Module({
   imports: [

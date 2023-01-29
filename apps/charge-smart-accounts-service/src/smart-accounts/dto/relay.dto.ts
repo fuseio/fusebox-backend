@@ -23,6 +23,7 @@ export class RelayDto {
   @IsString()
     walletModule: string
 
+  @IsOptional()
   @IsString()
     externalId: string
 

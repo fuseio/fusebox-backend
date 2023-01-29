@@ -6,8 +6,8 @@ import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-
 import { ConfigService } from '@nestjs/config'
 import { smartAccountString } from '@app/smart-accounts-service/smart-accounts/smart-accounts.constants'
 import { SmartAccount } from '@app/smart-accounts-service/smart-accounts/interfaces/smart-account.interface'
-import { generateSalt } from '@app/smart-accounts-service/common/utils/helper-functions'
-import RelayAPIService from '@app/smart-accounts-service/common/services/legacy.service'
+import { generateSalt, generateTransactionId } from '@app/smart-accounts-service/common/utils/helper-functions'
+import RelayAPIService from '@app/smart-accounts-service/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-accounts-service/smart-accounts/dto/relay.dto'
 import { ISmartAccountUser } from '@app/common/interfaces/smart-account.interface'
 
@@ -37,7 +37,7 @@ export class SmartAccountsService {
 
   async auth (smartAccountsAuthDto: SmartAccountsAuthDto) {
     try {
-      const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartAccountsAuthDto.hash))), smartAccountsAuthDto.sig)
+      const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartAccountsAuthDto.hash))), smartAccountsAuthDto.signature)
       const recoveredAddress = computeAddress(publicKey)
 
       if (recoveredAddress === smartAccountsAuthDto.ownerAddress) {
@@ -63,23 +63,26 @@ export class SmartAccountsService {
   async createWallet (smartAccountUser: ISmartAccountUser) {
     try {
       const { ownerAddress, projectId } = smartAccountUser
+      if (await this.smartAccountModel.findOne({ ownerAddress })) {
+        throw new Error('Owner address already has a deployed smart account')
+      }
       const salt = generateSalt()
+      const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
       const { job } = await this.relayAPIService.createWallet({
-        name: 'createWallet',
-        params: {
-          v2: true,
-          salt,
-          owner: ownerAddress,
-          walletModules,
-          WalletFactory: this.sharedAddresses.WalletFactory
-        }
+        v2: true,
+        salt,
+        transactionId,
+        owner: ownerAddress,
+        walletModules,
+        WalletFactory: this.sharedAddresses.WalletFactory
       })
-      const smartAccountWallet = await this.smartAccountModel.create({
+      const smartAccountAddress = job.data.walletAddress
+      this.smartAccountModel.create({
         projectId,
         salt,
         ownerAddress,
-        smartAccountAddress: job.data.walletAddress,
+        smartAccountAddress,
         walletOwnerOriginalAddress: ownerAddress,
         walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
         walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
@@ -93,8 +96,7 @@ export class SmartAccountsService {
       })
       // Todo: Think about the response object, we may need to return a certain id for tracking with WS
       return {
-        smartAccountWallet,
-        trackerId: job._id
+        transactionId
       }
     } catch (err) {
       this.logger.error(`An error occurred during Smart Accounts Creation. ${err}`)
@@ -104,24 +106,26 @@ export class SmartAccountsService {
 
   async relay (relayDto: RelayDto) {
     try {
-      const job = await this.relayAPIService.relay({
-        name: 'relay',
-        params: {
-          ...relayDto
-        }
+      const transactionId = generateTransactionId(relayDto.methodData)
+      this.relayAPIService.relay({
+        v2: true,
+        transactionId,
+        ...relayDto
       })
-      console.log({ job })
+      return {
+        transactionId
+      }
     } catch (err) {
       this.logger.error(`An error occurred during relay execution. ${err}`)
       throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
     }
   }
 
+  // TODO
   async getAvailableUpgrades () {
-    // Todo
   }
 
+  // TODO
   async installUpgrade () {
-    // Todo
   }
 }

@@ -3,6 +3,7 @@ import { SmartAccountsService } from '@app/smart-accounts-service/smart-accounts
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ISmartAccountUser } from '@app/common/interfaces/smart-account.interface'
+import { RelayDto } from '@app/smart-accounts-service/smart-accounts/dto/relay.dto'
 
 @Controller('smart-accounts')
 export class SmartAccountsController {
@@ -21,6 +22,11 @@ export class SmartAccountsController {
   @MessagePattern('create_wallet')
   createWallet (smartAccountUser: ISmartAccountUser) {
     return this.smartAccountsService.createWallet(smartAccountUser)
+  }
+
+  @MessagePattern('relay')
+  relay (relayDto: RelayDto) {
+    return this.smartAccountsService.relay(relayDto)
   }
 
   @MessagePattern('get_available_upgrades')

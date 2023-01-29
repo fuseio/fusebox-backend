@@ -10,16 +10,16 @@ export default class RelayAPIService {
     private readonly configService: ConfigService
   ) { }
 
-  async createWallet (data) {
+  async createWallet (params) {
     const observable = this.httpService
-      .post(`${this.configService.get('relayApi')}/wallets`, data)
+      .post(`${this.configService.get('relayApi')}/wallets`, { name: 'createWallet', params: { ...params } })
       .pipe(map(res => res.data))
     return await lastValueFrom(observable)
   }
 
-  async relay (data) {
+  async relay (params) {
     const observable = this.httpService
-      .post(`${this.configService.get('relayApi')}/relay`, data)
+      .post(`${this.configService.get('relayApi')}/relay`, { name: 'relay', params: { ...params } })
       .pipe(map(res => res.data))
     return await lastValueFrom(observable)
   }

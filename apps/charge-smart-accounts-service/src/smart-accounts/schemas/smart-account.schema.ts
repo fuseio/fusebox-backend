@@ -8,7 +8,7 @@ export const SmartAccountSchema = new mongoose.Schema(
       ref: 'Project',
       required: true
     },
-    ownerAddress: { type: String, required: true, index: true },
+    ownerAddress: { type: String, required: true, index: true, unique: true },
     smartAccountAddress: { type: String, required: true, index: true },
     isContractDeployed: { type: Boolean, default: false },
     walletOwnerOriginalAddress: { type: String, immutable: true }, // So we can know the first owner in case owner transfer ownership.

@@ -1,5 +1,5 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from '@nestjs/websockets'
-import { Server } from 'socket.io'
+import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets'
+import { Server, Socket } from 'socket.io'
 import { SmartAccountsEventsService } from '@app/smart-accounts-service/smart-accounts/smart-accounts-events.service'
 
 @WebSocketGateway({
@@ -8,40 +8,43 @@ import { SmartAccountsEventsService } from '@app/smart-accounts-service/smart-ac
   }
 })
 export class SmartAccountEventsGateway {
+  subscribers: Map<string, Socket> = new Map<string, Socket>()
   constructor (private readonly smartAccountsEventsService: SmartAccountsEventsService) {}
 
   @WebSocketServer()
     server: Server
 
-  @SubscribeMessage('relayer')
-  handleRelayMessage (@MessageBody() txUpdate: Record<string, string>): void {
-    console.log(txUpdate)
-    const txHash = txUpdate.txHash
-    const txStatus = txUpdate.status
-    this.server.emit(txHash, txStatus)
-  }
-
-  @SubscribeMessage('onJobStarted')
+  @SubscribeMessage('jobStarted')
   handleStartedJob (@MessageBody() queueJob: Record<string, any>): void {
-    const { _id } = queueJob
-    this.server.emit(_id, queueJob)
+    const { data: { transactionId } } = queueJob
+    const client = this.subscribers.get(transactionId)
+    client.emit('transactionStarted', queueJob)
   }
 
-  @SubscribeMessage('onJobSuccess')
+  @SubscribeMessage('jobSuccess')
   handleSuccessJob (@MessageBody() queueJob: Record<string, any>): void {
-    // TODO: review client to understand better their needs
-    const { name, _id } = queueJob
+    const { name, data: { transactionId } } = queueJob
+    let jobResponse
     if (name === 'createWallet') {
-      this.smartAccountsEventsService.onCreateSmartWallet(queueJob)
+      jobResponse = this.smartAccountsEventsService.onCreateSmartAccount(queueJob)
     } else if (name === 'relay') {
-      this.smartAccountsEventsService.onRelay(queueJob)
+      jobResponse = this.smartAccountsEventsService.onRelay(queueJob)
     }
-    this.server.emit(_id, queueJob)
+    const client = this.subscribers.get(transactionId)
+    client.emit('transactionSuccess', jobResponse)
+    this.subscribers.delete(transactionId)
   }
 
-  @SubscribeMessage('onJobFailed')
+  @SubscribeMessage('jobFailed')
   handleFailedJob (@MessageBody() queueJob: Record<string, any>): void {
-    const { _id } = queueJob
-    this.server.emit(_id, queueJob)
+    const { data: { transactionId } } = queueJob
+    const client = this.subscribers.get(transactionId)
+    client.emit('transactionFailed', queueJob)
+    this.subscribers.delete(transactionId)
+  }
+
+  @SubscribeMessage('subscribe')
+  subscribe (@MessageBody() transactionId: string, @ConnectedSocket() client: Socket): void {
+    this.subscribers.set(transactionId, client)
   }
 }

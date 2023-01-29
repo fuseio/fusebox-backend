@@ -5,7 +5,7 @@ export class SmartAccountsAuthDto {
     hash: string
 
   @IsString()
-    sig: string
+    signature: string
 
   @IsEthereumAddress()
     ownerAddress: string

@@ -14,22 +14,46 @@ export class SmartAccountsEventsService {
     private smartAccountModel: Model<SmartAccount>
   ) { }
 
-  // TODO:
-  async onCreateSmartAccount (queueJob: any) {
-    const { data: { walletAddress } } = queueJob
-    const smartAccountWallet = await this.smartAccountModel.findOneAndUpdate({ walletAddress }, { isContractDeployed: true }, { new: true }).projection({
-      ownerAddress: 1,
-      smartAccountAddress: 1,
-      walletModules: 1,
-      networks: 1,
-      version: 1,
-      walletPaddedVersion: 1,
-      _id: 0
-    })
-    return smartAccountWallet
+  get sharedAddresses () {
+    return this.configService.get('sharedAddresses')
   }
 
-  async onRelay (queueJob: any) {
+  get walletVersion () {
+    return this.configService.get('version')
+  }
+
+  get walletPaddedVersion () {
+    return this.configService.get('paddedVersion')
+  }
+
+  async onCreateSmartAccountStarted (queueJob: any) {
+    const { data: { walletAddress: smartAccountAddress, smartAccountUser, salt, walletModules } } = queueJob
+    const { ownerAddress, projectId } = smartAccountUser
+    this.smartAccountModel.create({
+      projectId,
+      salt,
+      ownerAddress,
+      smartAccountAddress,
+      walletOwnerOriginalAddress: ownerAddress,
+      walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
+      walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
+      walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
+      walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
+      walletModulesOriginal: walletModules,
+      walletModules: this.sharedAddresses.walletModules,
+      networks: ['fuse'],
+      version: this.walletVersion,
+      paddedVersion: this.walletPaddedVersion
+    })
+  }
+
+  async onCreateSmartAccountSuccess (queueJob: any) {
+    const { data: { walletAddress } } = queueJob
+    const { ownerAddress, smartAccountAddress, walletModules, networks, version, paddedVersion } = await this.smartAccountModel.findOneAndUpdate({ smartAccountAddress: walletAddress }, { isContractDeployed: true }, { new: true })
+    return { ownerAddress, smartAccountAddress, walletModules, networks, version, paddedVersion }
+  }
+
+  async onRelaySuccess (queueJob: any) {
 
   }
 }

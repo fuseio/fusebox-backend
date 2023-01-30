@@ -20,13 +20,13 @@ export class SmartAccountsAPIController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('get_wallet')
+  @Get()
   getWallet (@SmartAccountOwner() user: ISmartAccountUser) {
     return this.smartAccountsAPIService.getWallet(user)
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('create_wallet')
+  @Post('create')
   createWallet (@SmartAccountOwner() user: ISmartAccountUser) {
     return this.smartAccountsAPIService.createWallet(user)
   }

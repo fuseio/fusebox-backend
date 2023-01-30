@@ -107,7 +107,7 @@ export class BroadcasterService {
       url: webhookUrl,
       data: postBody,
       headers,
-      timeout: 1000 //TODO: Add value to the env
+      timeout: 1000 // TODO: Add value to the env
     }
 
     return lastValueFrom(this.httpService

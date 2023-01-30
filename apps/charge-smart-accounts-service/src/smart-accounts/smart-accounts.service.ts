@@ -27,14 +27,6 @@ export class SmartAccountsService {
     return this.configService.get('sharedAddresses')
   }
 
-  get walletVersion () {
-    return this.configService.get('version')
-  }
-
-  get walletPaddedVersion () {
-    return this.configService.get('paddedVersion')
-  }
-
   async auth (smartAccountsAuthDto: SmartAccountsAuthDto) {
     try {
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartAccountsAuthDto.hash))), smartAccountsAuthDto.signature)
@@ -62,39 +54,22 @@ export class SmartAccountsService {
 
   async createWallet (smartAccountUser: ISmartAccountUser) {
     try {
-      const { ownerAddress, projectId } = smartAccountUser
+      const { ownerAddress } = smartAccountUser
       if (await this.smartAccountModel.findOne({ ownerAddress })) {
         throw new Error('Owner address already has a deployed smart account')
       }
       const salt = generateSalt()
       const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
-      const { job } = await this.relayAPIService.createWallet({
+      this.relayAPIService.createWallet({
         v2: true,
         salt,
         transactionId,
+        smartAccountUser,
         owner: ownerAddress,
         walletModules,
         WalletFactory: this.sharedAddresses.WalletFactory
       })
-      const smartAccountAddress = job.data.walletAddress
-      this.smartAccountModel.create({
-        projectId,
-        salt,
-        ownerAddress,
-        smartAccountAddress,
-        walletOwnerOriginalAddress: ownerAddress,
-        walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
-        walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
-        walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
-        walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
-        walletModulesOriginal: walletModules,
-        walletModules: this.sharedAddresses.walletModules,
-        networks: ['fuse'],
-        version: this.walletVersion,
-        walletPaddedVersion: this.walletPaddedVersion
-      })
-      // Todo: Think about the response object, we may need to return a certain id for tracking with WS
       return {
         transactionId
       }

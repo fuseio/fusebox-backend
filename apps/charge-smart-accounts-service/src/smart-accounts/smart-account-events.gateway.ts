@@ -8,6 +8,7 @@ import { SmartAccountsEventsService } from '@app/smart-accounts-service/smart-ac
   }
 })
 export class SmartAccountEventsGateway {
+  // TODO: need to store in the DB
   subscribers: Map<string, Socket> = new Map<string, Socket>()
   constructor (private readonly smartAccountsEventsService: SmartAccountsEventsService) {}
 
@@ -16,7 +17,10 @@ export class SmartAccountEventsGateway {
 
   @SubscribeMessage('jobStarted')
   handleStartedJob (@MessageBody() queueJob: Record<string, any>): void {
-    const { data: { transactionId } } = queueJob
+    const { name, data: { transactionId } } = queueJob
+    if (name === 'createWallet') {
+      this.smartAccountsEventsService.onCreateSmartAccountStarted(queueJob)
+    }
     const client = this.subscribers.get(transactionId)
     client.emit('transactionStarted', queueJob)
   }
@@ -26,9 +30,9 @@ export class SmartAccountEventsGateway {
     const { name, data: { transactionId } } = queueJob
     let jobResponse
     if (name === 'createWallet') {
-      jobResponse = this.smartAccountsEventsService.onCreateSmartAccount(queueJob)
+      jobResponse = this.smartAccountsEventsService.onCreateSmartAccountSuccess(queueJob)
     } else if (name === 'relay') {
-      jobResponse = this.smartAccountsEventsService.onRelay(queueJob)
+      jobResponse = this.smartAccountsEventsService.onRelaySuccess(queueJob) ?? queueJob
     }
     const client = this.subscribers.get(transactionId)
     client.emit('transactionSuccess', jobResponse)

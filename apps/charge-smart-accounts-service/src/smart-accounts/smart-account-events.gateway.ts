@@ -26,11 +26,11 @@ export class SmartAccountEventsGateway {
   }
 
   @SubscribeMessage('jobSuccess')
-  handleSuccessJob (@MessageBody() queueJob: Record<string, any>): void {
+  async handleSuccessJob (@MessageBody() queueJob: Record<string, any>): Promise<void> {
     const { name, data: { transactionId } } = queueJob
     let jobResponse
     if (name === 'createWallet') {
-      jobResponse = this.smartAccountsEventsService.onCreateSmartAccountSuccess(queueJob)
+      jobResponse = await this.smartAccountsEventsService.onCreateSmartAccountSuccess(queueJob)
     } else if (name === 'relay') {
       jobResponse = this.smartAccountsEventsService.onRelaySuccess(queueJob) ?? queueJob
     }

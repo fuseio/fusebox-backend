@@ -49,7 +49,15 @@ export class SmartAccountsService {
 
   async getWallet (smartAccountUser: ISmartAccountUser) {
     const { ownerAddress } = smartAccountUser
-    return this.smartAccountModel.findOne({ ownerAddress })
+    return this.smartAccountModel.findOne({ ownerAddress }, {
+      smartAccountAddress: 1,
+      ownerAddress: 1,
+      walletModules: 1,
+      networks: 1,
+      version: 1,
+      paddedVersion: 1,
+      _id: 0
+    })
   }
 
   async createWallet (smartAccountUser: ISmartAccountUser) {

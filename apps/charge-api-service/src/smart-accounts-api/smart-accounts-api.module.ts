@@ -3,7 +3,11 @@ import { SmartAccountsAPIController } from '@app/api-service/smart-accounts-api/
 import { SmartAccountsAPIService } from '@app/api-service/smart-accounts-api/smart-accounts-api.service'
 import { smartAccountsService } from '@app/common/constants/microservices.constants'
 import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
 import { ClientsModule, Transport } from '@nestjs/microservices'
+import { PassportModule } from '@nestjs/passport'
+import { JwtStrategy } from '@app/api-service/smart-accounts-api/jwt.strategy'
 
 @Module({
   imports: [
@@ -17,9 +21,24 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
         }
       }
     ]),
-    ApiKeyModule
+    ApiKeyModule,
+    ConfigModule.forRoot(),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const jwtSecret = configService.get('SMART_ACCOUNTS_JWT_SECRET')
+        return {
+          secret: jwtSecret
+        }
+      }
+    })
   ],
   controllers: [SmartAccountsAPIController],
-  providers: [SmartAccountsAPIService]
+  providers: [
+    SmartAccountsAPIService,
+    JwtStrategy
+  ]
 })
 export class SmartAccountsAPIModule {}

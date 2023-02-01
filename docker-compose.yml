@@ -158,6 +158,7 @@ services:
       - FUSE_WALLET_BACKEND_JWT
       - LEGACY_FUSE_WALLET_API_URL
       - RPC_URL
+      - SMART_ACCOUNTS_WS_URL
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

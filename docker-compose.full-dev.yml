@@ -53,7 +53,7 @@ services:
     command: npm run start:dev charge-apps-service
     networks:
       - chargenet
-  charge-smart-accounts-service:
+  charge-smart-wallets-service:
     build:
       target: development
     volumes:
@@ -63,7 +63,7 @@ services:
       - 9232:9232
     depends_on:
       - mongo
-    command: npm run start:dev charge-smart-accounts-service
+    command: npm run start:dev charge-smart-wallets-service
     networks:
       - chargenet
   

@@ -6,7 +6,7 @@ import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
 import { StakingAPIModule } from '@app/api-service/staking-api/staking-api.module'
 import { ExplorerApiModule } from '@app/api-service/explorer-api/explorer-api.module'
-import { SmartAccountsAPIModule } from '@app/api-service/smart-accounts-api/smart-accounts-api.module'
+import { SmartWalletsAPIModule } from '@app/api-service/smart-wallets-api/smart-wallets-api.module'
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { SmartAccountsAPIModule } from '@app/api-service/smart-accounts-api/smar
     NotificationsModule,
     StakingAPIModule,
     ExplorerApiModule,
-    SmartAccountsAPIModule
+    SmartWalletsAPIModule
   ],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]

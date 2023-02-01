@@ -55,11 +55,10 @@ export class ExplorerApiInterceptor implements NestInterceptor {
     const ctxClassName = context.getClass().name
     const ctxHandlerName = context.getHandler().name
     const query = request.query
-    const params = request.params
     const config = this.configService.get<Record<string, any>>(ctxClassName)
 
     const requestConfig: AxiosRequestConfig = {
-      url: `${config?.baseUrl}/${params[0]}`,
+      url: `${config?.baseUrl}`,
       method: ctxHandlerName
     }
 

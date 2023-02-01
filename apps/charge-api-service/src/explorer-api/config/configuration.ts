@@ -1,5 +1,5 @@
 export default () => ({
   ExplorerApiController: {
-    baseUrl: 'https://explorer.fuse.io/api'
+    baseUrl: process.env.EXPLORER_API_URL || 'https://explorer.fuse.io/api'
   }
 })

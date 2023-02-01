@@ -27,6 +27,10 @@ export class SmartAccountsService {
     return this.configService.get('sharedAddresses')
   }
 
+  get wsUrl () {
+    return this.configService.get('wsUrl')
+  }
+
   async auth (smartAccountsAuthDto: SmartAccountsAuthDto) {
     try {
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartAccountsAuthDto.hash))), smartAccountsAuthDto.signature)
@@ -79,6 +83,7 @@ export class SmartAccountsService {
         WalletFactory: this.sharedAddresses.WalletFactory
       })
       return {
+        connectionUrl: this.wsUrl,
         transactionId
       }
     } catch (err) {
@@ -96,6 +101,7 @@ export class SmartAccountsService {
         ...relayDto
       })
       return {
+        connectionUrl: this.wsUrl,
         transactionId
       }
     } catch (err) {

@@ -48,15 +48,15 @@ services:
       - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
       - LEGACY_FUSE_TRADE_API_URL
-      - SMART_ACCOUNTS_HOST
-      - SMART_ACCOUNTS_TCP_PORT
-      - SMART_ACCOUNTS_JWT_SECRET
+      - SMART_WALLETS_HOST
+      - SMART_WALLETS_TCP_PORT
+      - SMART_WALLETS_JWT_SECRET
       - EXPLORER_API_URL
     depends_on:
       - charge-notifications-service
       - charge-network-service
       - charge-relay-service
-      - charge-smart-accounts-service
+      - charge-smart-wallets-service
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -142,29 +142,29 @@ services:
       - ${APPS_PORT}:${APPS_PORT}
       - ${APPS_TCP_PORT}:${APPS_TCP_PORT}
     restart: always
-  charge-smart-accounts-service:
-    container_name: charge-smart-accounts-service
+  charge-smart-wallets-service:
+    container_name: charge-smart-wallets-service
     build:
       context: .
-      dockerfile: ./apps/charge-smart-accounts-service/Dockerfile
+      dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
       target: development
-    command: npm run start:dev charge-smart-accounts-service
+    command: npm run start:dev charge-smart-wallets-service
     environment:
-      - SMART_ACCOUNTS_HOST
-      - SMART_ACCOUNTS_PORT
-      - SMART_ACCOUNTS_TCP_PORT
-      - MONGO_URI=${SMART_ACCOUNTS_MONGO_URI}
-      - SMART_ACCOUNTS_JWT_SECRET
+      - SMART_WALLETS_HOST
+      - SMART_WALLETS_PORT
+      - SMART_WALLETS_TCP_PORT
+      - MONGO_URI=${SMART_WALLETS_MONGO_URI}
+      - SMART_WALLETS_JWT_SECRET
       - FUSE_WALLET_BACKEND_JWT
       - LEGACY_FUSE_WALLET_API_URL
       - RPC_URL
-      - SMART_ACCOUNTS_WS_URL
+      - SMART_WALLETS_WS_URL
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - ${SMART_ACCOUNTS_PORT}:${SMART_ACCOUNTS_PORT}
-      - ${SMART_ACCOUNTS_TCP_PORT}:${SMART_ACCOUNTS_TCP_PORT}
+      - ${SMART_WALLETS_PORT}:${SMART_WALLETS_PORT}
+      - ${SMART_WALLETS_TCP_PORT}:${SMART_WALLETS_TCP_PORT}
     restart: always
   
   charge-relay-service:

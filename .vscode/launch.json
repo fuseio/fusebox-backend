@@ -51,7 +51,7 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug: Charge Smart Accounts",
+            "name": "Debug: Charge Smart Wallets",
             "remoteRoot": "/usr/src/app",
             "localRoot": "${workspaceFolder}",
             "port": 9232,

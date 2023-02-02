@@ -5,7 +5,7 @@ import { MessagePattern } from '@nestjs/microservices'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 
-@Controller('smart-wallets')
+@Controller()
 export class SmartWalletsController {
   constructor (private readonly smartWalletsService: SmartWalletsService) { }
 

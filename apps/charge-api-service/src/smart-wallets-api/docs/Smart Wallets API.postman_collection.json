@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "83c3a64f-c5ce-400a-986e-7fbc180d8c2f",
+		"name": "Smart Wallets API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20885446"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"hash\": \"0xc1b404e3355d958f36cce09d1cedf8685c6821eda996602388ae629312f76aac\",\n    \"signature\": \"0x4d712a40032b5f35c73f32040a6d1036f751a3a35b6e1facc2b7776f2ec7a1586b69b824d52cb50a87b5d137fdfa9aaed99157ab163fcbbbaaffe8dcd26662e41b\",\n    \"ownerAddress\": \"0x809B78371f50f28D2C61F63e48b58b7Ee053E3Ea\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Auth",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hash\": \"0xc1b404e3355d958f36cce09d1cedf8685c6821eda996602388ae629312f76aac\",\n    \"signature\": \"0x4d712a40032b5f35c73f32040a6d1036f751a3a35b6e1facc2b7776f2ec7a1586b69b824d52cb50a87b5d137fdfa9aaed99157ab163fcbbbaaffe8dcd26662e41b\",\n    \"ownerAddress\": \"0x809B78371f50f28D2C61F63e48b58b7Ee053E3Ea\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "247"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f7-D6bEjaTxCSDbehrS8scTy7iYOPQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Feb 2023 08:39:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lckFkZHJlc3MiOiIweDgwOUI3ODM3MWY1MGYyOEQyQzYxRjYzZTQ4YjU4YjdFZTA1M0UzRWEiLCJwcm9qZWN0SWQiOiI2M2NkMWJjMWQxOGMxNjQyMmJiOGMwYzMiLCJpYXQiOjE2NzUzMjcxOTR9.-iWIEN6OLyCI4j5WOA8V2mH3KQtrmEoUGhIS4migV9g\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Wallet",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"create"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Wallet",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ownerAddress\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Relay",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"walletAddress\": \"0x58879e91659B3D8224bB64596e6991B241ECBEAe\",\n  \"methodData\": \"0x2df546f400000000000000000000000058879e91659b3d8224bb64596e6991b241ecbeae000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000007ceabc27b1dc6a065fad85a86afbaf97f7692088000000000000000000000000000000000000000000000000016345785d8a000000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000\",\n  \"nonce\": \"0x0000000000000000000000000086c96c000000000000000000000185fabb4b0c\",\n  \"network\": \"fuse\",\n  \"methodName\": \"transferToken\",\n  \"gasPrice\": 0,\n  \"gasLimit\": 700000,\n  \"signature\": \"0x4bd7d9d7b16c6f48ed81632ade398e5d110ad7f568b424feb2b367f78ca272de2f2b77910164bca022d9daa769da180ee2259511c088aa43d6d9f4c641e3c63e1b\",\n  \"walletModule\": \"TransferManager\",\n  \"walletModuleAddress\": \"0xF66e26Fd99F4687CC29148BE2e331df2e49E249E\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/relay?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"relay"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

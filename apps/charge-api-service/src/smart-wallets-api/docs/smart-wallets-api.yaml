@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Smart Wallets API
+  version: 1.0.0
+servers:
+  - url: https://api.chargeweb3.com/api/v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /api/v1/smart-wallets/auth:
+    post:
+      tags:
+        - smart-wallets
+      summary: Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                hash: >-
+                  0xc1b404e3355d958f36cce09d1cedf8685c6821eda996602388ae629312f76aac
+                signature: >-
+                  0x4d712a40032b5f35c73f32040a6d1036f751a3a35b6e1facc2b7776f2ec7a1586b69b824d52cb50a87b5d137fdfa9aaed99157ab163fcbbbaaffe8dcd26662e41b
+                ownerAddress: '0x809B78371f50f28D2C61F63e48b58b7Ee053E3Ea'
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                jwt: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lckFkZHJlc3MiOiIweDgwOUI3ODM3MWY1MGYyOEQyQzYxRjYzZTQ4YjU4YjdFZTA1M0UzRWEiLCJwcm9qZWN0SWQiOiI2M2NkMWJjMWQxOGMxNjQyMmJiOGMwYzMiLCJpYXQiOjE2NzUzMjcxOTR9.-iWIEN6OLyCI4j5WOA8V2mH3KQtrmEoUGhIS4migV9g
+  /api/v1/smart-wallets/create:
+    post:
+      tags:
+        - smart-wallets
+      summary: Create Wallet
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/smart-wallets:
+    get:
+      tags:
+        - smart-wallets
+      summary: Get Wallet
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/smart-wallets/relay:
+    post:
+      tags:
+        - smart-wallets
+      summary: Relay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                walletAddress: '0x58879e91659B3D8224bB64596e6991B241ECBEAe'
+                methodData: >-
+                  0x2df546f400000000000000000000000058879e91659b3d8224bb64596e6991b241ecbeae000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000007ceabc27b1dc6a065fad85a86afbaf97f7692088000000000000000000000000000000000000000000000000016345785d8a000000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000
+                nonce: >-
+                  0x0000000000000000000000000086c96c000000000000000000000185fabb4b0c
+                network: fuse
+                methodName: transferToken
+                gasPrice: 0
+                gasLimit: 700000
+                signature: >-
+                  0x4bd7d9d7b16c6f48ed81632ade398e5d110ad7f568b424feb2b367f78ca272de2f2b77910164bca022d9daa769da180ee2259511c088aa43d6d9f4c641e3c63e1b
+                walletModule: TransferManager
+                walletModuleAddress: '0xF66e26Fd99F4687CC29148BE2e331df2e49E249E'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

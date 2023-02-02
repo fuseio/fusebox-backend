@@ -18,14 +18,13 @@ export class SmartWalletsEventsGateway {
 
   @SubscribeMessage(websocketMessages.JOB_STARTED)
   handleStartedJob (@MessageBody() queueJob: Record<string, any>): void {
-    // TODO: create a custom event for create wallet
     const { name, data: { transactionId } } = queueJob
     const client = this.subscribers.get(transactionId)
     if (name === 'createWallet') {
       this.smartWalletsEventsService.onCreateSmartWalletStarted(queueJob)
-      client.emit(websocketEvents.WALLET_CREATION_STARTED, queueJob)
+      client?.emit(websocketEvents.WALLET_CREATION_STARTED, queueJob)
     } else if (name === 'relay') {
-      client.emit(websocketEvents.TRANSACTION_STARTED, queueJob)
+      client?.emit(websocketEvents.TRANSACTION_STARTED, queueJob)
     }
   }
 
@@ -35,9 +34,9 @@ export class SmartWalletsEventsGateway {
     const client = this.subscribers.get(transactionId)
     if (name === 'createWallet') {
       const data = await this.smartWalletsEventsService.onCreateSmartWalletSuccess(queueJob)
-      client.emit(websocketEvents.WALLET_CREATION_SUCCEEDED, data)
+      client?.emit(websocketEvents.WALLET_CREATION_SUCCEEDED, data)
     } else if (name === 'relay') {
-      client.emit(websocketEvents.TRANSACTION_SUCCEEDED, queueJob)
+      client?.emit(websocketEvents.TRANSACTION_SUCCEEDED, queueJob)
     }
     this.subscribers.delete(transactionId)
   }
@@ -47,9 +46,9 @@ export class SmartWalletsEventsGateway {
     const { name, data: { transactionId } } = queueJob
     const client = this.subscribers.get(transactionId)
     if (name === 'createWallet') {
-      client.emit(websocketEvents.WALLET_CREATION_FAILED, queueJob)
+      client?.emit(websocketEvents.WALLET_CREATION_FAILED, queueJob)
     } else if (name === 'relay') {
-      client.emit(websocketEvents.TRANSACTION_FAILED, queueJob)
+      client?.emit(websocketEvents.TRANSACTION_FAILED, queueJob)
     }
     this.subscribers.delete(transactionId)
   }

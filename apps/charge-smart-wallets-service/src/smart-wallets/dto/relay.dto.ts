@@ -9,7 +9,7 @@ export class RelayDto {
     walletAddress: string
 
   @IsString()
-    methodData: string
+    data: string
 
   @IsString()
     nonce: string
@@ -29,15 +29,15 @@ export class RelayDto {
 
   @IsOptional()
   @IsObject()
-    transactionBody: string
+    transactionBody: object
 
   @IsOptional()
   @IsInt()
-    gasPrice: string
+    gasPrice: number
 
   @IsOptional()
   @IsInt()
-    gasLimit: string
+    gasLimit: number
 
   @IsOptional()
   @IsString()

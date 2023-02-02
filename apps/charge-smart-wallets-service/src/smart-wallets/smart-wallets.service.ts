@@ -94,7 +94,7 @@ export class SmartWalletsService {
 
   async relay (relayDto: RelayDto) {
     try {
-      const transactionId = generateTransactionId(relayDto.methodData)
+      const transactionId = generateTransactionId(relayDto.data)
       this.relayAPIService.relay({
         v2: true,
         transactionId,

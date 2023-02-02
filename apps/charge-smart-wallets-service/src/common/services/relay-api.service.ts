@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios'
-import { Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { lastValueFrom, map } from 'rxjs'
+import { catchError, lastValueFrom, map } from 'rxjs'
 
 @Injectable()
 export default class RelayAPIService {
@@ -15,16 +15,32 @@ export default class RelayAPIService {
   }
 
   async createWallet (params) {
-    const observable = this.httpService
-      .post(`${this.relayApiUrl}/wallets`, { name: 'createWallet', params: { ...params } })
-      .pipe(map(res => res.data))
-    return await lastValueFrom(observable)
+    const requestUrl = `${this.relayApiUrl}/wallets`
+    const methodName = 'createWallet'
+    return await this.httpProxy(requestUrl, methodName, params)
   }
 
   async relay (params) {
+    const requestUrl = `${this.relayApiUrl}/relay`
+    const methodName = 'relay'
+    return await this.httpProxy(requestUrl, methodName, params)
+  }
+
+  private async httpProxy(requestUrl: string, methodName: string, params: any) {
     const observable = this.httpService
-      .post(`${this.relayApiUrl}/relay`, { name: 'relay', params: { ...params } })
+      .post(requestUrl, { name: methodName, params: { ...params } })
       .pipe(map(res => res.data))
+      .pipe(
+        catchError(e => {
+          const errorReason = e?.response?.data?.error ||
+            e?.response?.data?.errors?.message || ''
+
+          throw new HttpException(
+            `${e?.response?.statusText}: ${errorReason}`,
+            e?.response?.status
+          )
+        })
+      )
     return await lastValueFrom(observable)
   }
 }

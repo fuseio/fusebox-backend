@@ -137,7 +137,7 @@ paths:
           example: "{{publicKey}}"
       responses:
         "200":
-          description: OK
+          description: Successful response
           content:
             application/json:
               schema:

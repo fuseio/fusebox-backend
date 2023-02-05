@@ -172,7 +172,7 @@ paths:
                   message: Forbidden resource
                   error: Forbidden
                 path: >-
-                  /api/v1/smart-wallets/create?apiKey={{publicKey}}
+                  /api/v1/smart-wallets?apiKey={{publicKey}}
   /api/v1/smart-wallets/relay:
     post:
       tags:
@@ -278,7 +278,9 @@ paths:
                 type: object
               example:
                 statusCode: 403
-                message: Forbidden resource
-                error: Forbidden
-              path: >-
-                /api/v1/smart-wallets/relay?apiKey={{publicKey}}
+                errorMessage:
+                  statusCode: 403
+                  message: Forbidden resource
+                  error: Forbidden
+                path: >-
+                  /api/v1/smart-wallets/relay?apiKey={{publicKey}}

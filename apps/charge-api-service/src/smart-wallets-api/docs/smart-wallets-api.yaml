@@ -3,14 +3,14 @@ info:
   title: Smart Wallets API
   version: 1.0.0
 servers:
-  - url: https://api.chargeweb3.com/api/v1
+  - url: https://api.chargeweb3.com
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
 paths:
-  /smart-wallets/auth:
+  /api/v1/smart-wallets/auth:
     post:
       tags:
         - Smart Wallets
@@ -63,7 +63,7 @@ paths:
               example:
                 statusCode: 400
                 errorMessage: Owner Address does not match recovered address in signature
-                path: /smart-wallets/auth?apiKey={{publicKey}}
+                path: /api/v1/smart-wallets/auth?apiKey={{publicKey}}
         "403":
           description: Forbidden
           content:
@@ -77,8 +77,8 @@ paths:
                   message: Forbidden resource
                   error: Forbidden
                 path: >-
-                  /smart-wallets/auth?apiKey={{publicKey}}
-  /smart-wallets/create:
+                  /api/v1/smart-wallets/auth?apiKey={{publicKey}}
+  /api/v1/smart-wallets/create:
     post:
       tags:
         - Smart Wallets
@@ -119,8 +119,8 @@ paths:
                   message: Forbidden resource
                   error: Forbidden
                 path: >-
-                  /smart-wallets/create?apiKey={{publicKey}}
-  /smart-wallets:
+                  /api/v1/smart-wallets/create?apiKey={{publicKey}}
+  /api/v1/smart-wallets:
     get:
       tags:
         - Smart Wallets
@@ -172,8 +172,8 @@ paths:
                   message: Forbidden resource
                   error: Forbidden
                 path: >-
-                  /smart-wallets/create?apiKey={{publicKey}}
-  /smart-wallets/relay:
+                  /api/v1/smart-wallets/create?apiKey={{publicKey}}
+  /api/v1/smart-wallets/relay:
     post:
       tags:
         - Smart Wallets
@@ -281,4 +281,4 @@ paths:
                 message: Forbidden resource
                 error: Forbidden
               path: >-
-                  /smart-wallets/relay?apiKey={{publicKey}}
+                /api/v1/smart-wallets/relay?apiKey={{publicKey}}

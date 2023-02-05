@@ -21,9 +21,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrlApps}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
 					"host": [
-						"{{baseUrlApps}}"
+						"{{baseUrlAPI}}"
 					],
 					"path": [
 						"api",
@@ -56,9 +56,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrlApps}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
 							"host": [
-								"{{baseUrlApps}}"
+								"{{baseUrlAPI}}"
 							],
 							"path": [
 								"api",
@@ -129,9 +129,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrlApps}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
 							"host": [
-								"{{baseUrlApps}}"
+								"{{baseUrlAPI}}"
 							],
 							"path": [
 								"api",
@@ -197,9 +197,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrlApps}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
 					"host": [
-						"{{baseUrlApps}}"
+						"{{baseUrlAPI}}"
 					],
 					"path": [
 						"api",
@@ -223,9 +223,9 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrlApps}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
 							"host": [
-								"{{baseUrlApps}}"
+								"{{baseUrlAPI}}"
 							],
 							"path": [
 								"api",
@@ -303,9 +303,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrlApps}}/api/v1/smart-wallets?apiKey={{publicKey}}",
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets?apiKey={{publicKey}}",
 					"host": [
-						"{{baseUrlApps}}"
+						"{{baseUrlAPI}}"
 					],
 					"path": [
 						"api",
@@ -337,9 +337,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrlApps}}/api/v1/smart-wallets?apiKey={{publicKey}}",
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets?apiKey={{publicKey}}",
 							"host": [
-								"{{baseUrlApps}}"
+								"{{baseUrlAPI}}"
 							],
 							"path": [
 								"api",

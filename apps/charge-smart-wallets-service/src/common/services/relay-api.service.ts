@@ -26,7 +26,7 @@ export default class RelayAPIService {
     return await this.httpProxy(requestUrl, methodName, params)
   }
 
-  private async httpProxy(requestUrl: string, methodName: string, params: any) {
+  private async httpProxy (requestUrl: string, methodName: string, params: any) {
     const observable = this.httpService
       .post(requestUrl, { name: methodName, params: { ...params } })
       .pipe(map(res => res.data))

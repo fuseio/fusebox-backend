@@ -192,18 +192,5 @@ services:
       - ${RELAY_PORT}:${RELAY_PORT}
       - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
     restart: always
-
-  centrifugo:
-    container_name: centrifugo
-    image: centrifugo/centrifugo:v4
-    volumes:
-      - ./centrifugo_config.json:/centrifugo/config.json
-    command: centrifugo -c config.json --admin
-    ports:
-      - 8000:8000
-    ulimits:
-      nofile:
-        soft: 65535
-        hard: 65535
 networks:
   chargenet:

@@ -63,10 +63,10 @@ services:
       - 9232:9232
     depends_on:
       - mongo
+      - centrifugo
     command: npm run start:dev charge-smart-wallets-service
     networks:
       - chargenet
-  
   charge-notifications-service:
     build:
       target: development
@@ -123,6 +123,20 @@ services:
     restart: always
     volumes:
       - ./data:/data/db
+  centrifugo:
+    container_name: centrifugo
+    image: centrifugo/centrifugo:v4
+    volumes:
+      - ./centrifugo/config.json:/centrifugo/config.json
+    command: centrifugo -c config.json --admin
+    ports:
+      - 8000:8000
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    networks:
+      - chargenet
 networks:
   chargenet:
     driver: bridge

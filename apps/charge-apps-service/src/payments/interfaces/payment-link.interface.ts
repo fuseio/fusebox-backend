@@ -13,4 +13,5 @@ export interface PaymentLink extends Document {
   receivedTokenAddress: string;
   receivedAmount: string;
   redirectionLink: string | null;
+  webhookUrl: string;
 }

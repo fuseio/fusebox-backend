@@ -5,6 +5,6 @@ export const SmartWalletOwner = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest()
 
-    return request.user as ISmartWalletUser
+    return request.user.info as ISmartWalletUser
   }
 )

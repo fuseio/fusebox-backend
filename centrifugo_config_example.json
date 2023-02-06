@@ -1,0 +1,47 @@
+{
+  "token_hmac_secret_key": "averylongsecret",
+  "admin_password": "averystrongpassword",
+  "admin_secret": "averystrongandlongsecret",
+  "api_key": "apikey",
+  "debug": true,
+  "allowed_origins": [
+    "*"
+  ],
+  "admin": true,
+  "namespaces": [
+    {
+      "name": "wallets",
+      "anonymous": true,
+      "publish": true,
+      "allow_subscribe_for_client": true,
+      "history_size": 10,
+      "history_ttl": "300s"
+    },
+    {
+      "name": "relayer",
+      "anonymous": false,
+      "publish": true,
+      "allow_subscribe_for_anonymous": true,
+      "history_size": 10,
+      "history_ttl": "300s"
+    },
+    {
+      "name": "transaction",
+      "anonymous": false,
+      "publish": true,
+      "allow_subscribe_for_client": true,
+      "history_size": 10,
+      "history_ttl": "300s"
+    },
+    {
+      "name": "chat",
+      "anonymous": false,
+      "publish": true,
+      "join_leave": true,
+      "presence": true,
+      "presence_stats": true,
+      "allow_publish_for_subscriber": true,
+      "allow_subscribe_for_client": true
+    }
+  ]
+}

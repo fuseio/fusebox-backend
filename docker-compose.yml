@@ -149,6 +149,8 @@ services:
       dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
       target: development
     command: npm run start:dev charge-smart-wallets-service
+    depends_on:
+      - centrifugo
     environment:
       - SMART_WALLETS_HOST
       - SMART_WALLETS_PORT
@@ -159,6 +161,9 @@ services:
       - LEGACY_FUSE_WALLET_API_URL
       - RPC_URL
       - SMART_WALLETS_WS_URL
+      - CENTRIFUGO_URI
+      - CENTRIFUGO_JWT
+      - CENTRIFUGO_RELAYER_CHANNEL_JWT
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -187,5 +192,18 @@ services:
       - ${RELAY_PORT}:${RELAY_PORT}
       - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
     restart: always
+
+  centrifugo:
+    container_name: centrifugo
+    image: centrifugo/centrifugo:v4
+    volumes:
+      - ./centrifugo_config.json:/centrifugo/config.json
+    command: centrifugo -c config.json --admin
+    ports:
+      - 8000:8000
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
 networks:
   chargenet:

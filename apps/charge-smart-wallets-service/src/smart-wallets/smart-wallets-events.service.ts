@@ -100,24 +100,7 @@ export class SmartWalletsEventsService {
     })
   }
 
-  async onCreateSmartWalletSuccess (queueJob: any) {
-    const { data: { walletAddress } } = queueJob
-    const {
-      ownerAddress,
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
-    } = await this.smartWalletModel.findOneAndUpdate(
-      { smartWalletAddress: walletAddress },
-      { isContractDeployed: true },
-      { new: true }
-    )
-    return { ownerAddress, smartWalletAddress, walletModules, networks, version, paddedVersion }
-  }
-
-  async onCreateSmartWalletSuccessV2 (eventData: any) {
+  async onCreateSmartWalletSuccess (eventData: any) {
     const {
       ownerAddress,
       smartWalletAddress,

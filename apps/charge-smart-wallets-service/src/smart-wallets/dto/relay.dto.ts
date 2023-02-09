@@ -5,6 +5,10 @@ export class RelayDto {
   @IsMongoId()
     projectId: string
 
+  @IsOptional()
+  @IsEthereumAddress()
+    ownerAddress: string
+
   @IsEthereumAddress()
     walletAddress: string
 

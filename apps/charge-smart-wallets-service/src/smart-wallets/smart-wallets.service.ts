@@ -10,7 +10,7 @@ import { generateSalt, generateTransactionId } from 'apps/charge-smart-wallets-s
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-import { Centrifuge } from 'centrifuge'
+import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
 export class SmartWalletsService {
@@ -20,68 +20,10 @@ export class SmartWalletsService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly relayAPIService: RelayAPIService,
-    private readonly centrifuge: Centrifuge,
+    private readonly centrifugoAPIService: CentrifugoAPIService,
     @Inject(smartWalletString)
     private smartWalletModel: Model<SmartWallet>
   ) { }
-
-  async onModuleInit (): Promise<void> {
-    this.start()
-  }
-
-  async start () {
-    this.centrifuge.on('join', function (ctx) {
-      console.log('join', ctx)
-    })
-    this.centrifuge.on('connecting', function (ctx) {
-      console.log('connecting', ctx)
-    })
-    this.centrifuge.on('connected', function (ctx) {
-      console.log('connected', ctx)
-    })
-    this.centrifuge.on('disconnected', function (ctx) {
-      console.log('disconnected', ctx)
-    })
-    this.centrifuge.on('error', function (ctx) {
-      console.log('error', ctx)
-    })
-    const sub = this.centrifuge.newSubscription('relayer', {
-      token: process.env.CENTRIFUGO_RELAYER_CHANNEL_JWT
-    })
-
-    sub.on('publication', function (ctx) {
-      console.log('publication')
-      console.log(ctx.data)
-    })
-
-    sub.on('subscribing', function (ctx) {
-      console.log('subscribing')
-      console.log({ ...ctx })
-    })
-
-    sub.on('subscribed', function (ctx) {
-      console.log('subscribed')
-      console.log({ ...ctx })
-    })
-
-    sub.on('join', function (ctx) {
-      console.log('join')
-      console.log({ ...ctx })
-    })
-
-    sub.on('leave', function (ctx) {
-      console.log('leave')
-      console.log({ ...ctx })
-    })
-
-    sub.on('error', function (ctx) {
-      console.log('error')
-      console.log({ ...ctx })
-    })
-
-    sub.subscribe()
-    this.centrifuge.connect()
-  }
 
   get sharedAddresses () {
     return this.configService.get('sharedAddresses')
@@ -97,13 +39,13 @@ export class SmartWalletsService {
       const recoveredAddress = computeAddress(publicKey)
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress) {
-        // TODO: Centrigufo JWT claims: https://centrifugal.dev/docs/server/authentication#simplest-token
         const jwt = this.jwtService.sign({
           sub: recoveredAddress,
           info: {
             ownerAddress: recoveredAddress,
             projectId: smartWalletsAuthDto.projectId
-          }
+          },
+          channels: ['transaction']
         })
         return { jwt }
       } else {
@@ -147,8 +89,9 @@ export class SmartWalletsService {
         smartWalletUser,
         owner: ownerAddress,
         walletModules,
-        WalletFactory: this.sharedAddresses.WalletFactory
+        walletFactoryAddress: this.sharedAddresses.WalletFactory
       })
+      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, ownerAddress)
       return {
         connectionUrl: this.wsUrl,
         transactionId
@@ -167,6 +110,7 @@ export class SmartWalletsService {
         transactionId,
         ...relayDto
       })
+      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
       return {
         connectionUrl: this.wsUrl,
         transactionId

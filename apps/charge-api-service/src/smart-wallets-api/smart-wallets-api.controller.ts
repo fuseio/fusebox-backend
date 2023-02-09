@@ -35,6 +35,7 @@ export class SmartWalletsAPIController {
   @Post('relay')
   relay (@Body() relayDto: RelayDto, @SmartWalletOwner() user: ISmartWalletUser) {
     relayDto.projectId = user.projectId
+    relayDto.ownerAddress = user.ownerAddress
     return this.smartWalletsAPIService.relay(relayDto)
   }
 

@@ -11,6 +11,7 @@ import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.service'
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
+import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
     })
   ],
   providers: [
+    CentrifugoAPIService,
     CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,

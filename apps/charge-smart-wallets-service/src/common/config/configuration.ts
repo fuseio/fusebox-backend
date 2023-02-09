@@ -24,5 +24,7 @@ export default () => ({
   paddedVersion: '0001.0007.0000',
   relayApi: `${process.env.LEGACY_FUSE_WALLET_API_URL}/api/v3`,
   fuseWalletBackendJwt: process.env.FUSE_WALLET_BACKEND_JWT,
-  wsUrl: process.env.SMART_WALLETS_WS_URL
+  centrifugoBaseUrl: process.env.CENTRIFUGO_API_URL,
+  centrifugoApiKey: process.env.CENTRIFUGO_API_KEY,
+  wsUrl: process.env.CENTRIFUGO_URI
 })

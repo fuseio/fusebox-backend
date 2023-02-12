@@ -4,44 +4,30 @@
   "admin_secret": "averystrongandlongsecret",
   "api_key": "apikey",
   "debug": true,
+  "health": true,
+  "engine": "redis",
+  "redis_address": "redis:6379",
+  "redis_password": "password",
+  "redis_db": 1,
+  "user_subscribe_to_personal": true,
+  "user_personal_channel_namespace": "transaction",
   "allowed_origins": [
     "*"
   ],
   "admin": true,
   "namespaces": [
     {
-      "name": "wallets",
-      "anonymous": true,
-      "publish": true,
-      "allow_subscribe_for_client": true,
-      "history_size": 10,
-      "history_ttl": "300s"
-    },
-    {
       "name": "relayer",
-      "anonymous": false,
-      "publish": true,
-      "allow_subscribe_for_anonymous": true,
+      "allow_user_limited_channels": true,
       "history_size": 10,
       "history_ttl": "300s"
     },
     {
       "name": "transaction",
-      "anonymous": false,
-      "publish": true,
-      "allow_subscribe_for_client": true,
       "history_size": 10,
-      "history_ttl": "300s"
-    },
-    {
-      "name": "chat",
-      "anonymous": false,
-      "publish": true,
-      "join_leave": true,
+      "history_ttl": "300s",
       "presence": true,
-      "presence_stats": true,
-      "allow_publish_for_subscriber": true,
-      "allow_subscribe_for_client": true
+      "allow_user_limited_channels": true
     }
   ]
 }

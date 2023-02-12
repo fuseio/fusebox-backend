@@ -129,6 +129,8 @@ services:
     volumes:
       - ./centrifugo/config.json:/centrifugo/config.json
     command: centrifugo -c config.json --admin
+    depends_on:
+      - redis
     ports:
       - 8000:8000
     ulimits:

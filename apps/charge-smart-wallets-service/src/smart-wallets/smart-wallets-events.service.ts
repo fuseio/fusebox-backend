@@ -110,7 +110,7 @@ export class SmartWalletsEventsService {
       paddedVersion
     } =
       await this.smartWalletModel.findOneAndUpdate(
-        { smartWalletAddress: eventData.smartWalletAddress },
+        { smartWalletAddress: eventData.walletAddress },
         { isContractDeployed: true },
         { new: true }
       )
@@ -126,12 +126,14 @@ export class SmartWalletsEventsService {
       eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
       data
     })
+    this.unsubsctibe(eventData)
   }
 
   async onCreateSmartWalletFailed (eventData: any) {
     this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_FAILED
     })
+    this.unsubsctibe(eventData)
   }
 
   async onRelaySuccess (eventData: any) {
@@ -139,6 +141,7 @@ export class SmartWalletsEventsService {
       eventName: websocketEvents.TRANSACTION_SUCCEEDED,
       eventData
     })
+    this.unsubsctibe(eventData)
   }
 
   async onRelayFailed (eventData: any) {
@@ -146,6 +149,7 @@ export class SmartWalletsEventsService {
       eventName: websocketEvents.TRANSACTION_FAILED,
       eventData
     })
+    this.unsubsctibe(eventData)
   }
 
   async onRelayStarted (eventData: any) {
@@ -159,6 +163,17 @@ export class SmartWalletsEventsService {
     try {
       const { transactionId } = eventData
       this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
+    } catch (error) {
+      this.logger.error({ error })
+      this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
+    }
+  }
+
+  async unsubsctibe (eventData) {
+    try {
+      const { walletAddress, transactionId } = eventData
+      const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress: walletAddress })
+      this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)

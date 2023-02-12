@@ -18,6 +18,25 @@ export default class CentrifugoAPIService {
     return this.configService.get('centrifugoApiKey')
   }
 
+  async unsubscribe (channel: string, user: string) {
+    const observable = this.httpService
+      .post(`${this.centrifugoBaseUrl}`, {
+        method: 'unsubscribe',
+        params: { channel, user }
+      },
+      { headers: { Authorization: `apikey ${this.centrifugoApiKey}` } })
+      .pipe(map(res => res.data))
+      .pipe(
+        catchError(e => {
+          throw new HttpException(
+            `${e?.response?.message}`,
+            e?.response?.code
+          )
+        })
+      )
+    return await lastValueFrom(observable)
+  }
+
   async subscribe (channel: string, user: string) {
     const observable = this.httpService
       .post(`${this.centrifugoBaseUrl}`, {

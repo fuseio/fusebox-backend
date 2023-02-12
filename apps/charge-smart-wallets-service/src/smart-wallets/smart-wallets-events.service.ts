@@ -126,14 +126,14 @@ export class SmartWalletsEventsService {
       eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
       data
     })
-    this.unsubsctibe(eventData)
+    this.unsubscribe(eventData)
   }
 
   async onCreateSmartWalletFailed (eventData: any) {
     this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_FAILED
     })
-    this.unsubsctibe(eventData)
+    this.unsubscribe(eventData)
   }
 
   async onRelaySuccess (eventData: any) {
@@ -141,7 +141,7 @@ export class SmartWalletsEventsService {
       eventName: websocketEvents.TRANSACTION_SUCCEEDED,
       eventData
     })
-    this.unsubsctibe(eventData)
+    this.unsubscribe(eventData)
   }
 
   async onRelayFailed (eventData: any) {
@@ -149,7 +149,7 @@ export class SmartWalletsEventsService {
       eventName: websocketEvents.TRANSACTION_FAILED,
       eventData
     })
-    this.unsubsctibe(eventData)
+    this.unsubscribe(eventData)
   }
 
   async onRelayStarted (eventData: any) {
@@ -169,7 +169,7 @@ export class SmartWalletsEventsService {
     }
   }
 
-  async unsubsctibe (eventData) {
+  async unsubscribe (eventData) {
     try {
       const { walletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress: walletAddress })

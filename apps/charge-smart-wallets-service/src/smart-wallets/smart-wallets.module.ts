@@ -1,4 +1,3 @@
-import { SmartWalletsEventsGateway } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.gateway'
 import { SmartWalletsController } from '@app/smart-wallets-service/smart-wallets/smart-wallets.controller'
 import { SmartWalletsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets.service'
 import { Module } from '@nestjs/common'
@@ -43,7 +42,6 @@ import CentrifugoAPIService from '@app/common/services/centrifugo.service'
     CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,
-    SmartWalletsEventsGateway,
     SmartWalletsService,
     ...smartWalletsProviders
   ],

@@ -48,6 +48,9 @@ export class SmartWalletsEventsService {
           case 'relayFailed':
             this.onRelayFailed(eventData)
             break
+          case 'transactionHash':
+            this.onTransactionHash(eventData)
+            break
         }
       }
     })
@@ -99,6 +102,13 @@ export class SmartWalletsEventsService {
     this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_STARTED,
       eventData: {}
+    })
+  }
+
+  async onTransactionHash (eventData: any) {
+    this.publishMessage(eventData, {
+      eventName: websocketEvents.TRANSACTION_HASH,
+      eventData
     })
   }
 

@@ -18,13 +18,13 @@ export class TransactionsScannerService {
   private readonly logger = new Logger(TransactionsScannerService.name)
 
   constructor (
-        @Inject(transactionsScannerStatusModelString)
-        private transactionsScannerStatusModel: Model<TransactionsScannerStatus>,
-        @InjectEthersProvider('full-archive-node')
-        private readonly rpcProvider: JsonRpcProvider,
-        private readonly web3ProviderService: Web3ProviderService,
-        private configService: ConfigService,
-        private webhooksService: WebhooksService
+    @Inject(transactionsScannerStatusModelString)
+    private transactionsScannerStatusModel: Model<TransactionsScannerStatus>,
+    @InjectEthersProvider('full-archive-node')
+    private readonly rpcProvider: JsonRpcProvider,
+    private readonly web3ProviderService: Web3ProviderService,
+    private configService: ConfigService,
+    private webhooksService: WebhooksService
   ) { }
 
   get web3Provider () {
@@ -107,7 +107,7 @@ export class TransactionsScannerService {
     if (!isEmpty(blockTraces)) {
       const filteredBlockTraces = blockTraces.filter(
         (blockTrace) => blockTrace.action.callType === 'call' &&
-        BigNumber.from(blockTrace.action.value).gt(0))
+          BigNumber.from(blockTrace.action.value).gt(0))
 
       for (const trace of filteredBlockTraces) {
         try {

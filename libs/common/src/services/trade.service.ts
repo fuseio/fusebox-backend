@@ -8,7 +8,7 @@ export default class TradeService {
   constructor (
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
-  ) {}
+  ) { }
 
   async getTokenPrice (tokenAddress: string) {
     const observable = this.httpService

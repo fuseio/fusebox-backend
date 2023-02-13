@@ -27,4 +27,8 @@ export class CreatePaymentLinkDto {
   @IsUrl()
   @IsOptional()
     redirectUrl: string
+
+  @IsUrl()
+  @IsOptional()
+    webhookUrl: string
 }

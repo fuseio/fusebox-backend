@@ -1,10 +1,3 @@
-export enum websocketMessages {
-  JOB_STARTED = 'jobStarted',
-  JOB_SUCCEEDED = 'jobSucceeded',
-  JOB_FAILED = 'jobFailed',
-  SUBSCRIBE = 'subscribe'
-}
-
 export enum websocketEvents {
   WALLET_CREATION_STARTED = 'smartWalletCreationStarted',
   WALLET_CREATION_FAILED = 'smartWalletCreationFailed',

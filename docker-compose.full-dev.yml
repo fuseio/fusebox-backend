@@ -32,6 +32,8 @@ services:
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules
+    environment:
+      - QA_MODE=true
     ports:
       - 9227:9227
     depends_on:

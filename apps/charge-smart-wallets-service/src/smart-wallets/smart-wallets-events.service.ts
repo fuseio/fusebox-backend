@@ -82,6 +82,7 @@ export class SmartWalletsEventsService {
       projectId,
       salt,
       ownerAddress,
+      walletModules,
       smartWalletAddress: walletAddress,
       walletOwnerOriginalAddress: ownerAddress,
       walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
@@ -89,14 +90,14 @@ export class SmartWalletsEventsService {
       walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
       walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
       walletModulesOriginal: walletModules,
-      walletModules: this.sharedAddresses.walletModules,
       networks: ['fuse'],
       version: this.walletVersion,
       paddedVersion: this.walletPaddedVersion
     })
 
     this.publishMessage(eventData, {
-      eventName: websocketEvents.WALLET_CREATION_STARTED
+      eventName: websocketEvents.WALLET_CREATION_STARTED,
+      eventData: {}
     })
   }
 
@@ -124,7 +125,7 @@ export class SmartWalletsEventsService {
     }
     this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
-      data
+      eventData: data
     })
     this.unsubscribe(eventData)
   }

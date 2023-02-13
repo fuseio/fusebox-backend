@@ -6,6 +6,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Centrifuge } from 'centrifuge'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 
 @Injectable()
 export class SmartWalletsEventsService {
@@ -46,6 +47,9 @@ export class SmartWalletsEventsService {
             break
           case 'relayFailed':
             this.onRelayFailed(eventData)
+            break
+          case 'transactionHash':
+            this.onTransactionHash(eventData)
             break
         }
       }
@@ -98,6 +102,13 @@ export class SmartWalletsEventsService {
     this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_STARTED,
       eventData: {}
+    })
+  }
+
+  async onTransactionHash (eventData: any) {
+    this.publishMessage(eventData, {
+      eventName: websocketEvents.TRANSACTION_HASH,
+      eventData
     })
   }
 
@@ -172,6 +183,8 @@ export class SmartWalletsEventsService {
 
   async unsubscribe (eventData) {
     try {
+      // Todo: monitor this on staging env
+      await sleep(3000)
       const { walletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress: walletAddress })
       this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)

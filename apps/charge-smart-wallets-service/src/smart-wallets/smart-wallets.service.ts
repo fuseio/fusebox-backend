@@ -82,7 +82,7 @@ export class SmartWalletsService {
       const salt = generateSalt()
       const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
-      this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, ownerAddress)
+      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, ownerAddress)
       this.relayAPIService.createWallet({
         v2: true,
         salt,
@@ -105,7 +105,7 @@ export class SmartWalletsService {
   async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
-      this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
+      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
       this.relayAPIService.relay({
         v2: true,
         transactionId,

@@ -183,6 +183,7 @@ export class SmartWalletsEventsService {
 
   async unsubscribe (eventData) {
     try {
+      // Todo: monitor this on staging env
       await sleep(3000)
       const { walletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress: walletAddress })

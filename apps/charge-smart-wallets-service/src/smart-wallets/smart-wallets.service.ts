@@ -10,6 +10,7 @@ import { generateSalt, generateTransactionId } from 'apps/charge-smart-wallets-s
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
+import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
 export class SmartWalletsService {
@@ -19,6 +20,7 @@ export class SmartWalletsService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly relayAPIService: RelayAPIService,
+    private readonly centrifugoAPIService: CentrifugoAPIService,
     @Inject(smartWalletString)
     private smartWalletModel: Model<SmartWallet>
   ) { }
@@ -38,8 +40,12 @@ export class SmartWalletsService {
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress) {
         const jwt = this.jwtService.sign({
-          ownerAddress: recoveredAddress,
-          projectId: smartWalletsAuthDto.projectId
+          sub: recoveredAddress,
+          info: {
+            ownerAddress: recoveredAddress,
+            projectId: smartWalletsAuthDto.projectId
+          },
+          channels: ['transaction']
         })
         return { jwt }
       } else {
@@ -53,6 +59,9 @@ export class SmartWalletsService {
 
   async getWallet (smartWalletUser: ISmartWalletUser) {
     const { ownerAddress } = smartWalletUser
+    if (!await this.smartWalletModel.findOne({ ownerAddress })) {
+      throw new Error('Not found')
+    }
     return this.smartWalletModel.findOne({ ownerAddress }, {
       smartWalletAddress: 1,
       ownerAddress: 1,
@@ -73,6 +82,7 @@ export class SmartWalletsService {
       const salt = generateSalt()
       const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
+      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, ownerAddress)
       this.relayAPIService.createWallet({
         v2: true,
         salt,
@@ -80,7 +90,7 @@ export class SmartWalletsService {
         smartWalletUser,
         owner: ownerAddress,
         walletModules,
-        WalletFactory: this.sharedAddresses.WalletFactory
+        walletFactoryAddress: this.sharedAddresses.WalletFactory
       })
       return {
         connectionUrl: this.wsUrl,
@@ -95,6 +105,7 @@ export class SmartWalletsService {
   async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
+      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
       this.relayAPIService.relay({
         v2: true,
         transactionId,

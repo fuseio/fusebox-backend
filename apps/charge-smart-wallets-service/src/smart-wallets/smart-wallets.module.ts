@@ -1,4 +1,3 @@
-import { SmartWalletsEventsGateway } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.gateway'
 import { SmartWalletsController } from '@app/smart-wallets-service/smart-wallets/smart-wallets.controller'
 import { SmartWalletsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets.service'
 import { Module } from '@nestjs/common'
@@ -10,6 +9,8 @@ import { smartWalletsProviders } from '@app/smart-wallets-service/smart-wallets/
 import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.service'
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
+import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
+import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Module({
   imports: [
@@ -37,9 +38,10 @@ import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/servic
     })
   ],
   providers: [
+    CentrifugoAPIService,
+    CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,
-    SmartWalletsEventsGateway,
     SmartWalletsService,
     ...smartWalletsProviders
   ],

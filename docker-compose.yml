@@ -149,6 +149,8 @@ services:
       dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
       target: development
     command: npm run start:dev charge-smart-wallets-service
+    depends_on:
+      - centrifugo
     environment:
       - SMART_WALLETS_HOST
       - SMART_WALLETS_PORT
@@ -158,7 +160,10 @@ services:
       - FUSE_WALLET_BACKEND_JWT
       - LEGACY_FUSE_WALLET_API_URL
       - RPC_URL
-      - SMART_WALLETS_WS_URL
+      - CENTRIFUGO_URI
+      - CENTRIFUGO_JWT
+      - CENTRIFUGO_API_URL
+      - CENTRIFUGO_API_KEY
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

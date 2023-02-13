@@ -17,14 +17,14 @@ export class EventsScannerService {
   private readonly logger = new Logger(EventsScannerService.name)
 
   constructor (
-        @Inject(eventsScannerStatusModelString)
-        private eventsScannerStatusModel: Model<EventsScannerStatus>,
-        @InjectEthersProvider('regular-node')
-        private readonly rpcProvider: BaseProvider,
-        @InjectContractProvider('regular-node')
-        private readonly ethersContract: EthersContract,
-        private configService: ConfigService,
-        private webhooksService: WebhooksService
+    @Inject(eventsScannerStatusModelString)
+    private eventsScannerStatusModel: Model<EventsScannerStatus>,
+    @InjectEthersProvider('regular-node')
+    private readonly rpcProvider: BaseProvider,
+    @InjectContractProvider('regular-node')
+    private readonly ethersContract: EthersContract,
+    private configService: ConfigService,
+    private webhooksService: WebhooksService
   ) { }
 
   async onModuleInit (): Promise<void> {

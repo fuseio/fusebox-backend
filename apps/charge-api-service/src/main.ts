@@ -28,7 +28,7 @@ async function bootstrap () {
   })
 
   if (process.env.QA_MODE) {
-    console.log('QA mode enabled with enableCors');
+    console.log('QA mode enabled with enableCors')
     app.enableCors()
   }
 

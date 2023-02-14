@@ -9,6 +9,7 @@ services:
       target: development
     command: npm run start:dev charge-accounts-service
     environment:
+      - API_TCP_PORT
       - ACCOUNTS_HOST
       - API_HOST
       - RELAY_HOST

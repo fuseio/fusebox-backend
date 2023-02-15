@@ -27,10 +27,7 @@ async function bootstrap () {
     type: VersioningType.URI
   })
 
-  if (process.env.QA_MODE) {
-    console.log('QA mode enabled with enableCors')
-    app.enableCors()
-  }
+  app.enableCors()
 
   const httpAdapterHost = app.get(HttpAdapterHost)
   const logger = new Logger(apiServiceLoggerContext)

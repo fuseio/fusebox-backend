@@ -29,8 +29,6 @@ services:
   charge-api-service:
     build:
       target: development
-    environment:
-      - QA_MODE=true
     volumes:
       - .:/usr/src/app
       - ./node_modules:/usr/src/app/node_modules

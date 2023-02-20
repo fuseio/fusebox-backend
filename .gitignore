@@ -38,6 +38,7 @@ lerna-debug.log*
 .env
 /centrifugo/config.json
 /centrifugo/config-staging.json
+/centrifugo/config-prod.json
 
 # Mongo persistence data
 /data

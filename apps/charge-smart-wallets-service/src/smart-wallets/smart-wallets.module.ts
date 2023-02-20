@@ -11,11 +11,16 @@ import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wall
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { getEnvPath } from '@app/common/utils/env.helper'
+import path from 'path'
 
 @Module({
   imports: [
     DatabaseModule,
-    ConfigModule.forFeature(configuration),
+    ConfigModule.forRoot({
+      envFilePath: getEnvPath(path.join(__dirname, 'common/config')),
+      load: [configuration]
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

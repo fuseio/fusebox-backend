@@ -14,6 +14,7 @@ export class IsValidApiKeysGuard implements CanActivate {
     const secretKey = request.header('API-SECRET')
 
     if (projectSecretHash && secretKey) {
+      request.projectId = projectApiKey.projectId
       return await bcrypt.compare(secretKey, projectSecretHash)
     }
     return false

@@ -13,3 +13,5 @@ services:
     command: npm run start:debug --service=charge-network-service --port=9225
   charge-apps-service:
     command: npm run start:debug --service=charge-apps-service --port=9231
+  charge-smart-wallets-service:
+    command: npm run start:debug --service=charge-smart-wallets-service --port=9232

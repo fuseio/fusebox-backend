@@ -12,6 +12,7 @@ export class IsValidPublicApiKeyGuard implements CanActivate {
     const projectApiKey = await this.apiKeysService.findOne({ publicKey: query?.apiKey, isTest: false })
 
     if (!isEmpty(projectApiKey)) {
+      request.projectId = projectApiKey.projectId
       return true
     }
     return false

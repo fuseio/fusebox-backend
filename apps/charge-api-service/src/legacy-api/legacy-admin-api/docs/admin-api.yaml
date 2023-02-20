@@ -17,7 +17,7 @@ tags:
       and transfer it between your users' wallets
   - name: Jobs API
     description: >-
-      You can use the Jobs API to check the status of asyncronuous Admin API
+      You can use the Jobs API to check the status of asynchronous Admin API
       tasks that you have created.
 paths:
   /admin/wallets/create:

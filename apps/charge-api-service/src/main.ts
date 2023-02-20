@@ -2,7 +2,7 @@ import { Transport } from '@nestjs/microservices'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeApiServiceModule } from 'apps/charge-api-service/src/charge-api-service.module'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
-import { Logger, ValidationPipe } from '@nestjs/common'
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { apiServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
 async function bootstrap () {
@@ -22,6 +22,12 @@ async function bootstrap () {
       transform: true
     })
   )
+
+  app.enableVersioning({
+    type: VersioningType.URI
+  })
+
+  app.enableCors()
 
   const httpAdapterHost = app.get(HttpAdapterHost)
   const logger = new Logger(apiServiceLoggerContext)

@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "83c3a64f-c5ce-400a-986e-7fbc180d8c2f",
+		"name": "Smart Wallets API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2330427"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"hash\": \"0xf9054fd2b85014d5abf30608cf2d8f9712232d203b427a7c46c6785710f880d9\",\n    \"signature\": \"0x387810a84b3f39d9b79d08c7a2095e0a60c200199b0355e1199630ca1e623cf7564a4e3126a01ff43472399cf7087a361c44a3c125f216ed82cae175951243431b\",\n    \"ownerAddress\": \"0x199DC49d8187EeA58649F7cA387e2226d4155C94\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hash\": \"0xc1b404e3355d958f36cce09d1cedf8685c6821eda996602388ae629312f76aac\",\n    \"signature\": \"0x4d712a40032b5f35c73f32040a6d1036f751a3a35b6e1facc2b7776f2ec7a1586b69b824d52cb50a87b5d137fdfa9aaed99157ab163fcbbbaaffe8dcd26662e41b\",\n    \"ownerAddress\": \"0x809B78371f50f28D2C61F63e48b58b7Ee053E3Ea\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "247"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f7-D6bEjaTxCSDbehrS8scTy7iYOPQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Feb 2023 08:39:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lckFkZHJlc3MiOiIweDgwOUI3ODM3MWY1MGYyOEQyQzYxRjYzZTQ4YjU4YjdFZTA1M0UzRWEiLCJwcm9qZWN0SWQiOiI2M2NkMWJjMWQxOGMxNjQyMmJiOGMwYzMiLCJpYXQiOjE2NzUzMjcxOTR9.-iWIEN6OLyCI4j5WOA8V2mH3KQtrmEoUGhIS4migV9g\"\n}"
+				},
+				{
+					"name": "Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hash\": \"0xc1b404e3355d958f36cce09d1cedf8685c6821eda996602388ae629312f76aac\",\n    \"signature\": \"0x4d712a40032b5f35c73f32040a6d1036f751a3a35b6e1facc2b7776f2ec7a1586b69b824d52cb50a87b5d137fdfa9aaed99157ab163fcbbbaaffe8dcd26662e41b\",\n    \"ownerAddress\": \"0x809B78371f50f28D2C61F63e48b58b7Ee053E3EA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/auth?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "166"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Feb 2023 11:12:13 GMT"
+						},
+						{
+							"key": "Etag",
+							"value": "W/\"a6-cJ3vgY5wmggf39YeOGRrK5lZp/k\""
+						},
+						{
+							"key": "Ngrok-Trace-Id",
+							"value": "c8b96c2f6185996702be8c1067a55b15"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 400,\n    \"errorMessage\": \"Owner Address does not match recovered address in signature\",\n    \"path\": \"/api/v1/smart-wallets/auth?apiKey={{publicKey}}\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Wallet",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"create"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/create?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"create"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "124"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Feb 2023 11:13:33 GMT"
+						},
+						{
+							"key": "Etag",
+							"value": "W/\"7c-jgubEmW9coRRaCukYyc8S/HV9aQ\""
+						},
+						{
+							"key": "Ngrok-Trace-Id",
+							"value": "a504a455e89e8a831b7159baaaf71bd1"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"connectionUrl\": \"ws://localhost:5007\",\n    \"transactionId\": \"0x06515e558ba48471b24096015ef763ae034ad933ddae1800a4e79459bd310ffb\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Wallet",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ownerAddress\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ownerAddress\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets?apiKey={{publicKey}}",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}",
+									"description": "(Required) Your Public API key"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "783"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Feb 2023 14:10:41 GMT"
+						},
+						{
+							"key": "Etag",
+							"value": "W/\"30f-d2//uyg3Ku0+RbyyzS3Diha3BzQ\""
+						},
+						{
+							"key": "Ngrok-Trace-Id",
+							"value": "bc0a260f9996f8e608bed7e92a53c99a"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"ownerAddress\": \"0x199DC49d8187EeA58649F7cA387e2226d4155C94\",\n    \"smartWalletAddress\": \"0x545d3dD729d848023938D5F94af2346868EED7b9\",\n    \"walletModules\": {\n        \"GuardianManager\": \"0xC1254443B6b9E5b5714D57ae3Af16FE9D220775D\",\n        \"LockManager\": \"0x370672167439e399cE753963E31E26EEB5bfaf6c\",\n        \"RecoveryManager\": \"0xA85aA96857cBdEb5C7e88a59772E6E7170986f02\",\n        \"ApprovedTransfer\": \"0x959f0fF280EAF7BB1b57ec75AC777aB863f82736\",\n        \"TransferManager\": \"0xF66e26Fd99F4687CC29148BE2e331df2e49E249E\",\n        \"NftTransfer\": \"0xe713Ec7D3516d65966c5DeA3CF78EFE1DcaDd47B\",\n        \"TokenExchanger\": \"0xd636460D8866430EbDeDb5A3AE4f19D0735fD1B7\",\n        \"CommunityManager\": \"0x9585db67ab966Ec8dfDdc47bAD9cE46905A5a0e1\",\n        \"WalletOwnershipManager\": \"0xfE0B31C96FE5929849D8D48C56c428d935dDfE00\"\n    },\n    \"networks\": [\n        \"fuse\"\n    ],\n    \"version\": \"1.7.0\",\n    \"paddedVersion\": \"0001.0007.0000\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Relay",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gasPrice\": 0,\n    \"gasLimit\": 700000,\n    \"relayBody\": null,\n    \"txMetadata\": null,\n    \"transactionBody\": {\n        \"status\": \"pending\",\n        \"from\": \"0x545d3dD729d848023938D5F94af2346868EED7b9\",\n        \"to\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\",\n        \"value\": 1000000000000000,\n        \"type\": \"SEND\",\n        \"asset\": \"FUSE\",\n        \"tokenName\": \"FuseToken\",\n        \"tokenSymbol\": \"FUSE\",\n        \"tokenDecimal\": 18,\n        \"tokenAddress\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\"\n    },\n    \"walletAddress\": \"0x545d3dD729d848023938D5F94af2346868EED7b9\",\n    \"walletModuleAddress\": \"0xF66e26Fd99F4687CC29148BE2e331df2e49E249E\",\n    \"data\": \"0x2df546f4000000000000000000000000545d3dd729d848023938d5f94af2346868eed7b9000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000007ceabc27b1dc6a065fad85a86afbaf97f769208800000000000000000000000000000000000000000000000000038d7ea4c6800000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000\",\n    \"nonce\": \"0x000000000000000000000000008800ae000000000000000000000186127a87f6\",\n    \"methodName\": \"transferToken\",\n    \"signature\": \"0x0943cb68c40fe495be75dca17ee4e577a5aa7051949cd837f073d470694705cc75013e034e1dba7a799f432a9be3ed45305d5b299a2ed8c61c8581f1a868099c1c\",\n    \"walletModule\": \"TransferManager\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/relay?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"relay"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"network\": \"fuse\",\n    \"gasPrice\": 0,\n    \"gasLimit\": 700000,\n    \"relayBody\": null,\n    \"txMetadata\": null,\n    \"transactionBody\": {\n        \"status\": \"pending\",\n        \"from\": \"0x545d3dD729d848023938D5F94af2346868EED7b9\",\n        \"to\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\",\n        \"value\": 1000000000000000,\n        \"type\": \"SEND\",\n        \"asset\": \"FUSE\",\n        \"tokenName\": \"FuseToken\",\n        \"tokenSymbol\": \"FUSE\",\n        \"tokenDecimal\": 18,\n        \"tokenAddress\": \"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE\"\n    },\n    \"walletAddress\": \"0x545d3dD729d848023938D5F94af2346868EED7b9\",\n    \"walletModuleAddress\": \"0xF66e26Fd99F4687CC29148BE2e331df2e49E249E\",\n    \"data\": \"0x2df546f4000000000000000000000000545d3dd729d848023938d5f94af2346868eed7b9000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000007ceabc27b1dc6a065fad85a86afbaf97f769208800000000000000000000000000000000000000000000000000038d7ea4c6800000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000\",\n    \"nonce\": \"0x000000000000000000000000008800ae000000000000000000000186127a87f6\",\n    \"methodName\": \"transferToken\",\n    \"signature\": \"0x0943cb68c40fe495be75dca17ee4e577a5aa7051949cd837f073d470694705cc75013e034e1dba7a799f432a9be3ed45305d5b299a2ed8c61c8581f1a868099c1c\",\n    \"walletModule\": \"TransferManager\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.chargeweb3.com/api/v1/smart-wallets/relay?apiKey=pk_F7gisUhUTV5LyiNcftikb0UL",
+							"protocol": "https",
+							"host": [
+								"api",
+								"chargeweb3",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"relay"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "pk_F7gisUhUTV5LyiNcftikb0UL",
+									"description": "(Required) Your Public API key"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "124"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Feb 2023 14:17:00 GMT"
+						},
+						{
+							"key": "Etag",
+							"value": "W/\"7c-3NCvTuZ0AY0nA8XEDrGXO0RELrI\""
+						},
+						{
+							"key": "Ngrok-Trace-Id",
+							"value": "077635b58ee1b7e807d1b0f263c72e84"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"connectionUrl\": \"ws://localhost:5007\",\n    \"transactionId\": \"0xc314fe5bcf9cf5dcb600da9673b779972e63622af73f62629700dfb04c1cb853\"\n}"
+				}
+			]
+		}
+	]
+}

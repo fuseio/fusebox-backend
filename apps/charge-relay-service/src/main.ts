@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { Transport } from '@nestjs/microservices'
-import { ChargeRelayServiceModule } from './charge-relay-service.module'
+import { ChargeRelayServiceModule } from '@app/relay-service/charge-relay-service.module'
 
 async function bootstrap () {
   const app = await NestFactory.create(ChargeRelayServiceModule)

@@ -43,6 +43,9 @@
       ],
       "@app/apps-service/*": [
         "apps/charge-apps-service/src/*"
+      ],
+      "@app/smart-wallets-service/*": [
+        "apps/charge-smart-wallets-service/src/*"
       ]
     }
   }

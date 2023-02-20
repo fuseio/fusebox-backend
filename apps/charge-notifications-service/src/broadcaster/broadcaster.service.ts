@@ -4,7 +4,7 @@ import { Model } from 'mongoose'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 import { ConfigService } from '@nestjs/config'
-import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface '
+import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface'
 import WebhookSendService from '@app/common/services/webhook-send.service'
 
 @Injectable()

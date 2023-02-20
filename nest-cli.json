@@ -71,6 +71,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/charge-apps-service/tsconfig.app.json"
       }
+    },
+    "charge-smart-wallets-service": {
+      "type": "application",
+      "root": "apps/charge-smart-wallets-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/charge-smart-wallets-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/charge-smart-wallets-service/tsconfig.app.json"
+      }
     }
   }
 }

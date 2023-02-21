@@ -1,7 +1,6 @@
 import { Document } from 'mongoose'
 
 export interface SmartWallet extends Document {
-  readonly projectId: string;
   readonly ownerAddress: string;
   readonly smartWalletAddress: string;
   readonly isContractDeployed: string;

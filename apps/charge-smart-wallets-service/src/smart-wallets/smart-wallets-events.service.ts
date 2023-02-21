@@ -78,12 +78,10 @@ export class SmartWalletsEventsService {
       walletModules
     } = eventData
     const {
-      ownerAddress,
-      projectId
+      ownerAddress
     } = smartWalletUser
 
     this.smartWalletModel.create({
-      projectId,
       salt,
       ownerAddress,
       walletModules,

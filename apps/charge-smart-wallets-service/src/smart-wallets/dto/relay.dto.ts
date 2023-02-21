@@ -1,10 +1,6 @@
-import { IsEthereumAddress, IsInt, IsMongoId, IsObject, IsOptional, IsString } from 'class-validator'
+import { IsEthereumAddress, IsInt, IsObject, IsOptional, IsString } from 'class-validator'
 
 export class RelayDto {
-  @IsOptional()
-  @IsMongoId()
-    projectId: string
-
   @IsOptional()
   @IsEthereumAddress()
     ownerAddress: string

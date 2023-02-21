@@ -1,13 +1,8 @@
 import * as mongoose from 'mongoose'
-const { ObjectId, String } = mongoose.Schema.Types
+const { String } = mongoose.Schema.Types
 
 export const SmartWalletSchema = new mongoose.Schema(
   {
-    projectId: {
-      type: ObjectId,
-      ref: 'Project',
-      required: true
-    },
     ownerAddress: { type: String, required: true, index: true, unique: true },
     smartWalletAddress: { type: String, required: true, index: true },
     isContractDeployed: { type: Boolean, default: false },

@@ -3,7 +3,6 @@ import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart-wallets-api.service'
-import { Project } from '@app/common/decorators/project.decorator'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
@@ -14,8 +13,7 @@ export class SmartWalletsAPIController {
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) {}
 
   @Post('auth')
-  auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto, @Project() projectId: string) {
-    smartWalletsAuthDto.projectId = projectId
+  auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
@@ -34,7 +32,6 @@ export class SmartWalletsAPIController {
   @UseGuards(AuthGuard('jwt'))
   @Post('relay')
   relay (@Body() relayDto: RelayDto, @SmartWalletOwner() user: ISmartWalletUser) {
-    relayDto.projectId = user.projectId
     relayDto.ownerAddress = user.ownerAddress
     return this.smartWalletsAPIService.relay(relayDto)
   }

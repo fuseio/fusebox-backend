@@ -6,7 +6,6 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Centrifuge } from 'centrifuge'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
-import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 
 @Injectable()
 export class SmartWalletsEventsService {
@@ -72,7 +71,7 @@ export class SmartWalletsEventsService {
 
   async onCreateSmartWalletStarted (eventData: any) {
     const {
-      walletAddress,
+      smartWalletAddress,
       smartWalletUser,
       salt,
       walletModules
@@ -85,7 +84,7 @@ export class SmartWalletsEventsService {
       salt,
       ownerAddress,
       walletModules,
-      smartWalletAddress: walletAddress,
+      smartWalletAddress,
       walletOwnerOriginalAddress: ownerAddress,
       walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
       walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
@@ -120,7 +119,7 @@ export class SmartWalletsEventsService {
       paddedVersion
     } =
       await this.smartWalletModel.findOneAndUpdate(
-        { smartWalletAddress: eventData.walletAddress },
+        { smartWalletAddress: eventData.smartWalletAddress },
         { isContractDeployed: true },
         { new: true }
       )
@@ -181,10 +180,8 @@ export class SmartWalletsEventsService {
 
   async unsubscribe (eventData) {
     try {
-      // Todo: monitor this on staging env
-      await sleep(3000)
-      const { walletAddress, transactionId } = eventData
-      const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress: walletAddress })
+      const { smartWalletAddress, transactionId } = eventData
+      const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress })
       this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)
     } catch (error) {
       this.logger.error({ error })

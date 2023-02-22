@@ -64,7 +64,15 @@ export default class VoltBarService implements StakingProvider {
     )
   }
 
-  async stakedToken (accountAddress: string, { tokenAddress, tokenLogoURI, tokenName, tokenSymbol }: StakingOption) {
+  async stakedToken (
+    accountAddress: string,
+    {
+      tokenAddress,
+      tokenLogoURI,
+      tokenName,
+      tokenSymbol,
+      unStakeTokenAddress
+    }: StakingOption) {
     const stakingData = await this.getStakingData(accountAddress)
     const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
 
@@ -77,6 +85,7 @@ export default class VoltBarService implements StakingProvider {
       tokenLogoURI,
       tokenName,
       tokenSymbol,
+      unStakeTokenAddress,
       stakedAmount,
       stakedAmountUSD,
       earnedAmountUSD

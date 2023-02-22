@@ -6,6 +6,7 @@ interface Token {
     tokenSymbol: string
     tokenName: string
     tokenLogoURI: string
+    unStakeTokenAddress: string
 }
 
 export interface StakingOption extends Token {

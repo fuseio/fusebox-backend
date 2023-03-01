@@ -28,6 +28,10 @@ export class SmartWalletsAPIService {
     return callMSFunction(this.smartWalletsClient, 'relay', relayDto)
   }
 
+  async getHistoricalTxs (user: ISmartWalletUser): Promise<any> {
+    return callMSFunction(this.smartWalletsClient, 'historical_txs', user)
+  }
+
   async getAvailableUpgrades (): Promise<any> {
     return callMSFunction(this.smartWalletsClient, 'get_available_upgrades', '')
   }

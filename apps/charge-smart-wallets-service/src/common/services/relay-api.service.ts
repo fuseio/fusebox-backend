@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { HttpException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { AxiosRequestConfig } from 'axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 
 @Injectable()
@@ -14,21 +15,49 @@ export default class RelayAPIService {
     return this.configService.get('relayApi')
   }
 
+  async getHistoricalTxs (smartWalletAddress) {
+    const requestUrl = `${this.relayApiUrl}/wallets/actions/${smartWalletAddress}`
+    const requestConfig: AxiosRequestConfig = {
+      method: 'get',
+      url: requestUrl
+    }
+    return await this.httpProxy(requestConfig)
+  }
+
   async createWallet (params) {
     const requestUrl = `${this.relayApiUrl}/wallets`
-    const methodName = 'createWallet'
-    return await this.httpProxy(requestUrl, methodName, params)
+    const name = 'createWallet'
+    const requestConfig: AxiosRequestConfig = {
+      method: 'post',
+      url: requestUrl,
+      data: {
+        name,
+        params
+      }
+    }
+    return await this.httpProxy(requestConfig)
   }
 
   async relay (params) {
     const requestUrl = `${this.relayApiUrl}/relay`
-    const methodName = 'relay'
-    return await this.httpProxy(requestUrl, methodName, params)
+    const name = 'relay'
+    const requestConfig: AxiosRequestConfig = {
+      method: 'post',
+      url: requestUrl,
+      data: {
+        name,
+        params
+      }
+    }
+
+    return await this.httpProxy(requestConfig)
   }
 
-  private async httpProxy (requestUrl: string, methodName: string, params: any) {
+  private async httpProxy (requestConfig: AxiosRequestConfig) {
     const observable = this.httpService
-      .post(requestUrl, { name: methodName, params: { ...params } })
+      .request(
+        requestConfig
+      )
       .pipe(map(res => res.data))
       .pipe(
         catchError(e => {

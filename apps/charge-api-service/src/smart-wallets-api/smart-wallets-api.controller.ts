@@ -37,6 +37,12 @@ export class SmartWalletsAPIController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('historical_txs')
+  getHistoricalTxs (@SmartWalletOwner() user: ISmartWalletUser) {
+    return this.smartWalletsAPIService.getHistoricalTxs(user)
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get('available_upgrades')
   getAvailableUpgrades (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.getAvailableUpgrades()

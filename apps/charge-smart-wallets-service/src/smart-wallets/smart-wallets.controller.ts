@@ -29,6 +29,11 @@ export class SmartWalletsController {
     return this.smartWalletsService.relay(relayDto)
   }
 
+  @MessagePattern('historical_txs')
+  getHistoricalTxs (user: ISmartWalletUser) {
+    return this.smartWalletsService.getHistoricalTxs(user)
+  }
+
   @MessagePattern('get_available_upgrades')
   getAvailableUpgrades () {
     return this.smartWalletsService.getAvailableUpgrades()

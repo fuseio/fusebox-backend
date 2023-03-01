@@ -449,12 +449,9 @@
 							}
 						},
 						"url": {
-							"raw": "https://api.chargeweb3.com/api/v1/smart-wallets/relay?apiKey=pk_F7gisUhUTV5LyiNcftikb0UL",
-							"protocol": "https",
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/relay?apiKey={{publicKey}}",
 							"host": [
-								"api",
-								"chargeweb3",
-								"com"
+								"{{baseUrlAPI}}"
 							],
 							"path": [
 								"api",
@@ -465,7 +462,7 @@
 							"query": [
 								{
 									"key": "apiKey",
-									"value": "pk_F7gisUhUTV5LyiNcftikb0UL",
+									"value": "{{publicKey}}",
 									"description": "(Required) Your Public API key"
 								}
 							]
@@ -504,6 +501,43 @@
 					"body": "{\n    \"connectionUrl\": \"ws://localhost:5007\",\n    \"transactionId\": \"0xc314fe5bcf9cf5dcb600da9673b779972e63622af73f62629700dfb04c1cb853\"\n}"
 				}
 			]
+		},
+		{
+			"name": "Get historical Transactions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{smartWalletsJwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/historical_txs?apiKey={{publicKey}}",
+					"host": [
+						"{{baseUrlAPI}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"smart-wallets",
+						"historical_txs"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicKey}}",
+							"description": "(Required) Your Public API key"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

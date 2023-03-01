@@ -120,6 +120,19 @@ export class SmartWalletsService {
     }
   }
 
+  async getHistoricalTxs (user: ISmartWalletUser) {
+    try {
+      const { smartWalletAddress } = await this.smartWalletModel.findOne({ ownerAddress: user.ownerAddress })
+      const result = await this.relayAPIService.getHistoricalTxs(smartWalletAddress)
+      return {
+        ...result
+      }
+    } catch (error) {
+      this.logger.error(`An error occurred during fetching historical txs. ${error}`)
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
   // TODO
   async getAvailableUpgrades () {
   }

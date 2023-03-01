@@ -1,0 +1,724 @@
+openapi: 3.0.0
+info:
+  title: Wallet API
+  version: 1.0.0
+servers:
+  - url: https://api.fuse.io/api/v0
+tags:
+  - name: Wallet API
+  - name: Login
+  - name: Wallets
+  - name: Wallet Actions
+  - name: Wallet Upgrades
+  - name: Wallet Jobs
+paths:
+  /wallets/login/sms/request:
+    post:
+      tags:
+        - Login
+      summary: Request SMS Verification Code
+      description: >-
+        Wallet login by SMS code. On a successful request, an SMS code will be
+        sent to the provided phone number, which needs to be verified in a
+        subsequent API call.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber: 
+                  type: string
+                  example: '+15554443322'
+              example:
+                phoneNumber: '+15554443322'
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                response: ok
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 400
+                message: >-
+                  Bad Request: PhoneVerification validation failed: phoneNumber:
+                  can't be blank
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                message: Forbidden resource
+                error: Forbidden
+  /wallets/login/sms/verify:
+    post:
+      tags:
+        - Login
+      summary: Request Verify SMS
+      description: >-
+        This is the subsequent call to the "Request SMS Verification Code" to
+        verify the SMS code received to the provided phone number.
+
+
+        Here you also need to provide the user's account address, which will be
+        included in the JWT that is returned when verification is successful.
+
+
+        Most subsequent calls in the Wallet API will require the JWT you receive
+        back from this call.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber: 
+                  type: string
+                  example: '+15554443322'
+                accountAddress:
+                  type: string
+                  example: '0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s'
+                code:
+                  type: string
+                  example: '123456'
+              example:
+                phoneNumber: '+15554443322'
+                accountAddress: 0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s
+                code: '123456'
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                token: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6Iis5NzI1MDU1OTY1NTkiLCJhY2NvdW50QWRkcmVzcyI6IjB4MWVhMWYzNzVCNWRBMTg1ZWI1MWVkY2JFRDIzRjNkNDAxZjgzaDU3cyIsInZlcmlmaWVkQnkiOiJzbXMiLCJpYXQiOjE2NTU5NzA0NjR9.zsKD1AGoAw25iuhPDeYPiCaJbfB4ppG8qTsCBWksKoM
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 400
+                message: 'Bad Request: Wrong SMS code'
+  /wallets/wallets:
+    post:
+      tags:
+        - Wallets
+      summary: Create Wallet
+      description: >-
+        Creates a wallet contract for the user.
+
+
+        On a successful request, the response will include an asynchronous job
+        object which you can check its status using the [Jobs
+        API](#4ae61445-efb3-4691-9095-75455a65db95).
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received following successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  name: createWallet
+                  data:
+                    owner: 0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s
+                    walletAddress: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                    communityAddress: '62b412879db09c6a1cb429cf'
+                    _id: '62b41c213c1c8135d984b8f0'
+                    walletModules:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      NftTransfer: '0x856283dD385f53FEAd47aA981517eEa564379cFC'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    salt: '0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15'
+                  status: pending
+                  communityAddress: '62b412879db09c6a1cb429cf'
+                  _id: '62b41c213c1c8135d984b8f2'
+                  createdAt: '2022-06-23T07:54:09.084Z'
+                  updatedAt: '2022-06-23T07:54:09.084Z'
+                  __v: 0
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 401
+                message: 'Unauthorized: invalid token'
+    delete:
+      tags:
+        - Wallets
+      summary: Delete Wallet
+      description: >-
+        <p>Delete a specific account based on both <code>accountAddress</code>
+        and <code>phoneNumber</code>.</p>
+
+
+        <p><b>NOTE: </b>If there are more than one account addresses associated
+        with the same `phoneNumber`, they must be deleted by separate
+        requests.</p>
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received following successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber: 
+                  type: string
+                  example: '+15554443322'
+                accountAddress:
+                  type: string
+                  example: 0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s
+              example:
+                phoneNumber: '0x1ea1f375B5dA185eb51edcbED23F3d401f83h57s'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                response: ok
+    get:
+      tags:
+        - Wallets
+      summary: Get Wallet
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 62b41c213c1c8135d984b8f0
+                  phoneNumber: '+15554443322'
+                  accountAddress: '0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE'
+                  walletAddress: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                  isContractDeployed: true
+                  firebaseTokens: []
+                  backup: false
+                  walletOwnerOriginalAddress: '0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE'
+                  walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                  walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                  walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                  walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                  walletModulesOriginal:
+                    GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                    LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                    RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                    ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                    TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                    NftTransfer: '0x856283dD385f53FEAd47aA981517eEa564379cFC'
+                    TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                    CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                    WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                    DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                  walletModules:
+                    GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                    LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                    RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                    ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                    TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                    NftTransfer: '0x856283dD385f53FEAd47aA981517eEa564379cFC'
+                    TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                    CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                    WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                    DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                  salt: >-
+                    0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15
+                  networks:
+                    - fuse
+                  pendingNetworks: []
+                  ip: 3.121.234.186
+                  balancesOnForeign: {}
+                  upgradesInstalled: []
+                  version: 1.7.0
+                  paddedVersion: 0001.0007.0000
+                  myReferrals: []
+                  guardians: []
+                  createdAt: '2022-06-23T07:54:09.080Z'
+                  updatedAt: '2022-06-23T07:54:10.379Z'
+                  __v: 0
+  /wallets/wallets/{phoneNumber}:
+    get:
+      tags:
+        - Wallets
+      summary: Get Wallet by Phone Number
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: phoneNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '+15554443322'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 62b41c213c1c8135d984b8f0
+                  phoneNumber: '+15554443322'
+                  accountAddress: '0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE'
+                  walletAddress: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                  isContractDeployed: true
+                  firebaseTokens: []
+                  backup: false
+                  walletOwnerOriginalAddress: '0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE'
+                  walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                  walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                  walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                  walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                  walletModulesOriginal:
+                    GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                    LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                    RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                    ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                    TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                    NftTransfer: '0x856283dD385f53FEAd47aA981517eEa564379cFC'
+                    TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                    CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                    WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                    DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                  walletModules:
+                    GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                    LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                    RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                    ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                    TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                    NftTransfer: '0x856283dD385f53FEAd47aA981517eEa564379cFC'
+                    TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                    CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                    WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                    DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                  salt: >-
+                    0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15
+                  networks:
+                    - fuse
+                  pendingNetworks: []
+                  ip: 3.121.234.186
+                  balancesOnForeign: {}
+                  upgradesInstalled: []
+                  version: 1.7.0
+                  paddedVersion: 0001.0007.0000
+                  myReferrals: []
+                  guardians: []
+                  createdAt: '2022-06-23T07:54:09.080Z'
+                  updatedAt: '2022-06-23T07:54:10.379Z'
+                  __v: 0
+  /wallets/wallets/actions/{walletAddress}:
+    get:
+      tags:
+        - Wallet Actions
+      summary: Get Wallet Actions
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: walletAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Wallet address of user
+          example: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  docs:
+                    - _id: 62b41c213c1c8135d984b8f4
+                      name: createWallet
+                      communityAddress: 62b412879db09c6a1cb429cf
+                      walletAddress: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                      tokenAddress: []
+                      job: 62b41c213c1c8135d984b8f2
+                      data:
+                        value: '0'
+                        txHash: >-
+                          0x751c450f0ca06368fe569390faa4a122e4eaf2317baf14eba83c8c81a44a440f
+                        status: confirmed
+                        blockNumber: 17704134
+                      status: confirmed
+                      createdAt: '2022-06-23T07:54:09.128Z'
+                      updatedAt: '2022-06-23T07:54:58.547Z'
+                      __v: 0
+                  totalDocs: 1
+                  offset: 0
+                  limit: 10
+                  totalPages: 1
+                  page: 1
+                  pagingCounter: 1
+                  hasPrevPage: false
+                  hasNextPage: false
+                  prevPage: null
+                  nextPage: null
+  /wallets/wallets/actions/paginated/{walletAddress}:
+    get:
+      tags:
+        - Wallet Actions
+      summary: Get Paginated Wallet Actions
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: page
+          in: query
+          schema:
+            type: integer
+          description: Page number
+          example: '1'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: walletAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Wallet address of user
+          example: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  docs:
+                    - _id: 62b41c213c1c8135d984b8f4
+                      name: createWallet
+                      communityAddress: 62b412879db09c6a1cb429cf
+                      walletAddress: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                      tokenAddress: []
+                      job: 62b41c213c1c8135d984b8f2
+                      data:
+                        value: '0'
+                        txHash: >-
+                          0x751c450f0ca06368fe569390faa4a122e4eaf2317baf14eba83c8c81a44a440f
+                        status: confirmed
+                        blockNumber: 17704134
+                      status: confirmed
+                      createdAt: '2022-06-23T07:54:09.128Z'
+                      updatedAt: '2022-06-23T07:54:58.547Z'
+                      __v: 0
+                  totalDocs: 1
+                  offset: 0
+                  limit: 10
+                  totalPages: 1
+                  page: 1
+                  pagingCounter: 1
+                  hasPrevPage: false
+                  hasNextPage: false
+                  prevPage: null
+                  nextPage: null
+  /wallets/wallets/upgrades/available/{walletAddress}:
+    get:
+      tags:
+        - Wallet Upgrades
+      summary: Check Available Upgrades for Wallet
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: walletAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: []
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                message: >-
+                  Forbidden: Wallet 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE
+                  is not owner by 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE
+  /wallets/wallets/upgrades/install/{walletAddress}:
+    post:
+      tags:
+        - Wallet Upgrades
+      summary: Upgrade Wallet
+      description: Check the status of a job you created by jobId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                upgradeId: 
+                  type: string
+                relayParams:
+                  type: object
+                  properties:
+                    walletAddress: 
+                      type: string
+                    disableModuleName: 
+                      type: string
+                    disableModuleAddress: 
+                      type: string
+                    enableModuleAddress: 
+                      type: string
+              example:
+                upgradeId: ''
+                relayParams:
+                  walletAddress: ''
+                  disableModuleName: ''
+                  disableModuleAddress: ''
+                  enableModuleAddress: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: walletAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Wallet Address
+          example: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: []
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                message: >-
+                  Forbidden: Wallet 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE
+                  is not owner by 0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE
+  /wallets/jobs/{jobId}:
+    get:
+      tags:
+        - Wallet Jobs
+      summary: Get Job by Id
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: (Required) The JWT received upon successful login
+          example: Bearer {{jwt}}
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: jobId
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) The Id of the created job
+          example: 62b41c213c1c8135d984b8f2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  _id: 62b41c213c1c8135d984b8f2
+                  name: createWallet
+                  data:
+                    owner: '0x1ea1f375B5dA185eb51edcbED23F3d401f8368cE'
+                    walletAddress: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                    communityAddress: 62b412879db09c6a1cb429cf
+                    _id: 62b41c213c1c8135d984b8f0
+                    walletModules:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      NftTransfer: '0x856283dD385f53FEAd47aA981517eEa564379cFC'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    salt: >-
+                      0x0a1e50ccabe90dfb38a59a2416d23528e8c120fd31c1b9ae78c1b95d1253ee15
+                    txHash: >-
+                      0x751c450f0ca06368fe569390faa4a122e4eaf2317baf14eba83c8c81a44a440f
+                    transactionBody:
+                      status: confirmed
+                      blockNumber: 17704134
+                    txFee:
+                      $numberDecimal: '611354000000000'
+                  status: succeeded
+                  communityAddress: 62b412879db09c6a1cb429cf
+                  createdAt: '2022-06-23T07:54:09.084Z'
+                  updatedAt: '2022-06-23T07:54:58.534Z'
+                  __v: 0
+                  checksPassed: true
+                  accountAddress: '0xaeBDf18Dc2f383704d60FB16e359A375A1212cE8'
+                  lastFinishedAt: '2022-06-23T07:54:58.534Z'

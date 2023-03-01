@@ -1,0 +1,1085 @@
+openapi: 3.0.0
+info:
+  title: Admin API
+  description: >-
+    With Fuse Admin API you can create and manage custodial wallets for your
+    users to offer a Web2-like experience, as well as create, mint, and burn
+    tokens for your economies/communities.
+  version: 1.0.0
+servers:
+  - url: https://api.fuse.io/api/v0
+tags:
+  - name: Wallets
+    description: With Admin Wallet API, you can create new wallets for your users.
+  - name: Tokens
+    description: >-
+      With Admin Tokens API, you can create a new ERC20 token, mint or burn it,
+      and transfer it between your users' wallets
+  - name: Jobs API
+    description: >-
+      You can use the Jobs API to check the status of asynchronous Admin API
+      tasks that you have created.
+paths:
+  /admin/wallets/create:
+    post:
+      tags:
+        - Wallets
+      summary: Create a Custodial Wallet
+      description: Creates a custodial wallet owned by project's backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber: 
+                  type: string
+                  example: '+15554443322'
+              example:
+                phoneNumber: '+15554443322'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b179ee8c26160014940e7f
+                  name: createWallet
+                  data:
+                    owner: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    phoneNumber: '+972777777777'
+                    _id: 62b179ee8c26160014940e7d
+                    salt: >-
+                      0xed097dfc637a8e5b3ab141691c2477fbb456deff41d51537a41d8b2be067c966
+                  createdAt: '2022-06-21T07:57:34.503Z'
+                  updatedAt: '2022-06-21T07:57:34.503Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/wallets/{phoneNumber}:
+    get:
+      tags:
+        - Wallets
+      summary: Get Latest Wallet by Phone Number
+      description: Get the last wallet created for the `phoneNumber` if exists
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+        - name: phoneNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Phone Number
+          example: '+15554443322'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Successful response with latest wallet for phone number
+                  value:
+                    data:
+                      myReferrals: []
+                      guardians: []
+                      _id: 630ddffec5c0490013b527cb
+                      isContractDeployed: false
+                      firebaseTokens: []
+                      backup: false
+                      salt: >-
+                        0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb
+                      networks:
+                        - fuse
+                      pendingNetworks: []
+                      balancesOnForeign: {}
+                      upgradesInstalled: []
+                      version: 1.7.0
+                      paddedVersion: 0001.0007.0000
+                      phoneNumber: '+15554443322'
+                      accountAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                      walletOwnerOriginalAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                      walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                      walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                      walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                      walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                      walletModulesOriginal:
+                        GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                        LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                        RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                        ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                        TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                        TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                        CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                        WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                        DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                      walletModules:
+                        GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                        LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                        RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                        ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                        TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                        TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                        CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                        WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                        DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                      appName: chargeApp_62ce87c8131bbffe0f83af65
+                      createdAt: '2022-08-30T10:01:34.903Z'
+                      updatedAt: '2022-08-30T10:01:41.223Z'
+                      __v: 0
+                      walletAddress: '0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8'
+                example-1:
+                  summary: No wallets found
+                  value:
+                    data: null
+  /admin/wallets/all/{phoneNumber}:
+    get:
+      tags:
+        - Wallets
+      summary: Get All Wallets by Phone Number
+      description: Get all the wallets created for the `phoneNumber` is exist
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+        - name: phoneNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) Phone Number
+          example: '+15554443322'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - myReferrals: []
+                    guardians: []
+                    _id: 630ddffec5c0490013b527cb
+                    isContractDeployed: false
+                    firebaseTokens: []
+                    backup: false
+                    salt: >-
+                      0x6336c467b888248f2bf954b019d511a213ba3ff247bd4596c0234ab50171abcb
+                    networks:
+                      - fuse
+                    pendingNetworks: []
+                    balancesOnForeign: {}
+                    upgradesInstalled: []
+                    version: 1.7.0
+                    paddedVersion: 0001.0007.0000
+                    phoneNumber: '+15554443322'
+                    accountAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                    walletOwnerOriginalAddress: '0xCfA94d9fE669C2Fad6e7334860d0fBfE69096F6C'
+                    walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletModulesOriginal:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    walletModules:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    appName: chargeApp_62ce87c8131bbffe0f83af65
+                    createdAt: '2022-08-30T10:01:34.903Z'
+                    updatedAt: '2022-08-30T10:01:41.223Z'
+                    __v: 0
+                    walletAddress: '0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf8'
+                  - myReferrals: []
+                    guardians: []
+                    _id: 62cc053d140b8600131a7890
+                    isContractDeployed: false
+                    firebaseTokens: []
+                    backup: false
+                    salt: >-
+                      0x3b226d1f54680801e178ba8295dfd15992ecc1a2068fb04fba8d905761dac955
+                    networks:
+                      - fuse
+                    pendingNetworks: []
+                    balancesOnForeign: {}
+                    upgradesInstalled: []
+                    version: 1.7.0
+                    paddedVersion: 0001.0007.0000
+                    phoneNumber: '+15554443322'
+                    accountAddress: '0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF'
+                    walletOwnerOriginalAddress: '0xf07bf31F722E9c378D3C65f9aD5EF83AF85018cF'
+                    walletFactoryOriginalAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletFactoryCurrentAddress: '0x2FE1F9bBC9CE8Ea4E00F89FC1a8936DE6934b63D'
+                    walletImplementationOriginalAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletImplementationCurrentAddress: '0x811A7F70d12fbd29Ec494eDc75645E66f5fCcCFc'
+                    walletModulesOriginal:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    walletModules:
+                      GuardianManager: '0x1D91b84b22AC32B7928Dc6BdB2A66C42Fc32F1C3'
+                      LockManager: '0x8221d124f8255f61fC5f1dbb2382364B53355574'
+                      RecoveryManager: '0xcB4606396746Cd62Ac9ea9Cc0fCc5B16BE73E7aF'
+                      ApprovedTransfer: '0x2cbE5fE3d259313F25Ac2Dd10FAB8B851561F366'
+                      TransferManager: '0x2B3113B752645dfAFCe690706b5eCAd9d83977CF'
+                      TokenExchanger: '0xaA556969CB2782052A2eADEA32e660d40f4C4281'
+                      CommunityManager: '0x0D4926876ba1ada6E9b542e018eBeD517FFc8050'
+                      WalletOwnershipManager: '0x0134652f44006eE54f1E86d6a5786a28b9dCcD0b'
+                      DAIPointsManager: '0x602C6FbF83f5B758365DB51f38D311B09657f72c'
+                    appName: chargeApp_62cc04e57b4f4d8db92cde5f
+                    createdAt: '2022-07-11T11:10:53.204Z'
+                    updatedAt: '2022-07-11T11:10:55.542Z'
+                    __v: 0
+                    walletAddress: '0xc3323f754BA8B2899f4Dce24fAeDdC1bC3B478bB'
+  /admin/wallets/exists/{walletAddress}:
+    get:
+      tags:
+        - Wallets
+      summary: Check if Wallet Exists
+      description: Check if the given `walletAddress` exists
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+        - name: walletAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0x11Dd9c1293561044888F4edd96C9A372E6Eb7Cf9'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Wallet exists
+                  value:
+                    data: true
+                example-1:
+                  summary: Wallet does not exist
+                  value:
+                    data: false
+  /admin/tokens/create:
+    post:
+      tags:
+        - Tokens
+      summary: Create an ERC20 Token
+      description: Creates an ERC20 token owned and managed by project's backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: 
+                  type: string
+                  example: My Cool Token
+                symbol: 
+                  type: string
+                  example: MCT
+                initialSupply: 
+                  type: string
+                  example: '0'
+              example:
+                name: My Cool Token
+                symbol: MCT
+                initialSupply: '0'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b175498c261600149409e1
+                  name: createToken
+                  data:
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    name: My Cool Token
+                    symbol: MCT
+                    initialSupplyInWei: '0'
+                    tokenURI: ''
+                    expiryTimestamp: 1939300629
+                    spendabilityIdsArr:
+                      - a
+                      - b
+                      - c
+                  createdAt: '2022-06-21T07:37:45.626Z'
+                  updatedAt: '2022-06-21T07:37:45.626Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/mint:
+    post:
+      tags:
+        - Tokens
+      summary: Mint an ERC20 token
+      description: >-
+        Mints an ERC20 token
+
+
+        *   Token must be owned by project's backend account
+
+        *   toAddress is optional and when provided, then newly minted tokens
+        will be transferred to that address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '1000'
+                toAddress: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+              example:
+                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                amount: '1000'
+                toAddress: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b17a6c8c26160014940e84
+                  name: mint
+                  data:
+                    tokenAddress: 0xaf03155DF641f77917803C634E9e4d808ea42ae4s
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    amount: '1000000000000000000000'
+                    toAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                  createdAt: '2022-06-21T07:59:40.927Z'
+                  updatedAt: '2022-06-21T07:59:40.927Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/burn:
+    post:
+      tags:
+        - Tokens
+      summary: Burn an ERC20 token
+      description: Burns an ERC20 token - Token must be owned by project's backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '10'
+                from: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+              example:
+                tokenAddress: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                amount: '500'
+                from: '0xdBDe387a58bbba6cFA352DFE0d77B3003Dc044bB'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) Your Secret API key
+          example: '{{secretKey}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b196528c261600149439f7
+                  name: adminApprove
+                  data:
+                    tokenAddress: '0xD5BB30E6BBc3409AD934111C419b04c3874d3059'
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    amount: '10000000000000000000'
+                    wallet: '0xe3c7034E90FF8548773FfdCD6897761D2742cD0d'
+                    spender: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    burnFromAddress: '0xe3c7034E90FF8548773FfdCD6897761D2742cD0d'
+                    correlationId: 1001-1
+                  createdAt: '2022-06-21T09:58:42.238Z'
+                  updatedAt: '2022-06-21T09:58:42.238Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 400
+                message: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/transfer:
+    post:
+      tags:
+        - Tokens
+      summary: Transfer an ERC20 token
+      description: >-
+        Transfers an ERC20 token - The "from" address must be owned by project's
+        backend account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tokenAddress: 
+                  type: string
+                  example: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: 
+                  type: string
+                  example: '10'
+                from: 
+                  type: string
+                  example: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                to: 
+                  type: string
+                  example: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+              example:
+                tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                amount: '10'
+                from: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) You Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                job:
+                  status: pending
+                  _id: 62b1806f8c26160014941777
+                  name: adminTransfer
+                  data:
+                    tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                    bridgeType: home
+                    accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                    amount: '10000000000000000000'
+                    wallet: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                    to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+                  createdAt: '2022-06-21T08:25:19.066Z'
+                  updatedAt: '2022-06-21T08:25:19.066Z'
+                  __v: 0
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: ''
+  /admin/tokens/owner/{ownerAddress}:
+    get:
+      tags:
+        - Tokens
+      summary: Get Tokens by Owner
+      description: Get a list of tokens that belong to an `ownerAddress`
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          example: '{{secretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+        - name: ownerAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0xFDf589954F97b376F0794990d47948371f6824B1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                object: list
+                data:
+                  - decimals: 18
+                    spendabilityIds:
+                      - a
+                      - b
+                      - c
+                    _id: 62f2cddd78f2e5001415f396
+                    address: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                    name: My Cool Token
+                    symbol: MCT
+                    tokenURI: ''
+                    totalSupply: '0'
+                    owner: '0xFDf589954F97b376F0794990d47948371f6824B1'
+                    blockNumber: 18521317
+                    tokenType: expirable
+                    networkType: home
+                    expiryTimestamp: 1939300629
+                    createdAt: '2022-08-09T21:13:01.405Z'
+                    updatedAt: '2022-08-09T21:13:01.405Z'
+  /admin/tokens/{tokenAddress}:
+    get:
+      tags:
+        - Tokens
+      summary: Get Tokens by Address
+      description: Get a token by `tokenAddress`
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          example: '{{secretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          example: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  decimals: 18
+                  spendabilityIds:
+                    - a
+                    - b
+                    - c
+                  _id: 62f2cddd78f2e5001415f396
+                  address: '0x6F353A3A737bF3f6442BEc6246411E513285882E'
+                  name: My Cool Token
+                  symbol: MCT
+                  tokenURI: ''
+                  totalSupply: '0'
+                  owner: '0xFDf589954F97b376F0794990d47948371f6824B1'
+                  blockNumber: 18521317
+                  tokenType: expirable
+                  networkType: home
+                  expiryTimestamp: 1939300629
+                  createdAt: '2022-08-09T21:13:01.405Z'
+                  updatedAt: '2022-08-09T21:13:01.405Z'
+  /jobs/{jobId}:
+    get:
+      tags:
+        - Jobs API
+      summary: Get Job by Id
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: jobId
+          in: path
+          schema:
+            type: string
+          required: true
+          description: (Required) The Id of the created job
+          example: 62f2ce42398a1f0013150fcc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Suuccessful Token Creation
+                  value:
+                    data:
+                      status: succeeded
+                      _id: 62b175498c261600149409e1
+                      name: createToken
+                      data:
+                        bridgeType: home
+                        accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                        name: FuseDemo
+                        symbol: CDM
+                        initialSupplyInWei: '0'
+                        tokenURI: ''
+                        expiryTimestamp: 1939300629
+                        spendabilityIdsArr:
+                          - a
+                          - b
+                          - c
+                        txHash: >-
+                          0xecd8e61c372d15b0aa22fda14b101360947fa3f453f216f9db9506d39baaedfd
+                        transactionBody:
+                          status: confirmed
+                          blockNumber: 17670273
+                        txFee:
+                          $numberDecimal: '1530530000000000'
+                        blockNumber: 17670273
+                        tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                      createdAt: '2022-06-21T07:37:45.626Z'
+                      updatedAt: '2022-06-21T07:37:50.885Z'
+                      __v: 0
+                      accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                      lastFinishedAt: '2022-06-21T07:37:50.883Z'
+                example-1:
+                  summary: Successful Token Mint
+                  value:
+                    data:
+                      status: succeeded
+                      _id: 62b17abc8c26160014940e87
+                      name: mint
+                      data:
+                        tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                        bridgeType: home
+                        accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                        amount: '1000000000000000000000'
+                        toAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                        txHash: >-
+                          0xc91c941fcfe58a3199b8836e129f1abc43a79c0235cfdb01f79ec01f3445a7b2
+                        transactionBody:
+                          status: confirmed
+                          blockNumber: 17670548
+                        txFee:
+                          $numberDecimal: '70821000000000'
+                      createdAt: '2022-06-21T08:01:00.524Z'
+                      updatedAt: '2022-06-21T08:01:05.699Z'
+                      __v: 0
+                      accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                      lastFinishedAt: '2022-06-21T08:01:05.698Z'
+                example-2:
+                  summary: Successful Token Transfer
+                  value:
+                    data:
+                      status: succeeded
+                      _id: 62b1806f8c26160014941777
+                      name: adminTransfer
+                      data:
+                        tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                        bridgeType: home
+                        accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                        amount: '10000000000000000000'
+                        wallet: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                        to: '0x3720D50beba9FDcbAf393bd59Bed91bEdd430F9F'
+                        txHash: >-
+                          0x307326fe73ebb225ddfec295e6eabb27a8d40d099fc4c9447fe0f4cd2ef72448
+                        transactionBody:
+                          status: confirmed
+                          blockNumber: 17670834
+                        txFee:
+                          $numberDecimal: '111490000000000'
+                      createdAt: '2022-06-21T08:25:19.066Z'
+                      updatedAt: '2022-06-21T08:25:21.300Z'
+                      __v: 0
+                      accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                      lastFinishedAt: '2022-06-21T08:25:21.300Z'
+                example-3:
+                  summary: Successful Token Burn
+                  value:
+                    data:
+                      status: succeeded
+                      _id: 62b197348c26160014943a14
+                      name: adminApprove
+                      data:
+                        tokenAddress: '0xaf03155DF641f77917803C634E9e4d808ea42ae4'
+                        bridgeType: home
+                        accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                        amount: '10000000000000000000'
+                        wallet: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                        spender: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                        burnFromAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                        correlationId: 1003-1
+                        approveToken:
+                          txHash: >-
+                            0x2b01070ec0e6d12f4c2512b8b82675dd43b3160f32a47d232c098beac7a1275c
+                          transactionBody:
+                            status: confirmed
+                            blockNumber: 17671980
+                          txFee:
+                            $numberDecimal: '105352000000000'
+                        txFee:
+                          $numberDecimal: '132193000000000'
+                        burnFrom:
+                          txHash: >-
+                            0x4b26fba71aabe8f5f13a5e9187c78ca43060d4cc6ab1cf4553b866c4e0cdcd58
+                          transactionBody:
+                            status: confirmed
+                            blockNumber: 17671981
+                          txFee:
+                            $numberDecimal: '26841000000000'
+                      createdAt: '2022-06-21T10:02:28.198Z'
+                      updatedAt: '2022-06-21T10:02:35.493Z'
+                      __v: 0
+                      accountAddress: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                      lastFinishedAt: '2022-06-21T10:02:35.492Z'
+                example-4:
+                  summary: Successful Wallet Creation
+                  value:
+                    data:
+                      status: succeeded
+                      _id: 62b179ee8c26160014940e7f
+                      name: createWallet
+                      data:
+                        owner: '0xbC3bA1ae0a4Cf6269F79d0D30767C60cB58D7Ff2'
+                        phoneNumber: '+972777777777'
+                        _id: 62b179ee8c26160014940e7d
+                        salt: >-
+                          0xed097dfc637a8e5b3ab141691c2477fbb456deff41d51537a41d8b2be067c966
+                        txHash: >-
+                          0x9dfe4e7ee54d75b3eaa058b0735f0ff10dcf40989f878c20be1a9f395f3e6eee
+                        transactionBody:
+                          status: confirmed
+                          blockNumber: 17670507
+                        txFee:
+                          $numberDecimal: '554842000000000'
+                        walletAddress: '0xBE06B7DF117dc1D6cD63aa133d6f4dfa614ed87C'
+                      createdAt: '2022-06-21T07:57:34.503Z'
+                      updatedAt: '2022-06-21T07:58:40.875Z'
+                      __v: 0
+                      accountAddress: '0xaeBDf18Dc2f383704d60FB16e359A375A1212cE8'
+                      lastFinishedAt: '2022-06-21T07:58:40.873Z'
+  /jobs/external:
+    get:
+      tags:
+        - Jobs API
+      summary: Get Job by External Id
+      description: Check the status of a job you created by jobId
+      parameters:
+        - name: API-SECRET
+          in: header
+          schema:
+            type: string
+          description: (Required) You Secret API key
+          example: '{{secretKey}}'
+        - name: externalId
+          in: query
+          schema:
+            type: string
+          example: '{{externalId}}'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

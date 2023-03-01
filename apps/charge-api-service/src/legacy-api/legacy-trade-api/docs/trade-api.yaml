@@ -1,0 +1,3288 @@
+openapi: 3.0.0
+info:
+  title: Trade API
+  version: 1.0.0
+servers:
+  - url: https://api.fuse.io/api/v0
+tags:
+  - name: Trade API
+  - name: Price
+  - name: Price Change
+  - name: Stats
+  - name: Swap
+  - name: Tokens
+paths:
+  /trade/price/{tokenAddress}:
+    get:
+      tags:
+        - Price
+      summary: Get Latest Price for a Token
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Token Contract Address
+          example: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:10:49 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '43'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"2b-09n8BxPVYhIJI+Oxgz81tw6CkF0"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  price: '0.00017950420850392727'
+  /trade/pricechange/{tokenAddress}:
+    get:
+      tags:
+        - Price Change
+      summary: Get Price Change for Token Over Last 24 hours
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Token Contract Address
+          example: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:10:49 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '43'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"2b-09n8BxPVYhIJI+Oxgz81tw6CkF0"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  priceChange: '2.4994526629074656'
+                  currentPrice: '0.00017950420850392727'
+                  previousPrice: '0.0001751269922330876'
+    post:
+      tags:
+        - Price Change
+      summary: Get Price Change for Token Over Time Duration
+      description: >-
+        The duration object to calculate the price change over the timeFrame
+        duration should be passed as an object according to
+        [https://day.js.org/docs/en/durations/creating](https://day.js.org/docs/en/durations/creating)
+        for example duration of {days: 1} means a duration of one day
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                duration:
+                  type: object
+                  properties:
+                    days:
+                      type: string
+                      example: '1'
+              example:
+                duration:
+                  days: '1'
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Token Contract Address
+          example: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:10:49 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '43'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"2b-09n8BxPVYhIJI+Oxgz81tw6CkF0"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  priceChange: '2.4968423346546302'
+                  currentPrice: '0.00017949963711457067'
+                  previousPrice: '0.0001751269922330876'
+  /trade/pricechange/interval/{timeFrame}/{tokenAddress}:
+    get:
+      tags:
+        - Price Change
+      summary: Get Price Change for Token Over An Interval
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: timeFrame
+          in: path
+          schema:
+            type: string
+          required: true
+          description: >-
+            How far to look back. Allowed values:
+            "ALL","MONTH","WEEK","DAY","HOUR"
+          example: ALL
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Token Contract Address
+          example: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:10:49 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '43'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"2b-09n8BxPVYhIJI+Oxgz81tw6CkF0"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - timestamp: 1645617935
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0
+                  - timestamp: 1645825240
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0
+                  - timestamp: 1646032545
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0
+                  - timestamp: 1646239850
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0
+                  - timestamp: 1646447155
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0
+                  - timestamp: 1646654460
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0
+                  - timestamp: 1646861765
+                    priceChange: 0
+                    previousPrice: 0
+                    currentPrice: 0.0001853472349834924
+                  - timestamp: 1647069070
+                    priceChange: 0.0345863677317121
+                    previousPrice: 0.0001853472349834924
+                    currentPrice: 0.00018541133985976435
+                  - timestamp: 1647276375
+                    priceChange: 1.3096122421198362
+                    previousPrice: 0.00018541133985976435
+                    currentPrice: 0.00018783950946484623
+                  - timestamp: 1647483680
+                    priceChange: 2.2564341170781885
+                    previousPrice: 0.00018783950946484623
+                    currentPrice: 0.00019207798424176334
+                  - timestamp: 1647690985
+                    priceChange: 0.9812306637518144
+                    previousPrice: 0.00019207798424176334
+                    currentPrice: 0.0001939627123214599
+                  - timestamp: 1647898290
+                    priceChange: -0.7748385794799921
+                    previousPrice: 0.0001939627123214599
+                    currentPrice: 0.00019245981439658743
+                  - timestamp: 1648105595
+                    priceChange: 2.8679729565275545
+                    previousPrice: 0.00019245981439658743
+                    currentPrice: 0.0001979795098256647
+                  - timestamp: 1648312900
+                    priceChange: 2.589625954292046
+                    previousPrice: 0.0001979795098256647
+                    currentPrice: 0.00020310643859629027
+                  - timestamp: 1648520205
+                    priceChange: 1.5523288949750005
+                    previousPrice: 0.00020310643859629027
+                    currentPrice: 0.00020625931853017514
+                  - timestamp: 1648727510
+                    priceChange: -5.999273085103033
+                    previousPrice: 0.00020625931853017514
+                    currentPrice: 0.0001938852587480774
+                  - timestamp: 1648934815
+                    priceChange: 1.1474588054906194
+                    previousPrice: 0.0001938852587480774
+                    currentPrice: 0.0001961100122221305
+                  - timestamp: 1649142120
+                    priceChange: -4.000373408143484
+                    previousPrice: 0.0001961100122221305
+                    currentPrice: 0.00018826487944248945
+                  - timestamp: 1649349425
+                    priceChange: 2.0641412071300205
+                    previousPrice: 0.00018826487944248945
+                    currentPrice: 0.00019215093239761553
+                  - timestamp: 1649556730
+                    priceChange: -1.0428979452122222
+                    previousPrice: 0.00019215093239761553
+                    currentPrice: 0.00019014699427193467
+                  - timestamp: 1649764035
+                    priceChange: -1.8223057319757767
+                    previousPrice: 0.00019014699427193467
+                    currentPrice: 0.00018668193469613756
+                  - timestamp: 1649971340
+                    priceChange: 0.8804533899385772
+                    previousPrice: 0.00018668193469613756
+                    currentPrice: 0.00018832558211857262
+                  - timestamp: 1650178645
+                    priceChange: -0.630813565045285
+                    previousPrice: 0.00018832558211857262
+                    currentPrice: 0.00018713759880011817
+                  - timestamp: 1650385950
+                    priceChange: -0.6394837945869726
+                    previousPrice: 0.00018713759880011817
+                    currentPrice: 0.00018594088418221223
+                  - timestamp: 1650593255
+                    priceChange: 0.4491375743373342
+                    previousPrice: 0.00018594088418221223
+                    currentPrice: 0.0001867760145591296
+                  - timestamp: 1650800560
+                    priceChange: -0.49486458052499466
+                    previousPrice: 0.0001867760145591296
+                    currentPrice: 0.00018585172621816027
+                  - timestamp: 1651007865
+                    priceChange: -1.0066819869379424
+                    previousPrice: 0.00018585172621816027
+                    currentPrice: 0.00018398079036790883
+                  - timestamp: 1651215170
+                    priceChange: -4.792341271107479
+                    previousPrice: 0.00018398079036790883
+                    currentPrice: 0.0001751638030201978
+                  - timestamp: 1651422475
+                    priceChange: 4.622660227950012
+                    previousPrice: 0.0001751638030201978
+                    currentPrice: 0.00018326103047617718
+                  - timestamp: 1651629780
+                    priceChange: 0.9483240502238224
+                    previousPrice: 0.00018326103047617718
+                    currentPrice: 0.00018499893890287078
+                  - timestamp: 1651837085
+                    priceChange: -2.589342742914536
+                    previousPrice: 0.00018499893890287078
+                    currentPrice: 0.0001802086823039204
+                  - timestamp: 1652044390
+                    priceChange: -4.646915830369434
+                    previousPrice: 0.0001802086823039204
+                    currentPrice: 0.00017183453651823936
+                  - timestamp: 1652251695
+                    priceChange: -6.31286028126625
+                    previousPrice: 0.00017183453651823936
+                    currentPrice: 0.00016098686231288148
+                  - timestamp: 1652459000
+                    priceChange: -1.1876837717228952
+                    previousPrice: 0.00016098686231288148
+                    currentPrice: 0.0001590748474745855
+                  - timestamp: 1652666305
+                    priceChange: 0.5125208297792848
+                    previousPrice: 0.0001590748474745855
+                    currentPrice: 0.00015989013920283238
+                  - timestamp: 1652873610
+                    priceChange: 8.98604957182565
+                    previousPrice: 0.00015989013920283238
+                    currentPrice: 0.00017425794637205994
+                  - timestamp: 1653080915
+                    priceChange: -0.5179086347246984
+                    previousPrice: 0.00017425794637205994
+                    currentPrice: 0.0001733554494211051
+                  - timestamp: 1653288220
+                    priceChange: -3.666058750900371
+                    previousPrice: 0.0001733554494211051
+                    currentPrice: 0.00016700013679744001
+                  - timestamp: 1653495525
+                    priceChange: -4.156053245811
+                    previousPrice: 0.00016700013679744001
+                    currentPrice: 0.0001600595221915612
+                  - timestamp: 1653702830
+                    priceChange: 7.701615109455215
+                    previousPrice: 0.0001600595221915612
+                    currentPrice: 0.0001723866905367883
+                  - timestamp: 1653910135
+                    priceChange: -8.066858935670497
+                    previousPrice: 0.0001723866905367883
+                    currentPrice: 0.00015848049938731475
+                  - timestamp: 1654117440
+                    priceChange: 0.040117790665756985
+                    previousPrice: 0.00015848049938731475
+                    currentPrice: 0.000158544078262305
+                  - timestamp: 1654324745
+                    priceChange: 1.6440578425627783
+                    previousPrice: 0.000158544078262305
+                    currentPrice: 0.0001611506346148953
+                  - timestamp: 1654532050
+                    priceChange: 0.981548770874607
+                    previousPrice: 0.0001611506346148953
+                    currentPrice: 0.00016273240668821442
+                  - timestamp: 1654739355
+                    priceChange: -2.9858685896369854
+                    previousPrice: 0.00016273240668821442
+                    currentPrice: 0.0001578734308717507
+                  - timestamp: 1654946660
+                    priceChange: -0.2075126908407608
+                    previousPrice: 0.0001578734308717507
+                    currentPrice: 0.0001575458234672261
+                  - timestamp: 1655153965
+                    priceChange: -4.259167859143817
+                    previousPrice: 0.0001575458234672261
+                    currentPrice: 0.00015083568239068656
+                  - timestamp: 1655361270
+                    priceChange: 0.4349373562743922
+                    previousPrice: 0.00015083568239068656
+                    currentPrice: 0.00015149172311999505
+                  - timestamp: 1655568575
+                    priceChange: 14.289732960968507
+                    previousPrice: 0.00015149172311999505
+                    currentPrice: 0.00017313948581181214
+  /trade/stats/{tokenAddress}:
+    get:
+      tags:
+        - Stats
+      summary: Get Historical Statistics of a Token
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: The number of days to return statistics for
+          example: '7'
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+        - name: tokenAddress
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Token Contract Address
+          example: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:28:41 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '1483'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"5cb-NLt7z3XI/RLOgP3ciDRklSypXGo"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.0001795094848417514280072653468387872'
+                    volume: '320.7919669424305492684989264426822'
+                    timestamp: 1655942400
+                    date: '2022-06-23T00:00:00.000Z'
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.0001753598431859238489904587561349331'
+                    volume: '496.9871762170702366221362019799081'
+                    timestamp: 1655856000
+                    date: '2022-06-22T00:00:00.000Z'
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.0001778122543708053493271907349306764'
+                    volume: '161.8778584702202270894194998822792'
+                    timestamp: 1655769600
+                    date: '2022-06-21T00:00:00.000Z'
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.000173030460513747767088557092474019'
+                    volume: '573.096167117501311685682734446078'
+                    timestamp: 1655683200
+                    date: '2022-06-20T00:00:00.000Z'
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.0001757060636331320784818004633954431'
+                    volume: '589.9612882866723104586597964413249'
+                    timestamp: 1655596800
+                    date: '2022-06-19T00:00:00.000Z'
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.0001628979126961749196076594100010947'
+                    volume: '5201.482419631345593874563463477475'
+                    timestamp: 1655510400
+                    date: '2022-06-18T00:00:00.000Z'
+                  - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                    price: '0.000148588358072555916509684273664614'
+                    volume: '723.035469254742395747411420882088'
+                    timestamp: 1655424000
+                    date: '2022-06-17T00:00:00.000Z'
+  /trade/swap/quote:
+    post:
+      tags:
+        - Swap
+      summary: Get a Quote for a Token Pair
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currencyIn:
+                  type: string
+                  example: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                currencyOut: 
+                  type: string
+                  example: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                amountIn: 
+                  type: string
+                  example: '1000'
+              example:
+                currencyIn: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                currencyOut: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                amountIn: '1000'
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:36:07 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '3630'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"e2e-HaQC/0hWJXL2mYdt9hyE4vBnB9M"
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Successful Response
+                  value:
+                    data:
+                      info:
+                        inputAmount: '1000'
+                        outputAmount: '2.0988'
+                        route:
+                          - G$
+                          - WFUSE
+                        inputToken: G$
+                        outputToken: WFUSE
+                        executionPrice: '0.0020988'
+                        nextMidPrice: '0.00210509'
+                        priceImpact: '0.30144'
+                      trade:
+                        route:
+                          pairs:
+                            - liquidityToken:
+                                decimals: 18
+                                symbol: VLP
+                                name: Voltage LP Token
+                                chainId: 122
+                                address: '0xa02ed9Fe9e3351FE2cd1F588B23973C1542dCbCC'
+                              tokenAmounts:
+                                - numerator:
+                                    - 935045727
+                                    - 778394003
+                                    - 126296
+                                  denominator:
+                                    - 660865024
+                                    - 931322574
+                                  currency:
+                                    decimals: 18
+                                    symbol: WFUSE
+                                    name: Wrapped Fuse
+                                    chainId: 122
+                                    address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                                  token:
+                                    decimals: 18
+                                    symbol: WFUSE
+                                    name: Wrapped Fuse
+                                    chainId: 122
+                                    address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                                - numerator:
+                                    - 474411765
+                                    - 6
+                                  denominator:
+                                    - 100
+                                  currency:
+                                    decimals: 2
+                                    symbol: G$
+                                    name: GoodDollar
+                                    chainId: 122
+                                    address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                                  token:
+                                    decimals: 2
+                                    symbol: G$
+                                    name: GoodDollar
+                                    chainId: 122
+                                    address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                          path:
+                            - decimals: 2
+                              symbol: G$
+                              name: GoodDollar
+                              chainId: 122
+                              address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                            - decimals: 18
+                              symbol: WFUSE
+                              name: Wrapped Fuse
+                              chainId: 122
+                              address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                          midPrice:
+                            numerator:
+                              - 935045727
+                              - 778394003
+                              - 126296
+                            denominator:
+                              - 474411765
+                              - 6
+                            baseCurrency:
+                              decimals: 2
+                              symbol: G$
+                              name: GoodDollar
+                              chainId: 122
+                              address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                            quoteCurrency:
+                              decimals: 18
+                              symbol: WFUSE
+                              name: Wrapped Fuse
+                              chainId: 122
+                              address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                            scalar:
+                              numerator:
+                                - 100
+                              denominator:
+                                - 660865024
+                                - 931322574
+                          input:
+                            decimals: 2
+                            symbol: G$
+                            name: GoodDollar
+                            chainId: 122
+                            address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                          output:
+                            decimals: 18
+                            symbol: WFUSE
+                            name: Wrapped Fuse
+                            chainId: 122
+                            address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                        tradeType: 0
+                        inputAmount:
+                          numerator:
+                            - 100000
+                          denominator:
+                            - 100
+                          currency:
+                            decimals: 2
+                            symbol: G$
+                            name: GoodDollar
+                            chainId: 122
+                            address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                          token:
+                            decimals: 2
+                            symbol: G$
+                            name: GoodDollar
+                            chainId: 122
+                            address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                        outputAmount:
+                          numerator:
+                            - 847411068
+                            - 880920317
+                            - 1
+                          denominator:
+                            - 660865024
+                            - 931322574
+                          currency:
+                            decimals: 18
+                            symbol: WFUSE
+                            name: Wrapped Fuse
+                            chainId: 122
+                            address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                          token:
+                            decimals: 18
+                            symbol: WFUSE
+                            name: Wrapped Fuse
+                            chainId: 122
+                            address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                        executionPrice:
+                          numerator:
+                            - 847411068
+                            - 880920317
+                            - 1
+                          denominator:
+                            - 100000
+                          baseCurrency:
+                            decimals: 2
+                            symbol: G$
+                            name: GoodDollar
+                            chainId: 122
+                            address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                          quoteCurrency:
+                            decimals: 18
+                            symbol: WFUSE
+                            name: Wrapped Fuse
+                            chainId: 122
+                            address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                          scalar:
+                            numerator:
+                              - 100
+                            denominator:
+                              - 660865024
+                              - 931322574
+                        nextMidPrice:
+                          numerator:
+                            - 87634659
+                            - 971215510
+                            - 126294
+                          denominator:
+                            - 474511765
+                            - 6
+                          baseCurrency:
+                            decimals: 2
+                            symbol: G$
+                            name: GoodDollar
+                            chainId: 122
+                            address: '0x495d133B938596C9984d462F007B676bDc57eCEC'
+                          quoteCurrency:
+                            decimals: 18
+                            symbol: WFUSE
+                            name: Wrapped Fuse
+                            chainId: 122
+                            address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                          scalar:
+                            numerator:
+                              - 100
+                            denominator:
+                              - 660865024
+                              - 931322574
+                        priceImpact:
+                          numerator:
+                            - 692048708
+                            - 219972572
+                            - 411550067
+                            - 245243790
+                          denominator:
+                            - 413848800
+                            - 1032735213
+                            - 633750127
+                            - 827571239
+                            - 75
+                example-1:
+                  summary: Error Response
+                  value:
+                    error:
+                      code: 1
+                      message: Pool is out of liquidity
+  /trade/swap/swapcallparameters:
+    post:
+      tags:
+        - Swap
+      summary: Create Swap Parameters for a Trade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currencyIn: 
+                  type: string
+                  example: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                currencyOut: 
+                  type: string
+                  example: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                amountIn:  
+                  type: string
+                  example: '1'
+                recipient:  
+                  type: string
+                  example: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                slippageTolerance:  
+                  type: string
+                  example: '50'
+                deadline:  
+                  type: string
+                  example: '1200'
+              example:
+                currencyIn: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                currencyOut: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                amountIn: '1'
+                recipient: '0xe5d28349fb6Cb9C16D3163497e49C5E9253f9976'
+                slippageTolerance: '50'
+                deadline: '1200'
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 11:36:07 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '3630'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"e2e-HaQC/0hWJXL2mYdt9hyE4vBnB9M"
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Successful Response
+                  value:
+                    data:
+                      info:
+                        inputAmount: '1'
+                        outputAmount: '965.616'
+                        route:
+                          - WETH
+                          - USDC
+                        inputToken: WETH
+                        outputToken: USDC
+                        executionPrice: '965.617'
+                        nextMidPrice: '722.082'
+                        priceImpact: '25.612'
+                      trade:
+                        route:
+                          pairs:
+                            - liquidityToken:
+                                decimals: 18
+                                symbol: UNI-V2
+                                name: Uniswap V2
+                                chainId: 122
+                                address: '0x20a680D69a5aE2677B8CF43aBF63aAD6D8d5119A'
+                              tokenAmounts:
+                                - numerator:
+                                    - -491531807
+                                  denominator:
+                                    - 1000000
+                                  currency:
+                                    decimals: 6
+                                    symbol: USDC
+                                    name: USD Coin on Fuse
+                                    chainId: 122
+                                    address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                                    tokenInfo:
+                                      name: USD Coin on Fuse
+                                      address: >-
+                                        0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5
+                                      symbol: USDC
+                                      decimals: 6
+                                      chainId: 122
+                                      logoURI: >-
+                                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                                    tags: []
+                                  token:
+                                    decimals: 6
+                                    symbol: USDC
+                                    name: USD Coin on Fuse
+                                    chainId: 122
+                                    address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                                    tokenInfo:
+                                      name: USD Coin on Fuse
+                                      address: >-
+                                        0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5
+                                      symbol: USDC
+                                      decimals: 6
+                                      chainId: 122
+                                      logoURI: >-
+                                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                                    tags: []
+                                - numerator:
+                                    - -2070596893
+                                    - 682205361
+                                  denominator:
+                                    - -1486618624
+                                    - 232830643
+                                  currency:
+                                    decimals: 18
+                                    symbol: WETH
+                                    name: Wrapped Ether on Fuse
+                                    chainId: 122
+                                    address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                                    tokenInfo:
+                                      name: Wrapped Ether on Fuse
+                                      address: >-
+                                        0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670
+                                      symbol: WETH
+                                      decimals: 18
+                                      chainId: 122
+                                      logoURI: >-
+                                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                                    tags: []
+                                  token:
+                                    decimals: 18
+                                    symbol: WETH
+                                    name: Wrapped Ether on Fuse
+                                    chainId: 122
+                                    address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                                    tokenInfo:
+                                      name: Wrapped Ether on Fuse
+                                      address: >-
+                                        0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670
+                                      symbol: WETH
+                                      decimals: 18
+                                      chainId: 122
+                                      logoURI: >-
+                                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                                    tags: []
+                          path:
+                            - decimals: 18
+                              symbol: WETH
+                              name: Wrapped Ether on Fuse
+                              chainId: 122
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              tokenInfo:
+                                name: Wrapped Ether on Fuse
+                                address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                                symbol: WETH
+                                decimals: 18
+                                chainId: 122
+                                logoURI: >-
+                                  https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                              tags: []
+                            - decimals: 6
+                              symbol: USDC
+                              name: USD Coin on Fuse
+                              chainId: 122
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              tokenInfo:
+                                name: USD Coin on Fuse
+                                address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                                symbol: USDC
+                                decimals: 6
+                                chainId: 122
+                                logoURI: >-
+                                  https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                              tags: []
+                          midPrice:
+                            numerator:
+                              - -491531807
+                            denominator:
+                              - -2070596893
+                              - 682205361
+                            baseCurrency:
+                              decimals: 18
+                              symbol: WETH
+                              name: Wrapped Ether on Fuse
+                              chainId: 122
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              tokenInfo:
+                                name: Wrapped Ether on Fuse
+                                address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                                symbol: WETH
+                                decimals: 18
+                                chainId: 122
+                                logoURI: >-
+                                  https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                              tags: []
+                            quoteCurrency:
+                              decimals: 6
+                              symbol: USDC
+                              name: USD Coin on Fuse
+                              chainId: 122
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              tokenInfo:
+                                name: USD Coin on Fuse
+                                address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                                symbol: USDC
+                                decimals: 6
+                                chainId: 122
+                                logoURI: >-
+                                  https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                              tags: []
+                            scalar:
+                              numerator:
+                                - -1486618624
+                                - 232830643
+                              denominator:
+                                - 1000000
+                          input:
+                            decimals: 18
+                            symbol: WETH
+                            name: Wrapped Ether on Fuse
+                            chainId: 122
+                            address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                            tokenInfo:
+                              name: Wrapped Ether on Fuse
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              symbol: WETH
+                              decimals: 18
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                            tags: []
+                          output:
+                            decimals: 6
+                            symbol: USDC
+                            name: USD Coin on Fuse
+                            chainId: 122
+                            address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                            tokenInfo:
+                              name: USD Coin on Fuse
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              symbol: USDC
+                              decimals: 6
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                            tags: []
+                        tradeType: 0
+                        inputAmount:
+                          numerator:
+                            - -1486618624
+                            - 232830643
+                          denominator:
+                            - -1486618624
+                            - 232830643
+                          currency:
+                            decimals: 18
+                            symbol: WETH
+                            name: Wrapped Ether on Fuse
+                            chainId: 122
+                            address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                            tokenInfo:
+                              name: Wrapped Ether on Fuse
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              symbol: WETH
+                              decimals: 18
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                            tags: []
+                          token:
+                            decimals: 18
+                            symbol: WETH
+                            name: Wrapped Ether on Fuse
+                            chainId: 122
+                            address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                            tokenInfo:
+                              name: Wrapped Ether on Fuse
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              symbol: WETH
+                              decimals: 18
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                            tags: []
+                        outputAmount:
+                          numerator:
+                            - 965616800
+                          denominator:
+                            - 1000000
+                          currency:
+                            decimals: 6
+                            symbol: USDC
+                            name: USD Coin on Fuse
+                            chainId: 122
+                            address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                            tokenInfo:
+                              name: USD Coin on Fuse
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              symbol: USDC
+                              decimals: 6
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                            tags: []
+                          token:
+                            decimals: 6
+                            symbol: USDC
+                            name: USD Coin on Fuse
+                            chainId: 122
+                            address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                            tokenInfo:
+                              name: USD Coin on Fuse
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              symbol: USDC
+                              decimals: 6
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                            tags: []
+                        executionPrice:
+                          numerator:
+                            - 965616800
+                          denominator:
+                            - -1486618624
+                            - 232830643
+                          baseCurrency:
+                            decimals: 18
+                            symbol: WETH
+                            name: Wrapped Ether on Fuse
+                            chainId: 122
+                            address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                            tokenInfo:
+                              name: Wrapped Ether on Fuse
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              symbol: WETH
+                              decimals: 18
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                            tags: []
+                          quoteCurrency:
+                            decimals: 6
+                            symbol: USDC
+                            name: USD Coin on Fuse
+                            chainId: 122
+                            address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                            tokenInfo:
+                              name: USD Coin on Fuse
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              symbol: USDC
+                              decimals: 6
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                            tags: []
+                          scalar:
+                            numerator:
+                              - -1486618624
+                              - 232830643
+                            denominator:
+                              - 1000000
+                        nextMidPrice:
+                          numerator:
+                            - -1457148607
+                          denominator:
+                            - 737751779
+                            - 915036005
+                          baseCurrency:
+                            decimals: 18
+                            symbol: WETH
+                            name: Wrapped Ether on Fuse
+                            chainId: 122
+                            address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                            tokenInfo:
+                              name: Wrapped Ether on Fuse
+                              address: '0xd8Bf72f3e163B9CF0C73dFdCC316417A5ac20670'
+                              symbol: WETH
+                              decimals: 18
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                            tags: []
+                          quoteCurrency:
+                            decimals: 6
+                            symbol: USDC
+                            name: USD Coin on Fuse
+                            chainId: 122
+                            address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                            tokenInfo:
+                              name: USD Coin on Fuse
+                              address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+                              symbol: USDC
+                              decimals: 6
+                              chainId: 122
+                              logoURI: >-
+                                https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                            tags: []
+                          scalar:
+                            numerator:
+                              - -1486618624
+                              - 232830643
+                            denominator:
+                              - 1000000
+                        priceImpact:
+                          numerator:
+                            - 856059488
+                            - 1380480455
+                            - -336661329
+                            - 549156708
+                            - 8387887
+                          denominator:
+                            - 1479278592
+                            - 1664736159
+                            - 977444823
+                            - 944423004
+                            - 32750022
+                example-1:
+                  summary: Error Response
+                  value:
+                    error:
+                      code: 1
+                      message: Pool is out of liquidity
+  /trade/tokens:
+    get:
+      tags:
+        - Tokens
+      summary: Get the List of Tokens on Fuse
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: '{{publicKey}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 23 Jun 2022 12:09:34 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '61501'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            ETag:
+              schema:
+                type: string
+                example: W/"f03d-pBtf4RtSR0CudooPYK4Gkdql3xM"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  tokens:
+                    - name: Fuse Dollar
+                      symbol: fUSD
+                      decimals: 18
+                      address: '0x249BE57637D8B013Ad64785404b24aeBaE9B098B'
+                      logoURI: >-
+                        https://fuselogo.s3.eu-central-1.amazonaws.com/fuse-dollar.png
+                      type: misc
+                    - name: Wrapped FUSE
+                      symbol: WFUSE
+                      decimals: 18
+                      address: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629'
+                      logoURI: https://fuselogo.s3.eu-central-1.amazonaws.com/wfuse.png
+                      type: misc
+                    - name: Imagine UBI on Fuse
+                      symbol: IUBI
+                      address: '0x002231dce05117dcd3f1d471c1ea4c08eb844ed2'
+                      decimals: 18
+                      foreignAddress: '0x25730d6b66552bbcb6ed22900ca9473a6cfbb0f0'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x25730D6b66552bBCB6Ed22900cA9473a6cfbB0F0/logo.png
+                      type: bridged
+                    - name: Graph Token on Fuse
+                      symbol: GRT
+                      address: '0x025a4c577198d116ea499193e6d735fdb2e6e841'
+                      decimals: 18
+                      foreignAddress: '0xc944e90c64b2c07662a292be6244bdf05cda44a7'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc944E90C64B2c07662A292be6244BDf05Cda44a7/logo.png
+                      type: bridged
+                    - name: Wrapped LUNA Token on Fuse
+                      symbol: LUNA
+                      address: '0x062313792ed71a80ab878f935f37be99d4a42322'
+                      decimals: 18
+                      foreignAddress: '0xd2877702675e6ceb975b4a1dff9fb7baf4c91ea9'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xd2877702675e6cEb975b4A1dFf9fb7BAF4C91ea9/logo.png
+                      type: bridged
+                    - name: Adept Coin Governance on Fuse
+                      symbol: AC
+                      address: '0x06fd644370df87952ff6b33bda082398f05c3582'
+                      decimals: 18
+                      foreignAddress: '0xb46ab66c039ca553bc25ea74b92dfea91a080f07'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xB46ab66c039Ca553BC25EA74b92DfEa91a080F07/logo.png
+                      type: bridged
+                    - name: ChainLink Token on Fuse
+                      symbol: LINK
+                      address: '0x0972f26e8943679b043de23df2fd3852177a7c48'
+                      decimals: 18
+                      foreignAddress: '0x514910771af9ca656af840dff83e8264ecf986ca'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo.png
+                      type: bridged
+                    - name: Havens Nook on Fuse
+                      symbol: HXN
+                      address: '0x0c11e79888ac97faeaf6f8f595d72cd3b60ea2c2'
+                      decimals: 18
+                      foreignAddress: '0x0e1fe60bc4ac0e3102343752ae7e49d01d444c0b'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x0E1fe60bc4aC0e3102343752ae7E49d01d444c0b/logo.png
+                      type: bridged
+                    - name: CuraDAI on Fuse
+                      symbol: CURA
+                      address: '0x11efffd8f314e175cb74e98bb359b86874f9c6a6'
+                      decimals: 18
+                      foreignAddress: '0x0a4b2d4b48a63088e0897a3f147ba37f81a27722'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x0a4b2d4B48a63088e0897a3F147Ba37f81a27722/logo.png
+                      type: bridged
+                    - name: Simply Fish UBI on Fuse
+                      symbol: $FSH
+                      address: '0x1959464e64c57ba50ec5ffd8afcefb9b03983cda'
+                      decimals: 18
+                      foreignAddress: '0x007b0c3fd26265ecbb9283fb67aba3f190291049'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x007b0C3Fd26265eCBb9283fB67AbA3f190291049/logo.png
+                      type: bridged
+                    - name: Game Genie on Fuse
+                      symbol: RNG
+                      address: '0x1b3e9d2c842f8f643342cad9770487d660e77541'
+                      decimals: 18
+                      foreignAddress: '0xe1e2adb16a125d2176c3bfd409409554176c4b4b'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xE1e2adb16A125d2176c3Bfd409409554176c4B4B/logo.png
+                      type: bridged
+                    - name: Wrapped UST Token on Fuse
+                      symbol: UST
+                      address: '0x23cea840c5c39ba5723491130c2c7c8bae9b35f5'
+                      decimals: 18
+                      foreignAddress: '0xa47c8bf37f92abed4a126bda807a7b7498661acd'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xa47c8bf37f92aBed4A126BDA807A7b7498661acD/logo.png
+                      type: bridged
+                    - name: Uniswap on Fuse
+                      symbol: UNI
+                      address: '0x2c72dfb220937738add112e49e95e2475d0fbf28'
+                      decimals: 18
+                      foreignAddress: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png
+                      type: bridged
+                    - name: DEXTools on Fuse
+                      symbol: DEXT
+                      address: '0x2f60a843302f1be3fa87429ca9d684f9091b003c'
+                      decimals: 18
+                      foreignAddress: '0xfb7b4564402e5500db5bb6d63ae671302777c75a'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xfB7B4564402E5500dB5bB6d63Ae671302777C75a/logo.png
+                      type: bridged
+                    - name: Wrapped BTC on Fuse
+                      symbol: WBTC
+                      address: '0x33284f95ccb7b948d9d352e1439561cf83d8d00d'
+                      decimals: 8
+                      foreignAddress: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png
+                      type: bridged
+                    - name: BC https://bitcoinconfidential.cc/  on Fuse
+                      symbol: BC
+                      address: '0x371a0450e020348973c078f5a23719bf2acc4738'
+                      decimals: 18
+                      foreignAddress: '0xf13fb445b6a152c9288f092fa11ddd67f5a4a8da'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xf13fB445B6A152c9288f092Fa11ddD67F5A4a8da/logo.png
+                      type: bridged
+                    - name: Token on Fuse
+                      symbol: Token
+                      address: '0x3fe9249bfbd5daaa58d3443fcec0e76479386f28'
+                      decimals: 18
+                      foreignAddress: '0x6cbdaea114d63f8b5bd1f550ee96f69d1bb27d97'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6cbDAEa114D63f8b5Bd1f550EE96F69D1Bb27d97/logo.png
+                      type: bridged
+                    - name: V I Coin on Fuse
+                      symbol: USDT
+                      address: '0x3ffb8acca9c2bcb013e9c37349c8ec31da8eda84'
+                      decimals: 18
+                      foreignAddress: '0x3d4d135ed39f23024d93cb2169cfee00fc2428ed'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x3D4d135ed39f23024D93Cb2169cfee00fC2428ED/logo.png
+                      type: bridged
+                    - name: Kyber Network Crystal on Fuse
+                      symbol: KNC
+                      address: '0x43b17749b246fd2a96de25d9e4184e27e09765b0'
+                      decimals: 18
+                      foreignAddress: '0xdd974d5c2e2928dea5f71b9825b8b646686bd200'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdd974D5C2e2928deA5F71b9825b8b646686BD200/logo.png
+                      type: bridged
+                    - name: EthereumMax on Fuse
+                      symbol: eMax
+                      address: '0x449e14c630b99cb0ba764df8bbeced5a4ccce952'
+                      decimals: 18
+                      foreignAddress: '0xa3e059c0b01f07f211c85bf7b4f1d907afb011df'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA3E059c0b01F07F211c85bF7b4f1d907AfB011df/logo.png
+                      type: bridged
+                    - name: BC Universal Basic Income Initiative on Fuse
+                      symbol: BC0x
+                      address: '0x50ed7786ed0278edf1ff5fd91f578dede8fbc766'
+                      decimals: 18
+                      foreignAddress: '0xd498a8268b0ad66809ce4d021adaa6466ed2802c'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xd498a8268B0AD66809CE4D021adaA6466ED2802C/logo.png
+                      type: bridged
+                    - name: CCO-M on Fuse
+                      symbol: LAT
+                      address: '0x5332099f85f3cca769c345cbdca14722732d30ef'
+                      decimals: 18
+                      foreignAddress: '0x046ba49db8e4bc658fb9a69690d2e6d5116d876a'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x046ba49db8e4Bc658Fb9a69690D2E6D5116D876A/logo.png
+                      type: bridged
+                    - name: Dogelon on Fuse
+                      symbol: ELON
+                      address: '0x5dd8015cec49f4db01fd228f688bf30337d3e0a9'
+                      decimals: 18
+                      foreignAddress: '0x761d38e5ddf6ccf6cf7c55759d5210750b5d60f3'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x761D38e5ddf6ccf6Cf7c55759d5210750B5D60F3/logo.png
+                      type: bridged
+                    - name: USD Coin on Fuse
+                      symbol: USDC
+                      address: '0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5'
+                      decimals: 6
+                      foreignAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                      type: bridged
+                    - name: Binance USD on Fuse
+                      symbol: BUSD
+                      address: '0x6a5f6a8121592becd6747a38d67451b310f7f156'
+                      decimals: 18
+                      foreignAddress: '0x4fabb145d64652a948d72533023f6e7a623c7c53'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x4Fabb145d64652a948d72533023f6E7A623C7C53/logo.png
+                      type: bridged
+                    - name: CyberFM Radio on Fuse
+                      symbol: CYFM
+                      address: '0x6b8ad939a466dfb53e52882e9d0c63f77d15f1eb'
+                      decimals: 18
+                      foreignAddress: '0x4a621d9f1b19296d1c0f87637b3a8d4978e9bf82'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x4a621d9f1b19296d1C0f87637b3A8D4978e9bf82/logo.png
+                      type: bridged
+                    - name: Digital Rand on Fuse
+                      symbol: DZAR
+                      address: '0x6cc56d06b358af0e8b47f229765da6dd81ee1939'
+                      decimals: 6
+                      foreignAddress: '0x9cb2f26a23b8d89973f08c957c4d7cdf75cd341c'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x9Cb2f26A23b8d89973F08c957C4d7cdf75CD341c/logo.png
+                      type: bridged
+                    - name: Fuse Token on Fuse
+                      symbol: FUSE
+                      address: '0x714005da6a90f59dd2cf74560ecf4a4bed5f088a'
+                      decimals: 18
+                      foreignAddress: '0x970b9bb2c0444f5e81e9d0efb84c8ccdcdcaf84d'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d/logo.png
+                      type: bridged
+                    - name: Bitazza Token on Fuse
+                      symbol: BTZ
+                      address: '0x7641d492c17795fb4cbaa8df99116c9c482c81a8'
+                      decimals: 18
+                      foreignAddress: '0x5fbc3cb8b428cc00a04808870295d39962cc7fee'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x5fBc3cb8B428cC00A04808870295D39962CC7FeE/logo.png
+                      type: bridged
+                    - name: MANTRA DAO on Fuse
+                      symbol: OM
+                      address: '0x7f59ae3a787c0d1d640f99883d0e48c22188c54f'
+                      decimals: 18
+                      foreignAddress: '0x3593d125a4f7849a1b059e64f4517a86dd60c95d'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x3593D125a4f7849a1B059E64F4517A86Dd60c95d/logo.png
+                      type: bridged
+                    - name: Tulipex.io Utility Token on Fuse
+                      symbol: TLP
+                      address: '0x802d892a9d8bd996bf757142456e0556056eca6c'
+                      decimals: 7
+                      foreignAddress: '0x937f3d2536bb4796b7040252ae4332370551f633'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x937F3D2536bb4796B7040252AE4332370551f633/logo.png
+                      type: bridged
+                    - name: Aave Token on Fuse
+                      symbol: AAVE
+                      address: '0x870a32b883b179a9f91ce1ac866c13f3ac30ced7'
+                      decimals: 18
+                      foreignAddress: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9/logo.png
+                      type: bridged
+                    - name: BLUEMOON on Fuse
+                      symbol: BLM
+                      address: '0x88bd3d9a0ca631c30eef3387835d81f75d495deb'
+                      decimals: 18
+                      foreignAddress: '0x73a8e32b052bee982c4ba5eb26ef3034ed0d6bb8'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x73A8E32B052bEe982C4bA5eb26eF3034eD0D6bB8/logo.png
+                      type: bridged
+                    - name: oneFUSE on Fuse
+                      symbol: oneFUSE
+                      address: '0x8a5ee71cd4db6b7ffdce37313006e48fad6addb0'
+                      decimals: 18
+                      foreignAddress: '0xbbce03b2e7f53cadca93251ca4c928af01db6404'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xBbcE03B2E7f53caDCA93251CA4c928aF01Db6404/logo.png
+                      type: bridged
+                    - name: Wrapped CRES on Fuse
+                      symbol: wCRES
+                      address: '0x8d791c75b928c5ccc58036d042d7aeaa3363d361'
+                      decimals: 18
+                      foreignAddress: '0xa0afaa285ce85974c3c881256cb7f225e3a1178a'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xa0afAA285Ce85974c3C881256cB7F225e3A1178a/logo.png
+                      type: bridged
+                    - name: SushiToken on Fuse
+                      symbol: SUSHI
+                      address: '0x90708b20ccc1eb95a4fa7c8b18fd2c22a0ff9e78'
+                      decimals: 18
+                      foreignAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo.png
+                      type: bridged
+                    - name: California Real Estate Token on Fuse
+                      symbol: CRET
+                      address: '0x9193e1375db4264bfad2bc8b0e1542262799797d'
+                      decimals: 18
+                      foreignAddress: '0x0bf185eb780145dd42a2601fef774c1d1c9f3ccf'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x0bf185eB780145dD42a2601FEf774C1D1C9f3CcF/logo.png
+                      type: bridged
+                    - name: DEXTools on Fuse
+                      symbol: DEXT
+                      address: '0x92c9dd8f3c443d75949a1b46f2878cacc1089de5'
+                      decimals: 18
+                      foreignAddress: '0x26ce25148832c04f3d7f26f32478a9fe55197166'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x26CE25148832C04f3d7F26F32478a9fe55197166/logo.png
+                      type: bridged
+                    - name: Dai Stablecoin on Fuse
+                      symbol: DAI
+                      address: '0x94ba7a27c7a95863d1bdc7645ac2951e0cca06ba'
+                      decimals: 18
+                      foreignAddress: '0x6b175474e89094c44da98b954eedeac495271d0f'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png
+                      type: bridged
+                    - name: ETH Network Community on Fuse
+                      symbol: ENC
+                      address: '0x99e7316d921dabfd69ab66fb8f3eeb7c39f90229'
+                      decimals: 18
+                      foreignAddress: '0x339b68226c89a448d998ecfad1acc831d80d4418'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x339b68226c89a448D998eCfAd1acC831D80d4418/logo.png
+                      type: bridged
+                    - name: Curve DAO Token on Fuse
+                      symbol: CRV
+                      address: '0xa30bc35f48af8a4cf10f388a414871dceebf3863'
+                      decimals: 18
+                      foreignAddress: '0xd533a949740bb3306d119cc777fa900ba034cd52'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xD533a949740bb3306d119CC777fa900bA034cd52/logo.png
+                      type: bridged
+                    - name: agEUR on Fuse
+                      symbol: agEUR
+                      address: '0xa4435eb3d9819024b4efebcf52ccf9b947d23561'
+                      decimals: 18
+                      foreignAddress: '0x1a7e4e63778b4f12a199c062f3efdd288afcbce8'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8/logo.png
+                      type: bridged
+                    - name: Monerium EUR emoney on Fuse
+                      symbol: EURe
+                      address: '0xa61345a3d2f8660c6df54fdd766ecdba87453482'
+                      decimals: 18
+                      foreignAddress: '0x3231cb76718cdef2155fc47b5286d82e6eda273f'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x3231Cb76718CDeF2155FC47b5286d82e6eDA273f/logo.png
+                      type: bridged
+                    - name: Wrapped Ether on Fuse
+                      symbol: WETH
+                      address: '0xa722c13135930332eb3d749b2f0906559d2c5b99'
+                      decimals: 18
+                      foreignAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                      type: bridged
+                    - name: SAIL on Fuse
+                      symbol: SAIL
+                      address: '0xae71cfae0559190766bf79d688e5f7690e0c06a2'
+                      decimals: 18
+                      foreignAddress: '0x7d95ba6860dd044e838647e9f3027d44ccfcd9cf'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x7d95bA6860DD044E838647E9f3027D44CcfCd9Cf/logo.png
+                      type: bridged
+                    - name: FORCE on Fuse
+                      symbol: FORCE
+                      address: '0xb117ee8c978f339358f48b495f1832f3fea2065d'
+                      decimals: 18
+                      foreignAddress: '0x6807d7f7df53b7739f6438eabd40ab8c262c0aa8'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6807D7f7dF53b7739f6438EABd40Ab8c262c0aa8/logo.png
+                      type: bridged
+                    - name: Sheep.Farming on Fuse
+                      symbol: SHP
+                      address: '0xb6a7c51efaee6d9e0db35261607805fdb4467517'
+                      decimals: 18
+                      foreignAddress: '0x7635cca0d0f7af83f42b4f198fafe8fcc01811e4'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x7635cca0d0F7AF83F42b4F198FaFe8fcc01811e4/logo.png
+                      type: bridged
+                    - name: Synth sETH on Fuse
+                      symbol: sETH
+                      address: '0xbe55bfb176f3034b3dbf2c261a6cd92aa181d5e7'
+                      decimals: 18
+                      foreignAddress: '0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb/logo.png
+                      type: bridged
+                    - name: CryptoLiveLeak on Fuse
+                      symbol: CLL
+                      address: '0xbfc7a4604005a9bbbd89a9c748846169cb00d90a'
+                      decimals: 18
+                      foreignAddress: '0x3dc9a42fa7afe57be03c58fd7f4411b1e466c508'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x3dC9a42fa7Afe57BE03c58fD7F4411b1E466C508/logo.png
+                      type: bridged
+                    - name: Digital Rand on Fuse
+                      symbol: DZAR
+                      address: '0xbff749fa790d4cbb789a63b5e5173e3f877ad237'
+                      decimals: 6
+                      foreignAddress: '0x9cb2f26a23b8d89973f08c957c4d7cdf75cd341c'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x9Cb2f26A23b8d89973F08c957C4d7cdf75CD341c/logo.png
+                      type: bridged
+                    - name: DAOstack on Fuse
+                      symbol: GEN
+                      address: '0xc18c5b6863f6bdb5ce4cb761ba5ec2e1ff6240af'
+                      decimals: 18
+                      foreignAddress: '0x543ff227f64aa17ea132bf9886cab5db55dcaddf'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf/logo.png
+                      type: bridged
+                    - name: Gofind XR on Fuse
+                      symbol: XR
+                      address: '0xc732d0db3558b2ad6f4cca4d99b98f87f74021e8'
+                      decimals: 8
+                      foreignAddress: '0x61ec1a25f763eef9823773c7bdb9d7c644fb3503'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x61Ec1A25f763EEF9823773C7bDB9d7C644FB3503/logo.png
+                      type: bridged
+                    - name: Basic Attention Token on Fuse
+                      symbol: BAT
+                      address: '0xc7cfac488d755e47bb2c08e350871e8b086590bf'
+                      decimals: 18
+                      foreignAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x0D8775F648430679A709E98d2b0Cb6250d2887EF/logo.png
+                      type: bridged
+                    - name: XIDR on Fuse
+                      symbol: XIDR
+                      address: '0xc9ca904b2a7d443f670d0be9ca887a645f1a7e73'
+                      decimals: 6
+                      foreignAddress: '0xebf2096e01455108badcbaf86ce30b6e5a72aa52'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xebF2096E01455108bAdCbAF86cE30b6e5A72aa52/logo.png
+                      type: bridged
+                    - name: EASY on Fuse
+                      symbol: EASY
+                      address: '0xc9d2265b731f76c20a36ff1290d5548ffb070ea3'
+                      decimals: 18
+                      foreignAddress: '0x913d8adf7ce6986a8cbfee5a54725d9eea4f0729'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x913D8ADf7CE6986a8CbFee5A54725D9Eea4F0729/logo.png
+                      type: bridged
+                    - name: USD Coin on Fuse
+                      symbol: USDC
+                      address: '0xcac00ecd30dfdad6a255e34705a867d9d7e9db39'
+                      decimals: 6
+                      foreignAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png
+                      type: bridged
+                    - name: Bitazza on Fuse
+                      symbol: BTZ
+                      address: '0xd5c13add0b249beb67bc19026aa1f455b9a2dc12'
+                      decimals: 18
+                      foreignAddress: '0xa76942d04cfbbb7a3f20687ac1d11d150185f38d'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA76942D04cfbbb7A3f20687ac1D11D150185f38d/logo.png
+                      type: bridged
+                    - name: Hoax Coin on Fuse
+                      symbol: HOAX
+                      address: '0xd7747ca7762e5d0f163e3a747af511e402f9c42c'
+                      decimals: 18
+                      foreignAddress: '0x8fd8de153228f02a57dcfd550adf88be017b598a'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x8fd8De153228f02A57DCfd550adf88Be017b598a/logo.png
+                      type: bridged
+                    - name: Wrapped Ether on Fuse
+                      symbol: WETH
+                      address: '0xd8bf72f3e163b9cf0c73dfdcc316417a5ac20670'
+                      decimals: 18
+                      foreignAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png
+                      type: bridged
+                    - name: Fine Art Finance on Fuse
+                      symbol: ARTx
+                      address: '0xdf2e30aa1ca3643beac5716b46cfb550070a53bd'
+                      decimals: 18
+                      foreignAddress: '0xddf1d10f199c19a7266e79b879e6fafade729586'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xDdf1D10f199c19a7266e79b879E6fAFade729586/logo.png
+                      type: bridged
+                    - name: Blk Luv on Fuse
+                      symbol: LUV
+                      address: '0xe2a54b713fbb43977cad65e252cd1e8ee541c17e'
+                      decimals: 18
+                      foreignAddress: '0x30b6d2ffe52c3a39482593eb46026d15be7123fe'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x30B6d2FfE52c3a39482593eb46026D15be7123fe/logo.png
+                      type: bridged
+                    - name: arcane bear on Fuse
+                      symbol: BEAR
+                      address: '0xe49d98f13520a5e2314a8f905875ec9ec7dda882'
+                      decimals: 4
+                      foreignAddress: '0xaf162491c0b21900c01f4cc0f7110238aacdebe7'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xAf162491C0B21900C01F4Cc0F7110238AAcdebE7/logo.png
+                      type: bridged
+                    - name: Nexo on Fuse
+                      symbol: NEXO
+                      address: '0xe4ee764cb090acf4abc1454917d9bc54f13aed79'
+                      decimals: 18
+                      foreignAddress: '0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xB62132e35a6c13ee1EE0f84dC5d40bad8d815206/logo.png
+                      type: bridged
+                    - name: BitMoin on Fuse
+                      symbol: BTM
+                      address: '0xe90aaddd92b74b153aac2d03a5123038c7e1452f'
+                      decimals: 18
+                      foreignAddress: '0xaed645d5fdd2efcabb93f508a2bb5d05993a2993'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xAEd645d5fdd2EFcABB93F508A2Bb5d05993a2993/logo.png
+                      type: bridged
+                    - name: EGORAS on Fuse
+                      symbol: EGR
+                      address: '0xf520d3a81818069c148b05f039333cc2bf732017'
+                      decimals: 18
+                      foreignAddress: '0x73cee8348b9bdd48c64e13452b8a6fbc81630573'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x73Cee8348b9bDd48c64E13452b8a6fbc81630573/logo.png
+                      type: bridged
+                    - name: Ethereum Cities on Fuse
+                      symbol: ETC
+                      address: '0xf544267ee02c75661baa8ce4c0b77f7037fd7221'
+                      decimals: 18
+                      foreignAddress: '0x55fe87a2ff5a0f8adc32bf1baa17a8762e779ab5'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x55FE87a2ff5a0F8ADC32Bf1BaA17A8762E779AB5/logo.png
+                      type: bridged
+                    - name: Tether USD on Fuse
+                      symbol: USDT
+                      address: '0xfadbbf8ce7d5b7041be672561bba99f79c532e10'
+                      decimals: 6
+                      foreignAddress: '0xdac17f958d2ee523a2206206994597c13d831ec7'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png
+                      type: bridged
+                    - name: Uniswap on Fuse
+                      symbol: UNI
+                      address: '0xfcf3bd3aea648558b4f71499762558326e8f1077'
+                      decimals: 18
+                      foreignAddress: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png
+                      type: bridged
+                    - name: Paxos Standard on Fuse
+                      symbol: PAX
+                      address: '0xfdd1157aafadc4ecdba8801de2b5212445cd321d'
+                      decimals: 18
+                      foreignAddress: '0x8e870d67f660d95d5be530380d0ec0bd388289e1'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x8E870D67F660D95d5be530380D0eC0bd388289E1/logo.png
+                      type: bridged
+                    - name: Ecto on Fuse
+                      symbol: ECTO
+                      address: '0xff90134653d4a1eee7fd190d37c950994895a494'
+                      decimals: 18
+                      foreignAddress: '0x3b8c698c5bdaa059f93bae370f00a01c4fa5352b'
+                      logoURI: >-
+                        https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x3B8c698C5bDaA059F93Bae370F00a01c4fA5352B/logo.png
+                      type: bridged
+                    - address: '0x00ddff215a02345305f058aceb7f66c139aa266e'
+                      name: FuseSwap DILMAHTEA-TEA
+                      symbol: FS DILMAHTEA-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x58972e88c8bf7e9ee913c03d8962a8db69390031'
+                          name: Dilmah Tea
+                          symbol: DILMAHTEA
+                          decimals: 18
+                        - address: '0xfc89c5d2d5c932d97da9c1219ce396bf6a756ad0'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x01436a640a6fa9c9c0bcf9924c0379c790e7334f'
+                      name: FuseSwap TBAG-TEA
+                      symbol: FS TBAG-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0xe0e29749879189022a5a1451ba0ee8668b1200c2'
+                          name: Tea BAG THIS FUSE
+                          symbol: TBAG
+                          decimals: 18
+                        - address: '0xfc89c5d2d5c932d97da9c1219ce396bf6a756ad0'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x01c25932d7eabf46e91bd8bc64f2c216c93b4f9a'
+                      name: FuseSwap WFUSE-POND
+                      symbol: FS WFUSE-POND
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x26aa272c919acff6e9cba444294599c5ec0bcd39'
+                          name: Pond
+                          symbol: POND
+                          decimals: 18
+                      type: lp
+                    - address: '0x028b24810ff875716aef21d5e9703f4561c4a9dc'
+                      name: FuseSwap RMPL-RMPL
+                      symbol: FS RMPL-RMPL
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x3b4fd805a9939e3704d6ab248167505006e7672e'
+                          name: RMPL
+                          symbol: RMPL
+                          decimals: 9
+                        - address: '0xe7b9327b97d5a80aac8cd05dda12f17b90c45fa7'
+                          name: RMPL
+                          symbol: RMPL
+                          decimals: 9
+                      type: lp
+                    - address: '0x0314b99da965e817df6a578858b66143f181b0b2'
+                      name: FuseSwap DIN-DZD
+                      symbol: FS DIN-DZD
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x1bdd33926685b4024e7949a35bd5a935722b8fe9'
+                          name: dinar
+                          symbol: DIN
+                          decimals: 18
+                        - address: '0x56938eb82e11444310e098602a6d07f3ec2a9aa4'
+                          name: امارة الجزائر
+                          symbol: DZD
+                          decimals: 18
+                      type: lp
+                    - address: '0x03fec0f23f71f282f286e76b15bd4d0613d6a859'
+                      name: FuseSwap WFUSE-FSB
+                      symbol: FS WFUSE-FSB
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x28344d35203cf225e84f5b75e0d64ba3f2d9cc31'
+                          name: FSB
+                          symbol: FSB
+                          decimals: 9
+                      type: lp
+                    - address: '0x04543d0ea8890f48010238dca8d7a4c68bb3fe60'
+                      name: FuseSwap WFUSE-O.D.
+                      symbol: FS WFUSE-O.D.
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xe8d5e6f3e52a1a1b224676069a330c1e9d426221'
+                          name: Officina Token
+                          symbol: O.D.
+                          decimals: 18
+                      type: lp
+                    - address: '0x0569cef9e465b4c451bc2f2b8f711dc2b1f5c651'
+                      name: FuseSwap WFUSE-fDoge
+                      symbol: FS WFUSE-fDoge
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xebb82851b8e1348cc774442735b710b4cd105210'
+                          name: Fuse Doge
+                          symbol: fDoge
+                          decimals: 18
+                      type: lp
+                    - address: '0x05701d5deb9b40d7d7ed994b678fed5cfa9ce0e4'
+                      name: FuseSwap TEABOX-DILMAHTEA
+                      symbol: FS TEABOX-DILMAHTEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                        - address: '0x58972e88c8bf7e9ee913c03d8962a8db69390031'
+                          name: Dilmah Tea
+                          symbol: DILMAHTEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x057515d2b5e45226a3e14a7fa93f62107e2532dc'
+                      name: FuseSwap WFUSE-DILMAHTEA
+                      symbol: FS WFUSE-DILMAHTEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x58972e88c8bf7e9ee913c03d8962a8db69390031'
+                          name: Dilmah Tea
+                          symbol: DILMAHTEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x059fed52bfb9ce75d4297eef0ec290354b30dabf'
+                      name: FuseSwap WFUSE-GIT
+                      symbol: FS WFUSE-GIT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x43265f9821a32b79064dfc6b124d77b3f0a60332'
+                          name: Gillycoin Test
+                          symbol: GIT
+                          decimals: 18
+                      type: lp
+                    - address: '0x08625f65516d677ae22c4336857273cd707ce2a8'
+                      name: FuseSwap WFUSE-CTTY
+                      symbol: FS WFUSE-CTTY
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x877ee7fb4c4af1d4e6744d74477af04381273572'
+                          name: CattyCoin
+                          symbol: CTTY
+                          decimals: 18
+                      type: lp
+                    - address: '0x094da7cedb599cc18bcbfd403c8f9f894367b9d3'
+                      name: FuseSwap EDV-USDT
+                      symbol: FS EDV-USDT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x933dae44bd17f7a2ca4de14b9e4270428143edd5'
+                          name: EcoAdventus Manufacturing Ecosystem
+                          symbol: EDV
+                          decimals: 18
+                        - address: '0xfadbbf8ce7d5b7041be672561bba99f79c532e10'
+                          name: Tether USD on Fuse
+                          symbol: USDT
+                          decimals: 6
+                      type: lp
+                    - address: '0x0aff8b0e3f1b4ece57ef8bb858e0ddfb17282bbb'
+                      name: FuseSwap WFUSE-TEA
+                      symbol: FS WFUSE-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xfc89c5d2d5c932d97da9c1219ce396bf6a756ad0'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x0df48369504825c16d3fc6a74842aef3c91e90e6'
+                      name: FuseSwap fUSD-BNB
+                      symbol: FS fUSD-BNB
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x249be57637d8b013ad64785404b24aebae9b098b'
+                          name: Fuse Dollar
+                          symbol: fUSD
+                          decimals: 18
+                        - address: '0x6acb34b1df86e254b544189ec32cf737e2482058'
+                          name: BNB on Fuse
+                          symbol: BNB
+                          decimals: 18
+                      type: lp
+                    - address: '0x0f0da5135a10fa945905de7dfe29a610277b552f'
+                      name: FuseSwap ZODJ-DORO
+                      symbol: FS ZODJ-DORO
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0xbd8f8d3a48767f14384b0fb87b5e4bc6d55b5cca'
+                          name: ZOODJ
+                          symbol: ZODJ
+                          decimals: 18
+                        - address: '0xf8eb85cca8529478a795c4c4f51cf0845b9bd591'
+                          name: Doro
+                          symbol: DORO
+                          decimals: 18
+                      type: lp
+                    - address: '0x0f634631ed4212233981fb0b22695fb8dd0fee95'
+                      name: FuseSwap LTEA-TEABOX
+                      symbol: FS LTEA-TEABOX
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x02f2186277dabbe63de4013db858473af8960783'
+                          name: Liptons Tea
+                          symbol: LTEA
+                          decimals: 18
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                      type: lp
+                    - address: '0x12548d637d7d65fc1c46d1522ed38c260b76b035'
+                      name: FuseSwap LINK-WFUSE
+                      symbol: FS LINK-WFUSE
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0972f26e8943679b043de23df2fd3852177a7c48'
+                          name: ChainLink Token on Fuse
+                          symbol: LINK
+                          decimals: 18
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                      type: lp
+                    - address: '0x17743a5fcfa20b62d9acdd17a99467b64fd965e9'
+                      name: FuseSwap HRV-KROM
+                      symbol: FS HRV-KROM
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x16c85accebdb71bbfc4a4862b22ca27e2e2b616a'
+                          name: HYDRAVERSE
+                          symbol: HRV
+                          decimals: 18
+                        - address: '0xf20feba0159d481ddc34a4a799600bde14a7572e'
+                          name: KROMOS.WORLD
+                          symbol: KROM
+                          decimals: 18
+                      type: lp
+                    - address: '0x1892cd2874c86b9e07def030813615dd68a8665c'
+                      name: FuseSwap WFUSE-CHAITEA
+                      symbol: FS WFUSE-CHAITEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xcd43f7bae95af173e80bcb59bc25b19db926c2e3'
+                          name: Chai Tea
+                          symbol: CHAITEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x1897d59c7ef4baa7478e5d2e1d155b0e3698a087'
+                      name: FuseSwap TEABOX-EARLGREY
+                      symbol: FS TEABOX-EARLGREY
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                        - address: '0x860767ddb3b47e4f8f30a861783d605f7d90d5e5'
+                          name: Earl Grey Tea
+                          symbol: EARLGREY
+                          decimals: 18
+                      type: lp
+                    - address: '0x19a12e833dd09ad30a9b82051c1e372c03487f57'
+                      name: FuseSwap WFUSE-v3
+                      symbol: FS WFUSE-v3
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x6b690d4759aa2d7f1d02cc734a2477896162d789'
+                          name: Test v3
+                          symbol: v3
+                          decimals: 18
+                      type: lp
+                    - address: '0x1a12f00981a5d65b7e82ec4ac71c1a33f10fd3b2'
+                      name: FuseSwap VOLT-G$
+                      symbol: FS VOLT-G$
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                        - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                          name: GoodDollar
+                          symbol: G$
+                          decimals: 2
+                      type: lp
+                    - address: '0x1cfaf714dec1acb1eaad04ebffa359a4323eb11e'
+                      name: FuseSwap VOLT-DAI
+                      symbol: FS VOLT-DAI
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                        - address: '0x94ba7a27c7a95863d1bdc7645ac2951e0cca06ba'
+                          name: Dai Stablecoin on Fuse
+                          symbol: DAI
+                          decimals: 18
+                      type: lp
+                    - address: '0x20cc1744a24c4f3821fc6ea6880166a6a0eed044'
+                      name: FuseSwap WFUSE-BTCBR
+                      symbol: FS WFUSE-BTCBR
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xe57425f1598f9b0d6219706b77f4b3da573a3695'
+                          name: BitcoinBR
+                          symbol: BTCBR
+                          decimals: 18
+                      type: lp
+                    - address: '0x242faff0de4755033a6b7256b24bcb36653fc167'
+                      name: FuseSwap atUST-atLUNA
+                      symbol: FS atUST-atLUNA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0d58a44be3dca0ab449965dcc2c46932547fea2f'
+                          name: UST Terra
+                          symbol: atUST
+                          decimals: 18
+                        - address: '0x588e24ded8f850b14bb2e62e9c50a7cd5ee13da9'
+                          name: Luna Terra
+                          symbol: atLUNA
+                          decimals: 18
+                      type: lp
+                    - address: '0x2503380029747fc58b6e990a781dacec87311e04'
+                      name: FuseSwap TEABOX-CHAITEA
+                      symbol: FS TEABOX-CHAITEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                        - address: '0xcd43f7bae95af173e80bcb59bc25b19db926c2e3'
+                          name: Chai Tea
+                          symbol: CHAITEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x27d6423cd3a2d365a42b990d907429339398218b'
+                      name: FuseSwap WFUSE-KLG
+                      symbol: FS WFUSE-KLG
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x5065056e89ae48c07e7056be63581e3a766deef9'
+                          name: Klondike Game
+                          symbol: KLG
+                          decimals: 18
+                      type: lp
+                    - address: '0x290e51edf99eb02d253fa662dcff64939fe1e430'
+                      name: FuseSwap WFUSE-BABYFUSE
+                      symbol: FS WFUSE-BABYFUSE
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x9a5de7c8faeacd606ce7f46422a6286c15a55f60'
+                          name: BABY FUSE
+                          symbol: BABYFUSE
+                          decimals: 18
+                      type: lp
+                    - address: '0x29495906bf7cd7e5a92e8cb5cf928f5e62beabdd'
+                      name: FuseSwap VOLT-BUSD
+                      symbol: FS VOLT-BUSD
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                        - address: '0x6a5f6a8121592becd6747a38d67451b310f7f156'
+                          name: Binance USD on Fuse
+                          symbol: BUSD
+                          decimals: 18
+                      type: lp
+                    - address: '0x2cdcaa7b987c098dc12549cbb7b7778c1648444a'
+                      name: FuseSwap HAS-DIR
+                      symbol: FS HAS-DIR
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x3c0d6e1a873062274aee53d9ba710a1b3db80a1a'
+                          name: HASSANA
+                          symbol: HAS
+                          decimals: 18
+                        - address: '0xe5b6ff5e9df4858e8e65119dd259c40dbd9808d7'
+                          name: Dirham
+                          symbol: DIR
+                          decimals: 18
+                      type: lp
+                    - address: '0x2d3682f1f2603946d6654eae37740845cc51405a'
+                      name: FuseSwap LTEA-TEA
+                      symbol: FS LTEA-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x02f2186277dabbe63de4013db858473af8960783'
+                          name: Liptons Tea
+                          symbol: LTEA
+                          decimals: 18
+                        - address: '0xfc89c5d2d5c932d97da9c1219ce396bf6a756ad0'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x2e373ac9bee379623b133c487a40800079c3ed36'
+                      name: FuseSwap AMP-EDV
+                      symbol: FS AMP-EDV
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x2b09179d26fddb27a24ee25328890791c7a984c2'
+                          name: Ampere
+                          symbol: AMP
+                          decimals: 18
+                        - address: '0x933dae44bd17f7a2ca4de14b9e4270428143edd5'
+                          name: EcoAdventus Manufacturing Ecosystem
+                          symbol: EDV
+                          decimals: 18
+                      type: lp
+                    - address: '0x2eca5a7ebc6ea13ad0dd3e764e70429706ce8945'
+                      name: FuseSwap WFUSE-EGC
+                      symbol: FS WFUSE-EGC
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x42bddecd5f874e13977b7b4303c0841a26225167'
+                          name: EG Coin
+                          symbol: EGC
+                          decimals: 18
+                      type: lp
+                    - address: '0x357b35c530bcf164ab3825fce4621feecd052d6a'
+                      name: FuseSwap WFUSE-USDN
+                      symbol: FS WFUSE-USDN
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x11522cb81f9ca7076ae3f18f5a82fe77633451ed'
+                          name: USDN
+                          symbol: USDN
+                          decimals: 18
+                      type: lp
+                    - address: '0x38637fad442a63bed0b5169f4ac58a8c67f40a17'
+                      name: FuseSwap WFUSE-MUST
+                      symbol: FS WFUSE-MUST
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x7d861e0dddd60f19d2e6b91c537101fd512f6ab0'
+                          name: MUST Money
+                          symbol: MUST
+                          decimals: 18
+                      type: lp
+                    - address: '0x39814cec4e2be2536264c58adf7d22e7963e8513'
+                      name: FuseSwap G$-xVOLT
+                      symbol: FS G$-xVOLT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                          name: GoodDollar
+                          symbol: G$
+                          decimals: 2
+                        - address: '0x97a6e78c9208c21afada67e7e61d7ad27688efd1'
+                          name: VoltBar
+                          symbol: xVOLT
+                          decimals: 18
+                      type: lp
+                    - address: '0x39d6f825cc5f1aed317f8e7503ab40bcd534b688'
+                      name: FuseSwap WFUSE-RUS
+                      symbol: FS WFUSE-RUS
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x2a765e90220db42190bfce4dd1ab29aba19e91fa'
+                          name: Russia
+                          symbol: RUS
+                          decimals: 18
+                      type: lp
+                    - address: '0x3a417627d59b231ea58d1d0f4ffd036926d26f66'
+                      name: FuseSwap atUST-OM
+                      symbol: FS atUST-OM
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0d58a44be3dca0ab449965dcc2c46932547fea2f'
+                          name: UST Terra
+                          symbol: atUST
+                          decimals: 18
+                        - address: '0x7f59ae3a787c0d1d640f99883d0e48c22188c54f'
+                          name: MANTRA DAO on Fuse
+                          symbol: OM
+                          decimals: 18
+                      type: lp
+                    - address: '0x3a75caf6ca5a4c50d7221484a20f3d98fa524afb'
+                      name: FuseSwap WFUSE-TEA2
+                      symbol: FS WFUSE-TEA2
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xb0512d209e0819971721457571119452824f5421'
+                          name: 'Tea 2 Arnie '
+                          symbol: TEA2
+                          decimals: 18
+                      type: lp
+                    - address: '0x3a8be5dbccbf2eab6f9ba3c69eba5e468c03e213'
+                      name: FuseSwap WFUSE-fBONK
+                      symbol: FS WFUSE-fBONK
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x205cdc197afb73490f813c42e8e8a5fb7a801ce3'
+                          name: FuseBonk
+                          symbol: fBONK
+                          decimals: 18
+                      type: lp
+                    - address: '0x3b085fa40fbfedcb2bc6a60b18d868370ea38205'
+                      name: FuseSwap ECT-TALL
+                      symbol: FS ECT-TALL
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x62ec2b11bf428f0e9048a5a90e6d27c3224aa769'
+                          name: EcoHub Technology
+                          symbol: ECT
+                          decimals: 18
+                        - address: '0xfa27aa37df8072bd29afed8f1827158afc90ca90'
+                          name: TALLER
+                          symbol: TALL
+                          decimals: 18
+                      type: lp
+                    - address: '0x3b72937b56fafb3537814569c5fe624e51eb6631'
+                      name: FuseSwap WFUSE-XMN
+                      symbol: FS WFUSE-XMN
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xcf153fc756d062bc6c8f0712c4e8c348ca9be214'
+                          name: Metronotes
+                          symbol: XMN
+                          decimals: 9
+                      type: lp
+                    - address: '0x3cea69bcc6d1e92f84f43a173f22844df33285a5'
+                      name: FuseSwap atUST-VOLT
+                      symbol: FS atUST-VOLT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0d58a44be3dca0ab449965dcc2c46932547fea2f'
+                          name: UST Terra
+                          symbol: atUST
+                          decimals: 18
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                      type: lp
+                    - address: '0x3da3aa17e48a3e8f0a29841c29b7086ec64d280b'
+                      name: FuseSwap WFUSE-WHA
+                      symbol: FS WFUSE-WHA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xd1b6c7dc89377da5743bf146404deb7b37d3c4a2'
+                          name: WhalesClub
+                          symbol: WHA
+                          decimals: 18
+                      type: lp
+                    - address: '0x3dab5039df30633bc3b903bb6a53ad0a1323d4f3'
+                      name: FuseSwap DZD-DORO
+                      symbol: FS DZD-DORO
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x56938eb82e11444310e098602a6d07f3ec2a9aa4'
+                          name: امارة الجزائر
+                          symbol: DZD
+                          decimals: 18
+                        - address: '0xf8eb85cca8529478a795c4c4f51cf0845b9bd591'
+                          name: Doro
+                          symbol: DORO
+                          decimals: 18
+                      type: lp
+                    - address: '0x3de556dd9b60fa58a433a88e9dad5a128aeb86b2'
+                      name: FuseSwap WFUSE-ICETEA
+                      symbol: FS WFUSE-ICETEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x7fb7d21c31e2e7d1b89e6bd11db61e89d754c295'
+                          name: Ice mofkn Tea
+                          symbol: ICETEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x3f8f420749caa0c8c1d8cba192b1911a08c42bbd'
+                      name: FuseSwap WFUSE-EARLGREY
+                      symbol: FS WFUSE-EARLGREY
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x860767ddb3b47e4f8f30a861783d605f7d90d5e5'
+                          name: Earl Grey Tea
+                          symbol: EARLGREY
+                          decimals: 18
+                      type: lp
+                    - address: '0x408d11234be51b5819ea31cd20417d97b7a001aa'
+                      name: FuseSwap WFUSE-USDN
+                      symbol: FS WFUSE-USDN
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x116541bc82066661f5d5891d2869fe7222dc5116'
+                          name: USDN
+                          symbol: USDN
+                          decimals: 18
+                      type: lp
+                    - address: '0x40a13e5a3589eba2bb5349a3a367a0b50619d319'
+                      name: FuseSwap fUSD-G$
+                      symbol: FS fUSD-G$
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x249be57637d8b013ad64785404b24aebae9b098b'
+                          name: Fuse Dollar
+                          symbol: fUSD
+                          decimals: 18
+                        - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                          name: GoodDollar
+                          symbol: G$
+                          decimals: 2
+                      type: lp
+                    - address: '0x40be7c4494a8932717f55bcbb1d3f13497ae15a7'
+                      name: FuseSwap TEABOX-TEA
+                      symbol: FS TEABOX-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                        - address: '0xfc89c5d2d5c932d97da9c1219ce396bf6a756ad0'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x41a88c27564a5304194d85ccb7d5f1d0313970f3'
+                      name: FuseSwap WFUSE-ELK
+                      symbol: FS WFUSE-ELK
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xe1c110e1b1b4a1ded0caf3e42bfbdbb7b5d7ce1c'
+                          name: Elk
+                          symbol: ELK
+                          decimals: 18
+                      type: lp
+                    - address: '0x421b32cc18f93c2fea2d4c5f67bc45c7e151102f'
+                      name: FuseSwap fUSD-ELK
+                      symbol: FS fUSD-ELK
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x249be57637d8b013ad64785404b24aebae9b098b'
+                          name: Fuse Dollar
+                          symbol: fUSD
+                          decimals: 18
+                        - address: '0xe1c110e1b1b4a1ded0caf3e42bfbdbb7b5d7ce1c'
+                          name: Elk
+                          symbol: ELK
+                          decimals: 18
+                      type: lp
+                    - address: '0x4349078c6067f6d55a0fc98a7a4618cdb5d2b090'
+                      name: FuseSwap WFUSE-GNC
+                      symbol: FS WFUSE-GNC
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xdc327929b8f366e1ab76060897c684181f9e4047'
+                          name: Good$ News Coin
+                          symbol: GNC
+                          decimals: 18
+                      type: lp
+                    - address: '0x4365fd1f38c87dea9ac8a72aa880635d5afcfdcb'
+                      name: FuseSwap fUSD-O.T.
+                      symbol: FS fUSD-O.T.
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x249be57637d8b013ad64785404b24aebae9b098b'
+                          name: Fuse Dollar
+                          symbol: fUSD
+                          decimals: 18
+                        - address: '0xf8b71c109598ff7ad48d732074286ddc1860ac98'
+                          name: Operai token
+                          symbol: O.T.
+                          decimals: 18
+                      type: lp
+                    - address: '0x43a3dd2ddf9e7654512c70f1d6e4955b63f0c674'
+                      name: FuseSwap WISH-TRE
+                      symbol: FS WISH-TRE
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x97b81359bd546117dd242ddcaf2be6b77d9a0a31'
+                          name: WISHDollar
+                          symbol: WISH
+                          decimals: 18
+                        - address: '0xf5bde5935ec87e074b207d54ab42b9c9fa90b332'
+                          name: TreasuryDAO
+                          symbol: TRE
+                          decimals: 18
+                      type: lp
+                    - address: '0x445952b8ced45ae5f6339578e96b46e4b31b9f5b'
+                      name: FuseSwap WFUSE-nGEN
+                      symbol: FS WFUSE-nGEN
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x46266f16ada18d738edb217eb4740e207d27f71e'
+                          name: NextGen
+                          symbol: nGEN
+                          decimals: 18
+                      type: lp
+                    - address: '0x45746474bfbdeeb5498c5e0956e76c897434d83f'
+                      name: FuseSwap WFUSE-ofUSD
+                      symbol: FS WFUSE-ofUSD
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x98fee9f4c3c97c26147ae7314f9c93b965a9bc44'
+                          name: Ola Fuse Dollar
+                          symbol: ofUSD
+                          decimals: 8
+                      type: lp
+                    - address: '0x476fe2af67a0eb61690eb152cfc79e4d95ab2e0d'
+                      name: FuseSwap TEABOX-ICETEA
+                      symbol: FS TEABOX-ICETEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                        - address: '0x7fb7d21c31e2e7d1b89e6bd11db61e89d754c295'
+                          name: Ice mofkn Tea
+                          symbol: ICETEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x48515f859e44161bf67ae610a7c83f53b0048713'
+                      name: FuseSwap WFUSE-AMP
+                      symbol: FS WFUSE-AMP
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x2b09179d26fddb27a24ee25328890791c7a984c2'
+                          name: Ampere
+                          symbol: AMP
+                          decimals: 18
+                      type: lp
+                    - address: '0x4c96ed8cdd8e14224181fbfcd417cb4c044cd1ab'
+                      name: FuseSwap ZODJ-DIR
+                      symbol: FS ZODJ-DIR
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0xbd8f8d3a48767f14384b0fb87b5e4bc6d55b5cca'
+                          name: ZOODJ
+                          symbol: ZODJ
+                          decimals: 18
+                        - address: '0xe5b6ff5e9df4858e8e65119dd259c40dbd9808d7'
+                          name: Dirham
+                          symbol: DIR
+                          decimals: 18
+                      type: lp
+                    - address: '0x4e6b54f8dee787b16d8cdba4f759342b19239c2c'
+                      name: FuseSwap fUSD-VOLT
+                      symbol: FS fUSD-VOLT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x249be57637d8b013ad64785404b24aebae9b098b'
+                          name: Fuse Dollar
+                          symbol: fUSD
+                          decimals: 18
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                      type: lp
+                    - address: '0x4e827d4b8de35fbac6479166cecef722c9734884'
+                      name: FuseSwap WFUSE-KLG
+                      symbol: FS WFUSE-KLG
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x1f1536f680b559f4fce71a0f7687855b666aaffd'
+                          name: Klondike Game
+                          symbol: KLG
+                          decimals: 18
+                      type: lp
+                    - address: '0x4eb876bd1e8e4cd4594557890d52ee327bf1b7b2'
+                      name: FuseSwap VOLT-BNB
+                      symbol: FS VOLT-BNB
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                        - address: '0x6acb34b1df86e254b544189ec32cf737e2482058'
+                          name: BNB on Fuse
+                          symbol: BNB
+                          decimals: 18
+                      type: lp
+                    - address: '0x500069f92383a27e37cf30dc9f5447bcb6753bf6'
+                      name: FuseSwap TT1-TT0
+                      symbol: FS TT1-TT0
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x3d0fe9a260ca17ec718f1aef998a8b8faeb054b1'
+                          name: TT1
+                          symbol: TT1
+                          decimals: 18
+                        - address: '0x95fdc0cc3b7adc287868d04555bf2c155f19f5f6'
+                          name: TT0
+                          symbol: TT0
+                          decimals: 18
+                      type: lp
+                    - address: '0x5000b5d9227e55249ca86591dde1bc76a12e34d3'
+                      name: FuseSwap WFUSE-ANNA
+                      symbol: FS WFUSE-ANNA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xdf8ce7bf3a52363a0f1377ff2471579f23f82fd7'
+                          name: AnnaCoin
+                          symbol: ANNA
+                          decimals: 18
+                      type: lp
+                    - address: '0x5048f2b16a314f255a7ccc8f6f5d92b1548a42ac'
+                      name: FuseSwap !RFi-FLEN
+                      symbol: FS !RFi-FLEN
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x3cf63dac815a9a898f6030ab7301bb57f21d0295'
+                          name: '!Rewardyfi'
+                          symbol: '!RFi'
+                          decimals: 18
+                        - address: '0x73bce32aba4d62772701a7cdb1acf82b46640603'
+                          name: FLENcrypto
+                          symbol: FLEN
+                          decimals: 18
+                      type: lp
+                    - address: '0x509eaa390538602a317e9910aed06f08a5703186'
+                      name: FuseSwap AMP-VOLT
+                      symbol: FS AMP-VOLT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x2b09179d26fddb27a24ee25328890791c7a984c2'
+                          name: Ampere
+                          symbol: AMP
+                          decimals: 18
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                      type: lp
+                    - address: '0x520ad1c0aa7c7fbb0273dfa9be6175d87de56c45'
+                      name: FuseSwap WFUSE-TEACAKE
+                      symbol: FS WFUSE-TEACAKE
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x5f4979c440c8dc463cc15e4e68aea59ef04de2e2'
+                          name: Tea Cake
+                          symbol: TEACAKE
+                          decimals: 18
+                      type: lp
+                    - address: '0x52c3341152f5714dbc36a6fa6936d042aaaaa370'
+                      name: FuseSwap DEXT-OM
+                      symbol: FS DEXT-OM
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x2f60a843302f1be3fa87429ca9d684f9091b003c'
+                          name: DEXTools on Fuse
+                          symbol: DEXT
+                          decimals: 18
+                        - address: '0x7f59ae3a787c0d1d640f99883d0e48c22188c54f'
+                          name: MANTRA DAO on Fuse
+                          symbol: OM
+                          decimals: 18
+                      type: lp
+                    - address: '0x5484150682bfb3d655faff28b3ac0295ca5a1222'
+                      name: FuseSwap WFUSE-WBTC
+                      symbol: FS WFUSE-WBTC
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x33284f95ccb7b948d9d352e1439561cf83d8d00d'
+                          name: Wrapped BTC on Fuse
+                          symbol: WBTC
+                          decimals: 8
+                      type: lp
+                    - address: '0x58d100a006d72cad10bb90cbe7255b0348b17bac'
+                      name: FuseSwap WFUSE-kyn
+                      symbol: FS WFUSE-kyn
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x3246707f8fdb116af7843e5d1708bd989c0e3f49'
+                          name: kyphon
+                          symbol: kyn
+                          decimals: 9
+                      type: lp
+                    - address: '0x58e74babae7f45217f9f308f4989a41ebd24bed0'
+                      name: FuseSwap WFUSE-SUSHI
+                      symbol: FS WFUSE-SUSHI
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x90708b20ccc1eb95a4fa7c8b18fd2c22a0ff9e78'
+                          name: SushiToken on Fuse
+                          symbol: SUSHI
+                          decimals: 18
+                      type: lp
+                    - address: '0x5a120b75cb0b387428b93e884ebe20a1602c2407'
+                      name: FuseSwap SOUL-KROM
+                      symbol: FS SOUL-KROM
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0ad7aa09074ee67dc2507cb66b9fb74ae2c398ea'
+                          name: EternalSoul
+                          symbol: SOUL
+                          decimals: 18
+                        - address: '0xf20feba0159d481ddc34a4a799600bde14a7572e'
+                          name: KROMOS.WORLD
+                          symbol: KROM
+                          decimals: 18
+                      type: lp
+                    - address: '0x5b0cd206c84e7418d0394c7d93cd390fadbff748'
+                      name: FuseSwap GRT-KNC
+                      symbol: FS GRT-KNC
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x025a4c577198d116ea499193e6d735fdb2e6e841'
+                          name: Graph Token on Fuse
+                          symbol: GRT
+                          decimals: 18
+                        - address: '0x43b17749b246fd2a96de25d9e4184e27e09765b0'
+                          name: Kyber Network Crystal on Fuse
+                          symbol: KNC
+                          decimals: 18
+                      type: lp
+                    - address: '0x5b33f683e1526aa4435c51452872e4c603f2df0e'
+                      name: FuseSwap FUCK-TEA
+                      symbol: FS FUCK-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0xd225672ed2c500a50b476699ccdc78c3430f8fe9'
+                          name: Zero Fucks FUSE
+                          symbol: FUCK
+                          decimals: 18
+                        - address: '0xfc89c5d2d5c932d97da9c1219ce396bf6a756ad0'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x5bf65ecf686d782c2876fb5d12d39fe04ddcbef7'
+                      name: FuseSwap WFUSE-TEA
+                      symbol: FS WFUSE-TEA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xff805f6bd4f5143cd0c5468448a0bed28c4eb501'
+                          name: TeaToken
+                          symbol: TEA
+                          decimals: 18
+                      type: lp
+                    - address: '0x5e4a2cf00bbb37276c1546d9b0e5a11dba1bc38f'
+                      name: FuseSwap BNB-SUSHI
+                      symbol: FS BNB-SUSHI
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x6acb34b1df86e254b544189ec32cf737e2482058'
+                          name: BNB on Fuse
+                          symbol: BNB
+                          decimals: 18
+                        - address: '0x90708b20ccc1eb95a4fa7c8b18fd2c22a0ff9e78'
+                          name: SushiToken on Fuse
+                          symbol: SUSHI
+                          decimals: 18
+                      type: lp
+                    - address: '0x5e79ed269a302fa78329088fd0134f27d9bbfe04'
+                      name: FuseSwap WFUSE-CAM
+                      symbol: FS WFUSE-CAM
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x5aacc59858d12980a23acaeb44da64022f19c6a6'
+                          name: campen
+                          symbol: CAM
+                          decimals: 18
+                      type: lp
+                    - address: '0x5ed9e0f0f0fc0cea0c3ea20456203b4ba6a10e63'
+                      name: FuseSwap WBTC-atLUNA
+                      symbol: FS WBTC-atLUNA
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x33284f95ccb7b948d9d352e1439561cf83d8d00d'
+                          name: Wrapped BTC on Fuse
+                          symbol: WBTC
+                          decimals: 8
+                        - address: '0x588e24ded8f850b14bb2e62e9c50a7cd5ee13da9'
+                          name: Luna Terra
+                          symbol: atLUNA
+                          decimals: 18
+                      type: lp
+                    - address: '0x5fe9eb307a49e4222fbf38a3c9134ace64947af7'
+                      name: FuseSwap VOLT-xVOLT
+                      symbol: FS VOLT-xVOLT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                        - address: '0x97a6e78c9208c21afada67e7e61d7ad27688efd1'
+                          name: VoltBar
+                          symbol: xVOLT
+                          decimals: 18
+                      type: lp
+                    - address: '0x603733a3c367833cabf0a0f8133254753eb21e8a'
+                      name: FuseSwap WFUSE-EDV
+                      symbol: FS WFUSE-EDV
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x933dae44bd17f7a2ca4de14b9e4270428143edd5'
+                          name: EcoAdventus Manufacturing Ecosystem
+                          symbol: EDV
+                          decimals: 18
+                      type: lp
+                    - address: '0x62e1e03826c11aaefefab53b11be0db071208409'
+                      name: FuseSwap WFUSE-LQF
+                      symbol: FS WFUSE-LQF
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x2478a7db43bf50d77e35ef96ae467c6238d43f30'
+                          name: LiquifiedDao
+                          symbol: LQF
+                          decimals: 18
+                      type: lp
+                    - address: '0x6348cd5b574c9d13791d21c920c93e60093f75f0'
+                      name: FuseSwap PHX-fUSD
+                      symbol: FS PHX-fUSD
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0e645bc159954de5b32c700e7c95ed98432ae406'
+                          name: Phalanx
+                          symbol: PHX
+                          decimals: 18
+                        - address: '0x249be57637d8b013ad64785404b24aebae9b098b'
+                          name: Fuse Dollar
+                          symbol: fUSD
+                          decimals: 18
+                      type: lp
+                    - address: '0x636ae0bc5388b63eb288ce1e8d08e5c62082cf6e'
+                      name: FuseSwap WETH-RMPL
+                      symbol: FS WETH-RMPL
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0xa722c13135930332eb3d749b2f0906559d2c5b99'
+                          name: Wrapped Ether on Fuse
+                          symbol: WETH
+                          decimals: 18
+                        - address: '0xdf6748bf94cd3e49ba51bff000be56cb57d7d1ac'
+                          name: RMPL
+                          symbol: RMPL
+                          decimals: 2
+                      type: lp
+                    - address: '0x643cd7fea823a84e09a9ccbe907e8470ff49d813'
+                      name: FuseSwap KLG-TALL
+                      symbol: FS KLG-TALL
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x5065056e89ae48c07e7056be63581e3a766deef9'
+                          name: Klondike Game
+                          symbol: KLG
+                          decimals: 18
+                        - address: '0xfa27aa37df8072bd29afed8f1827158afc90ca90'
+                          name: TALLER
+                          symbol: TALL
+                          decimals: 18
+                      type: lp
+                    - address: '0x6561948f8540abaad4f639518bff6f774dd56cbb'
+                      name: FuseSwap WFUSE-FIT
+                      symbol: FS WFUSE-FIT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x5db286d4e6f9b1848b4bf1b2a824897eacae1d85'
+                          name: FUSE-IT
+                          symbol: FIT
+                          decimals: 18
+                      type: lp
+                    - address: '0x6653df5b3a288a5e12e4550b50d134069880aedf'
+                      name: FuseSwap WFUSE-v2
+                      symbol: FS WFUSE-v2
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x464864b3e34169f42a7c9818902bdf7991603c55'
+                          name: Test v2
+                          symbol: v2
+                          decimals: 18
+                      type: lp
+                    - address: '0x691bb2618f14af6b6cae07e327dd08a04f905283'
+                      name: FuseSwap TT1-TT2
+                      symbol: FS TT1-TT2
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x3d0fe9a260ca17ec718f1aef998a8b8faeb054b1'
+                          name: TT1
+                          symbol: TT1
+                          decimals: 18
+                        - address: '0x7c03dd82d39836a364f38b13477bdedeb8b10689'
+                          name: TT2
+                          symbol: TT2
+                          decimals: 18
+                      type: lp
+                    - address: '0x6b2187c352c74d431fa9cf4af008b8f77265f664'
+                      name: FuseSwap WFUSE-TEABOX
+                      symbol: FS WFUSE-TEABOX
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x4888bc54a0225915c0c9ab2d67a4dbd157f0cf08'
+                          name: Tea Box Tea Pair Token
+                          symbol: TEABOX
+                          decimals: 18
+                      type: lp
+                    - address: '0x6cb7b90f5c4395f185fb0e7404b08c09aa4badc5'
+                      name: FuseSwap USDC-LJI
+                      symbol: FS USDC-LJI
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5'
+                          name: USD Coin on Fuse
+                          symbol: USDC
+                          decimals: 6
+                        - address: '0xf30951291329b880a2929718d7165bb671fbf1d5'
+                          name: Lanelle Jones Investments
+                          symbol: LJI
+                          decimals: 18
+                      type: lp
+                    - address: '0x6dfa5b6e89ea8e48314549811a06d6c41699ec3f'
+                      name: FuseSwap WFUSE-DEXT
+                      symbol: FS WFUSE-DEXT
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x92c9dd8f3c443d75949a1b46f2878cacc1089de5'
+                          name: DEXTools on Fuse
+                          symbol: DEXT
+                          decimals: 18
+                      type: lp
+                    - address: '0x6dff4d9efe5531d8bf3fca0a9f2ac9f95fef57b6'
+                      name: FuseSwap WFUSE-STC
+                      symbol: FS WFUSE-STC
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xfb57f2c8e5db459e290f7a570afbcdaa9ab7ec86'
+                          name: STC
+                          symbol: STC
+                          decimals: 18
+                      type: lp
+                    - address: '0x6e04d9d7bea0f00268f488486aa1a150bae09796'
+                      name: FuseSwap KLG-SAI
+                      symbol: FS KLG-SAI
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x1f1536f680b559f4fce71a0f7687855b666aaffd'
+                          name: Klondike Game
+                          symbol: KLG
+                          decimals: 18
+                        - address: '0xee46339b290da3e093f4aa68955bcb94f4a67c10'
+                          name: 'Satellite internet '
+                          symbol: SAI
+                          decimals: 18
+                      type: lp
+                    - address: '0x6e82118a8ea3c7f6a97a67d078886d93c4f8e632'
+                      name: FuseSwap WFUSE-BABYFUSEv2
+                      symbol: FS WFUSE-BABYFUSEv2
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xe260ed9cf92933d1363a7d5581e2bf8ea2ea668f'
+                          name: BABY FUSE V2
+                          symbol: BABYFUSEv2
+                          decimals: 18
+                      type: lp
+                    - address: '0x70a9fc95f7e5de03d1564348c118422d3ba6d187'
+                      name: FuseSwap G$-DORO
+                      symbol: FS G$-DORO
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x495d133b938596c9984d462f007b676bdc57ecec'
+                          name: GoodDollar
+                          symbol: G$
+                          decimals: 2
+                        - address: '0xf8eb85cca8529478a795c4c4f51cf0845b9bd591'
+                          name: Doro
+                          symbol: DORO
+                          decimals: 18
+                      type: lp
+                    - address: '0x716a1927ab6353f953139f76f4fbc416ba8607d2'
+                      name: FuseSwap WFUSE-agEUR
+                      symbol: FS WFUSE-agEUR
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xa4435eb3d9819024b4efebcf52ccf9b947d23561'
+                          name: agEUR on Fuse
+                          symbol: agEUR
+                          decimals: 18
+                      type: lp
+                    - address: '0x73f926924001d98136a7ec8a704bfd56aea4c8ef'
+                      name: FuseSwap VOLT-Y90
+                      symbol: FS VOLT-Y90
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4'
+                          name: VoltToken
+                          symbol: VOLT
+                          decimals: 18
+                        - address: '0xe29270c4387684c6492fe690508e31740cfd4458'
+                          name: y1990's
+                          symbol: Y90
+                          decimals: 18
+                      type: lp
+                    - address: '0x78ded7e7cffed6ecc70797e3ee816b9f8a519cbd'
+                      name: FuseSwap WFUSE-WNET
+                      symbol: FS WFUSE-WNET
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0xb75c3e1dd4105f3cf79ec7231bbd928f823b7e54'
+                          name: Wire Network
+                          symbol: WNET
+                          decimals: 18
+                      type: lp
+                    - address: '0x7b10347970687589657a1b8ae5fd1084e9de358c'
+                      name: FuseSwap WFUSE-TEABOND
+                      symbol: FS WFUSE-TEABOND
+                      decimals: 18
+                      underlyingTokens:
+                        - address: '0x0be9e53fd7edac9f859882afdda116645287c629'
+                          name: Wrapped Fuse
+                          symbol: WFUSE
+                          decimals: 18
+                        - address: '0x2247af351ef8457feec923898398eca477c1413e'
+                          name: Tea Bond
+                          symbol: TEABOND
+                          decimals: 18
+                      type: lp

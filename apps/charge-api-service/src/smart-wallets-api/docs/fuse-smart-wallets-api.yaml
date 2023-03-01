@@ -1,0 +1,286 @@
+openapi: 3.0.0
+info:
+  title: Smart Wallets API
+  version: 1.0.0
+servers:
+  - url: https://api.fuse.io
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /api/v1/smart-wallets/auth:
+    post:
+      tags:
+        - Smart Wallets
+      summary: Auth
+      description: Authenticate user using signed data standard EIP-191
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hash:
+                  type: string
+                  example: "0xf9054fd2b85014d5abf30608cf2d8f9712232d203b427a7c46c6785710f880d9"
+                signature:
+                  type: string
+                  example: "0x387810a84b3f39d9b79d08c7a2095e0a60c200199b0355e1199630ca1e623cf7564a4e3126a01ff43472399cf7087a361c44a3c125f216ed82cae175951243431b"
+                ownerAddress:
+                  type: string
+                  example: "0x199DC49d8187EeA58649F7cA387e2226d4155C94"
+              example:
+                hash: >-
+                  0xf9054fd2b85014d5abf30608cf2d8f9712232d203b427a7c46c6785710f880d9
+                signature: >-
+                  0x387810a84b3f39d9b79d08c7a2095e0a60c200199b0355e1199630ca1e623cf7564a4e3126a01ff43472399cf7087a361c44a3c125f216ed82cae175951243431b
+                ownerAddress: "0x199DC49d8187EeA58649F7cA387e2226d4155C94"
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: "{{publicKey}}"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                jwt: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lckFkZHJlc3MiOiIweDgwOUI3ODM3MWY1MGYyOEQyQzYxRjYzZTQ4YjU4YjdFZTA1M0UzRWEiLCJwcm9qZWN0SWQiOiI2M2NkMWJjMWQxOGMxNjQyMmJiOGMwYzMiLCJpYXQiOjE2NzUzMjcxOTR9.-iWIEN6OLyCI4j5WOA8V2mH3KQtrmEoUGhIS4migV9g
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 400
+                errorMessage: Owner Address does not match recovered address in signature
+                path: /api/v1/smart-wallets/auth?apiKey={{publicKey}}
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                errorMessage:
+                  statusCode: 403
+                  message: Forbidden resource
+                  error: Forbidden
+                path: >-
+                  /api/v1/smart-wallets/auth?apiKey={{publicKey}}
+  /api/v1/smart-wallets/create:
+    post:
+      tags:
+        - Smart Wallets
+      summary: Create Wallet
+      description: Create a smart wallet for the authenticated user
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: "{{publicKey}}"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                connectionUrl: ws://localhost:5007
+                transactionId: >-
+                  0x06515e558ba48471b24096015ef763ae034ad933ddae1800a4e79459bd310ffb
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                errorMessage:
+                  statusCode: 403
+                  message: Forbidden resource
+                  error: Forbidden
+                path: >-
+                  /api/v1/smart-wallets/create?apiKey={{publicKey}}
+  /api/v1/smart-wallets:
+    get:
+      tags:
+        - Smart Wallets
+      summary: Get Wallet
+      description: Get the smart wallet of the authenticated user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: "{{publicKey}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                ownerAddress: "0x199DC49d8187EeA58649F7cA387e2226d4155C94"
+                smartWalletAddress: "0x545d3dD729d848023938D5F94af2346868EED7b9"
+                walletModules:
+                  GuardianManager: "0xC1254443B6b9E5b5714D57ae3Af16FE9D220775D"
+                  LockManager: "0x370672167439e399cE753963E31E26EEB5bfaf6c"
+                  RecoveryManager: "0xA85aA96857cBdEb5C7e88a59772E6E7170986f02"
+                  ApprovedTransfer: "0x959f0fF280EAF7BB1b57ec75AC777aB863f82736"
+                  TransferManager: "0xF66e26Fd99F4687CC29148BE2e331df2e49E249E"
+                  NftTransfer: "0xe713Ec7D3516d65966c5DeA3CF78EFE1DcaDd47B"
+                  TokenExchanger: "0xd636460D8866430EbDeDb5A3AE4f19D0735fD1B7"
+                  CommunityManager: "0x9585db67ab966Ec8dfDdc47bAD9cE46905A5a0e1"
+                  WalletOwnershipManager: "0xfE0B31C96FE5929849D8D48C56c428d935dDfE00"
+                networks:
+                  - fuse
+                version: 1.7.0
+                paddedVersion: 0001.0007.0000
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                errorMessage:
+                  statusCode: 403
+                  message: Forbidden resource
+                  error: Forbidden
+                path: >-
+                  /api/v1/smart-wallets?apiKey={{publicKey}}
+  /api/v1/smart-wallets/relay:
+    post:
+      tags:
+        - Smart Wallets
+      summary: Relay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gasPrice:
+                  type: number
+                  example: 0
+                gasLimit:
+                  type: string
+                  example: 700000
+                transactionBody:
+                  type: object
+                  example:
+                    status: pending
+                    from: "0x545d3dD729d848023938D5F94af2346868EED7b9"
+                    to: "0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088"
+                    value: 1000000000000000
+                    type: SEND
+                    asset: FUSE
+                    tokenName: FuseToken
+                    tokenSymbol: FUSE
+                    tokenDecimal: 18
+                    tokenAddress: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+                walletAddress:
+                  type: string
+                  example: "0x545d3dD729d848023938D5F94af2346868EED7b9"
+                walletModuleAddress:
+                  type: string
+                  example: "0xF66e26Fd99F4687CC29148BE2e331df2e49E249E"
+                data:
+                  type: string
+                  example: "0x2df546f4000000000000000000000000545d3dd729d848023938d5f94af2346868eed7b9000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000007ceabc27b1dc6a065fad85a86afbaf97f769208800000000000000000000000000000000000000000000000000038d7ea4c6800000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000"
+                nonce:
+                  type: string
+                  example: "0x000000000000000000000000008800ae000000000000000000000186127a87f6"
+                methodName:
+                  type: string
+                  example: "transferToken"
+                signature:
+                  type: string
+                  example: "0x0943cb68c40fe495be75dca17ee4e577a5aa7051949cd837f073d470694705cc75013e034e1dba7a799f432a9be3ed45305d5b299a2ed8c61c8581f1a868099c1c"
+                walletModule:
+                  type: string
+                  example: "TransferManager"
+              example:
+                gasPrice: 0
+                gasLimit: 700000
+                relayBody: null
+                txMetadata: null
+                transactionBody:
+                  status: pending
+                  from: "0x545d3dD729d848023938D5F94af2346868EED7b9"
+                  to: "0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088"
+                  value: 1000000000000000
+                  type: SEND
+                  asset: FUSE
+                  tokenName: FuseToken
+                  tokenSymbol: FUSE
+                  tokenDecimal: 18
+                  tokenAddress: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+                walletAddress: "0x545d3dD729d848023938D5F94af2346868EED7b9"
+                walletModuleAddress: "0xF66e26Fd99F4687CC29148BE2e331df2e49E249E"
+                data: >-
+                  0x2df546f4000000000000000000000000545d3dd729d848023938d5f94af2346868eed7b9000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000007ceabc27b1dc6a065fad85a86afbaf97f769208800000000000000000000000000000000000000000000000000038d7ea4c6800000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000
+                nonce: >-
+                  0x000000000000000000000000008800ae000000000000000000000186127a87f6
+                methodName: transferToken
+                signature: >-
+                  0x0943cb68c40fe495be75dca17ee4e577a5aa7051949cd837f073d470694705cc75013e034e1dba7a799f432a9be3ed45305d5b299a2ed8c61c8581f1a868099c1c
+                walletModule: TransferManager
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: "{{publicKey}}"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                connectionUrl: ws://localhost:5007
+                transactionId: >-
+                  0xc314fe5bcf9cf5dcb600da9673b779972e63622af73f62629700dfb04c1cb853
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                errorMessage:
+                  statusCode: 403
+                  message: Forbidden resource
+                  error: Forbidden
+                path: >-
+                  /api/v1/smart-wallets/relay?apiKey={{publicKey}}

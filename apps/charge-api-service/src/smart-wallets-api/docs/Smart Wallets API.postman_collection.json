@@ -518,7 +518,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/historical_txs?apiKey={{publicKey}}",
+					"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/historical_txs?apiKey={{publicKey}}&page=1&updatedAt=0&tokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
 					"host": [
 						"{{baseUrlAPI}}"
 					],
@@ -531,13 +531,186 @@
 					"query": [
 						{
 							"key": "apiKey",
-							"value": "{{publicKey}}",
-							"description": "(Required) Your Public API key"
+							"value": "{{publicKey}}"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "updatedAt",
+							"value": "0"
+						},
+						{
+							"key": "tokenAddress",
+							"value": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/historical_txs?apiKey=pk_F7gisUhUTV5LyiNcftikb0UL&page=1&updatedAt=0&tokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"protocol": "https",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"historical_txs"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "updatedAt",
+									"value": "0"
+								},
+								{
+									"key": "tokenAddress",
+									"value": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 17:12:58 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx/1.21.3"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e33-MQBseJOYiSNEW4QimimojHEs+o8\""
+						},
+						{
+							"key": "Front-End-Https",
+							"value": "on"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"docs\": [\n            {\n                \"_id\": \"63f488d2ad300586076c69a4\",\n                \"name\": \"createWallet\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [],\n                \"job\": \"63f488d2ad300586076c69a2\",\n                \"data\": {\n                    \"value\": \"0\",\n                    \"txHash\": \"0x29aa2d08050354e4d267c2d6c49fbd3c9fb1bfd8c8f69482b49a127e922ad1b0\",\n                    \"status\": \"succeeded\",\n                    \"blockNumber\": 21882367\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T09:03:14.148Z\",\n                \"updatedAt\": \"2023-02-21T09:03:15.492Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f48944ad300586076c6b76\",\n                \"name\": \"receiveTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0x039968b2746fd3067ea972d50d602e9c4bd32ec807b6cddc77d8afa1baf5f762\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\",\n                    \"tokenName\": \"FUSE\",\n                    \"tokenSymbol\": \"FUSE\",\n                    \"tokenDecimal\": 18,\n                    \"asset\": \"FUSE\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"FUSE\",\n                    \"value\": \"1000000000000000000\",\n                    \"tokenAddress\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n                    \"timeStamp\": \"1676970308\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T09:05:08.388Z\",\n                \"updatedAt\": \"2023-02-21T09:05:08.388Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4cc9fad300586076cc66e\",\n                \"name\": \"receiveNFT\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xd08a296d68f553938b96de150f3f18a14be5629f\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0xda410fee6ad245c3cd1075f685b3f6d5bd82501e5fcc70688d349155d519bbfe\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\",\n                    \"tokenName\": \"AmazingHorses\",\n                    \"tokenSymbol\": \"AMZ\",\n                    \"tokenDecimal\": null,\n                    \"asset\": \"AMZ\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"ERC-721\",\n                    \"value\": \"NaN\",\n                    \"tokenAddress\": \"0xd08a296d68f553938b96de150f3f18a14be5629f\",\n                    \"timeStamp\": \"1676987552\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T13:52:31.654Z\",\n                \"updatedAt\": \"2023-02-21T13:52:31.654Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4cd53ad300586076cc70a\",\n                \"name\": \"receiveNFT\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xd08a296d68f553938b96de150f3f18a14be5629f\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0xa5f5b763ecfd420e1e2a2db2726378637c27738e312fb951e1f91a5c6a3b652f\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\",\n                    \"tokenName\": \"AmazingHorses\",\n                    \"tokenSymbol\": \"AMZ\",\n                    \"tokenDecimal\": null,\n                    \"asset\": \"AMZ\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"ERC-721\",\n                    \"value\": \"NaN\",\n                    \"tokenAddress\": \"0xd08a296d68f553938b96de150f3f18a14be5629f\",\n                    \"timeStamp\": \"1676987732\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T13:55:31.523Z\",\n                \"updatedAt\": \"2023-02-21T13:55:31.523Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4cff5ad300586076cc86d\",\n                \"name\": \"receiveTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0x93c197a6e6da7f2da7c232b5ab98be32c1cb60d514599ae3346b1dd6c97a4cfc\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088\",\n                    \"tokenName\": \"FUSE\",\n                    \"tokenSymbol\": \"FUSE\",\n                    \"tokenDecimal\": 18,\n                    \"asset\": \"FUSE\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"FUSE\",\n                    \"value\": \"1000000000000000000\",\n                    \"tokenAddress\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n                    \"timeStamp\": \"1676988406\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T14:06:45.825Z\",\n                \"updatedAt\": \"2023-02-21T14:06:45.825Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4e08f20abbc6ed88e05c1\",\n                \"name\": \"receiveTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0x10432963a35696491dd98edd557c89ef581a756e8106d8336ad71609e192850e\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0xc79983b0754ac688Bf54939aDd59BDF75916fDA2\",\n                    \"tokenName\": \"USD Coin on Fuse\",\n                    \"tokenSymbol\": \"USDC\",\n                    \"tokenDecimal\": 6,\n                    \"asset\": \"USDC\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"ERC-20\",\n                    \"value\": \"81591\",\n                    \"tokenAddress\": \"0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5\",\n                    \"timeStamp\": \"1676992655\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T15:17:35.139Z\",\n                \"updatedAt\": \"2023-02-21T15:17:35.139Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4e55520abbc6ed88e0ad5\",\n                \"name\": \"receiveTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0xf1f3703c1167848db68dbdec850f2df9a4b80343618b61c9d8622c54032213b4\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5\",\n                    \"tokenName\": \"FUSE\",\n                    \"tokenSymbol\": \"FUSE\",\n                    \"tokenDecimal\": 18,\n                    \"asset\": \"FUSE\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"FUSE\",\n                    \"value\": \"609144132954467250\",\n                    \"tokenAddress\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n                    \"timeStamp\": \"1676993878\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T15:37:57.607Z\",\n                \"updatedAt\": \"2023-02-21T15:37:57.607Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4e97720abbc6ed88e1020\",\n                \"name\": \"receiveTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0xf256e0673eb65a7420cab562dd9b707e9a2013f29e8cf0f36525eb429e5b21e4\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5\",\n                    \"tokenName\": \"FUSE\",\n                    \"tokenSymbol\": \"FUSE\",\n                    \"tokenDecimal\": 18,\n                    \"asset\": \"FUSE\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"FUSE\",\n                    \"value\": \"241942036554581990\",\n                    \"tokenAddress\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n                    \"timeStamp\": \"1676994935\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T15:55:35.101Z\",\n                \"updatedAt\": \"2023-02-21T15:55:35.101Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f4e99e20abbc6ed88e108a\",\n                \"name\": \"receiveTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"\n                ],\n                \"data\": {\n                    \"txHash\": \"0x7b304ec2439e1c6cb5a7b27e564b3dd664367275a527f003216a7f86a7010819\",\n                    \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"to\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                    \"from\": \"0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5\",\n                    \"tokenName\": \"FUSE\",\n                    \"tokenSymbol\": \"FUSE\",\n                    \"tokenDecimal\": 18,\n                    \"asset\": \"FUSE\",\n                    \"status\": \"succeeded\",\n                    \"tokenType\": \"FUSE\",\n                    \"value\": \"120970389826859458\",\n                    \"tokenAddress\": \"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n                    \"timeStamp\": \"1676994974\"\n                },\n                \"status\": \"succeeded\",\n                \"createdAt\": \"2023-02-21T15:56:14.111Z\",\n                \"updatedAt\": \"2023-02-21T15:56:14.111Z\",\n                \"__v\": 0\n            },\n            {\n                \"_id\": \"63f50e5d0905cd0b768c55a2\",\n                \"name\": \"swapTokens\",\n                \"walletAddress\": \"0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842\",\n                \"tokenAddress\": [\n                    \"0x0BE9e53fd7EDaC9F859882AfdDa116645287C629\",\n                    \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\"\n                ],\n                \"job\": \"63f50e5d0905cd0b768c559e\",\n                \"data\": {\n                    \"value\": \"0\",\n                    \"tokenAddress\": \"0x0be9e53fd7edac9f859882afdda116645287c629\",\n                    \"metadata\": {\n                        \"executionPrice\": \"0\",\n                        \"nextMidPrice\": \"0\",\n                        \"priceImpact\": \"0\",\n                        \"route\": [\n                            \"0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5\",\n                            \"0x0BE9e53fd7EDaC9F859882AfdDa116645287C629\"\n                        ],\n                        \"inputAmount\": \"0.01\",\n                        \"outputAmount\": \"0.120627353584457792\",\n                        \"inputToken\": \"USDC\",\n                        \"outputToken\": \"FUSE\"\n                    },\n                    \"timestamp\": \"1677004382\",\n                    \"txHash\": \"0x9cf5222cd2e744926a9bc732a6edc6ea604462050681fa5b3a426bcae5361396\",\n                    \"status\": \"failed\",\n                    \"blockNumber\": 21889191\n                },\n                \"status\": \"failed\",\n                \"createdAt\": \"2023-02-21T18:33:01.717Z\",\n                \"updatedAt\": \"2023-02-21T18:33:05.881Z\",\n                \"__v\": 0,\n                \"failReason\": \"Transaction failed due to internal contract error. One possible reason might be that the wallet doesn't have sufficient funds.\",\n                \"failedAt\": \"2023-02-21T18:33:05.880Z\"\n            }\n        ],\n        \"totalDocs\": 18,\n        \"offset\": 0,\n        \"limit\": 10,\n        \"totalPages\": 2,\n        \"page\": 1,\n        \"pagingCounter\": 1,\n        \"hasPrevPage\": false,\n        \"hasNextPage\": true,\n        \"prevPage\": null,\n        \"nextPage\": 2\n    }\n}"
+				},
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlAPI}}/api/v1/smart-wallets/historical_txs?apiKey={{publicKey}}&page=1&updatedAt=0&tokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+							"host": [
+								"{{baseUrlAPI}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"smart-wallets",
+								"historical_txs"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "updatedAt",
+									"value": "0"
+								},
+								{
+									"key": "tokenAddress",
+									"value": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+								}
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 17:13:36 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "233"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx/1.21.3"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"e9-Fh7Qh5zcFhKL0jjwCxXe63WXBmw\""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 401,\n    \"errorMessage\": {\n        \"statusCode\": 401,\n        \"message\": \"Unauthorized\"\n    },\n    \"path\": \"/api/v1/smart-wallets/historical_txs?apiKey=pk_F7gisUhUTV5LyiNcftikb0UL&page=1&updatedAt=0&tokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"\n}"
+				}
+			]
 		}
 	]
 }

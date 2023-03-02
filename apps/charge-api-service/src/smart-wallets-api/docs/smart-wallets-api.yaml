@@ -327,7 +327,7 @@ paths:
     get:
       tags:
         - Smart Wallets
-      summary: Get historical Transactions
+      summary: Get Historical Transactions
       security:
         - bearerAuth: []
       parameters:

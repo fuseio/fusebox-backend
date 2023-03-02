@@ -503,7 +503,7 @@
 			]
 		},
 		{
-			"name": "Get historical Transactions",
+			"name": "Get Historical Transactions",
 			"request": {
 				"auth": {
 					"type": "bearer",

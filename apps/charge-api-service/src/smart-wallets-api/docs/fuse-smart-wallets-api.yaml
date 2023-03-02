@@ -106,6 +106,19 @@ paths:
                 connectionUrl: ws://localhost:5007
                 transactionId: >-
                   0x06515e558ba48471b24096015ef763ae034ad933ddae1800a4e79459bd310ffb
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 401
+                errorMessage:
+                  statusCode: 401
+                  message: Unauthorized
+                path: >-
+                  /api/v1/smart-wallets/create?apiKey={{publicKey}}
         "403":
           description: Forbidden
           content:
@@ -159,6 +172,19 @@ paths:
                   - fuse
                 version: 1.7.0
                 paddedVersion: 0001.0007.0000
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 401
+                errorMessage:
+                  statusCode: 401
+                  message: Unauthorized
+                path: >-
+                  /api/v1/smart-wallets?apiKey={{publicKey}}
         "403":
           description: Forbidden
           content:
@@ -270,6 +296,19 @@ paths:
                 connectionUrl: ws://localhost:5007
                 transactionId: >-
                   0xc314fe5bcf9cf5dcb600da9673b779972e63622af73f62629700dfb04c1cb853
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 401
+                errorMessage:
+                  statusCode: 401
+                  message: Unauthorized
+                path: >-
+                  /api/v1/smart-wallets/relay?apiKey={{publicKey}}
         "403":
           description: Forbidden
           content:
@@ -284,3 +323,321 @@ paths:
                   error: Forbidden
                 path: >-
                   /api/v1/smart-wallets/relay?apiKey={{publicKey}}
+  /api/v1/smart-wallets/historical_txs:
+    get:
+      tags:
+        - Smart Wallets
+      summary: Get Historical Transactions
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: "{{publicKey}}"
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: "1"
+        - name: updatedAt
+          in: query
+          schema:
+            type: integer
+          example: "0"
+        - name: tokenAddress
+          in: query
+          schema:
+            type: string
+          example: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  docs:
+                    - _id: 63f488d2ad300586076c69a4
+                      name: createWallet
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress: []
+                      job: 63f488d2ad300586076c69a2
+                      data:
+                        value: "0"
+                        txHash: >-
+                          0x29aa2d08050354e4d267c2d6c49fbd3c9fb1bfd8c8f69482b49a127e922ad1b0
+                        status: succeeded
+                        blockNumber: 21882367
+                      status: succeeded
+                      createdAt: "2023-02-21T09:03:14.148Z"
+                      updatedAt: "2023-02-21T09:03:15.492Z"
+                      __v: 0
+                    - _id: 63f48944ad300586076c6b76
+                      name: receiveTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                      data:
+                        txHash: >-
+                          0x039968b2746fd3067ea972d50d602e9c4bd32ec807b6cddc77d8afa1baf5f762
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088"
+                        tokenName: FUSE
+                        tokenSymbol: FUSE
+                        tokenDecimal: 18
+                        asset: FUSE
+                        status: succeeded
+                        tokenType: FUSE
+                        value: "1000000000000000000"
+                        tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                        timeStamp: "1676970308"
+                      status: succeeded
+                      createdAt: "2023-02-21T09:05:08.388Z"
+                      updatedAt: "2023-02-21T09:05:08.388Z"
+                      __v: 0
+                    - _id: 63f4cc9fad300586076cc66e
+                      name: receiveNFT
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xd08a296d68f553938b96de150f3f18a14be5629f"
+                      data:
+                        txHash: >-
+                          0xda410fee6ad245c3cd1075f685b3f6d5bd82501e5fcc70688d349155d519bbfe
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088"
+                        tokenName: AmazingHorses
+                        tokenSymbol: AMZ
+                        tokenDecimal: null
+                        asset: AMZ
+                        status: succeeded
+                        tokenType: ERC-721
+                        value: NaN
+                        tokenAddress: "0xd08a296d68f553938b96de150f3f18a14be5629f"
+                        timeStamp: "1676987552"
+                      status: succeeded
+                      createdAt: "2023-02-21T13:52:31.654Z"
+                      updatedAt: "2023-02-21T13:52:31.654Z"
+                      __v: 0
+                    - _id: 63f4cd53ad300586076cc70a
+                      name: receiveNFT
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xd08a296d68f553938b96de150f3f18a14be5629f"
+                      data:
+                        txHash: >-
+                          0xa5f5b763ecfd420e1e2a2db2726378637c27738e312fb951e1f91a5c6a3b652f
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088"
+                        tokenName: AmazingHorses
+                        tokenSymbol: AMZ
+                        tokenDecimal: null
+                        asset: AMZ
+                        status: succeeded
+                        tokenType: ERC-721
+                        value: NaN
+                        tokenAddress: "0xd08a296d68f553938b96de150f3f18a14be5629f"
+                        timeStamp: "1676987732"
+                      status: succeeded
+                      createdAt: "2023-02-21T13:55:31.523Z"
+                      updatedAt: "2023-02-21T13:55:31.523Z"
+                      __v: 0
+                    - _id: 63f4cff5ad300586076cc86d
+                      name: receiveTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                      data:
+                        txHash: >-
+                          0x93c197a6e6da7f2da7c232b5ab98be32c1cb60d514599ae3346b1dd6c97a4cfc
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0x7Ceabc27B1dc6A065fAD85A86AFBaF97F7692088"
+                        tokenName: FUSE
+                        tokenSymbol: FUSE
+                        tokenDecimal: 18
+                        asset: FUSE
+                        status: succeeded
+                        tokenType: FUSE
+                        value: "1000000000000000000"
+                        tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                        timeStamp: "1676988406"
+                      status: succeeded
+                      createdAt: "2023-02-21T14:06:45.825Z"
+                      updatedAt: "2023-02-21T14:06:45.825Z"
+                      __v: 0
+                    - _id: 63f4e08f20abbc6ed88e05c1
+                      name: receiveTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5"
+                      data:
+                        txHash: >-
+                          0x10432963a35696491dd98edd557c89ef581a756e8106d8336ad71609e192850e
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0xc79983b0754ac688Bf54939aDd59BDF75916fDA2"
+                        tokenName: USD Coin on Fuse
+                        tokenSymbol: USDC
+                        tokenDecimal: 6
+                        asset: USDC
+                        status: succeeded
+                        tokenType: ERC-20
+                        value: "81591"
+                        tokenAddress: "0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5"
+                        timeStamp: "1676992655"
+                      status: succeeded
+                      createdAt: "2023-02-21T15:17:35.139Z"
+                      updatedAt: "2023-02-21T15:17:35.139Z"
+                      __v: 0
+                    - _id: 63f4e55520abbc6ed88e0ad5
+                      name: receiveTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                      data:
+                        txHash: >-
+                          0xf1f3703c1167848db68dbdec850f2df9a4b80343618b61c9d8622c54032213b4
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5"
+                        tokenName: FUSE
+                        tokenSymbol: FUSE
+                        tokenDecimal: 18
+                        asset: FUSE
+                        status: succeeded
+                        tokenType: FUSE
+                        value: "609144132954467250"
+                        tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                        timeStamp: "1676993878"
+                      status: succeeded
+                      createdAt: "2023-02-21T15:37:57.607Z"
+                      updatedAt: "2023-02-21T15:37:57.607Z"
+                      __v: 0
+                    - _id: 63f4e97720abbc6ed88e1020
+                      name: receiveTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                      data:
+                        txHash: >-
+                          0xf256e0673eb65a7420cab562dd9b707e9a2013f29e8cf0f36525eb429e5b21e4
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5"
+                        tokenName: FUSE
+                        tokenSymbol: FUSE
+                        tokenDecimal: 18
+                        asset: FUSE
+                        status: succeeded
+                        tokenType: FUSE
+                        value: "241942036554581990"
+                        tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                        timeStamp: "1676994935"
+                      status: succeeded
+                      createdAt: "2023-02-21T15:55:35.101Z"
+                      updatedAt: "2023-02-21T15:55:35.101Z"
+                      __v: 0
+                    - _id: 63f4e99e20abbc6ed88e108a
+                      name: receiveTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                      data:
+                        txHash: >-
+                          0x7b304ec2439e1c6cb5a7b27e564b3dd664367275a527f003216a7f86a7010819
+                        walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        to: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                        from: "0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5"
+                        tokenName: FUSE
+                        tokenSymbol: FUSE
+                        tokenDecimal: 18
+                        asset: FUSE
+                        status: succeeded
+                        tokenType: FUSE
+                        value: "120970389826859458"
+                        tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                        timeStamp: "1676994974"
+                      status: succeeded
+                      createdAt: "2023-02-21T15:56:14.111Z"
+                      updatedAt: "2023-02-21T15:56:14.111Z"
+                      __v: 0
+                    - _id: 63f50e5d0905cd0b768c55a2
+                      name: swapTokens
+                      walletAddress: "0xbFF3E288219EBD83B1C4d09CC7a55F37b0B60842"
+                      tokenAddress:
+                        - "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
+                        - "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"
+                      job: 63f50e5d0905cd0b768c559e
+                      data:
+                        value: "0"
+                        tokenAddress: "0x0be9e53fd7edac9f859882afdda116645287c629"
+                        metadata:
+                          executionPrice: "0"
+                          nextMidPrice: "0"
+                          priceImpact: "0"
+                          route:
+                            - "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"
+                            - "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
+                          inputAmount: "0.01"
+                          outputAmount: "0.120627353584457792"
+                          inputToken: USDC
+                          outputToken: FUSE
+                        timestamp: "1677004382"
+                        txHash: >-
+                          0x9cf5222cd2e744926a9bc732a6edc6ea604462050681fa5b3a426bcae5361396
+                        status: failed
+                        blockNumber: 21889191
+                      status: failed
+                      createdAt: "2023-02-21T18:33:01.717Z"
+                      updatedAt: "2023-02-21T18:33:05.881Z"
+                      __v: 0
+                      failReason: >-
+                        Transaction failed due to internal contract error. One
+                        possible reason might be that the wallet doesn't have
+                        sufficient funds.
+                      failedAt: "2023-02-21T18:33:05.880Z"
+                  totalDocs: 18
+                  offset: 0
+                  limit: 10
+                  totalPages: 2
+                  page: 1
+                  pagingCounter: 1
+                  hasPrevPage: false
+                  hasNextPage: true
+                  prevPage: null
+                  nextPage: 2
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 401
+                errorMessage:
+                  statusCode: 401
+                  message: Unauthorized
+                path: >-
+                  /api/v1/smart-wallets/historical_txs?apiKey={{publicKey}}&page=1&updatedAt=0&tokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                statusCode: 403
+                errorMessage:
+                  statusCode: 403
+                  message: Forbidden resource
+                  error: Forbidden
+                path: >-
+                  /api/v1/smart-wallets/historical_txs?apiKey={{publicKey}}&page=1&updatedAt=0&tokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee

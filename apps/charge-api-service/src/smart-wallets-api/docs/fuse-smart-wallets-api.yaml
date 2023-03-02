@@ -284,3 +284,22 @@ paths:
                   error: Forbidden
                 path: >-
                   /api/v1/smart-wallets/relay?apiKey={{publicKey}}
+  /api/v1/smart-wallets/historical_txs:
+    get:
+      tags:
+        - Smart Wallets
+      summary: Get historical Transactions
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: apiKey
+          in: query
+          schema:
+            type: string
+          description: (Required) Your Public API key
+          example: "{{publicKey}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}

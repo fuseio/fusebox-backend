@@ -18,6 +18,7 @@
     "start:debug": "nest start $npm_config_service --debug 0.0.0.0:$npm_config_port --watch",
     "start:prod": "node dist/apps/$npm_config_service/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "run-auth-testing-debug": "npx ts-node -e 'require(\"./scripts/smartWalletsAuthTesting.ts\").getHashAndSig(\"PRIVATE_KEY\")'",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

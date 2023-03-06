@@ -90,6 +90,20 @@
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Auth Testing",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "./scripts/smartWalletsAuthTesting.ts",
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run-script", "run-auth-testing-debug", "--preserve-symlinks"]
         }
     ]
 }

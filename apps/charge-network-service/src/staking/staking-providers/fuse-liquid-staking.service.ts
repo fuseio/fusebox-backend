@@ -65,7 +65,15 @@ export default class FuseLiquidStakingService implements StakingProvider {
     )
   }
 
-  async stakedToken (accountAddress: string, { tokenAddress, tokenLogoURI, tokenName, tokenSymbol }: StakingOption) {
+  async stakedToken (
+    accountAddress: string,
+    {
+      tokenAddress,
+      tokenLogoURI,
+      tokenName,
+      tokenSymbol,
+      unStakeTokenAddress
+    }: StakingOption) {
     const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
     const sfContract = new this.web3Provider.eth.Contract(Erc20ABI as any, this.sfTokenAddress)
 
@@ -82,6 +90,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
       tokenLogoURI,
       tokenName,
       tokenSymbol,
+      unStakeTokenAddress,
       stakedAmount,
       stakedAmountUSD,
       earnedAmountUSD

@@ -58,18 +58,40 @@ export class SmartWalletsService {
 
   async getWallet (smartWalletUser: ISmartWalletUser) {
     const { ownerAddress } = smartWalletUser
-    if (!await this.smartWalletModel.findOne({ ownerAddress })) {
+    const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
+    if (!smartWallet) {
       throw new Error('Not found')
     }
-    return this.smartWalletModel.findOne({ ownerAddress }, {
-      smartWalletAddress: 1,
-      ownerAddress: 1,
-      walletModules: 1,
-      networks: 1,
-      version: 1,
-      paddedVersion: 1,
-      _id: 0
-    })
+    if (!smartWallet.isContractDeployed) {
+      const transactionId = generateTransactionId(smartWallet.salt)
+      const walletModules = this.sharedAddresses.walletModules
+      this.relayAPIService.createWallet({
+        v2: true,
+        salt: smartWallet.salt,
+        transactionId,
+        smartWalletUser,
+        owner: ownerAddress,
+        walletModules,
+        walletFactoryAddress: this.sharedAddresses.WalletFactory
+      })
+    }
+
+    const {
+      smartWalletAddress,
+      walletModules,
+      networks,
+      version,
+      paddedVersion
+    } = smartWallet
+
+    return {
+      smartWalletAddress,
+      walletModules,
+      networks,
+      version,
+      paddedVersion,
+      ownerAddress
+    }
   }
 
   async createWallet (smartWalletUser: ISmartWalletUser) {

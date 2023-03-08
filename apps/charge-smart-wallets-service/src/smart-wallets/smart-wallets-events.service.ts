@@ -80,26 +80,28 @@ export class SmartWalletsEventsService {
       ownerAddress
     } = smartWalletUser
 
-    this.smartWalletModel.create({
-      salt,
-      ownerAddress,
-      walletModules,
-      smartWalletAddress,
-      walletOwnerOriginalAddress: ownerAddress,
-      walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
-      walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
-      walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
-      walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
-      walletModulesOriginal: walletModules,
-      networks: ['fuse'],
-      version: this.walletVersion,
-      paddedVersion: this.walletPaddedVersion
-    })
+    if (!await this.smartWalletModel.findOne({ ownerAddress })) {
+      this.smartWalletModel.create({
+        salt,
+        ownerAddress,
+        walletModules,
+        smartWalletAddress,
+        walletOwnerOriginalAddress: ownerAddress,
+        walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
+        walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
+        walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
+        walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
+        walletModulesOriginal: walletModules,
+        networks: ['fuse'],
+        version: this.walletVersion,
+        paddedVersion: this.walletPaddedVersion
+      })
 
-    this.publishMessage(eventData, {
-      eventName: websocketEvents.WALLET_CREATION_STARTED,
-      eventData: {}
-    })
+      this.publishMessage(eventData, {
+        eventName: websocketEvents.WALLET_CREATION_STARTED,
+        eventData: {}
+      })
+    }
   }
 
   async onTransactionHash (eventData: any) {

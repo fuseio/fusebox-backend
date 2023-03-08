@@ -73,6 +73,9 @@ export class SmartWalletsService {
         owner: ownerAddress,
         walletModules,
         walletFactoryAddress: this.sharedAddresses.WalletFactory
+      }).catch(err => {
+        const errorMessage = `Retry wallet creation failed: ${err}`
+        this.logger.error(errorMessage)
       })
     }
 

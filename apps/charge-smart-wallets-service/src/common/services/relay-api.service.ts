@@ -15,11 +15,12 @@ export default class RelayAPIService {
     return this.configService.get('relayApi')
   }
 
-  async getHistoricalTxs (smartWalletAddress) {
+  async getHistoricalTxs (smartWalletAddress, params) {
     const requestUrl = `${this.relayApiUrl}/wallets/actions/${smartWalletAddress}`
     const requestConfig: AxiosRequestConfig = {
       method: 'get',
-      url: requestUrl
+      url: requestUrl,
+      params
     }
     return await this.httpProxy(requestConfig)
   }

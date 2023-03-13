@@ -6,6 +6,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Centrifuge } from 'centrifuge'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 
 @Injectable()
 export class SmartWalletsEventsService {
@@ -97,7 +98,7 @@ export class SmartWalletsEventsService {
         paddedVersion: this.walletPaddedVersion
       })
 
-      this.publishMessage(eventData, {
+      await this.publishMessage(eventData, {
         eventName: websocketEvents.WALLET_CREATION_STARTED,
         eventData: {}
       })
@@ -105,7 +106,7 @@ export class SmartWalletsEventsService {
   }
 
   async onTransactionHash (eventData: any) {
-    this.publishMessage(eventData, {
+    await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_HASH,
       eventData
     })
@@ -133,7 +134,7 @@ export class SmartWalletsEventsService {
       version,
       paddedVersion
     }
-    this.publishMessage(eventData, {
+    await this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
       eventData: data
     })
@@ -141,14 +142,14 @@ export class SmartWalletsEventsService {
   }
 
   async onCreateSmartWalletFailed (eventData: any) {
-    this.publishMessage(eventData, {
+    await this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_FAILED
     })
     this.unsubscribe(eventData)
   }
 
   async onRelaySuccess (eventData: any) {
-    this.publishMessage(eventData, {
+    await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_SUCCEEDED,
       eventData
     })
@@ -156,7 +157,7 @@ export class SmartWalletsEventsService {
   }
 
   async onRelayFailed (eventData: any) {
-    this.publishMessage(eventData, {
+    await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_FAILED,
       eventData
     })
@@ -164,7 +165,7 @@ export class SmartWalletsEventsService {
   }
 
   async onRelayStarted (eventData: any) {
-    this.publishMessage(eventData, {
+    await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_STARTED,
       eventData
     })
@@ -173,7 +174,7 @@ export class SmartWalletsEventsService {
   async publishMessage (eventData, messageData) {
     try {
       const { transactionId } = eventData
-      this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
+      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
@@ -182,9 +183,10 @@ export class SmartWalletsEventsService {
 
   async unsubscribe (eventData) {
     try {
+      await sleep(500)
       const { smartWalletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress })
-      this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)
+      await this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)

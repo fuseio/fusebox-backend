@@ -10,11 +10,14 @@ import { Model } from 'mongoose'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
 import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
+import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
+import { has } from 'lodash'
 
 @Injectable()
 export class EventsScannerService {
   // TODO: Create a Base class for events scanner and transaction scanner services
   private readonly logger = new Logger(EventsScannerService.name)
+  private tokenInfoCache: TokenInfoCache = {}
 
   constructor (
     @Inject(eventsScannerStatusModelString)
@@ -157,6 +160,10 @@ export class EventsScannerService {
   }
 
   private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
+    if (has(this.tokenInfoCache, tokenAddress)) {
+      const token = this.tokenInfoCache[tokenAddress]
+      return [token.name, token.symbol, token.decimals]
+    }
     const contract: Contract = this.ethersContract.create(
       tokenAddress,
       abi
@@ -169,6 +176,8 @@ export class EventsScannerService {
     }
     const name = await contract.name()
     const symbol = await contract.symbol()
+
+    this.tokenInfoCache[tokenAddress] = { name, symbol, decimals } as TokenInfo
 
     return [name, symbol, decimals]
   }

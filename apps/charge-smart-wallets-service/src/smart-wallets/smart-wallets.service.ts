@@ -148,7 +148,7 @@ export class SmartWalletsService {
   async getHistoricalTxs (user: ISmartWalletUser) {
     try {
       const { smartWalletAddress } = await this.smartWalletModel.findOne({ ownerAddress: user.ownerAddress })
-      const result = await this.relayAPIService.getHistoricalTxs(smartWalletAddress)
+      const result = await this.relayAPIService.getHistoricalTxs(smartWalletAddress, user.query)
       return {
         ...result
       }

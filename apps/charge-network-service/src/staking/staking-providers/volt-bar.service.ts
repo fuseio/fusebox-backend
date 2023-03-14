@@ -73,7 +73,7 @@ export default class VoltBarService implements StakingProvider {
       tokenSymbol,
       unStakeTokenAddress
     }: StakingOption) {
-    const stakingData = await this.getStakingData(accountAddress)
+    const stakingData: any = await this.getStakingData(accountAddress)
     const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
 
     const stakedAmount = Number(stakingData?.user?.xVolt ?? 0) * Number(stakingData?.bar?.ratio ?? 0)
@@ -97,7 +97,7 @@ export default class VoltBarService implements StakingProvider {
     const latestTimestamp = getUnixTime(new Date())
     const startTimestamp = (latestTimestamp / secondsInDay) - days
 
-    const stats = await this.voltBarGraphClient.request(getBarStats, {
+    const stats: any = await this.voltBarGraphClient.request(getBarStats, {
       days,
       startTimestamp: String(startTimestamp)
     })

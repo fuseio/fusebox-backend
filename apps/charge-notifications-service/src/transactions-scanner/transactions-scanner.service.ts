@@ -144,6 +144,8 @@ export class TransactionsScannerService {
       eventData.isInternalTransaction = true
     }
 
-    await this.webhooksService.processWebhookEvents(eventData)
+    this.webhooksService.processWebhookEvents(eventData).catch((error) => {
+      this.logger.error(`Failed to process webhook events for event data :${eventData} - Error: ${error}`)
+    })
   }
 }

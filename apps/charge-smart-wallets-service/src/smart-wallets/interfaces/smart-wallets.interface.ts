@@ -17,4 +17,5 @@ export interface SmartWallet extends Document {
   // readonly upgradesInstalled: any[];
   readonly version: string;
   readonly paddedVersion: string;
+  readonly versionType: string;
 }

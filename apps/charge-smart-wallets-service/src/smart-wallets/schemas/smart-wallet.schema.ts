@@ -1,8 +1,14 @@
 import * as mongoose from 'mongoose'
 const { String } = mongoose.Schema.Types
 
+export enum versionType {
+  V1 = 'v1',
+  V2 = 'v2'
+}
+
 export const SmartWalletSchema = new mongoose.Schema(
   {
+    versionType: { type: String, enum: versionType, immutable: true, default: versionType.V2, index: true },
     ownerAddress: { type: String, required: true, index: true, unique: true },
     smartWalletAddress: { type: String, required: true, index: true },
     isContractDeployed: { type: Boolean, default: false },

@@ -7,6 +7,8 @@ import { Centrifuge } from 'centrifuge'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
+import { has, get } from 'lodash'
+import { versionType } from '@app/smart-wallets-service/smart-wallets/schemas/smart-wallet.schema'
 
 @Injectable()
 export class SmartWalletsEventsService {
@@ -95,6 +97,7 @@ export class SmartWalletsEventsService {
         walletModulesOriginal: walletModules,
         networks: ['fuse'],
         version: this.walletVersion,
+        versionType: get(eventData, 'versionType', versionType.V2),
         paddedVersion: this.walletPaddedVersion
       })
 
@@ -173,6 +176,9 @@ export class SmartWalletsEventsService {
 
   async publishMessage (eventData, messageData) {
     try {
+      if (!has(eventData, 'transactionId')) {
+        return
+      }
       const { transactionId } = eventData
       await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
     } catch (error) {
@@ -183,6 +189,9 @@ export class SmartWalletsEventsService {
 
   async unsubscribe (eventData) {
     try {
+      if (!has(eventData, 'transactionId')) {
+        return
+      }
       await sleep(500)
       const { smartWalletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress })

@@ -9,7 +9,7 @@ export enum versionType {
 export const SmartWalletSchema = new mongoose.Schema(
   {
     versionType: { type: String, enum: versionType, immutable: true, default: versionType.V2, index: true },
-    ownerAddress: { type: String, required: true, index: true, unique: true },
+    ownerAddress: { type: String, required: true, index: true },
     smartWalletAddress: { type: String, required: true, index: true },
     isContractDeployed: { type: Boolean, default: false },
     walletOwnerOriginalAddress: { type: String, immutable: true }, // So we can know the first owner in case owner transfer ownership.

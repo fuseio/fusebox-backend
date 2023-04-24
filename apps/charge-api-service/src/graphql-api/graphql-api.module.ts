@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { networkService } from '@app/common/constants/microservices.constants'
-import { GraphqlAPIController } from './graphql-api.controller'
-import { GraphqlAPIService } from './graphql-api.service'
+import { GraphqlAPIController } from 'apps/charge-api-service/src/graphql-api/graphql-api.controller'
+import { GraphqlAPIService } from 'apps/charge-api-service/src/graphql-api/graphql-api.service'
 import { ClientsModule, Transport } from '@nestjs/microservices'
-import { ApiKeyModule } from '../api-keys/api-keys.module'
+import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 
 @Module({
   imports: [

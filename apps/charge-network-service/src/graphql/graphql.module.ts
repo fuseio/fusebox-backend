@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { GraphqlController } from './graphql.controller'
+import { GraphqlController } from 'apps/charge-network-service/src/graphql/graphql.controller'
 import GraphQLService from '@app/common/services/graphql.service'
 import { ConfigModule } from '@nestjs/config'
 import { HttpModule } from '@nestjs/axios'

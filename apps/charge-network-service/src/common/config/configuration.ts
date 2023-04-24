@@ -15,6 +15,7 @@ export default () => ({
   voltBarGraphUrl: 'https://api.thegraph.com/subgraphs/name/t0mcr8se/voltbar',
   blockGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-blocks',
   voltageGraphUrl: 'https://api.thegraph.com/subgraphs/name/voltfinance/voltage-exchange',
+  nftGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-nft-v2',
   stakingOptions: [
     {
       tokenAddress: '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4',

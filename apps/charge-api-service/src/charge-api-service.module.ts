@@ -7,6 +7,7 @@ import { NotificationsModule } from '@app/api-service/notifications/notification
 import { StakingAPIModule } from '@app/api-service/staking-api/staking-api.module'
 import { ExplorerApiModule } from '@app/api-service/explorer-api/explorer-api.module'
 import { SmartWalletsAPIModule } from '@app/api-service/smart-wallets-api/smart-wallets-api.module'
+import { GraphqlAPIModule } from '@app/api-service/graphql-api/graphql-api.module'
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { SmartWalletsAPIModule } from '@app/api-service/smart-wallets-api/smart-
     NotificationsModule,
     StakingAPIModule,
     ExplorerApiModule,
-    SmartWalletsAPIModule
+    SmartWalletsAPIModule,
+    GraphqlAPIModule
   ],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]

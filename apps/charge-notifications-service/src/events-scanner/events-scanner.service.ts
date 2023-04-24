@@ -168,7 +168,7 @@ export class EventsScannerService {
       const token = this.tokenInfoCache[tokenAddress]
       return [token.name, token.symbol, token.decimals]
     }
-    
+
     this.logger.log(`Token info for ${tokenAddress} was not found in cache...`)
 
     const contract: Contract = this.ethersContract.create(

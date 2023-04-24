@@ -8,7 +8,7 @@ import VoltBarService from '@app/network-service/staking/staking-providers/volt-
 import GraphService from '@app/network-service/staking/graph.service'
 import TradeService from '@app/common/services/trade.service'
 import { HttpModule } from '@nestjs/axios'
-import FuseLiquidStakingService from './staking-providers/fuse-liquid-staking.service'
+import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
 
 @Module({
   imports: [

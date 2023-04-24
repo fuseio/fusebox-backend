@@ -7,7 +7,7 @@ import VoltBarService from '@app/network-service/staking/staking-providers/volt-
 import { sumBy } from 'lodash'
 import { fuseLiquidStakingId, voltBarId } from '@app/network-service/common/constants'
 import { ConfigService } from '@nestjs/config'
-import FuseLiquidStakingService from './staking-providers/fuse-liquid-staking.service'
+import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
 
 @Injectable()
 export class StakingService {

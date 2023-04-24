@@ -13,7 +13,7 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 @Injectable()
 export class NotificationsService {
   constructor (
-        @Inject(notificationsService) private readonly notificationsClient: ClientProxy
+    @Inject(notificationsService) private readonly notificationsClient: ClientProxy
   ) {}
 
   async createWebhook (createWebhookDto: CreateWebhookDto): Promise<Webhook> {

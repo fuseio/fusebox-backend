@@ -18,6 +18,17 @@
         {
             "type": "node",
             "request": "attach",
+            "name": "Debug: Charge Network",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
+            "port": 9225,
+            "restart": true,
+            "address": "0.0.0.0",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "attach",
             "name": "Debug: Charge Notifications",
             "remoteRoot": "/usr/src/app",
             "localRoot": "${workspaceFolder}",

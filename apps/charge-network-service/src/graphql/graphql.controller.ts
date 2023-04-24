@@ -11,9 +11,12 @@ export class GraphqlController {
     private readonly graphQLService: GraphQLService
   ) { }
 
+  get nftGraphUrl () {
+    return this.configService.get('nftGraphUrl')
+  }
+
   @MessagePattern('get_collectibles_by_owner')
   getCollectiblesByOwner (address: string) {
-    const url = this.configService.get('nftGraphUrl')
-    return this.graphQLService.fetchFromGraphQL(url, getCollectiblesByOwner, { address: address.toLowerCase() })
+    return this.graphQLService.fetchFromGraphQL(this.nftGraphUrl, getCollectiblesByOwner, { address: address.toLowerCase() })
   }
 }

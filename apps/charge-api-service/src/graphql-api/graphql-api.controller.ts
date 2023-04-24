@@ -9,7 +9,7 @@ export class GraphqlAPIController {
     private readonly graphqlAPIService: GraphqlAPIService
   ) { }
 
-  @Get('collectibles_by_owner')
+  @Get('collectibles/:address')
   getCollectiblesByOwner (@Param('address') address: string) {
     return this.graphqlAPIService.getCollectiblesByOwner(address)
   }

@@ -1,4 +1,4 @@
-import { IsEthereumAddress, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsEthereumAddress, IsNumber, IsOptional, IsString, IsUrl } from 'class-validator'
 
 export class CreateEthereumPaymentLinkDto {
   @IsString()
@@ -23,4 +23,8 @@ export class CreateEthereumPaymentLinkDto {
   @IsString()
   @IsOptional()
     backendWalletId: string
+
+  @IsUrl()
+  @IsOptional()
+    webhookUrl: string
 }

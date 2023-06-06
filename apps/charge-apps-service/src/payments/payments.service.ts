@@ -26,7 +26,6 @@ export class PaymentsService {
     private paymentLinkModel: Model<PaymentLink>,
     private readonly configService: ConfigService,
     private readonly webhookSendService: WebhookSendService
-
   ) { }
 
   get allowedPaymentTokens () {

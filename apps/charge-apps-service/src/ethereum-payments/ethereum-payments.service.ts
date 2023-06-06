@@ -11,17 +11,20 @@ import { ethereumPaymentAccountModelString, ethereumPaymentLinkModelString } fro
 import { status } from '@app/apps-service/ethereum-payments/schemas/ethereum-payment-link.schema'
 import { EthereumBackendWallet } from '@app/apps-service/ethereum-payments/interfaces/ethereum-backend-wallet.interface'
 import { getAddress } from 'nestjs-ethers'
+import WebhookSendService from '@app/common/services/webhook-send.service'
+
 @Injectable()
 export class EthereumPaymentsService {
   private readonly logger = new Logger(EthereumPaymentsService.name)
 
   constructor (
-        private backendWalletEthereumService: BackendWalletsEthereumService,
-        @Inject(ethereumPaymentAccountModelString)
-        private paymentAccountModel: Model<EthereumPaymentAccount>,
-        @Inject(ethereumPaymentLinkModelString)
-        private paymentLinkModel: Model<EthereumPaymentLink>,
-        private readonly configService: ConfigService
+    private backendWalletEthereumService: BackendWalletsEthereumService,
+    @Inject(ethereumPaymentAccountModelString)
+    private paymentAccountModel: Model<EthereumPaymentAccount>,
+    @Inject(ethereumPaymentLinkModelString)
+    private paymentLinkModel: Model<EthereumPaymentLink>,
+    private readonly configService: ConfigService,
+    private readonly webhookSendService: WebhookSendService
   ) { }
 
   get networkName () {
@@ -142,6 +145,18 @@ export class EthereumPaymentsService {
         }
 
         await paymentLink.save()
+        if (paymentLink.webhookUrl) {
+          const paymentLinkWebhookEvent = [
+            {
+              status: paymentLink.status.toLowerCase(),
+              from: fromAddress,
+              to: toAddress,
+              txHash,
+              amount: value
+            }
+          ]
+          this.webhookSendService.sendData(paymentLinkWebhookEvent, paymentLink.webhookUrl)
+        }
       }
     }
   }

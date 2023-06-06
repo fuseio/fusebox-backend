@@ -31,7 +31,8 @@ export const EthereumPaymentLinkSchema = new mongoose.Schema(
     receivedAmount: { type: String },
     fromAddress: { type: String },
     txHash: { type: String },
-    webhookEvent: { type: Object }
+    webhookEvent: { type: Object },
+    webhookUrl: { type: String }
   },
   {
     timestamps: true

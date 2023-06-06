@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ApiKeysModule } from '@app/apps-service/api-keys/api-keys.module'
 import { HttpModule } from '@nestjs/axios'
 import { BackendWalletsEthereumService } from '@app/apps-service/ethereum-payments/backend-wallets-ethereum.service'
+import WebhookSendService from '@app/common/services/webhook-send.service'
 
 @Module({
   imports: [
@@ -26,6 +27,11 @@ import { BackendWalletsEthereumService } from '@app/apps-service/ethereum-paymen
     ApiKeysModule
   ],
   controllers: [EthereumPaymentsController],
-  providers: [EthereumPaymentsService, BackendWalletsEthereumService, ...ethereumPaymentsProviders]
+  providers: [
+    EthereumPaymentsService,
+    BackendWalletsEthereumService,
+    ...ethereumPaymentsProviders,
+    WebhookSendService
+  ]
 })
 export class EthereumPaymentsModule { }

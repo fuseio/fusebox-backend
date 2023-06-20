@@ -110,4 +110,14 @@ export default class FuseLiquidStakingService implements StakingProvider {
 
     return aprToApy(rewardPerYearApr, 365)
   }
+
+  async tvl (_: StakingOption) {
+    const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
+
+    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call()
+
+    const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
+
+    return Number(formatEther(totalStaked)) * fusePrice
+  }
 }

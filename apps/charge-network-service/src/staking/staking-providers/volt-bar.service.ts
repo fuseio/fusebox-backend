@@ -3,6 +3,7 @@ import { StakingOption, StakingProvider } from '@app/network-service/staking/int
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { encodeFunctionCall } from '@app/network-service/common/utils/helper-functions'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
+import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
 import { Injectable } from '@nestjs/common'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 import GraphService from '@app/network-service/staking/graph.service'
@@ -12,6 +13,8 @@ import TradeService from '@app/common/services/trade.service'
 import { getBarStats, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
 import { secondsInDay } from 'date-fns/constants'
 import { getUnixTime } from 'date-fns'
+import { formatEther } from 'nestjs-ethers'
+
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {
@@ -115,6 +118,16 @@ export default class VoltBarService implements StakingProvider {
       .reduce((totalAverage: number, history: number) => totalAverage + history, 0) / voltBalanceHistories.length - 1
 
     return (movingAverage * daysInYear * 100) / totalStaked
+  }
+
+  async tvl ({ tokenAddress }: StakingOption) {
+    const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress);
+
+    const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call()
+
+    const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+
+    return Number(voltBalance) * voltPrice
   }
 
   private async getStakingData (accountAddress: string) {

@@ -19,6 +19,7 @@ export interface StakedToken extends Token {
     stakedAmount: number
     stakedAmountUSD: number
     earnedAmountUSD: number
+    stakingApy: number
 }
 
 export interface UserStakedTokens {

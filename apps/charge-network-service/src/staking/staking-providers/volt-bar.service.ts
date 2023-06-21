@@ -15,7 +15,6 @@ import { secondsInDay } from 'date-fns/constants'
 import { getUnixTime } from 'date-fns'
 import { formatEther } from 'nestjs-ethers'
 
-
 @Injectable()
 export default class VoltBarService implements StakingProvider {
   constructor (
@@ -83,6 +82,8 @@ export default class VoltBarService implements StakingProvider {
     const stakedAmountUSD = stakedAmount * voltPrice
     const earnedAmountUSD = 0
 
+    const stakingApy = await this.stakingApr()
+
     return {
       tokenAddress,
       tokenLogoURI,
@@ -91,7 +92,8 @@ export default class VoltBarService implements StakingProvider {
       unStakeTokenAddress,
       stakedAmount,
       stakedAmountUSD,
-      earnedAmountUSD
+      earnedAmountUSD,
+      stakingApy
     }
   }
 

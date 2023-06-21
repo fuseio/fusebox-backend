@@ -121,13 +121,13 @@ export default class VoltBarService implements StakingProvider {
   }
 
   async tvl ({ tokenAddress }: StakingOption) {
-    const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress);
+    const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress)
 
     const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call()
 
     const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
 
-    return Number(voltBalance) * voltPrice
+    return Number(formatEther(voltBalance)) * voltPrice
   }
 
   private async getStakingData (accountAddress: string) {

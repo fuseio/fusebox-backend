@@ -32,12 +32,12 @@ export class StakingService {
     for (const stakingOption of this.stakingOptionsConfig) {
       const stakingProvider = this.getStakingProvider(stakingOption)
       const stakingApr = await stakingProvider.stakingApr(stakingOption)
-      const tvl = await stakingProvider.tvl(stakingOption);
+      const tvl = await stakingProvider.tvl(stakingOption)
 
       stakingOptionsData.push({
         ...stakingOption,
         stakingApr,
-        tvl,
+        tvl
       })
     }
 

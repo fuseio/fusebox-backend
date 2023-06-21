@@ -85,7 +85,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
 
-    const stakingApy = await this.stakingApr()
+    const stakingApr = await this.stakingApr()
 
     return {
       tokenAddress,
@@ -96,7 +96,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
       stakedAmount,
       stakedAmountUSD,
       earnedAmountUSD,
-      stakingApy
+      stakingApr
     }
   }
 

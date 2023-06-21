@@ -82,7 +82,7 @@ export default class VoltBarService implements StakingProvider {
     const stakedAmountUSD = stakedAmount * voltPrice
     const earnedAmountUSD = 0
 
-    const stakingApy = await this.stakingApr()
+    const stakingApr = await this.stakingApr()
 
     return {
       tokenAddress,
@@ -93,7 +93,7 @@ export default class VoltBarService implements StakingProvider {
       stakedAmount,
       stakedAmountUSD,
       earnedAmountUSD,
-      stakingApy
+      stakingApr
     }
   }
 

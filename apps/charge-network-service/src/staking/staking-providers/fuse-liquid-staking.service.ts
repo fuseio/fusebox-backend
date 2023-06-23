@@ -85,6 +85,8 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
 
+    const stakingApr = await this.stakingApr()
+
     return {
       tokenAddress,
       tokenLogoURI,
@@ -93,7 +95,8 @@ export default class FuseLiquidStakingService implements StakingProvider {
       unStakeTokenAddress,
       stakedAmount,
       stakedAmountUSD,
-      earnedAmountUSD
+      earnedAmountUSD,
+      stakingApr
     }
   }
 
@@ -109,5 +112,15 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const rewardPerYearApr = (Number(formatEther(rewardPerBlock)) * blocksPerYear * (1 - validatorFee) / Number(formatEther(totalStakeAmount))) * 100
 
     return aprToApy(rewardPerYearApr, 365)
+  }
+
+  async tvl () {
+    const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
+
+    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call()
+
+    const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
+
+    return Number(formatEther(totalStaked)) * fusePrice
   }
 }

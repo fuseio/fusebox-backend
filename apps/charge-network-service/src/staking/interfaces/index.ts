@@ -12,12 +12,14 @@ interface Token {
 export interface StakingOption extends Token {
     stakingProviderId: string
     stakingApr?: number
+    tvl?: number
 }
 
 export interface StakedToken extends Token {
     stakedAmount: number
     stakedAmountUSD: number
     earnedAmountUSD: number
+    stakingApr: number
 }
 
 export interface UserStakedTokens {
@@ -32,4 +34,5 @@ export interface StakingProvider {
     unStake: (unStakeDto: UnstakeDto) => string
     stakedToken: (accountAddress: string, stakingOption: StakingOption) => Promise<StakedToken>
     stakingApr: (stakingOption: StakingOption) => Promise<number>
+    tvl: (stakingOption: StakingOption) => Promise<number>
 }

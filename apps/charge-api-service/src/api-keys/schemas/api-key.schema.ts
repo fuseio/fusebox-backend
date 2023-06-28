@@ -8,6 +8,7 @@ export const ApiKeySchema = new mongoose.Schema(
       required: true
     },
     publicKey: { type: String, required: true, index: true },
+    sandboxKey: { type: String },
     secretHash: { type: String },
     secretPrefix: { type: String },
     secretLastFourChars: { type: String },

@@ -55,4 +55,19 @@ export class ApiKeysController {
   getPublic (projectId: string) {
     return this.apiKeysService.getPublicKey(projectId)
   }
+
+  /**
+  * Creates the sandBox API key associated with the project
+  * @param projectId
+  * @returns the sandBox API key associated with the given project
+  */
+  @MessagePattern('create_sandbox_key')
+  createSandbox (projectId: string) {
+    return this.apiKeysService.createSandboxKey(projectId)
+  }
+
+  @MessagePattern('get_sandbox_key')
+  getSandbox (projectId: string) {
+    return this.apiKeysService.getSandboxKey(projectId)
+  }
 }

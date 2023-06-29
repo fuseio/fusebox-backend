@@ -13,8 +13,7 @@ export const ApiKeySchema = new mongoose.Schema(
     secretPrefix: { type: String },
     secretLastFourChars: { type: String },
     encryptedLegacyJwt: { type: String },
-    legacyBackendAccount: { type: String },
-    isTest: { type: Boolean, default: false }
+    legacyBackendAccount: { type: String }
   },
   {
     timestamps: true

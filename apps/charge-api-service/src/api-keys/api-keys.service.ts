@@ -53,9 +53,6 @@ export class ApiKeysService {
   }
 
   async findOne (query: Record<string, any>) {
-    if (!has(query, 'isTest')) {
-      query.isTest = false
-    }
     return this.apiKeyModel.findOne(query)
   }
 

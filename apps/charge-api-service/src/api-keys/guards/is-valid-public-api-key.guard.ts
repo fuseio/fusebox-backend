@@ -4,9 +4,9 @@ import { isEmpty } from 'lodash'
 
 @Injectable()
 export class IsValidPublicApiKeyGuard implements CanActivate {
-  constructor(private apiKeysService: ApiKeysService) { }
+  constructor (private apiKeysService: ApiKeysService) { }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  async canActivate (context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
     const { query }: { query: { apiKey: string } } = request
     const projectApiKey = await this.apiKeysService.findOne({ publicKey: query?.apiKey })

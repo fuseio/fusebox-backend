@@ -116,4 +116,26 @@ export class ProjectsController {
   getPublic (@Param('projectId') projectId: string) {
     return this.projectsService.getPublic(projectId)
   }
+
+  /**
+  * Creates an sandbox API key for the given project
+  * @param projectId
+  * @returns the generated sandbox API key or error if key already exists
+  */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Post('/sandbox/:projectId')
+  createSandboxKey (@Param('projectId') projectId: string) {
+    return this.projectsService.createSandboxKey(projectId)
+  }
+
+  /**
+     * Gets the sandbox API key associated with the project
+     * @param projectId
+     * @returns the sandbox API key associated with the given project
+     */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get('/sandbox/:projectId')
+  getSandboxKey (@Param('projectId') projectId: string) {
+    return this.projectsService.getSandboxKey(projectId)
+  }
 }

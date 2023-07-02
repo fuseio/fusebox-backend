@@ -93,6 +93,43 @@ export class ApiKeysService {
     throw new RpcException('Internal Server Error')
   }
 
+  async createSandboxKey (projectId: string) {
+    const projectKeys = await this.apiKeyModel.findOne({
+      projectId
+    })
+
+    if (projectKeys && projectKeys?.sandboxKey) {
+      throw new RpcException('sandboxKey Key already exist')
+    }
+    const sandboxKey = `pk_test_${await this.generateRandomToken()}`
+
+    const result = await this.apiKeyModel.findOneAndUpdate(
+      { projectId },
+      {
+        projectId,
+        sandboxKey
+      }
+    )
+
+    if (result) {
+      return {
+        sandboxKey
+      }
+    }
+
+    throw new RpcException('Internal Server Error')
+  }
+
+  async getSandboxKey (projectId: string) {
+    const apiKeys = await this.findOne({ projectId })
+
+    if (apiKeys && apiKeys?.sandboxKey) {
+      return { sandboxKey: apiKeys?.sandboxKey }
+    }
+
+    throw new RpcException('Not Found')
+  }
+
   async getProjectJwt (query: object) {
     const projectApiKeys = await this.apiKeyModel.findOne(query)
     const projectEncryptedJwt = projectApiKeys?.encryptedLegacyJwt

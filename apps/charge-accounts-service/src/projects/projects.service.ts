@@ -22,9 +22,8 @@ export class ProjectsService {
   async create (createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto)
     const projectId = createdProject._id
-
     await callMSFunction(this.apiClient, 'create_public', projectId)
-
+    await callMSFunction(this.apiClient, 'create_sandbox_key', projectId)
     return createdProject.save()
   }
 
@@ -52,6 +51,15 @@ export class ProjectsService {
     //   callMSFunction(this.relayClient, 'create_account', projectId)
     // }
     return secret
+  }
+
+  async createSandboxKey (projectId: string) {
+    const sandboxKey = await callMSFunction(this.apiClient, 'create_sandbox_key', projectId)
+    return sandboxKey
+  }
+
+  async getSandboxKey (projectId: string) {
+    return callMSFunction(this.apiClient, 'get_sandbox_key', projectId)
   }
 
   async checkIfSecretExists (projectId: string) {

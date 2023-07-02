@@ -10,16 +10,17 @@ export class IsPrdOrSbxKeyGuard implements CanActivate {
     const request = context.switchToHttp().getRequest()
     const { query }: { query: { apiKey: string } } = request
     let apiKey
+    if (!isEmpty(query?.apiKey)) return false
     if (query?.apiKey.includes('pk_test_')) {
       apiKey = await this.apiKeysService.findOne({ sandboxKey: query?.apiKey })
-      if (!isEmpty(apiKey) && !isEmpty(query?.apiKey)) {
+      if (!isEmpty(apiKey)) {
         request.projectId = apiKey.projectId
         request.environment = 'sandbox'
         return true
       }
     } else {
       apiKey = await this.apiKeysService.findOne({ publicKey: query?.apiKey })
-      if (!isEmpty(apiKey) && !isEmpty(query?.apiKey)) {
+      if (!isEmpty(apiKey)) {
         request.projectId = apiKey.projectId
         request.environment = 'production'
         return true

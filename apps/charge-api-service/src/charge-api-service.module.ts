@@ -17,6 +17,7 @@ import { GraphqlAPIModule } from '@app/api-service/graphql-api/graphql-api.modul
     NotificationsModule,
     StakingAPIModule,
     ExplorerApiModule,
+    BundlerApiModule,
     SmartWalletsAPIModule,
     GraphqlAPIModule,
     PaymasterApiModule

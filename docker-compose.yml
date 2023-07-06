@@ -172,7 +172,7 @@ services:
       - ${SMART_WALLETS_PORT}:${SMART_WALLETS_PORT}
       - ${SMART_WALLETS_TCP_PORT}:${SMART_WALLETS_TCP_PORT}
     restart: always
-  
+
   charge-relay-service:
     container_name: charge-relay-service
     build:

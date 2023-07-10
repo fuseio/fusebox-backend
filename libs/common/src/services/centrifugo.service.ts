@@ -20,11 +20,10 @@ export default class CentrifugoAPIService {
 
   async unsubscribe (channel: string, user: string) {
     const observable = this.httpService
-      .post(`${this.centrifugoBaseUrl}`, {
-        method: 'unsubscribe',
-        params: { channel, user }
+      .post(`${this.centrifugoBaseUrl}/unsubscribe`, {
+        channel, user
       },
-      { headers: { Authorization: `apikey ${this.centrifugoApiKey}` } })
+      { headers: { 'X-API-Key': this.centrifugoApiKey } })
       .pipe(map(res => res.data))
       .pipe(
         catchError(e => {
@@ -39,11 +38,10 @@ export default class CentrifugoAPIService {
 
   async subscribe (channel: string, user: string) {
     const observable = this.httpService
-      .post(`${this.centrifugoBaseUrl}`, {
-        method: 'subscribe',
-        params: { channel, user }
+      .post(`${this.centrifugoBaseUrl}/subscribe`, {
+        channel, user
       },
-      { headers: { Authorization: `apikey ${this.centrifugoApiKey}` } })
+      { headers: { 'X-API-Key': this.centrifugoApiKey } })
       .pipe(map(res => res.data))
       .pipe(
         catchError(e => {
@@ -58,11 +56,10 @@ export default class CentrifugoAPIService {
 
   async publish (channel: string, data: Record<string, any>) {
     const observable = this.httpService
-      .post(`${this.centrifugoBaseUrl}`, {
-        method: 'publish',
-        params: { channel, data }
+      .post(`${this.centrifugoBaseUrl}/publish`, {
+        channel, data
       },
-      { headers: { Authorization: `apikey ${this.centrifugoApiKey}` } })
+      { headers: { 'X-API-Key': this.centrifugoApiKey } })
       .pipe(map(res => res.data))
       .pipe(
         catchError(e => {

@@ -125,7 +125,7 @@ services:
       - ./data:/data/db
   centrifugo:
     container_name: centrifugo
-    image: centrifugo/centrifugo:v4
+    image: centrifugo/centrifugo:v5
     volumes:
       - ./centrifugo/config.json:/centrifugo/config.json
     command: centrifugo -c config.json --admin

@@ -1,6 +1,8 @@
 export default () => ({
-  BundlerApiController: {
-    productionUrl: process.env.BUNDLER_API_PRD_URL,
-    sandboxUrl: process.env.BUNDLER_API_SANDBOX_URL
+  production: {
+    url: process.env.BUNDLER_API_PRD_URL
+  },
+  sandbox: {
+    url: process.env.BUNDLER_API_SANDBOX_URL
   }
 })

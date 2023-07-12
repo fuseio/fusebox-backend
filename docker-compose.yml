@@ -53,6 +53,8 @@ services:
       - SMART_WALLETS_TCP_PORT
       - SMART_WALLETS_JWT_SECRET
       - EXPLORER_API_URL
+      - BUNDLER_API_PRD_URL
+      - BUNDLER_API_SANDBOX_URL
     depends_on:
       - charge-notifications-service
       - charge-network-service

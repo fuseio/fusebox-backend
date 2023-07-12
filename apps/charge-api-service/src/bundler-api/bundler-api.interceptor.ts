@@ -4,7 +4,8 @@ import {
   NestInterceptor,
   ExecutionContext,
   HttpException,
-  CallHandler
+  CallHandler,
+  InternalServerErrorException
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, Observable } from 'rxjs'
@@ -71,10 +72,21 @@ export class BundlerApiInterceptor implements NestInterceptor {
   private prepareUrl(environment, context: ExecutionContext) {
     const ctxClassName = context.getClass().name
     const config = this.configService.get<Record<string, any>>(ctxClassName)
-    console.log(environment);
-    if (environment === 'production') return config?.productionUrl
-    if (environment === 'sandbox') return config?.sandboxUrl
-    return 'Environment error'
+    if (environment === 'production') {
+      if (config?.productionUrl) {
+        return config?.productionUrl
+      } else {
+        throw new InternalServerErrorException('Production bundler environment is missing')
+      }
+    }
+    if (environment === 'sandbox') {
+      if (config?.sandboxUrl) {
+        return config?.sandboxUrl
+      } else {
+        throw new InternalServerErrorException('Sandbox bundler environment is missing')
+      }
+    }
+    throw new InternalServerErrorException('Environment Error')
   }
 
 

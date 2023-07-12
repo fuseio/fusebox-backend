@@ -10,7 +10,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, Observable } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { isEmpty } from 'lodash'
+import { isEmpty, capitalize } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
@@ -70,25 +70,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
   }
 
   private prepareUrl(environment, context: ExecutionContext) {
-    const ctxClassName = context.getClass().name
-    const config = this.configService.get<Record<string, any>>(ctxClassName)
-    if (environment === 'production') {
-      if (config?.productionUrl) {
-        return config?.productionUrl
-      } else {
-        throw new InternalServerErrorException('Production bundler environment is missing')
-      }
+    const config = this.configService.get(environment)
+    if (config.url) {
+      return config.url
+    } else {
+      throw new InternalServerErrorException(`${capitalize(environment)} bundler environment is missing`)
     }
-    if (environment === 'sandbox') {
-      if (config?.sandboxUrl) {
-        return config?.sandboxUrl
-      } else {
-        throw new InternalServerErrorException('Sandbox bundler environment is missing')
-      }
-    }
-    throw new InternalServerErrorException('Environment Error')
   }
-
-
-
 }

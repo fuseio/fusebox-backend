@@ -4,4 +4,5 @@ export interface Project extends Document {
   readonly ownerId: string;
   readonly name: string;
   readonly description: string;
+  readonly paymasterInfo: object;
 }

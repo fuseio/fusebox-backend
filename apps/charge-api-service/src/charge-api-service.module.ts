@@ -18,11 +18,15 @@ import { GraphqlAPIModule } from '@app/api-service/graphql-api/graphql-api.modul
     StakingAPIModule,
     ExplorerApiModule,
     BundlerApiModule,
+    BundlerApiModule,
     SmartWalletsAPIModule,
+    GraphqlAPIModule,
+    PaymasterApiModule
     GraphqlAPIModule,
     PaymasterApiModule
   ],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]
 })
+export class ChargeApiServiceModule { }
 export class ChargeApiServiceModule { }

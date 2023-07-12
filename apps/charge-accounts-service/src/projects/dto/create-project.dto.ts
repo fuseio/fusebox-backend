@@ -1,11 +1,12 @@
 import { IsString } from 'class-validator'
 export class CreateProjectDto {
   @IsString()
-    ownerId: string
+  ownerId: string
 
   @IsString()
-    name: string
+  name: string
 
   @IsString()
-    description: string
+  description: string
+
 }

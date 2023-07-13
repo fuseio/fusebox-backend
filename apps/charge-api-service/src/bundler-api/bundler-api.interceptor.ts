@@ -15,22 +15,22 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
-  constructor(
+  constructor (
     private httpService: HttpService,
     private configService: ConfigService
   ) { }
 
-  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+  async intercept (context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(
       context
-    );
+    )
 
     const response = await lastValueFrom(
       this.httpService
         .request(requestConfig)
         .pipe(
           map((axiosResponse: AxiosResponse) => {
-            return axiosResponse.data;
+            return axiosResponse.data
           })
         )
         .pipe(
@@ -38,20 +38,20 @@ export class BundlerApiInterceptor implements NestInterceptor {
             const errorReason =
               e?.response?.data?.error ||
               e?.response?.data?.errors?.message ||
-              '';
+              ''
 
             throw new HttpException(
               `${e?.response?.statusText}: ${errorReason}`,
               e?.response?.status
-            );
+            )
           })
         )
-    );
+    )
 
-    return next.handle().pipe(map(() => response));
+    return next.handle().pipe(map(() => response))
   }
 
-  private async prepareRequestConfig(context: ExecutionContext) {
+  private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
     const requestEnvironment = request.environment
     const ctxHandlerName = context.getHandler().name
@@ -65,11 +65,10 @@ export class BundlerApiInterceptor implements NestInterceptor {
       requestConfig.data = body
     }
 
-
     return requestConfig
   }
 
-  private prepareUrl(environment, context: ExecutionContext) {
+  private prepareUrl (environment, context: ExecutionContext) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
     const config = this.configService.get(environment)
     if (config.url) {

@@ -57,7 +57,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
     const ctxHandlerName = context.getHandler().name
     const body = request.body
     const requestConfig: AxiosRequestConfig = {
-      url: this.prepareUrl(requestEnvironment, context),
+      url: this.prepareUrl(requestEnvironment),
       method: ctxHandlerName
     }
 
@@ -68,7 +68,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
     return requestConfig
   }
 
-  private prepareUrl (environment, context: ExecutionContext) {
+  private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
     const config = this.configService.get(environment)
     if (config.url) {

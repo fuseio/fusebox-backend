@@ -13,20 +13,20 @@ import Web3ProviderService from '@app/common/services/web3-provider.service'
 
 @Injectable()
 export class PaymasterApiService {
-  constructor (
+  constructor(
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
     private web3ProviderService: Web3ProviderService
   ) { }
 
-  async getPaymasterData (context: any) {
+  async getPaymasterData(context: any) {
     const projectId = context.projectId.toString()
     const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', projectId)
 
     return paymasterInfo
   }
 
-  async pm_sponsorUserOperation (body: any) {
+  async pm_sponsorUserOperation(body: any) {
     const web3 = this.web3ProviderService.getProvider()
     const [op] = body
     const { timestamp } = await web3.eth.getBlock('latest')

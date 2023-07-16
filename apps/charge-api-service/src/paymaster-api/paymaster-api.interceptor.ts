@@ -3,19 +3,24 @@ import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
-  HttpException
+  HttpException, Inject
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { accountsService } from '@app/common/constants/microservices.constants'
+import { ClientProxy, RpcException } from '@nestjs/microservices'
+import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class PaymasterApiInterceptor implements NestInterceptor {
   constructor(
+    @Inject(accountsService) private readonly accountClient: ClientProxy,
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+
   ) { }
 
   async intercept(context: ExecutionContext): Promise<any> {
@@ -54,17 +59,22 @@ export class PaymasterApiInterceptor implements NestInterceptor {
 
     const ctxClassName = context.getClass().name
     const ctxHandlerName = context.getHandler().name
-    const query = request.query
+    const projectId = request.projectId.toString()
+    const body = request.body
     const config = this.configService.get<Record<string, any>>(ctxClassName)
+    console.log(projectId);
+    const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', projectId)
+    console.log(this.accountClient);
 
     const requestConfig: AxiosRequestConfig = {
       url: `${config?.baseUrl}`,
       method: ctxHandlerName
     }
 
-    if (!isEmpty(query)) {
-      requestConfig.params = query
+    if (!isEmpty(body)) {
+      requestConfig.data = body
     }
+
 
     return requestConfig
   }

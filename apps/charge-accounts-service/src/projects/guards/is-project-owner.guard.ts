@@ -4,12 +4,12 @@ import { ProjectsService } from '@app/accounts-service/projects/projects.service
 
 @Injectable()
 export class IsProjectOwnerGuard implements CanActivate {
-  constructor (
+  constructor(
     private usersService: UsersService,
     private projectsService: ProjectsService
-  ) {}
+  ) { }
 
-  async canActivate (context: ExecutionContext): Promise<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
     const { params }: { params: { id: string; projectId: string } } = request
     const auth0Id = request?.user?.sub

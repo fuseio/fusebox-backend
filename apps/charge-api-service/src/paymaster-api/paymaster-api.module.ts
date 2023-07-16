@@ -4,17 +4,31 @@ import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { ConfigModule } from '@nestjs/config'
 import configuration from '@app/api-service/explorer-api/config/configuration'
 import { PaymasterApiController } from '@app/api-service/paymaster-api/paymaster-api.controller'
-import { ProjectsModule } from 'apps/charge-accounts-service/src/projects/projects.module'
+import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
+import { PaymasterModule } from 'apps/charge-accounts-service/src/paymaster/paymaster.module'
+import { accountsService } from '@app/common/constants/microservices.constants'
+import { ClientsModule, Transport } from '@nestjs/microservices'
 
 @Module({
   imports: [
     ApiKeyModule,
     HttpModule,
     ConfigModule.forFeature(configuration),
-    ProjectsModule
+    ClientsModule.register([
+      {
+        name: accountsService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.ACCOUNTS_HOST,
+          port: parseInt(process.env.ACCOUNTS_TCP_PORT)
+        }
+      }
+    ])
   ],
   controllers: [
     PaymasterApiController
-  ]
+  ],
+  providers: [PaymasterApiService]
 })
+
 export class PaymasterApiModule { }

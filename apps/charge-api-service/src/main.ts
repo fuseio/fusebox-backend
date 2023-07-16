@@ -5,11 +5,11 @@ import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filte
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { apiServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
-async function bootstrap () {
+async function bootstrap() {
   const app = await NestFactory.create(ChargeApiServiceModule)
 
   const microServiceOptions = {
-    transpot: Transport.TCP,
+    transport: Transport.TCP,
     options: {
       host: process.env.API_HOST,
       port: process.env.API_TCP_PORT

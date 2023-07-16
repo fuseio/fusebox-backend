@@ -41,6 +41,8 @@ services:
     environment:
       - API_HOST
       - API_PORT
+      - ACCOUNTS_HOST
+      - ACCOUNTS_TCP_PORT
       - MONGO_URI=${API_MONGO_URI}
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_TCP_PORT
@@ -172,7 +174,7 @@ services:
       - ${SMART_WALLETS_PORT}:${SMART_WALLETS_PORT}
       - ${SMART_WALLETS_TCP_PORT}:${SMART_WALLETS_TCP_PORT}
     restart: always
-  
+
   charge-relay-service:
     container_name: charge-relay-service
     build:

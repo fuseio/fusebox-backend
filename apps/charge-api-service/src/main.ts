@@ -5,7 +5,7 @@ import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filte
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { apiServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
-async function bootstrap () {
+async function bootstrap() {
   const app = await NestFactory.create(ChargeApiServiceModule)
 
   const microServiceOptions = {

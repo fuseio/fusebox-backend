@@ -6,7 +6,7 @@ import { Transport } from '@nestjs/microservices'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
-async function bootstrap() {
+async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
 
   app.use(Helmet())

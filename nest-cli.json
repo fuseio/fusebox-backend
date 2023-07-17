@@ -79,7 +79,18 @@
       "sourceRoot": "apps/charge-smart-wallets-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/charge-smart-wallets-service/tsconfig.app.json",
-        "assets": ["common/config/*"]
+        "assets": [
+          "common/config/*"
+        ]
+      }
+    },
+    "paymaster-rpc-service": {
+      "type": "application",
+      "root": "apps/paymaster-rpc-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/paymaster-rpc-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/paymaster-rpc-service/tsconfig.app.json"
       }
     }
   }

@@ -9,9 +9,13 @@ export class PublicApiKeyToProjectIdGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest()
         const { query }: { query: { apiKey: string } } = request
-        if (isEmpty(query?.apiKey)) return false
+        if (isEmpty(query?.apiKey)) {
+            return false
+        }
         const apiKey = await this.apiKeysService.findOne({ publicKey: query?.apiKey })
-        if (isEmpty(apiKey)) return false
+        if (isEmpty(apiKey)) {
+            return false
+        }
         request.projectId = apiKey.projectId
         return true
     }

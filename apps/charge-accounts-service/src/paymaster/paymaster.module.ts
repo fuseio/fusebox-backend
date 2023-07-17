@@ -10,7 +10,7 @@ import { Module } from '@nestjs/common'
   imports: [
     UsersModule,
     DatabaseModule,
-    ProjectsModule,
+    ProjectsModule
 
   ],
   controllers: [PaymasterController],

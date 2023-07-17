@@ -6,10 +6,8 @@ import { Transport } from '@nestjs/microservices'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 
-async function bootstrap() {
+async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
-
-
 
   app.use(Helmet())
   app.setGlobalPrefix('accounts')
@@ -33,9 +31,9 @@ async function bootstrap() {
       retryAttempts: 5,
       retryDelay: 3000,
       host: process.env.ACCOUNTS_HOST,
-      port: process.env.ACCOUNTS_TCP_PORT,
+      port: process.env.ACCOUNTS_TCP_PORT
 
-    },
+    }
 
   })
   await app.startAllMicroservices()

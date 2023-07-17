@@ -1,6 +1,5 @@
 import * as mongoose from 'mongoose'
 
-
 export const ProjectSchema = new mongoose.Schema(
   {
     ownerId: {
@@ -9,7 +8,7 @@ export const ProjectSchema = new mongoose.Schema(
       required: true
     },
     name: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String, required: true }
   },
   {
     timestamps: true

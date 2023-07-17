@@ -11,19 +11,16 @@ import { MessagePattern } from '@nestjs/microservices'
 
 @Controller({ path: 'paymaster', version: '1' })
 export class PaymasterController {
-  constructor(private readonly paymasterService: PaymasterService) { }
+  constructor (private readonly paymasterService: PaymasterService) { }
 
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post(':id')
-  create(@Param('id') id: string) {
+  create (@Param('id') id: string) {
     return this.paymasterService.create(id)
   }
 
-
   @MessagePattern('get_paymaster_info')
-  findOne(projectId: string) {
+  findOne (projectId: string) {
     return this.paymasterService.findOne(projectId)
   }
-
-
 }

@@ -5,7 +5,7 @@ import { projectModelString } from '@app/accounts-service/projects/projects.cons
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { apiService } from '@app/common/constants/microservices.constants'
 import { Inject, Injectable } from '@nestjs/common'
-import { ClientProxy, RpcException } from '@nestjs/microservices'
+import { ClientProxy } from '@nestjs/microservices'
 import { Model } from 'mongoose'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 
@@ -58,7 +58,6 @@ export class ProjectsService {
     const sandboxKey = await callMSFunction(this.apiClient, 'create_sandbox_key', projectId)
     return sandboxKey
   }
-
 
   async getSandboxKey(projectId: string) {
     return callMSFunction(this.apiClient, 'get_sandbox_key', projectId)

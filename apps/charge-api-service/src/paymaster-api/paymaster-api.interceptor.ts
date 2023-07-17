@@ -16,14 +16,14 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class PaymasterApiInterceptor implements NestInterceptor {
-  constructor(
+  constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private httpService: HttpService,
-    private configService: ConfigService,
+    private configService: ConfigService
 
   ) { }
 
-  async intercept(context: ExecutionContext): Promise<any> {
+  async intercept (context: ExecutionContext): Promise<any> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(
       context
     )
@@ -54,7 +54,7 @@ export class PaymasterApiInterceptor implements NestInterceptor {
     return response
   }
 
-  private async prepareRequestConfig(context: ExecutionContext) {
+  private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
 
     const ctxClassName = context.getClass().name
@@ -62,9 +62,9 @@ export class PaymasterApiInterceptor implements NestInterceptor {
     const projectId = request.projectId.toString()
     const body = request.body
     const config = this.configService.get<Record<string, any>>(ctxClassName)
-    console.log(projectId);
+    console.log(projectId)
     const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', projectId)
-    console.log(this.accountClient);
+    console.log(this.accountClient)
 
     const requestConfig: AxiosRequestConfig = {
       url: `${config?.baseUrl}`,
@@ -74,7 +74,6 @@ export class PaymasterApiInterceptor implements NestInterceptor {
     if (!isEmpty(body)) {
       requestConfig.data = body
     }
-
 
     return requestConfig
   }

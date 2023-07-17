@@ -39,7 +39,6 @@ export class ProjectsController {
     return this.projectsService.findAll(auth0Id)
   }
 
-
   /**
    * Fetches the project by the given id and verifies that the requesting
    * authenticated user is the owner of the project

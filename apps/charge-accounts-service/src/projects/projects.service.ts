@@ -5,7 +5,7 @@ import { projectModelString } from '@app/accounts-service/projects/projects.cons
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { apiService } from '@app/common/constants/microservices.constants'
 import { Inject, Injectable } from '@nestjs/common'
-import { ClientProxy } from '@nestjs/microservices'
+import { ClientProxy, RpcException } from '@nestjs/microservices'
 import { Model } from 'mongoose'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import base64url from 'base64url'

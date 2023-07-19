@@ -8,12 +8,12 @@ import { isEmpty } from 'lodash'
 
 @Injectable()
 export class PaymasterService {
-  constructor (
+  constructor(
     @Inject(paymasterInfoModelString)
     private paymasterModel: Model<PaymasterInfo>
   ) { }
 
-  async create (projectId: string) {
+  async create(projectId: string) {
     try {
       const exPaymasterInfo = await this.paymasterModel.findOne({
         projectId
@@ -28,7 +28,6 @@ export class PaymasterService {
         paymasterVersion: '0.1.0',
         entrypointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
         projectId,
-        sponsorId,
         isActive: true
       }
       const result = await this.paymasterModel.create({
@@ -40,7 +39,7 @@ export class PaymasterService {
     }
   }
 
-  async findOne (projectId: string) {
+  async findOne(projectId: string) {
     return await this.paymasterModel.findOne({
       projectId
     })
@@ -52,6 +51,7 @@ export class PaymasterService {
     })
     if (!isEmpty(exSponsorId)) {
       sponsorId = crypto.randomBytes(18).toString('hex')
+      // sponsorId = exSponsorId._id.toString('hex')
       this.generateUniqueSponsorId(sponsorId)
     }
     return sponsorId

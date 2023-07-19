@@ -99,17 +99,6 @@ services:
     command: npm run start:dev charge-relay-service
     networks:
       - chargenet
-  paymaster-rpc-service:
-    build:
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - ./node_modules:/usr/src/app/node_modules
-    ports:
-      - 9331:9331
-    command: npm run start:dev paymaster-rpc-service
-    networks:
-      - chargenet
   redis:
     container_name: redis
     image: 'redis/redis-stack:latest'

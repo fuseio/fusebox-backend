@@ -195,24 +195,5 @@ services:
       - ${RELAY_PORT}:${RELAY_PORT}
       - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
     restart: always
-  paymaster-rpc-service:
-    container_name: paymaster-rpc-service
-    build:
-      context: .
-      dockerfile: ./apps/paymaster-rpc-service/Dockerfile
-      target: development
-    command: npm run start:dev paymaster-rpc-service
-    env_file:
-      - ./apps/paymaster-rpc-service/.env
-    environment:
-      - PAYMASTER_RPC_HOST
-      - PAYMASTER_RPC_PORT
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - ${PAYMASTER_RPC_PORT}:${PAYMASTER_RPC_PORT}
-      - ${PAYMASTER_RPC_TCP_PORT}:${PAYMASTER_RPC_TCP_PORT}
-    restart: always
 networks:
   chargenet:

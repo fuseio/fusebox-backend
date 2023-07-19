@@ -11,23 +11,22 @@ import { Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 
-
 @Injectable()
 export class PaymasterApiService {
-  constructor(
+  constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
-    private web3ProviderService: Web3ProviderService,
+    private web3ProviderService: Web3ProviderService
   ) { }
 
-  async getPaymasterData(context: any) {
+  async getPaymasterData (context: any) {
     const projectId = context.projectId.toString()
     const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', projectId)
 
     return paymasterInfo
   }
 
-  async pm_sponsorUserOperation(body: any) {
+  async pm_sponsorUserOperation (body: any) {
     const web3 = this.web3ProviderService.getProvider()
     const [op] = body
     const { timestamp } = await web3.eth.getBlock('latest')
@@ -45,7 +44,7 @@ export class PaymasterApiService {
     const paymasterAddress = this.configService.getOrThrow(
       'PAYMASTER_CONTRACT_ADDRESS'
     )
-    console.log(paymasterAddress);
+    console.log(paymasterAddress)
 
     const paymasterContract: any = new web3.eth.Contract(
       paymasterABI as any,
@@ -86,6 +85,4 @@ export class PaymasterApiService {
       callGasLimit: op.callGasLimit
     }
   }
-
-
 }

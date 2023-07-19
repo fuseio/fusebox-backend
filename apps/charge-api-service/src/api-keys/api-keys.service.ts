@@ -7,7 +7,7 @@ import * as crypto from 'crypto'
 import base64url from 'base64url'
 import { RpcException } from '@nestjs/microservices'
 import { StudioLegacyJwtService } from '@app/api-service/studio-legacy-jwt/studio-legacy-jwt.service'
-import { isEmpty} from 'lodash'
+import { isEmpty } from 'lodash'
 
 @Injectable()
 export class ApiKeysService {

@@ -10,27 +10,7 @@ import { Module } from '@nestjs/common'
   imports: [
     UsersModule,
     DatabaseModule,
-    ProjectsModule,
-    ClientsModule.register([
-      {
-        name: apiService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.API_HOST,
-          port: parseInt(process.env.API_TCP_PORT)
-        }
-      }
-    ])
-    // ClientsModule.register([
-    //   {
-    //     name: relayService,
-    //     transport: Transport.TCP,
-    //     options: {
-    //       host: process.env.RELAY_HOST,
-    //       port: parseInt(process.env.RELAY_TCP_PORT)
-    //     }
-    //   }
-    // ])
+    ProjectsModule
   ],
   controllers: [PaymasterController],
   providers: [PaymasterService, ...paymasterProviders],

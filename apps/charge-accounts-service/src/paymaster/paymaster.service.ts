@@ -8,12 +8,12 @@ import { isEmpty } from 'lodash'
 
 @Injectable()
 export class PaymasterService {
-  constructor(
+  constructor (
     @Inject(paymasterInfoModelString)
     private paymasterModel: Model<PaymasterInfo>
   ) { }
 
-  async create(projectId: string) {
+  async create (projectId: string) {
     try {
       const exPaymasterInfo = await this.paymasterModel.findOne({
         projectId
@@ -39,7 +39,7 @@ export class PaymasterService {
     }
   }
 
-  async findOne(projectId: string) {
+  async findOne (projectId: string) {
     return await this.paymasterModel.findOne({
       projectId
     })

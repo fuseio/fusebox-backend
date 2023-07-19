@@ -1,9 +1,9 @@
 import { HttpException } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { lastValueFrom, takeLast, catchError } from 'rxjs'
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators'
 
-export async function callMSFunction(client: ClientProxy, pattern: string, data: any) {
+export async function callMSFunction (client: ClientProxy, pattern: string, data: any) {
   return lastValueFrom(
     client
       .send(pattern, data)

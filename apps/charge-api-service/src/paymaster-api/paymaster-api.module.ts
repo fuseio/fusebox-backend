@@ -7,7 +7,6 @@ import { PaymasterApiController } from '@app/api-service/paymaster-api/paymaster
 import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
 import { accountsService } from '@app/common/constants/microservices.constants'
 import { ClientsModule, Transport } from '@nestjs/microservices'
-import { ClientProxy, RpcException } from '@nestjs/microservices'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 
 @Module({

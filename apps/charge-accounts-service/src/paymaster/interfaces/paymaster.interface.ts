@@ -7,4 +7,5 @@ export interface PaymasterInfo extends Document {
     readonly projectId: string;
     readonly sponsorId: string;
     readonly isActive: boolean;
+    readonly environment: string;
 }

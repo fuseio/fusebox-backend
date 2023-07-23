@@ -11,13 +11,13 @@ import { isEmpty } from 'lodash'
 
 @Injectable()
 export class ApiKeysService {
-  constructor(
+  constructor (
     @Inject(apiKeyModelString)
     private apiKeyModel: Model<ApiKey>,
     private studioLegacyJwtService: StudioLegacyJwtService
   ) { }
 
-  async createPublicKey(projectId: string) {
+  async createPublicKey (projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({
       projectId
     })
@@ -42,7 +42,7 @@ export class ApiKeysService {
     throw new RpcException('Internal Server Error')
   }
 
-  async getPublicKey(projectId: string) {
+  async getPublicKey (projectId: string) {
     const apiKeys = await this.findOne({ projectId })
 
     if (apiKeys && apiKeys?.publicKey) {
@@ -52,11 +52,11 @@ export class ApiKeysService {
     throw new RpcException('Not Found')
   }
 
-  async findOne(query: Record<string, any>) {
+  async findOne (query: Record<string, any>) {
     return this.apiKeyModel.findOne(query)
   }
 
-  async createSecretKey(projectId: string) {
+  async createSecretKey (projectId: string) {
     const apiKeys = await this.apiKeyModel.findOne({ projectId })
 
     if (apiKeys && apiKeys?.secretHash) {
@@ -90,7 +90,7 @@ export class ApiKeysService {
     throw new RpcException('Internal Server Error')
   }
 
-  async createSandboxKey(projectId: string) {
+  async createSandboxKey (projectId: string) {
     const projectKeys = await this.apiKeyModel.findOne({
       projectId
     })
@@ -117,7 +117,7 @@ export class ApiKeysService {
     throw new RpcException('Internal Server Error')
   }
 
-  async getSandboxKey(projectId: string) {
+  async getSandboxKey (projectId: string) {
     const apiKeys = await this.findOne({ projectId })
 
     if (apiKeys && apiKeys?.sandboxKey) {
@@ -127,13 +127,13 @@ export class ApiKeysService {
     throw new RpcException('Not Found')
   }
 
-  async getProjectJwt(query: object) {
+  async getProjectJwt (query: object) {
     const projectApiKeys = await this.apiKeyModel.findOne(query)
     const projectEncryptedJwt = projectApiKeys?.encryptedLegacyJwt
     return this.studioLegacyJwtService.decryptEncryptedJWT(projectEncryptedJwt)
   }
 
-  async updateSecretKey(projectId: string) {
+  async updateSecretKey (projectId: string) {
     const { secretKey, secretPrefix, secretLastFourChars } = await this.generateSecretKey()
     const saltRounds = await bcrypt.genSalt()
     const secretHash = await bcrypt.hash(secretKey, saltRounds)
@@ -157,7 +157,7 @@ export class ApiKeysService {
     }
   }
 
-  async getProjectIdByPublicKey(publicKey: any) {
+  async getProjectIdByPublicKey (publicKey: any) {
     const projectApiKeys: ApiKey | null = await this.apiKeyModel.findOne({ publicKey })
     const projectId: string = projectApiKeys?.projectId?.toString()
 
@@ -168,7 +168,7 @@ export class ApiKeysService {
     return projectId
   }
 
-  async getApiKeysInfo(projectId: string) {
+  async getApiKeysInfo (projectId: string) {
     const projectApiKeys = await this.apiKeyModel.findOne({
       projectId
     })
@@ -177,12 +177,12 @@ export class ApiKeysService {
     return projectApiKeys || {}
   }
 
-  private async generateRandomToken(): Promise<string> {
+  private async generateRandomToken (): Promise<string> {
     const randomString = base64url(crypto.randomBytes(18))
     return randomString
   }
 
-  private async generateSecretKey() {
+  private async generateSecretKey () {
     const secretPrefix = 'sk_'
     const secretKey = `${secretPrefix}${await this.generateRandomToken()}`
     const secretLastFourChars = secretKey.slice(secretKey.length - 4)

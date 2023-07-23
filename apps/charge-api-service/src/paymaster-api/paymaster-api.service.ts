@@ -1,37 +1,33 @@
 import { accountsService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
-import { callMSFunction } from '@app/common/utils/client-proxy'
 import {
   Injectable,
   Inject
 } from '@nestjs/common'
 import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
-import paymasterABI from './abi/EtherspotPaymaster.abi.json' // EtherspotPaymaster ABI
+// import paymasterABI from './abi/EtherspotPaymaster.abi.json' // EtherspotPaymaster ABI
+import fusePaymasterABI from './abi/FuseVerifyingPaymasterSingleton.abi.json'
 import { Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
+import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
+import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class PaymasterApiService {
-  constructor (
+  constructor(
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
-    private web3ProviderService: Web3ProviderService
+    private paymasterWeb3ProviderService: PaymasterWeb3ProviderService
   ) { }
 
-  async getPaymasterData (context: any) {
-    const projectId = context.projectId.toString()
-    const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', projectId)
-
-    return paymasterInfo
-  }
-
-  async pm_sponsorUserOperation (body: any) {
-    const web3 = this.web3ProviderService.getProvider()
+  async pm_sponsorUserOperation(body: any, env: any, projectId: string) {
+    const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
     const [op] = body
     const { timestamp } = await web3.eth.getBlock('latest')
     const validUntil = parseInt(timestamp.toString()) + 240
     const validAfter = 0
+    const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
+    const sponsorId = paymasterInfo.sponsorId
 
     // When the initCode is not empty, we need to increase the gas values. Multiplying everything by 3 seems to work, but we
     // need to have a better approach to estimate gas and update accordingly.
@@ -40,14 +36,9 @@ export class PaymasterApiService {
       op.verificationGasLimit = op.verificationGasLimit * 3
       op.callGasLimit = op.callGasLimit * 3
     }
-
-    const paymasterAddress = this.configService.getOrThrow(
-      'PAYMASTER_CONTRACT_ADDRESS'
-    )
-    console.log(paymasterAddress)
-
+    const paymasterAddress = paymasterInfo.paymasterAddress
     const paymasterContract: any = new web3.eth.Contract(
-      paymasterABI as any,
+      fusePaymasterABI as any,
       paymasterAddress
     )
 
@@ -57,23 +48,21 @@ export class PaymasterApiService {
     // op.preVerificationGas = BigNumber.from(150000).toHexString();
     // op.callGasLimit = BigNumber.from(150000).toHexString();
     const hash = await paymasterContract.methods
-      .getHash(op, validUntil, validAfter)
+      .getHash(op, validUntil, validAfter, sponsorId)
       .call()
 
     const privateKeyString = this.configService.getOrThrow(
-      'PAYMASTER_SIGNER_PRIVATE_KEY'
+      `paymasterApi.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
     )
+
     const paymasterSigner = new Wallet(privateKeyString)
     const signature = await paymasterSigner.signMessage(arrayify(hash))
-
-    const validUntilHex = web3.utils.numberToHex(validUntil)
-    const validAfterHex = web3.utils.numberToHex(validAfter)
 
     const paymasterAndData = hexConcat([
       paymasterAddress,
       defaultAbiCoder.encode(
-        ['uint48', 'uint48'],
-        [validUntilHex, validAfterHex]
+        ['uint48', 'uint48', 'bytes12', 'bytes'],
+        [validUntil, validAfter, sponsorId, signature]
       ),
       signature
     ])

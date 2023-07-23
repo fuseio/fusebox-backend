@@ -57,6 +57,11 @@ services:
       - EXPLORER_API_URL
       - BUNDLER_API_PRD_URL
       - BUNDLER_API_SANDBOX_URL
+      - SPARK_RPC_URL
+      - RPC_URL
+      - PAYMASTER_PRODUCTION_SIGNER_PRIVATE_KEY
+      - PAYMASTER_SANDBOX_SIGNER_PRIVATE_KEY
+      - PAYMASTER_CONTRACT_ADDRESS
     depends_on:
       - charge-notifications-service
       - charge-network-service

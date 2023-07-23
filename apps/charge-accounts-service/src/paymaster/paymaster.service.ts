@@ -1,59 +1,77 @@
 import { PaymasterInfo } from '@app/accounts-service/paymaster/interfaces/paymaster.interface'
 import { paymasterInfoModelString } from '@app/accounts-service/paymaster/paymaster.constants'
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
-import { RpcException } from '@nestjs/microservices'
 import { Model } from 'mongoose'
-import * as crypto from 'crypto'
-import { isEmpty } from 'lodash'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class PaymasterService {
-  constructor (
+  constructor(
     @Inject(paymasterInfoModelString)
-    private paymasterModel: Model<PaymasterInfo>
+    private paymasterModel: Model<PaymasterInfo>,
+    private configService: ConfigService
+
   ) { }
 
-  async create (projectId: string) {
+  async create(projectId: string, ver: string) {
+    if (!Object.keys(this.configService.getOrThrow(
+      'paymaster')).includes(ver)) {
+      throw new InternalServerErrorException('Paymaster version is wrong')
+    }
+
+    const environment = this.configService.getOrThrow(
+      `paymaster.${ver}`
+    )
+
     try {
-      const exPaymasterInfo = await this.paymasterModel.findOne({
-        projectId
-      })
-      if (exPaymasterInfo) {
-        throw new RpcException('Paymaster Info already exist')
-      }
-      const sponsorId = await this.generateUniqueSponsorId(crypto.randomBytes(18).toString('hex'))
-      // We can do an endpoint in the Paymaster RPC Service for fetching this data
-      const paymasterInfo = {
-        paymasterAddress: '0xb234cb63B4A016aDE53E900C667a3FC3C5Cc8F46',
-        paymasterVersion: '0.1.0',
-        entrypointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+      const productionPaymasterInfoObj = {
+        paymasterAddress: environment.production.paymasterContractAddress,
+        paymasterVersion: ver,
+        entrypointAddress: environment.production.entrypointAddress,
         projectId,
-        sponsorId,
-        isActive: true
+        sponsorId: await this.getSponsorId(projectId),
+        isActive: true,
+        environment: 'production'
       }
-      const result = await this.paymasterModel.create({
-        ...paymasterInfo
-      })
-      if (result) return `Your sponsor Id is: ${sponsorId}`
+      const sandboxPaymasterInfoObj = {
+        paymasterAddress: environment.sandbox.paymasterContractAddress,
+        paymasterVersion: ver,
+        entrypointAddress: environment.sandbox.entrypointAddress,
+        projectId,
+        sponsorId: await this.getSponsorId(projectId),
+        isActive: true,
+        environment: 'sandbox'
+      }
+      return this.paymasterModel.create([productionPaymasterInfoObj, sandboxPaymasterInfoObj])
     } catch (err) {
       throw new InternalServerErrorException(err.message)
     }
   }
 
-  async findOne (projectId: string) {
+  async findOneByProjectIdAndEnv(idAndEnv: any) {
     return await this.paymasterModel.findOne({
+      projectId: idAndEnv.projectId, isActive: true, environment: idAndEnv.env
+    })
+  }
+
+  async findAll(projectId: string) {
+    return await this.paymasterModel.find({
       projectId
     })
   }
 
-  private generateUniqueSponsorId = async (sponsorId) => {
-    const exSponsorId = await this.paymasterModel.findOne({
-      sponsorId
+  async findActivePaymasters(projectId: string) {
+    return await this.paymasterModel.find({
+      projectId, isActive: true
     })
-    if (!isEmpty(exSponsorId)) {
-      sponsorId = crypto.randomBytes(18).toString('hex')
-      this.generateUniqueSponsorId(sponsorId)
-    }
-    return sponsorId
+  }
+
+  async getAvailableVersionList() {
+    return await Object.keys(this.configService.getOrThrow(
+      'paymaster'))
+  }
+
+  async getSponsorId(projectId: string) {
+    return `0x${projectId}`
   }
 }

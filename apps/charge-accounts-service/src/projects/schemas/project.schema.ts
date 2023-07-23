@@ -1,10 +1,5 @@
 import * as mongoose from 'mongoose'
 
-const PaymasterInfoSchema = new mongoose.Schema({
-  paymasterAddress: { type: String, required: true },
-  sponsorId: { type: Number, required: true },
-});
-
 export const ProjectSchema = new mongoose.Schema(
   {
     ownerId: {
@@ -13,8 +8,7 @@ export const ProjectSchema = new mongoose.Schema(
       required: true
     },
     name: { type: String, required: true },
-    description: { type: String, required: true },
-    paymasterInfo: { type: Object, required: false }
+    description: { type: String, required: true }
   },
   {
     timestamps: true

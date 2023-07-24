@@ -22,7 +22,8 @@ export class PaymasterService {
     const environment = this.configService.getOrThrow(
       `paymaster.${ver}`
     )
-
+    //TODO: When we will implement creation of new paymaster version 
+    // we should make the "isActive" field true on creation and make this field false for old paymaster info
     try {
       const productionPaymasterInfoObj = {
         paymasterAddress: environment.production.paymasterContractAddress,

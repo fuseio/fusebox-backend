@@ -74,7 +74,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "SponsorCannotBeZero",
+		"name": "SponsorIdCannotBeZero",
 		"type": "error"
 	},
 	{
@@ -87,9 +87,9 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "_sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"indexed": true,
@@ -106,9 +106,9 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "_sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"indexed": true,
@@ -144,9 +144,9 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "_sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"indexed": true,
@@ -163,9 +163,9 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "_sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"indexed": true,
@@ -182,9 +182,9 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "_sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"indexed": true,
@@ -226,9 +226,9 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "_sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"indexed": true,
@@ -263,9 +263,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			}
 		],
 		"name": "depositFor",
@@ -289,9 +289,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			}
 		],
 		"name": "getBalance",
@@ -393,9 +393,9 @@
 				"type": "uint48"
 			},
 			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			}
 		],
 		"name": "getHash",
@@ -412,9 +412,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			}
 		],
 		"name": "getOwner",
@@ -487,9 +487,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bytes12"
+				"type": "uint256"
 			}
 		],
 		"name": "sponsorBalances",
@@ -506,9 +506,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bytes12"
+				"type": "uint256"
 			}
 		],
 		"name": "sponsorOwners",
@@ -649,22 +649,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address payable",
-				"name": "withdrawAddress",
-				"type": "address"
-			}
-		],
-		"name": "withdrawStake",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes12",
+				"internalType": "uint256",
 				"name": "sponsorId",
-				"type": "bytes12"
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
@@ -672,7 +659,20 @@
 				"type": "uint256"
 			}
 		],
-		"name": "withdrawTo",
+		"name": "withdrawFunds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "withdrawAddress",
+				"type": "address"
+			}
+		],
+		"name": "withdrawStake",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

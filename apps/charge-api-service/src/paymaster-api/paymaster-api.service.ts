@@ -14,13 +14,13 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class PaymasterApiService {
-  constructor (
+  constructor(
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
     private paymasterWeb3ProviderService: PaymasterWeb3ProviderService
   ) { }
 
-  async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
+  async pm_sponsorUserOperation(body: any, env: any, projectId: string) {
     const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
     const [op] = body
     const { timestamp } = await web3.eth.getBlock('latest')
@@ -28,8 +28,6 @@ export class PaymasterApiService {
     const validAfter = 0
     const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
     const sponsorId = paymasterInfo.sponsorId
-
-    console.log(paymasterInfo)
 
     // When the initCode is not empty, we need to increase the gas values. Multiplying everything by 3 seems to work, but we
     // need to have a better approach to estimate gas and update accordingly.

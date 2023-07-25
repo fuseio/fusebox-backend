@@ -6,14 +6,14 @@ import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class PaymasterService {
-  constructor(
+  constructor (
     @Inject(paymasterInfoModelString)
     private paymasterModel: Model<PaymasterInfo>,
     private configService: ConfigService
 
   ) { }
 
-  async create(projectId: string, ver: string) {
+  async create (projectId: string, ver: string) {
     if (!Object.keys(this.configService.getOrThrow(
       'paymasterEnvs')).includes(ver)) {
       throw new InternalServerErrorException('Paymaster version is wrong')
@@ -23,7 +23,7 @@ export class PaymasterService {
       `paymasterEnvs.${ver}`
     )
 
-    //TODO: When we will implement creation of new paymaster version 
+    // TODO: When we will implement creation of new paymaster version
     // we should make the "isActive" field true on creation and make this field false for old paymaster info
     try {
       const productionPaymasterInfoObj = {
@@ -45,37 +45,36 @@ export class PaymasterService {
         environment: 'sandbox'
       }
 
-
       return this.paymasterModel.create([productionPaymasterInfoObj, sandboxPaymasterInfoObj])
     } catch (err) {
       throw new InternalServerErrorException(err.message)
     }
   }
 
-  async findOneByProjectIdAndEnv(idAndEnv: any) {
+  async findOneByProjectIdAndEnv (idAndEnv: any) {
     return await this.paymasterModel.findOne({
       projectId: idAndEnv.projectId, isActive: true, environment: idAndEnv.env
     })
   }
 
-  async findAll(projectId: string) {
+  async findAll (projectId: string) {
     return await this.paymasterModel.find({
       projectId
     })
   }
 
-  async findActivePaymasters(projectId: string) {
+  async findActivePaymasters (projectId: string) {
     return await this.paymasterModel.find({
       projectId, isActive: true
     })
   }
 
-  async getAvailableVersionList() {
+  async getAvailableVersionList () {
     return await Object.keys(this.configService.getOrThrow(
       'paymaster'))
   }
 
-  async getSponsorId(projectId: string) {
+  async getSponsorId (projectId: string) {
     return `0x${projectId}`
   }
 }

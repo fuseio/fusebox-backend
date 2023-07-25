@@ -79,7 +79,9 @@
       "sourceRoot": "apps/charge-smart-wallets-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/charge-smart-wallets-service/tsconfig.app.json",
-        "assets": ["common/config/*"]
+        "assets": [
+          "common/config/*"
+        ]
       }
     }
   }

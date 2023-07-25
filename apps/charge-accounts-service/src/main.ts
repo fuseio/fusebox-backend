@@ -9,17 +9,6 @@ import { accountsServiceLoggerContext } from '@app/common/constants/microservice
 async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
 
-  app.connectMicroservice({
-    transport: Transport.TCP,
-    options: {
-      retryAttempts: 5,
-      retryDelay: 3000,
-      host: process.env.ACCOUNTS_HOST,
-      port: process.env.ACCOUNTS_TCP_PORT
-    }
-  })
-
-  await app.startAllMicroservices()
   app.use(Helmet())
   app.setGlobalPrefix('accounts')
   app.enableCors()
@@ -36,7 +25,18 @@ async function bootstrap () {
   const httpAdapterHost = app.get(HttpAdapterHost)
   const logger = new Logger(accountsServiceLoggerContext)
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: {
+      retryAttempts: 5,
+      retryDelay: 3000,
+      host: process.env.ACCOUNTS_HOST,
+      port: process.env.ACCOUNTS_TCP_PORT
 
+    }
+
+  })
+  await app.startAllMicroservices()
   await app.listen(process.env.ACCOUNTS_PORT)
 }
 bootstrap()

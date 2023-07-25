@@ -9,7 +9,7 @@ async function bootstrap () {
   const app = await NestFactory.create(ChargeApiServiceModule)
 
   const microServiceOptions = {
-    transpot: Transport.TCP,
+    transport: Transport.TCP,
     options: {
       host: process.env.API_HOST,
       port: process.env.API_TCP_PORT

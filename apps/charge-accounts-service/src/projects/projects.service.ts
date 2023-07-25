@@ -24,6 +24,7 @@ export class ProjectsService {
     const projectId = createdProject._id
     await callMSFunction(this.apiClient, 'create_public', projectId)
     await callMSFunction(this.apiClient, 'create_sandbox_key', projectId)
+
     return createdProject.save()
   }
 
@@ -56,6 +57,12 @@ export class ProjectsService {
   async createSandboxKey (projectId: string) {
     const sandboxKey = await callMSFunction(this.apiClient, 'create_sandbox_key', projectId)
     return sandboxKey
+  }
+
+  async getProjectBySponsorId (sponsorId: string) {
+    return this.projectModel.find({
+      'paymasterInfo.sponsorId': sponsorId
+    })
   }
 
   async getSandboxKey (projectId: string) {

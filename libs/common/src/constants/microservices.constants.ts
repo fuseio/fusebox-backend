@@ -1,4 +1,5 @@
 export const accountsServiceLoggerContext = 'ACCOUNTS-SERVICE'
+export const accountsService = 'ACCOUNTS_API_SERVICE'
 export const apiService = 'CHARGE_API_SERVICE'
 export const apiServiceLoggerContext = 'API-SERVICE'
 export const appStoreService = 'CHARGE_APP_STORE_SERVICE'

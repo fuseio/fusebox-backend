@@ -6,14 +6,14 @@ import { ConfigService } from '@nestjs/config'
 import { BigNumber } from 'ethers'
 @Injectable()
 export class PaymasterService {
-  constructor(
+  constructor (
     @Inject(paymasterInfoModelString)
     private paymasterModel: Model<PaymasterInfo>,
     private configService: ConfigService
 
   ) { }
 
-  async create(projectId: string, ver: string) {
+  async create (projectId: string, ver: string) {
     if (!Object.keys(this.configService.getOrThrow(
       'paymaster')).includes(ver)) {
       throw new InternalServerErrorException('Paymaster version is wrong')
@@ -49,30 +49,30 @@ export class PaymasterService {
     }
   }
 
-  async findOneByProjectIdAndEnv(idAndEnv: any) {
+  async findOneByProjectIdAndEnv (idAndEnv: any) {
     return await this.paymasterModel.findOne({
       projectId: idAndEnv.projectId, isActive: true, environment: idAndEnv.env
     })
   }
 
-  async findAll(projectId: string) {
+  async findAll (projectId: string) {
     return await this.paymasterModel.find({
       projectId
     })
   }
 
-  async findActivePaymasters(projectId: string) {
+  async findActivePaymasters (projectId: string) {
     return await this.paymasterModel.find({
       projectId, isActive: true
     })
   }
 
-  async getAvailableVersionList() {
+  async getAvailableVersionList () {
     return await Object.keys(this.configService.getOrThrow(
       'paymaster'))
   }
 
-  async getSponsorId(projectId: string) {
+  async getSponsorId (projectId: string) {
     return await BigNumber.from(`0x${projectId}`).toString()
   }
 }

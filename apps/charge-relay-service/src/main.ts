@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core'
-import { Transport } from '@nestjs/microservices'
+import { TcpOptions, Transport } from '@nestjs/microservices'
 import { ChargeRelayServiceModule } from '@app/relay-service/charge-relay-service.module'
 
 async function bootstrap () {
   const app = await NestFactory.create(ChargeRelayServiceModule)
-  const microServiceOptions = {
-    transpot: Transport.TCP,
+  const microServiceOptions: TcpOptions = {
+    transport: Transport.TCP,
     options: {
       host: process.env.RELAY_HOST,
-      port: process.env.RELAY_TCP_PORT
+      port: parseInt(process.env.RELAY_TCP_PORT)
     }
   }
 

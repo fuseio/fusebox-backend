@@ -61,7 +61,7 @@ export class PaymasterApiService {
     const paymasterAndData = hexConcat([
       paymasterAddress,
       defaultAbiCoder.encode(
-        ['uint48', 'uint48', 'bytes12', 'bytes'],
+        ['uint48', 'uint48', 'uint256', 'bytes'],
         [validUntil, validAfter, sponsorId, signature]
       ),
       signature

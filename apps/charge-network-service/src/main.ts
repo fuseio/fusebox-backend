@@ -1,4 +1,4 @@
-import { Transport } from '@nestjs/microservices'
+import { TcpOptions, Transport } from '@nestjs/microservices'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeNetworkServiceModule } from '@app/network-service/charge-network-service.module'
 import { Logger, ValidationPipe } from '@nestjs/common'
@@ -7,11 +7,11 @@ import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filte
 
 async function bootstrap () {
   const app = await NestFactory.create(ChargeNetworkServiceModule)
-  const microServiceOptions = {
-    transpot: Transport.TCP,
+  const microServiceOptions: TcpOptions = {
+    transport: Transport.TCP,
     options: {
       host: process.env.NETWORK_HOST,
-      port: process.env.NETWORK_TCP_PORT
+      port: parseInt(process.env.NETWORK_TCP_PORT)
     }
   }
   app.setGlobalPrefix('network')

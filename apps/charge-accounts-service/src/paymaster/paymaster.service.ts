@@ -73,6 +73,6 @@ export class PaymasterService {
   }
 
   async getSponsorId (projectId: string) {
-    return await BigNumber.from(`0x${projectId}`).toString()
+    return BigNumber.from(`0x${projectId}`).toString()
   }
 }

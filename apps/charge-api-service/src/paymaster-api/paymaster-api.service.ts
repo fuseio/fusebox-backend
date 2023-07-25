@@ -14,13 +14,13 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class PaymasterApiService {
-  constructor(
+  constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
     private paymasterWeb3ProviderService: PaymasterWeb3ProviderService
   ) { }
 
-  async pm_sponsorUserOperation(body: any, env: any, projectId: string) {
+  async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
     const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
     const [op] = body
     const { timestamp } = await web3.eth.getBlock('latest')

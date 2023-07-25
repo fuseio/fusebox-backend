@@ -1,5 +1,5 @@
 export default () => ({
-  paymasterEnvs: {
+  paymaster: {
     '0_1_0': {
       production: {
         paymasterContractAddress:

@@ -1,5 +1,5 @@
 export default () => ({
-  Bundler: {
+  bundler: {
     production: {
       url: process.env.BUNDLER_API_PRD_URL
     },

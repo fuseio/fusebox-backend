@@ -9,10 +9,9 @@ import { ClientProxy } from '@nestjs/microservices'
 import { Model } from 'mongoose'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 
-
 @Injectable()
 export class ProjectsService {
-  constructor(
+  constructor (
     @Inject(apiService) private readonly apiClient: ClientProxy,
     // @Inject(relayService) private readonly relayClient: ClientProxy,
     @Inject(projectModelString)
@@ -20,7 +19,7 @@ export class ProjectsService {
     private usersService: UsersService
   ) { }
 
-  async create(createProjectDto: CreateProjectDto): Promise<Project> {
+  async create (createProjectDto: CreateProjectDto): Promise<Project> {
     const createdProject = new this.projectModel(createProjectDto)
     const projectId = createdProject._id
     await callMSFunction(this.apiClient, 'create_public', projectId)
@@ -29,16 +28,16 @@ export class ProjectsService {
     return createdProject.save()
   }
 
-  async findOne(id: string): Promise<Project> {
+  async findOne (id: string): Promise<Project> {
     return this.projectModel.findById(id)
   }
 
-  async findAll(auth0Id: string): Promise<Project[]> {
+  async findAll (auth0Id: string): Promise<Project[]> {
     const userId = await this.usersService.findOneByAuth0Id(auth0Id)
     return this.projectModel.find({ ownerId: userId })
   }
 
-  async update(
+  async update (
     id: string,
     updateProjectDto: UpdateProjectDto
   ): Promise<Project> {
@@ -47,7 +46,7 @@ export class ProjectsService {
     })
   }
 
-  async createSecret(projectId: string) {
+  async createSecret (projectId: string) {
     const secret = await callMSFunction(this.apiClient, 'create_secret', projectId)
     // if (secret) {
     //   callMSFunction(this.relayClient, 'create_account', projectId)
@@ -55,22 +54,22 @@ export class ProjectsService {
     return secret
   }
 
-  async createSandboxKey(projectId: string) {
+  async createSandboxKey (projectId: string) {
     const sandboxKey = await callMSFunction(this.apiClient, 'create_sandbox_key', projectId)
     return sandboxKey
   }
 
-  async getProjectBySponsorId(sponsorId: string) {
+  async getProjectBySponsorId (sponsorId: string) {
     return this.projectModel.find({
       'paymasterInfo.sponsorId': sponsorId
     })
   }
 
-  async getSandboxKey(projectId: string) {
+  async getSandboxKey (projectId: string) {
     return callMSFunction(this.apiClient, 'get_sandbox_key', projectId)
   }
 
-  async checkIfSecretExists(projectId: string) {
+  async checkIfSecretExists (projectId: string) {
     const apiKeysInfo = await callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
 
     if (apiKeysInfo?.secretLastFourChars) {
@@ -79,15 +78,15 @@ export class ProjectsService {
     return false
   }
 
-  async getApiKeysInfo(projectId: string) {
+  async getApiKeysInfo (projectId: string) {
     return callMSFunction(this.apiClient, 'get_api_keys_info', projectId)
   }
 
-  async updateSecret(projectId: string) {
+  async updateSecret (projectId: string) {
     return callMSFunction(this.apiClient, 'update_secret', projectId)
   }
 
-  async getPublic(projectId: string) {
+  async getPublic (projectId: string) {
     return callMSFunction(this.apiClient, 'get_public', projectId)
   }
 }

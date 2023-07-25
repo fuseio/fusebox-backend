@@ -15,13 +15,14 @@ export class PaymasterService {
 
   async create(projectId: string, ver: string) {
     if (!Object.keys(this.configService.getOrThrow(
-      'paymaster')).includes(ver)) {
+      'paymasterEnvs')).includes(ver)) {
       throw new InternalServerErrorException('Paymaster version is wrong')
     }
 
     const environment = this.configService.getOrThrow(
-      `paymaster.${ver}`
+      `paymasterEnvs.${ver}`
     )
+
     //TODO: When we will implement creation of new paymaster version 
     // we should make the "isActive" field true on creation and make this field false for old paymaster info
     try {
@@ -43,6 +44,8 @@ export class PaymasterService {
         isActive: true,
         environment: 'sandbox'
       }
+
+
       return this.paymasterModel.create([productionPaymasterInfoObj, sandboxPaymasterInfoObj])
     } catch (err) {
       throw new InternalServerErrorException(err.message)

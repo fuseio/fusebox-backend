@@ -5,8 +5,8 @@ import {
   Inject
 } from '@nestjs/common'
 import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
-// import paymasterABI from './abi/EtherspotPaymaster.abi.json' // EtherspotPaymaster ABI
-import fusePaymasterABI from './abi/FuseVerifyingPaymasterSingleton.abi.json'
+import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
+
 import { Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
@@ -52,7 +52,7 @@ export class PaymasterApiService {
       .call()
 
     const privateKeyString = this.configService.getOrThrow(
-      `paymasterApi.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
+      `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
     )
 
     const paymasterSigner = new Wallet(privateKeyString)

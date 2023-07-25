@@ -50,17 +50,6 @@ export class ProjectsController {
     return this.projectsService.findOne(id)
   }
 
-  /**
-     * Appends Paymaster Info to the project by Project Id
-     * authenticated user is the owner of the project
-     * @param id Project ID
-     */
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
-  @Patch('paymaster/:id')
-  appendPaymasterInfoToProjectById (@Param('id') id: string) {
-    return this.projectsService.appendPaymasterInfoToProjectById(id)
-  }
-
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/paymaster/:sponsorId')
   getProjectBySponsorId (@Param('sponsorId') sponsorId: string) {

@@ -4,7 +4,7 @@ import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-producti
 import { JSONRPCServer } from 'json-rpc-2.0'
 
 @UseGuards(IsPrdOrSbxKeyGuard)
-@Controller({ path: 'v1/paymaster' })
+@Controller({ path: 'v0/paymaster' })
 export class PaymasterApiController {
   server: JSONRPCServer = new JSONRPCServer()
   constructor (

@@ -4,7 +4,7 @@ export default () => ({
       url: process.env.RPC_URL || 'https://rpc.fuse.io'
     },
     sandbox: {
-      url: process.env.SPARK_PRC_URL || 'https://rpc.fusespark.io/'
+      url: process.env.SPARK_RPC_URL || 'https://rpc.fusespark.io/'
     },
     keys: {
       '0_1_0': {

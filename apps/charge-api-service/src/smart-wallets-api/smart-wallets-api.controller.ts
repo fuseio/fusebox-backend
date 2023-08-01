@@ -6,11 +6,12 @@ import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
+import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '1' })
 export class SmartWalletsAPIController {
-  constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) {}
+  constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
   @Post('auth')
   auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
@@ -53,5 +54,15 @@ export class SmartWalletsAPIController {
   @Post('install_upgrade')
   installUpgrade (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.installUpgrade()
+  }
+
+  @Post('record-user-op')
+  recordUserop (@Body() userOp: UserOp) {
+    return this.smartWalletsAPIService.recordUserOp(userOp)
+  }
+
+  @Post('update-user-op')
+  updateUserop (@Body() userOp: UserOp) {
+    return this.smartWalletsAPIService.updateUserOp(userOp)
   }
 }

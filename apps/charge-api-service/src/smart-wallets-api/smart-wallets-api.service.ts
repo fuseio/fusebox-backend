@@ -5,12 +5,13 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
+import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 @Injectable()
 export class SmartWalletsAPIService {
   constructor (
     @Inject(smartWalletsService) private readonly smartWalletsClient: ClientProxy
-  ) {}
+  ) { }
 
   auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     return callMSFunction(this.smartWalletsClient, 'auth', smartWalletsAuthDto)
@@ -38,5 +39,13 @@ export class SmartWalletsAPIService {
 
   async installUpgrade (): Promise<any> {
     return callMSFunction(this.smartWalletsClient, 'install_upgrade', '')
+  }
+
+  async recordUserOp (userOp: UserOp): Promise<any> {
+    return callMSFunction(this.smartWalletsClient, 'record-user-op', userOp)
+  }
+
+  async updateUserOp (userOp: UserOp): Promise<any> {
+    return callMSFunction(this.smartWalletsClient, 'update-user-op', userOp)
   }
 }

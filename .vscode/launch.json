@@ -115,6 +115,14 @@
             ],
             "runtimeExecutable": "npm",
             "runtimeArgs": ["run-script", "run-auth-testing-debug", "--preserve-symlinks"]
+        },
+        {
+            "name": "test debug",
+            "command": "npm test",
+            "request": "launch",
+            "type": "node-terminal",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
         }
     ]
 }

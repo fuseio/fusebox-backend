@@ -1,6 +1,7 @@
+import { Injectable } from '@nestjs/common'
 import { decodeWithCalldata, sigHashFromCalldata, decodeWithEventProps } from './dtools/decodeBySigHash'
-import { EventProps} from './dtools/decodeEvent'
-
+import { EventProps } from './dtools/decodeEvent'
+@Injectable()
 export class UserOpParser {
 
   async parseCallData(callData: string) {
@@ -10,7 +11,7 @@ export class UserOpParser {
     const walletCallData = walletMethod.decoded[2] as string
     response = await decodeCalldata(walletCallData)
     const targetMethod = response[0]
-    return {walletMethod, targetMethod}
+    return { walletMethod, targetMethod }
   }
 
   async parseEvent(eventProps: EventProps) {

@@ -13,7 +13,9 @@
             "port": 9227,
             "restart": true,
             "address": "0.0.0.0",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "node",
@@ -24,7 +26,9 @@
             "port": 9225,
             "restart": true,
             "address": "0.0.0.0",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "node",
@@ -35,7 +39,9 @@
             "port": 9230,
             "restart": true,
             "address": "0.0.0.0",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "node",
@@ -46,7 +52,9 @@
             "port": 9231,
             "restart": true,
             "address": "0.0.0.0",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "node",
@@ -57,7 +65,9 @@
             "port": 9229,
             "restart": true,
             "address": "0.0.0.0",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "node",
@@ -68,7 +78,9 @@
             "port": 9232,
             "restart": true,
             "address": "0.0.0.0",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "node",
@@ -88,9 +100,9 @@
             "envFile": "${workspaceFolder}/.env",
             "cwd": "${workspaceRoot}",
             "console": "integratedTerminal",
-        },  
+        },
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
@@ -114,7 +126,49 @@
                 "${workspaceFolder}/dist/**/*.js"
             ],
             "runtimeExecutable": "npm",
-            "runtimeArgs": ["run-script", "run-auth-testing-debug", "--preserve-symlinks"]
+            "runtimeArgs": [
+                "run-script",
+                "run-auth-testing-debug",
+                "--preserve-symlinks"
+            ]
+        },
+        {
+            "name": "charge-notifications-service",
+            "command": "npm run start:dev charge-notifications-service",
+            "request": "launch",
+            "type": "node-terminal",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Nest Framework",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "start:debug"
+            ],
+            "autoAttachChildProcesses": true,
+            "restart": true,
+            "sourceMaps": true,
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Nest Debug",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "start:debug",
+                "--",
+                "--inspect-brk"
+            ],
+            "console": "integratedTerminal",
+            "restart": true,
+            "autoAttachChildProcesses": true
         },
         {
             "name": "test debug",

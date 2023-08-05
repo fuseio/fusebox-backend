@@ -115,6 +115,46 @@
             ],
             "runtimeExecutable": "npm",
             "runtimeArgs": ["run-script", "run-auth-testing-debug", "--preserve-symlinks"]
-        }
+        },
+        {
+            "name": "charge-notifications-service",
+            "command": "npm run start:dev charge-notifications-service",
+            "request": "launch",
+            "type": "node-terminal",
+            "remoteRoot": "/usr/src/app",
+            "localRoot": "${workspaceFolder}",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Nest Framework",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+            "run",
+            "start:debug"
+            ],
+            "autoAttachChildProcesses": true,
+            "restart": true,
+            "sourceMaps": true,
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Nest Debug",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+              "run",
+              "start:debug",
+              "--",
+              "--inspect-brk"
+            ],
+            "console": "integratedTerminal",
+            "restart": true,
+            "protocol": "auto",
+            "port": 9229,
+            "autoAttachChildProcesses": true
+          }
     ]
 }

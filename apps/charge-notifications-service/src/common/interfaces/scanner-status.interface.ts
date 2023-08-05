@@ -1,6 +1,6 @@
 import { Document } from 'mongoose'
 
-export interface TransactionsScannerStatus extends Document {
+export interface ScannerStatus extends Document {
   readonly filter: string;
   readonly blockNumber: number;
 }

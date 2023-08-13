@@ -12,7 +12,16 @@ export class PaymasterApiController {
   ) {
     this.server.addMethod('pm_sponsorUserOperation', (body, req: any) =>
       this.paymasterService.pm_sponsorUserOperation(
-        body, req.environment, req.projectId
+        body,
+        req.environment,
+        req.projectId
+      )
+    )
+    this.server.addMethod('pm_accounts', (body, req: any) =>
+      this.paymasterService.pm_accounts(
+        body,
+        req.environment,
+        req.projectId
       )
     )
   }

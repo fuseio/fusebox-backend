@@ -80,4 +80,12 @@ export class PaymasterApiService {
       callGasLimit: op.callGasLimit
     }
   }
+
+  async pm_accounts (body, env: any, projectId: string) {
+    // const [entryPointAddress] = body
+    const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
+    return [
+      paymasterInfo.paymasterAddress
+    ]
+  }
 }

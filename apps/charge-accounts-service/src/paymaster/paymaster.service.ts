@@ -25,22 +25,23 @@ export class PaymasterService {
     // TODO: When we will implement creation of new paymaster version
     // we should make the "isActive" field true on creation and make this field false for old paymaster info
     try {
-      const productionPaymasterInfoObj = {
-        paymasterAddress: paymasterEnvs.production.paymasterContractAddress,
+      const sponsorId = this.getSponsorId(projectId)
+      const paymasterDefaultObj = {
         paymasterVersion: ver,
-        entrypointAddress: paymasterEnvs.production.entrypointAddress,
         projectId,
-        sponsorId: await this.getSponsorId(projectId),
-        isActive: true,
+        sponsorId,
+        isActive: true
+      }
+      const productionPaymasterInfoObj = {
+        ...paymasterDefaultObj,
+        paymasterAddress: paymasterEnvs.production.paymasterContractAddress,
+        entrypointAddress: paymasterEnvs.production.entrypointAddress,
         environment: 'production'
       }
       const sandboxPaymasterInfoObj = {
+        ...paymasterDefaultObj,
         paymasterAddress: paymasterEnvs.sandbox.paymasterContractAddress,
-        paymasterVersion: ver,
         entrypointAddress: paymasterEnvs.sandbox.entrypointAddress,
-        projectId,
-        sponsorId: await this.getSponsorId(projectId),
-        isActive: true,
         environment: 'sandbox'
       }
       return this.paymasterModel.create([productionPaymasterInfoObj, sandboxPaymasterInfoObj])
@@ -51,7 +52,9 @@ export class PaymasterService {
 
   async findOneByProjectIdAndEnv (idAndEnv: any) {
     return await this.paymasterModel.findOne({
-      projectId: idAndEnv.projectId, isActive: true, environment: idAndEnv.env
+      projectId: idAndEnv.projectId,
+      isActive: true,
+      environment: idAndEnv.env
     })
   }
 

@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { IsProjectOwnerGuard } from '@app/accounts-service/projects/guards/is-project-owner.guard'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 import { MessagePattern } from '@nestjs/microservices'
+
 @Controller({ path: 'paymaster', version: '1' })
 export class PaymasterController {
   constructor (private readonly paymasterService: PaymasterService) { }

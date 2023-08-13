@@ -4,6 +4,7 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import { Model } from 'mongoose'
 import { ConfigService } from '@nestjs/config'
 import { BigNumber } from 'ethers'
+
 @Injectable()
 export class PaymasterService {
   constructor (
@@ -75,7 +76,7 @@ export class PaymasterService {
       'paymaster'))
   }
 
-  async getSponsorId (projectId: string) {
+  getSponsorId (projectId: string) {
     return BigNumber.from(`0x${projectId}`).toString()
   }
 }

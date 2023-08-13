@@ -65,7 +65,6 @@ services:
       - RPC_URL
       - PAYMASTER_PRODUCTION_SIGNER_PRIVATE_KEY
       - PAYMASTER_SANDBOX_SIGNER_PRIVATE_KEY
-      - PAYMASTER_CONTRACT_ADDRESS
     depends_on:
       - charge-notifications-service
       - charge-network-service

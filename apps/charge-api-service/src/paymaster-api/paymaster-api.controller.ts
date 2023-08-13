@@ -4,7 +4,7 @@ import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-producti
 import { JSONRPCServer } from 'json-rpc-2.0'
 
 @UseGuards(IsPrdOrSbxKeyGuard)
-@Controller({ path: 'v1/paymaster' })
+@Controller({ path: 'v0/paymaster' })
 export class PaymasterApiController {
   server: JSONRPCServer = new JSONRPCServer()
   constructor (
@@ -12,7 +12,16 @@ export class PaymasterApiController {
   ) {
     this.server.addMethod('pm_sponsorUserOperation', (body, req: any) =>
       this.paymasterService.pm_sponsorUserOperation(
-        body, req.environment, req.projectId
+        body,
+        req.environment,
+        req.projectId
+      )
+    )
+    this.server.addMethod('pm_accounts', (body, req: any) =>
+      this.paymasterService.pm_accounts(
+        body,
+        req.environment,
+        req.projectId
       )
     )
   }

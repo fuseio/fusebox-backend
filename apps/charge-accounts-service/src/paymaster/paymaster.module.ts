@@ -7,6 +7,7 @@ import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
 import { Module } from '@nestjs/common'
 import configuration from '@app/accounts-service/paymaster/config/configuration'
 import { ConfigModule } from '@nestjs/config'
+
 @Module({
   imports: [
     UsersModule,
@@ -18,4 +19,5 @@ import { ConfigModule } from '@nestjs/config'
   providers: [PaymasterService, ...paymasterProviders],
   exports: [PaymasterService]
 })
+
 export class PaymasterModule { }

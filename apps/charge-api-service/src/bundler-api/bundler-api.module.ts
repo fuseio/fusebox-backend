@@ -27,4 +27,5 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
     BundlerApiController
   ]
 })
+
 export class BundlerApiModule { }

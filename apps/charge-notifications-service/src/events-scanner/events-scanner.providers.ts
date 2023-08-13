@@ -15,7 +15,7 @@ export const eventsScannerProviders = [
   {
     provide: ERC20LogsFilterString,
     useFactory: () => {
-      return { 
+      return {
         topics: [ERC20_TRANSFER_EVENT_HASH]
       }
     }
@@ -23,12 +23,10 @@ export const eventsScannerProviders = [
   {
     provide: userOpLogsFilterString,
     useFactory: () => {
-      return { 
+      return {
         address: ENTRY_POINT_ADDRESS,
         topics: [ENTRY_POINT_USER_OP_EVENT_HASH]
       }
     }
   }
 ]
-
-

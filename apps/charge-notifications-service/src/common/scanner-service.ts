@@ -1,19 +1,15 @@
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { BaseProvider } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
-import { log } from 'console'
-import { JsonRpcProvider } from 'nestjs-ethers'
 
 export abstract class ScannerService {
-
   constructor (
     protected readonly rpcProvider: BaseProvider,
     protected readonly statusFilter,
     protected readonly statusModel,
     protected configService: ConfigService,
     protected readonly logger
-  ) { 
-  }
+  ) { }
 
   abstract processBlocks (romBlock: number, toBlock: number);
 
@@ -26,7 +22,7 @@ export abstract class ScannerService {
       try {
         let { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
 
-        const status = await this.getStatus();
+        const status = await this.getStatus()
         const fromBlockNumber = status.blockNumber
           ? status.blockNumber + 1
           : toBlockNumber

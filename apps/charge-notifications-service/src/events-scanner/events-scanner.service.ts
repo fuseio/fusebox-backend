@@ -16,7 +16,7 @@ export abstract class EventsScannerService extends ScannerService {
     rpcProvider: BaseProvider,
     private readonly logsFilter: LogFilter,
     logger: Logger
-  ) { 
+  ) {
     super(rpcProvider, 'events', eventsScannerStatusModel, configService, logger)
   }
 

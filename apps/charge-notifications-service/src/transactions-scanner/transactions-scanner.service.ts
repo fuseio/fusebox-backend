@@ -19,13 +19,13 @@ export class TransactionsScannerService extends ScannerService {
 
   constructor (
     @Inject(transactionsScannerStatusModelString)
-    transactionsScannerStatusModel: Model<ScannerStatus>,
+      transactionsScannerStatusModel: Model<ScannerStatus>,
     @InjectEthersProvider('full-archive-node')
     readonly rpcProvider: JsonRpcProvider,
     private readonly web3ProviderService: Web3ProviderService,
     configService: ConfigService,
     private webhooksService: WebhooksService
-  ) { 
+  ) {
     super(rpcProvider, 'transactions', transactionsScannerStatusModel, configService, new Logger(TransactionsScannerService.name))
   }
 

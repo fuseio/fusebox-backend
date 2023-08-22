@@ -60,6 +60,7 @@
     "graphql-request": "^5.0.0",
     "helmet": "^5.0.2",
     "ioredis": "^5.2.0",
+    "json-rpc-2.0": "^1.6.0",
     "jwks-rsa": "^2.1.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.10.2",

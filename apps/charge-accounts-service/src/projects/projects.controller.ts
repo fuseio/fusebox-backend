@@ -50,6 +50,12 @@ export class ProjectsController {
     return this.projectsService.findOne(id)
   }
 
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get('/paymaster/:sponsorId')
+  getProjectBySponsorId (@Param('sponsorId') sponsorId: string) {
+    return this.projectsService.getProjectBySponsorId(sponsorId)
+  }
+
   /**
    * Updates the project with the given id with the given fields for the update
    * and verifies that the requesting authenticated user is the owner of the project

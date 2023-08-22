@@ -19,6 +19,10 @@ services:
       - AUTH0_AUDIENCE
       - APPS_HOST
       - APPS_TCP_PORT
+      - PAYMASTER_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
+      - ENTRYPOINT_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
+      - PAYMASTER_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
+      - ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
     depends_on:
       - charge-api-service
       - charge-apps-service
@@ -41,6 +45,8 @@ services:
     environment:
       - API_HOST
       - API_PORT
+      - ACCOUNTS_HOST
+      - ACCOUNTS_TCP_PORT
       - MONGO_URI=${API_MONGO_URI}
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_TCP_PORT
@@ -53,6 +59,12 @@ services:
       - SMART_WALLETS_TCP_PORT
       - SMART_WALLETS_JWT_SECRET
       - EXPLORER_API_URL
+      - BUNDLER_API_PRD_URL
+      - BUNDLER_API_SANDBOX_URL
+      - SPARK_RPC_URL
+      - RPC_URL
+      - PAYMASTER_PRODUCTION_SIGNER_PRIVATE_KEY
+      - PAYMASTER_SANDBOX_SIGNER_PRIVATE_KEY
     depends_on:
       - charge-notifications-service
       - charge-network-service
@@ -172,7 +184,7 @@ services:
       - ${SMART_WALLETS_PORT}:${SMART_WALLETS_PORT}
       - ${SMART_WALLETS_TCP_PORT}:${SMART_WALLETS_TCP_PORT}
     restart: always
-  
+
   charge-relay-service:
     container_name: charge-relay-service
     build:

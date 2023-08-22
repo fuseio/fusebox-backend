@@ -3,7 +3,7 @@ import { UsersService } from '@app/accounts-service/users/users.service'
 
 @Injectable()
 export class IsCreatorOwnerGuard implements CanActivate {
-  constructor (private usersService: UsersService) {}
+  constructor (private usersService: UsersService) { }
 
   async canActivate (context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()

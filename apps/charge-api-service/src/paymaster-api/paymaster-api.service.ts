@@ -7,7 +7,7 @@ import {
 import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
 import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
 
-import { Wallet } from 'ethers'
+import { BigNumber, Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
 import { callMSFunction } from '@app/common/utils/client-proxy'
@@ -38,9 +38,9 @@ export class PaymasterApiService {
     // When the initCode is not empty, we need to increase the gas values. Multiplying everything by 3 seems to work, but we
     // need to have a better approach to estimate gas and update accordingly.
     if (op.initCode !== '0x') {
-      op.preVerificationGas = op.preVerificationGas * 3
-      op.verificationGasLimit = op.verificationGasLimit * 3
-      op.callGasLimit = op.callGasLimit * 3
+      op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(3).toHexString()
+      op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(3).toHexString()
+      op.callGasLimit = BigNumber.from(op.callGasLimit).mul(3).toHexString()
     }
     const paymasterAddress = paymasterInfo.paymasterAddress
     const paymasterContract: any = new web3.eth.Contract(

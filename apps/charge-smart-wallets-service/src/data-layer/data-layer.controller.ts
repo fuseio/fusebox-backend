@@ -9,11 +9,11 @@ export class DataLayerController {
 
   @MessagePattern('record-user-op')
   create (@Body() userOp: UserOp) {
-    return this.dataLayerService.create(userOp)
+    return this.dataLayerService.recordUserOp(userOp)
   }
 
   @MessagePattern('update-user-op')
   update (@Body() userOp: UserOp) {
-    return this.dataLayerService.update(userOp)
+    return this.dataLayerService.updateUserOp(userOp)
   }
 }

@@ -14,6 +14,3 @@ export const SmartWalletUpgradeSchema = new mongoose.Schema(
     timestamps: true
   }
 )
-
-
-

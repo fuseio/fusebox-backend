@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const decimalSchema = z
   .number()
@@ -7,8 +7,8 @@ export const decimalSchema = z
       .string()
       .regex(/^\d*$/, {
         message:
-          'The value must be a hexadecimal number, 0x-prefix is required',
+          'The value must be a hexadecimal number, 0x-prefix is required'
       })
-      .transform(Number),
+      .transform(Number)
   )
-  .refine((n) => n >= 0 && n <= 128);
+  .refine((n) => n >= 0 && n <= 128)

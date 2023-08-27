@@ -4,25 +4,23 @@ import { Inject, Injectable } from '@nestjs/common'
 import { userOpString } from './data-layer.constants'
 import { UserOp } from './interfaces/user-op.interface'
 // import { IUserOperation } from 'userop'
-import { UserOpParser } from '@app/common/utils/userOpParser'
-import { decodeCalldata } from '@app/common/utils/userOpParser'
+import { UserOpParser } from '@app/common/utils/user-op-parser'
+import { decodeCalldata } from '@app/common/utils/user-op-parser'
 @Injectable()
 export class DataLayerService {
-  constructor(
+  constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     private userOpParser: UserOpParser
   ) { }
 
-  async create(body: UserOp) {
-    console.log(body.callData);
+  async recordUserOp (body: any) {
     const decodedCallData = await this.userOpParser.parseCallData(body.callData)
-    console.log(decodedCallData);
-
+    body.callData = decodedCallData
     return this.userOpModel.create(body)
   }
 
-  async update(body: UserOp) {
+  async updateUserOp (body: UserOp) {
     return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
   }
 }

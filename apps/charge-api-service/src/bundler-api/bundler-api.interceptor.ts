@@ -56,7 +56,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
       const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result }
       try {
-        callMSFunction(this.dataLayerClient, 'record-user-op', userOp)
+        await callMSFunction(this.dataLayerClient, 'record-user-op', userOp)
       } catch (error) {
         console.log(error)
       }

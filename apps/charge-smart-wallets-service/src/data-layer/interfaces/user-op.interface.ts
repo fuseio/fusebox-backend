@@ -4,7 +4,7 @@ export interface UserOp extends Document {
   sender: string; // Address is a string of hexadecimal characters
   nonce: number; // Nonce is a number that increases with each operation
   initCode: string; // InitCode is a buffer of bytes that contains the code to create new wallets
-  callData: string; // CallData is a buffer of bytes that contains the data to execute the action
+  callData: object; // CallData is a buffer of bytes that contains the data to execute the action
   callGasLimit: number; // CallGasLimit is a number that specifies the maximum gas to use for the action
   verificationGasLimit: number; // VerificationGasLimit is a number that specifies the maximum gas to use for verifying the operation
   preVerificationGas: number; // PreVerificationGas is a number that specifies the gas to use before verifying the operation

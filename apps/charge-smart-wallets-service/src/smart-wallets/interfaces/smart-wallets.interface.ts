@@ -1,3 +1,4 @@
+import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { Document } from 'mongoose'
 
 export interface SmartWallet extends Document {
@@ -18,4 +19,8 @@ export interface SmartWallet extends Document {
   readonly version: string;
   readonly paddedVersion: string;
   readonly versionType: string;
+}
+
+export interface SmartWalletService {
+  auth: (smartWalletsAuthDto: SmartWalletsAuthDto) => Promise<Record<string, string>>;
 }

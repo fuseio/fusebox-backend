@@ -42,6 +42,7 @@ export class SmartWalletsService {
         const jwt = this.jwtService.sign({
           sub: recoveredAddress,
           info: {
+            ...(smartWalletsAuthDto.smartWalletAddress && { smartWalletAddress: smartWalletsAuthDto.smartWalletAddress }),
             ownerAddress: recoveredAddress
           },
           channels: ['transaction']

@@ -1,5 +1,6 @@
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { SmartWalletsAPIController } from '@app/api-service/smart-wallets-api/smart-wallets-api.controller'
+import { SmartWalletsAPIV2Controller } from '@app/api-service/smart-wallets-api/smart-wallets-api-v2.controller'
 import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart-wallets-api.service'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { Module } from '@nestjs/common'
@@ -35,7 +36,10 @@ import { JwtStrategy } from '@app/api-service/smart-wallets-api/jwt.strategy'
       }
     })
   ],
-  controllers: [SmartWalletsAPIController],
+  controllers: [
+    SmartWalletsAPIController,
+    SmartWalletsAPIV2Controller
+  ],
   providers: [
     SmartWalletsAPIService,
     JwtStrategy

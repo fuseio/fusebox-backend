@@ -1,4 +1,4 @@
-import { IsEthereumAddress, IsString } from 'class-validator'
+import { IsEthereumAddress, IsOptional, IsString } from 'class-validator'
 
 export class SmartWalletsAuthDto {
   @IsString()
@@ -9,4 +9,8 @@ export class SmartWalletsAuthDto {
 
   @IsEthereumAddress()
     ownerAddress: string
+
+  @IsOptional()
+  @IsEthereumAddress()
+    smartWalletAddress: string
 }

@@ -8,19 +8,24 @@ import { UserOpParser } from '@app/common/utils/user-op-parser'
 import { decodeCalldata } from '@app/common/utils/user-op-parser'
 @Injectable()
 export class DataLayerService {
-  constructor (
+  constructor(
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     private userOpParser: UserOpParser
   ) { }
 
-  async recordUserOp (body: any) {
+  async recordUserOp(body: UserOp) {
     const decodedCallData = await this.userOpParser.parseCallData(body.callData)
-    body.callData = decodedCallData
+    // body.callData = decodedCallData
+    body.walletFunction = {
+      name: decodedCallData.walletFunction[0].walletFunction,
+      arguments: decodedCallData.walletFunction[0].arguments
+    }
+    body.targetFunction = decodedCallData.targetFunction
     return this.userOpModel.create(body)
   }
 
-  async updateUserOp (body: UserOp) {
+  async updateUserOp(body: UserOp) {
     return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
   }
 }

@@ -5,15 +5,16 @@ import { UserOp } from './interfaces/user-op.interface'
 
 @Controller()
 export class DataLayerController {
-  constructor (private readonly dataLayerService: DataLayerService) { }
+  constructor(private readonly dataLayerService: DataLayerService) { }
 
   @MessagePattern('record-user-op')
-  create (@Body() userOp: UserOp) {
+  create(@Body() userOp: UserOp) {
     return this.dataLayerService.recordUserOp(userOp)
   }
 
   @MessagePattern('update-user-op')
-  update (@Body() userOp: UserOp) {
+  update(@Body() userOp: UserOp) {
     return this.dataLayerService.updateUserOp(userOp)
   }
+
 }

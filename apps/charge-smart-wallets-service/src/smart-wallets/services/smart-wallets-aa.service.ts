@@ -7,8 +7,8 @@ import { SmartWalletService } from '@app/smart-wallets-service/smart-wallets/int
 // import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
-export class SmartWalletsV2 implements SmartWalletService {
-  private readonly logger = new Logger(SmartWalletsV2.name)
+export class SmartWalletsAAService implements SmartWalletService {
+  private readonly logger = new Logger(SmartWalletsAAService.name)
 
   constructor (
     private readonly jwtService: JwtService

@@ -13,8 +13,8 @@ import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
-export class SmartWalletsV1 implements SmartWalletService {
-  private readonly logger = new Logger(SmartWalletsV1.name)
+export class SmartWalletsLegacyService implements SmartWalletService {
+  private readonly logger = new Logger(SmartWalletsLegacyService.name)
 
   constructor (
     private readonly jwtService: JwtService,

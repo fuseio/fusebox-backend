@@ -1,6 +1,6 @@
 import { SmartWalletsController } from '@app/smart-wallets-service/smart-wallets/smart-wallets.controller'
-import { SmartWalletsV1 } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-v1.service'
-import { SmartWalletsV2 } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-v2.service'
+import { SmartWalletsLegacyService } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-legacy.service'
+import { SmartWalletsAAService } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-aa.service'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
@@ -48,8 +48,8 @@ import path from 'path'
     CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,
-    SmartWalletsV1,
-    SmartWalletsV2,
+    SmartWalletsLegacyService,
+    SmartWalletsAAService,
     ...smartWalletsProviders
   ],
   controllers: [SmartWalletsController]

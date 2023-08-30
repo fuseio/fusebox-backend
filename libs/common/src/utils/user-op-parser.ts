@@ -3,6 +3,7 @@ import { decodeWithCalldata, sigHashFromCalldata, decodeWithEventProps } from '.
 import { EventProps } from './dtools/decodeEvent'
 import { isNil } from 'lodash'
 import { BigNumber } from 'ethers'
+import { DecodeResult } from './dtools/decodeCalldata'
 
 @Injectable()
 export class UserOpParser {
@@ -14,19 +15,10 @@ export class UserOpParser {
       console.log('Signature is wrong or undefined')
     }
 
-    /// Batch transaction handle
     const walletFunction = decodeResults.map((decoded) => {
-      const args = []
-      for (let i = 0; i < decoded.decoded.length; i++) {
-        if (BigNumber.isBigNumber(decoded.decoded[i])) {
-          args[i] = BigInt(decoded.decoded[i] as string).toString()
-        } else {
-          args[i] = decoded.decoded[i]
-        }
-      }
       return {
         walletFunction: decoded.fragment.name,
-        arguments: args as Array<Array<String>>
+        arguments: this.parseDecodedResult(decoded) as Array<Array<String>>
       }
     })
 
@@ -35,51 +27,37 @@ export class UserOpParser {
       for (let i = 0; i < walletFunction[0].arguments[0].length; i++) {
         const decodedSingleBatchRes = await decodeCalldata(walletFunction[0].arguments[2][i] as string)
         const mappedDecodedSingleBatch = decodedSingleBatchRes.map((decoded) => {
-          const args = []
-          for (let i = 0; i < decoded.decoded.length; i++) {
-            if (BigNumber.isBigNumber(decoded.decoded[i])) {
-              args[i] = BigInt(decoded.decoded[i] as string).toString()
-            } else {
-              args[i] = decoded.decoded[i]
-            }
-          }
           return {
             name: decoded.fragment.name,
-            arguments: args
-
+            arguments: this.parseDecodedResult(decoded)
           }
         })
         targetFunction.push({
           targetAddress: walletFunction[0].arguments[0][i],
+          value: BigInt(walletFunction[0].arguments[1][i] as string).toString(),
           name: mappedDecodedSingleBatch[0].name,
           arguments: mappedDecodedSingleBatch[0].arguments
         })
       }
       return { walletFunction, targetFunction }
     }
-    /// ERC-20/NFT  transfer handle
+
     if (!isNil(decodeResults[0].decoded[2]) && decodeResults[0].decoded[2] !== '0x') {
       const decodeInnerResults = await decodeCalldata(decodeResults[0].decoded[2] as string)
       const targetFunction = decodeInnerResults.map((decoded) => {
-        const args = []
-        for (let i = 0; i < decoded.decoded.length; i++) {
-          if (BigNumber.isBigNumber(decoded.decoded[i])) {
-            args[i] = BigInt(decoded.decoded[i] as string).toString()
-          } else {
-            args[i] = decoded.decoded[i]
-          }
-        }
         return {
           name: decoded.fragment.name,
-          arguments: args
+          arguments: this.parseDecodedResult(decoded)
         }
       })
-
       return { walletFunction, targetFunction }
-    } else {
+    }
+    if (decodeResults[0].decoded[2] === '0x') {
       const targetFunction = { name: 'nativeTokenTransfer', value: BigInt(walletFunction[0].arguments[1].toString()).toString() }
       return { walletFunction, targetFunction }
     }
+    const targetFunction = { name: null }
+    return { walletFunction, targetFunction }
   }
 
   async parseEvent(eventProps: EventProps) {
@@ -87,7 +65,20 @@ export class UserOpParser {
     const parsedEvent = await decodeWithEventProps(sigHash, eventProps)
     return parsedEvent[0]
   }
+  parseDecodedResult(decodedCallData: DecodeResult) {
+    const args = []
+    for (let i = 0; i < decodedCallData.decoded.length; i++) {
+      if (BigNumber.isBigNumber(decodedCallData.decoded[i])) {
+        args[i] = BigInt(decodedCallData.decoded[i] as string).toString()
+      } else {
+        args[i] = decodedCallData.decoded[i]
+      }
+    }
+    return args
+  }
 }
+
+
 
 export async function decodeCalldata(callData: string) {
   return decodeWithCalldata(sigHashFromCalldata(callData), callData)

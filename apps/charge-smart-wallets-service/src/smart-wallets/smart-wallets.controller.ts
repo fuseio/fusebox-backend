@@ -1,5 +1,6 @@
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
-import { SmartWalletsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets.service'
+import { SmartWalletsLegacyService } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-legacy.service'
+import { SmartWalletsAAService } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-aa.service'
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
@@ -7,40 +8,47 @@ import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto
 
 @Controller()
 export class SmartWalletsController {
-  constructor (private readonly smartWalletsService: SmartWalletsService) { }
+  constructor (
+    private readonly legacyService: SmartWalletsLegacyService,
+    private readonly aaService: SmartWalletsAAService
+  ) { }
 
   @MessagePattern('auth')
   auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
-    return this.smartWalletsService.auth(smartWalletsAuthDto)
+    if (smartWalletsAuthDto.smartWalletAddress) {
+      return this.aaService.auth(smartWalletsAuthDto)
+    } else {
+      return this.legacyService.auth(smartWalletsAuthDto)
+    }
   }
 
   @MessagePattern('get_wallet')
   getWallet (smartWalletUser: ISmartWalletUser) {
-    return this.smartWalletsService.getWallet(smartWalletUser)
+    return this.legacyService.getWallet(smartWalletUser)
   }
 
   @MessagePattern('create_wallet')
   createWallet (smartWalletUser: ISmartWalletUser) {
-    return this.smartWalletsService.createWallet(smartWalletUser)
+    return this.legacyService.createWallet(smartWalletUser)
   }
 
   @MessagePattern('relay')
   relay (relayDto: RelayDto) {
-    return this.smartWalletsService.relay(relayDto)
+    return this.legacyService.relay(relayDto)
   }
 
   @MessagePattern('historical_txs')
   getHistoricalTxs (user: ISmartWalletUser) {
-    return this.smartWalletsService.getHistoricalTxs(user)
+    return this.legacyService.getHistoricalTxs(user)
   }
 
   @MessagePattern('get_available_upgrades')
   getAvailableUpgrades () {
-    return this.smartWalletsService.getAvailableUpgrades()
+    return this.legacyService.getAvailableUpgrades()
   }
 
   @MessagePattern('install_upgrade')
   installUpgrade () {
-    return this.smartWalletsService.installUpgrade()
+    return this.legacyService.installUpgrade()
   }
 }

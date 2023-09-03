@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt'
 import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
 import { smartWalletString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
-import { SmartWallet } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
+import { SmartWallet, SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
 import { generateSalt, generateTransactionId } from 'apps/charge-smart-wallets-service/src/common/utils/helper-functions'
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
@@ -13,8 +13,8 @@ import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
-export class SmartWalletsService {
-  private readonly logger = new Logger(SmartWalletsService.name)
+export class SmartWalletsLegacyService implements SmartWalletService {
+  private readonly logger = new Logger(SmartWalletsLegacyService.name)
 
   constructor (
     private readonly jwtService: JwtService,

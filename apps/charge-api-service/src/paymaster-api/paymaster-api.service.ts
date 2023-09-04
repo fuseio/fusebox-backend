@@ -38,9 +38,9 @@ export class PaymasterApiService {
     // When the initCode is not empty, we need to increase the gas values. Multiplying everything by 3 seems to work, but we
     // need to have a better approach to estimate gas and update accordingly.
     // if (op.initCode !== '0x') {
-    op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(10).toHexString()
-    op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(10).toHexString()
-    op.callGasLimit = BigNumber.from(op.callGasLimit).add(BigNumber.from(500000)).toHexString()
+    op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(5).toHexString()
+    op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(5).toHexString()
+    op.callGasLimit = BigNumber.from(op.callGasLimit).mul(5).toHexString()
     // }
     const paymasterAddress = paymasterInfo.paymasterAddress
     const paymasterContract: any = new web3.eth.Contract(

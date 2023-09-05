@@ -1,18 +1,18 @@
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import { getTokenTypeAbi, getTransferEventTokenType, parseLog, sleep } from '@app/notifications-service/common/utils/helper-functions'
-import { eventsScannerStatusModelString, ERC20LogsFilterString } from '@app/notifications-service/events-scanner/events-scanner.constants'
+import { getTokenTypeAbi, getTransferEventTokenType, parseLog  } from '@app/notifications-service/common/utils/helper-functions'
+import { ERC20LogsFilterString, ERC20ScannerStatusServiceString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Model } from 'mongoose'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
 import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
+import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter';
 import { has } from 'lodash'
-import { ScannerStatus } from '@app/notifications-service/common/interfaces/scanner-status.interface'
 import { EventsScannerService } from './events-scanner.service'
-import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
+import { ScannerStatusService } from '../common/scanner-status.service'
+
 @Injectable()
 export class ERC20EventsScannerService extends EventsScannerService {
   // TODO: Create a Base class for events scanner and transaction scanner services
@@ -20,17 +20,17 @@ export class ERC20EventsScannerService extends EventsScannerService {
 
   constructor (
     configService: ConfigService,
-    @Inject(eventsScannerStatusModelString)
-    eventsScannerStatusModel: Model<ScannerStatus>,
-    @InjectEthersProvider('regular-node')
-    rpcProvider: BaseProvider,
+    @Inject(ERC20ScannerStatusServiceString)
+    scannerStatusService: ScannerStatusService,
     @Inject(ERC20LogsFilterString)
     logsFilter: LogFilter,
+    @InjectEthersProvider('regular-node')
+    rpcProvider: BaseProvider,
     @InjectContractProvider('regular-node')
     private readonly ethersContract: EthersContract,
     private webhooksService: WebhooksService
   ) {
-    super(configService, eventsScannerStatusModel, rpcProvider, logsFilter, new Logger(ERC20EventsScannerService.name))
+    super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(ERC20EventsScannerService.name))
   }
 
   @logPerformance('ERC20EventsScannerService::ProcessBlocks')

@@ -1,13 +1,13 @@
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { BaseProvider } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
+import { ScannerStatusService } from './scanner-status.service'
 
 export abstract class ScannerService {
   constructor (
-    protected readonly rpcProvider: BaseProvider,
-    protected readonly statusFilter,
-    protected readonly statusModel,
     protected configService: ConfigService,
+    protected scannerStatusService: ScannerStatusService,
+    protected readonly rpcProvider: BaseProvider,
     protected readonly logger
   ) { }
 
@@ -22,7 +22,7 @@ export abstract class ScannerService {
       try {
         let { number: toBlockNumber } = await this.rpcProvider.getBlock('latest')
 
-        const status = await this.getStatus()
+        const status = await this.scannerStatusService.getStatus()
         const fromBlockNumber = status.blockNumber
           ? status.blockNumber + 1
           : toBlockNumber
@@ -41,30 +41,10 @@ export abstract class ScannerService {
           fromBlockNumber,
           toBlockNumber
         )
-
-        await this.updateStatus(toBlockNumber)
+        await this.scannerStatusService.updateStatus(toBlockNumber)
       } catch (error) {
         this.logger.error(`Failed to process blocks: ${error}`)
       }
     }
-  }
-
-  async getStatus () {
-    const status = await this.statusModel.findOne({
-      filter: this.statusFilter
-    })
-
-    if (status) {
-      return status
-    }
-
-    const newStatus = await this.statusModel.create({
-      filter: this.statusFilter
-    })
-    return newStatus
-  }
-
-  async updateStatus (blockNumber: number) {
-    await this.statusModel.updateOne({ filter: this.statusFilter }, { blockNumber }, { upsert: true })
   }
 }

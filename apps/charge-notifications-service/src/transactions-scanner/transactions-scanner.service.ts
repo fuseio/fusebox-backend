@@ -12,21 +12,24 @@ import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'n
 import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { ScannerService } from '../common/scanner-service'
+import { transactionsScannerStatusServiceString } from './transactions-scanner.constants';
+import { ScannerStatusService } from '../common/scanner-status.service';
 
 @Injectable()
 export class TransactionsScannerService extends ScannerService {
   private readonly filter = 'transactions'
 
   constructor (
-    @Inject(transactionsScannerStatusModelString)
-    transactionsScannerStatusModel: Model<ScannerStatus>,
+    configService: ConfigService,
+    @Inject(transactionsScannerStatusServiceString)
+    scannerStatusService: ScannerStatusService,
     @InjectEthersProvider('full-archive-node')
     readonly rpcProvider: JsonRpcProvider,
     private readonly web3ProviderService: Web3ProviderService,
-    configService: ConfigService,
+    
     private webhooksService: WebhooksService
   ) { 
-    super(rpcProvider, 'transactions', transactionsScannerStatusModel, configService, new Logger(TransactionsScannerService.name))
+    super(configService, scannerStatusService, rpcProvider, new Logger(TransactionsScannerService.name))
   }
 
   get web3Provider () {
@@ -42,7 +45,7 @@ export class TransactionsScannerService extends ScannerService {
     for (let i = fromBlock; i <= toBlock; i++) {
       this.logger.log(`Processing block ${i}`)
       await this.processBlockTraces(i)
-      await this.updateStatus(i)
+      await this.scannerStatusService.updateStatus(i)
     }
   }
 

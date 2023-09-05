@@ -1,23 +1,22 @@
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Model } from 'mongoose'
-import { BaseProvider, InjectEthersProvider, Log, EthersContract, InjectContractProvider } from 'nestjs-ethers'
+import { BaseProvider, Log } from 'nestjs-ethers'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
-import { ScannerStatus } from '@app/notifications-service/common/interfaces/scanner-status.interface'
-import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
+import { ScannerStatusService } from '../common/scanner-status.service';
+import { LogFilter } from './interfaces/logs-filter'
 @Injectable()
 export abstract class EventsScannerService extends ScannerService {
   // TODO: Create a Base class for events scanner and transaction scanner services
 
   constructor (
     configService: ConfigService,
-    eventsScannerStatusModel: Model<ScannerStatus>,
-    rpcProvider: BaseProvider,
+    scannerStatusService: ScannerStatusService,
     private readonly logsFilter: LogFilter,
+    rpcProvider: BaseProvider,
     logger: Logger
-  ) { 
-    super(rpcProvider, 'events', eventsScannerStatusModel, configService, logger)
+  ) {
+    super(configService, scannerStatusService, rpcProvider, logger)
   }
 
   @logPerformance('EventScanner::ProcessBlocks')
@@ -40,11 +39,15 @@ export abstract class EventsScannerService extends ScannerService {
   }
 
   async fetchLogs (fromBlock: number, toBlock: number) {
-    return this.rpcProvider.getLogs({
+    this.logger.debug(`EventFilter: Fetching logs ${fromBlock} to ${toBlock}. topics: ${this.logsFilter.topics}, address: ${this.logsFilter.address}`)
+    const logs = await this.rpcProvider.getLogs({
       fromBlock,
       toBlock,
-      topics: this.logsFilter.topics
+      topics: this.logsFilter.topics,
+      address: this.logsFilter.address
     })
+    this.logger.debug(`EventFilter: ${logs.length} logs found`)
+    return logs
   }
 
   abstract processEvent (log: Log);

@@ -3,7 +3,7 @@ import { BroadcasterModule } from '@app/notifications-service/broadcaster/broadc
 import rpcConfig from '@app/notifications-service/common/config/rpc-config'
 import { eventsScannerProviders } from '@app/notifications-service/events-scanner/events-scanner.providers'
 import { UserOpEventsScannerService } from '@app/notifications-service/events-scanner/userop-events-scanner.service'
-// import { ERC20EventsScannerService, userOpEventsScannerService } from '@app/notifications-service/events-scanner/userop-events-scanner.service'
+import { ERC20EventsScannerService } from '@app/notifications-service/events-scanner/erc20-events-scanner.service'
 
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -32,6 +32,14 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
     ConfigModule.forFeature(rpcConfig),
     BroadcasterModule
   ],
-  providers: [UserOpEventsScannerService, ...eventsScannerProviders, ...webhookEventProviders, Logger]
+  providers: [ 
+    // ERC20EventsScannerService,
+    UserOpEventsScannerService,
+    ...eventsScannerProviders,
+    ...webhookEventProviders,
+    Logger
+  ]
 })
 export class EventsScannerModule {}
+
+// TODO: webhookEventProviders verify that not needed here

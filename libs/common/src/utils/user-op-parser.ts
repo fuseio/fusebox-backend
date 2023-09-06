@@ -7,7 +7,7 @@ import { DecodeResult } from './dtools/decodeCalldata'
 
 @Injectable()
 export class UserOpParser {
-  async parseCallData(callData: string) {
+  async parseCallData (callData: string) {
     const decodeResults = await decodeCalldata(
       callData
     )
@@ -60,12 +60,13 @@ export class UserOpParser {
     return { walletFunction, targetFunction }
   }
 
-  async parseEvent(eventProps: EventProps) {
+  async parseEvent (eventProps: EventProps) {
     const sigHash = eventProps.topics[0]
     const parsedEvent = await decodeWithEventProps(sigHash, eventProps)
     return parsedEvent[0]
   }
-  parseDecodedResult(decodedCallData: DecodeResult) {
+
+  parseDecodedResult (decodedCallData: DecodeResult) {
     const args = []
     for (let i = 0; i < decodedCallData.decoded.length; i++) {
       if (BigNumber.isBigNumber(decodedCallData.decoded[i])) {
@@ -78,9 +79,7 @@ export class UserOpParser {
   }
 }
 
-
-
-export async function decodeCalldata(callData: string) {
+export async function decodeCalldata (callData: string) {
   return decodeWithCalldata(sigHashFromCalldata(callData), callData)
 }
 

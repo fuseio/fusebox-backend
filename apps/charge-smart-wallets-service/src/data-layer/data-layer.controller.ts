@@ -5,20 +5,20 @@ import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op
 
 @Controller()
 export class DataLayerController {
-  constructor(private readonly dataLayerService: DataLayerService) { }
+  constructor (private readonly dataLayerService: DataLayerService) { }
 
   @MessagePattern('record-user-op')
-  create(@Body() userOp: UserOp) {
+  create (@Body() userOp: UserOp) {
     return this.dataLayerService.recordUserOp(userOp)
   }
 
   @MessagePattern('update-user-op')
-  update(@Body() userOp: UserOp) {
+  update (@Body() userOp: UserOp) {
     return this.dataLayerService.updateUserOp(userOp)
   }
 
   @MessagePattern('get-all-wallet-actions')
-  get(@Body() data: any) {
+  get (@Body() data: any) {
     return this.dataLayerService.getPaginatedWalletActions(data.page, data.walletAddress)
   }
 }

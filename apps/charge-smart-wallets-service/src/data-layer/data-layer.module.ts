@@ -11,5 +11,4 @@ import { UserOpParser } from '@app/common/utils/user-op-parser'
   providers: [DataLayerService, ...dataLayerProviders, UserOpParser]
 })
 
-
 export class DataLayerModule { }

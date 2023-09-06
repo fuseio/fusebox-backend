@@ -7,10 +7,9 @@ import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/sr
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
 import * as mongoose from 'mongoose'
 
-
 @Injectable()
 export class DataLayerService {
-  constructor(
+  constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     private userOpParser: UserOpParser,
@@ -19,7 +18,7 @@ export class DataLayerService {
 
   ) { }
 
-  async recordUserOp(body: UserOp) {
+  async recordUserOp (body: UserOp) {
     const decodedCallData = await this.userOpParser.parseCallData(body.callData)
     body.walletFunction = {
       name: decodedCallData.walletFunction[0].walletFunction,
@@ -30,31 +29,31 @@ export class DataLayerService {
     return this.userOpModel.create(body)
   }
 
-  async updateUserOp(body: UserOp) {
+  async updateUserOp (body: UserOp) {
     return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
   }
-  async createWalletAction(parsedUserOp: any) {
+
+  async createWalletAction (parsedUserOp: any) {
     const walletAction = await parsedUserOpToWalletAction(parsedUserOp)
     return this.paginatedWalletActionModel.create(walletAction)
   }
-  async getPaginatedWalletActions(pageNumber: number, walletAddress) {
+
+  async getPaginatedWalletActions (pageNumber: number, walletAddress) {
     try {
       const query =
       {
-        walletAddress: walletAddress
+        walletAddress
       }
       const options = {
         page: pageNumber,
         limit: 20,
         sort: { updatedAt: -1 }
-      };
-      const result = await this.paginatedWalletActionModel.paginate(query, options);
-      return result;
+      }
+      const result = await this.paginatedWalletActionModel.paginate(query, options)
+      return result
     } catch (error) {
-      console.error('Error fetching paginated wallet actions:', error);
-      throw error;
+      console.error('Error fetching paginated wallet actions:', error)
+      throw error
     }
   }
-
-
 }

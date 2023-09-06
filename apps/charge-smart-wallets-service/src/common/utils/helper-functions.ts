@@ -7,23 +7,22 @@ const randomInteger = (
   max: number
 ): number => Math.floor(Math.random() * (max - min + 1)) + min
 
-export function generateSalt() {
+export function generateSalt () {
   return BigNumber.from(randomBytes(32)).toHexString()
 }
 
-export function generateTransactionId(data) {
+export function generateTransactionId (data) {
   return `0x${createHash('sha256').update(data + Date.now() + randomInteger(1, 1000)).digest('hex')}`
 }
 
-export async function parsedUserOpToWalletAction(parsedUserOp: any) {
-
+export async function parsedUserOpToWalletAction (parsedUserOp: any) {
   if (parsedUserOp.targetFunction.name === 'nativeTokenTransfer') {
     return {
       walletAddress: parsedUserOp.sender,
       name: 'nativeTokenTransfer',
       status: 'pending',
       sent: [{
-        name: "FUSE",
+        name: 'FUSE',
         address: NATIVE_FUSE_ADDRESS,
         decimals: 18,
         value: parsedUserOp.walletFunction.arguments[1],
@@ -31,7 +30,7 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'transfer' && parsedUserOp.walletFunction.name === 'execute') {
@@ -50,7 +49,7 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'transferFrom' && parsedUserOp.walletFunction.name === 'execute') {
@@ -68,7 +67,7 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.walletFunction.name === 'execute') {
@@ -87,7 +86,7 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'deposit' && parsedUserOp.walletFunction.name === 'execute') {
@@ -96,14 +95,14 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
       walletAddress: parsedUserOp.sender,
       status: 'pending',
       sent: [{
-        name: "FUSE",
+        name: 'FUSE',
         address: NATIVE_FUSE_ADDRESS,
         decimals: 18,
-        value: parsedUserOp.walletFunction.arguments[1],
+        value: parsedUserOp.walletFunction.arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'enter' && parsedUserOp.walletFunction.name === 'executeBatch') {
@@ -117,11 +116,11 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
         symbol: tokenData.symbol,
         decimals: tokenData.decimals,
         address: parsedUserOp.targetFunction[0].targetAddress,
-        value: parsedUserOp.targetFunction[0].arguments[1],
+        value: parsedUserOp.targetFunction[0].arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'leave' && parsedUserOp.walletFunction.name === 'executeBatch') {
@@ -135,11 +134,11 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
         symbol: tokenData.symbol,
         decimals: tokenData.decimals,
         address: parsedUserOp.walletFunction.arguments[0][0],
-        value: parsedUserOp.targetFunction[0].arguments[1],
+        value: parsedUserOp.targetFunction[0].arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[1]?.name === 'leave' && parsedUserOp.walletFunction.name === 'execute') {
@@ -153,11 +152,11 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
         symbol: tokenData.symbol,
         decimals: tokenData.decimals,
         address: parsedUserOp.walletFunction[0][0],
-        value: parsedUserOp.targetFunction[0].arguments[1],
+        value: parsedUserOp.targetFunction[0].arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'withdraw' && parsedUserOp.walletFunction.name === 'executeBatch') {
@@ -171,11 +170,11 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
         symbol: tokenData.symbol,
         decimals: tokenData.decimals,
         address: parsedUserOp.targetFunction[0].targetAddress,
-        value: parsedUserOp.targetFunction[0].arguments[1],
+        value: parsedUserOp.targetFunction[0].arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens' || parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' && parsedUserOp.walletFunction.name === 'executeBatch') {
@@ -191,18 +190,18 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
         decimals: sentTokenData.decimals,
         address: parsedUserOp.targetFunction[0].targetAddress,
         to: parsedUserOp.targetFunction[0].arguments[0],
-        value: parsedUserOp.targetFunction[0].arguments[1],
+        value: parsedUserOp.targetFunction[0].arguments[1]
       }],
       received: [{
         name: receivedTokenData.name,
         symbol: receivedTokenData.symbol,
         decimals: receivedTokenData.decimals,
         address: parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1],
-        value: parsedUserOp.targetFunction[1].arguments[1],
+        value: parsedUserOp.targetFunction[1].arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens' && parsedUserOp.walletFunction.name === 'execute') {
@@ -212,21 +211,21 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
       walletAddress: parsedUserOp.sender,
       status: 'pending',
       sent: [{
-        name: "FUSE",
+        name: 'FUSE',
         address: NATIVE_FUSE_ADDRESS,
         to: parsedUserOp.walletFunction.arguments[0],
-        value: parsedUserOp.walletFunction.arguments[1],
+        value: parsedUserOp.walletFunction.arguments[1]
       }],
       received: [{
         name: receivedTokenData.name,
         symbol: receivedTokenData.symbol,
         decimals: receivedTokenData.decimals,
         address: parsedUserOp.targetFunction[0].arguments[1][1],
-        value: parsedUserOp.targetFunction[0].arguments[3],
+        value: parsedUserOp.targetFunction[0].arguments[3]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
   if (parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactETH' || parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH' && parsedUserOp.walletFunction.name === 'executeBatch') {
@@ -241,16 +240,16 @@ export async function parsedUserOpToWalletAction(parsedUserOp: any) {
         decimals: sentTokenData.decimals,
         address: parsedUserOp.targetFunction[1].arguments[2][0],
         to: parsedUserOp.targetFunction[1].arguments[2][1],
-        value: parsedUserOp.targetFunction[1].arguments[0],
+        value: parsedUserOp.targetFunction[1].arguments[0]
       }],
       received: [{
-        name: "FUSE",
+        name: 'FUSE',
         address: NATIVE_FUSE_ADDRESS,
-        value: parsedUserOp.targetFunction[1].arguments[1],
+        value: parsedUserOp.targetFunction[1].arguments[1]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0,
+      blockNumber: 0
     }
   }
 }

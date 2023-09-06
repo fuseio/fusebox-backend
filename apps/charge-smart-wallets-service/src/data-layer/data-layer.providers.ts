@@ -3,9 +3,8 @@ import { databaseConnectionString } from '@app/common/constants/database.constan
 import { userOpString } from '@app/smart-wallets-service/data-layer/data-layer.constants'
 import { UserOpSchema } from '@app/smart-wallets-service/data-layer/schemas/user-op.schema'
 import { walletActionString } from '@app/smart-wallets-service/data-layer/data-layer.constants'
-import { WalletActionSchema } from './schemas/wallet-action.schema'
-// const mongoose = require('mongoose')
-// const WalletAction = mongoose.model('WalletAction')
+import { WalletActionSchema, WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
+import * as mongoose from 'mongoose'
 
 export const dataLayerProviders = [
   {
@@ -17,7 +16,10 @@ export const dataLayerProviders = [
   {
     provide: walletActionString,
     useFactory: (connection: Connection) =>
-      connection.model('WalletAction', WalletActionSchema),
+      connection.model<
+        WalletActionDocument,
+        mongoose.PaginateModel<WalletActionDocument>
+      >('walletaction', WalletActionSchema, 'walletaction'),
     inject: [databaseConnectionString]
   }
 ]

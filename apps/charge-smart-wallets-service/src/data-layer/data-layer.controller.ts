@@ -1,7 +1,7 @@
 import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
-import { UserOp } from './interfaces/user-op.interface'
+import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 @Controller()
 export class DataLayerController {
@@ -17,4 +17,8 @@ export class DataLayerController {
     return this.dataLayerService.updateUserOp(userOp)
   }
 
+  @MessagePattern('get-all-wallet-actions')
+  get(@Body() data: any) {
+    return this.dataLayerService.getPaginatedWalletActions(data.page, data.walletAddress)
+  }
 }

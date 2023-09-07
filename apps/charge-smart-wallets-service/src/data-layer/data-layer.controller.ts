@@ -1,7 +1,7 @@
 import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
-import { BaseUserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
+import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 @Controller()
 export class DataLayerController {
@@ -13,7 +13,7 @@ export class DataLayerController {
   }
 
   @MessagePattern('update-user-op')
-  update (@Body() userOp: BaseUserOp) {
+  update (@Body() userOp: UserOp) {
     return this.dataLayerService.updateUserOp(userOp)
   }
 

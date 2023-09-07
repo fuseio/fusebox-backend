@@ -59,7 +59,7 @@ export class UserOpParser {
     const targetFunction = { name: null }
     return { walletFunction, targetFunction }
   }
-  
+
   async parseEvent (eventProps: EventProps) {
     const sigHash = eventProps.topics[0]
     const parsedEvent = await decodeWithEventProps(sigHash, eventProps)
@@ -82,12 +82,12 @@ export class UserOpParser {
 @Injectable()
 export class UserOpFactory {
   private userOpParser: UserOpParser
-  constructor(
+  constructor (
   ) {
     this.userOpParser = new UserOpParser()
   }
 
-  async createUserOp(baseUserOp): Promise<UserOp> {
+  async createUserOp (baseUserOp): Promise<UserOp> {
     const decodedCallData = await this.userOpParser.parseCallData(baseUserOp.callData)
     return {
       ...baseUserOp,
@@ -97,8 +97,7 @@ export class UserOpFactory {
       },
       targetFunction: decodedCallData.targetFunction
     }
-  } 
-
+  }
 }
 
 export async function decodeCalldata (callData: string) {

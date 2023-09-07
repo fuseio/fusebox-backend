@@ -1,25 +1,23 @@
-import { Model } from 'mongoose'
+import { Model, PaginateModel } from 'mongoose'
 import { Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
-import { BaseUserOp, UserOp } from './interfaces/user-op.interface';
+import { BaseUserOp, UserOp } from './interfaces/user-op.interface'
 import { UserOpFactory } from '@app/smart-wallets-service/common/utils/user-op-parser'
 import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/helper-functions'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
-import { PaginateModel } from 'mongoose'
 
 @Injectable()
 export class DataLayerService {
-
   constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
-    private userOpFactory: UserOpFactory,
-    private paginatedWalletActionModel: PaginateModel<WalletActionDocument>
+    private paginatedWalletActionModel: PaginateModel<WalletActionDocument>,
+    private userOpFactory: UserOpFactory
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
-    const userOp = this.userOpFactory.createUserOp(baseUserOp)
+    const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = this.userOpModel.create(userOp)
     this.createWalletAction(userOp)
     return response

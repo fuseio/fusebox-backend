@@ -1,6 +1,5 @@
 import { Document } from 'mongoose'
 
-
 export interface BaseUserOp {
   sender: string; // Address is a string of hexadecimal characters
   nonce: number; // Nonce is a number that increases with each operation

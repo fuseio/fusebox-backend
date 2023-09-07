@@ -3,7 +3,7 @@ import { databaseConnectionString } from '@app/common/constants/database.constan
 import { userOpString, walletActionString } from '@app/smart-wallets-service/data-layer/data-layer.constants'
 import { UserOpSchema } from '@app/smart-wallets-service/data-layer/schemas/user-op.schema'
 import { WalletActionSchema, WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
-import * as mongoose from 'mongoose'
+import { PaginateModel } from 'mongoose'
 
 export const dataLayerProviders = [
   {
@@ -17,7 +17,7 @@ export const dataLayerProviders = [
     useFactory: (connection: Connection) =>
       connection.model<
         WalletActionDocument,
-        mongoose.PaginateModel<WalletActionDocument>
+        PaginateModel<WalletActionDocument>
       >('walletaction', WalletActionSchema, 'walletaction'),
     inject: [databaseConnectionString]
   }

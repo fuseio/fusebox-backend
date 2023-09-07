@@ -1,6 +1,7 @@
 import { Document } from 'mongoose'
 
-export interface UserOp extends Document {
+
+export interface BaseUserOp {
   sender: string; // Address is a string of hexadecimal characters
   nonce: number; // Nonce is a number that increases with each operation
   initCode: string; // InitCode is a buffer of bytes that contains the code to create new wallets
@@ -12,6 +13,9 @@ export interface UserOp extends Document {
   maxPriorityFeePerGas: number; // MaxPriorityFeePerGas is a number that specifies the maximum priority fee per gas unit for the operation
   paymasterAndData?: string; // PaymasterAndData is a buffer of bytes that contains the address and data of the paymaster who pays for the operation
   signature: string; // Signature is a buffer of bytes that contains the signature of the sender
+}
+
+export interface UserOp extends BaseUserOp, Document {
   userOpHash: string; // UserOpHash is a string of hexadecimal characters
   walletFunction: object;
   targetFunction: object;

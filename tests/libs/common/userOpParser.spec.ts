@@ -1,4 +1,4 @@
-import { UserOpParser, EventProps } from "../../../libs/common/src/utils/user-op-parser"
+import { UserOpParser, EventProps } from "../../../apps/charge-smart-wallets-service/src/common/utils/user-op-parser"
 import { UserOperationBuilder } from "userop"
 // import { ERC20_CALLDATA, USER_OP_EVENT_TOPIC_0, USER_OP_EVENT_TOPIC_1, USER_OP_EVENT_TOPIC_2, USER_OP_EVENT_TOPIC_3, USER_OP_EVENT_TOPIC_DATA } from "./constants"
 

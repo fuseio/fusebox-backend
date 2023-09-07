@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { decodeWithCalldata, sigHashFromCalldata, decodeWithEventProps } from './dtools/decodeBySigHash'
-import { EventProps } from './dtools/decodeEvent'
+import { decodeWithCalldata, sigHashFromCalldata, decodeWithEventProps } from '../../../../../libs/common/src/utils/dtools/decodeBySigHash'
+import { EventProps } from '../../../../../libs/common/src/utils/dtools/decodeEvent'
 import { isNil } from 'lodash'
 import { BigNumber } from 'ethers'
-import { DecodeResult } from './dtools/decodeCalldata'
+import { DecodeResult } from '../../../../../libs/common/src/utils/dtools/decodeCalldata'
+import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
-@Injectable()
 export class UserOpParser {
   async parseCallData (callData: string) {
     const decodeResults = await decodeCalldata(
@@ -59,7 +59,7 @@ export class UserOpParser {
     const targetFunction = { name: null }
     return { walletFunction, targetFunction }
   }
-
+  
   async parseEvent (eventProps: EventProps) {
     const sigHash = eventProps.topics[0]
     const parsedEvent = await decodeWithEventProps(sigHash, eventProps)
@@ -77,6 +77,28 @@ export class UserOpParser {
     }
     return args
   }
+}
+
+@Injectable()
+export class UserOpFactory {
+  private userOpParser: UserOpParser
+  constructor(
+  ) {
+    this.userOpParser = new UserOpParser()
+  }
+
+  async createUserOp(baseUserOp): Promise<UserOp> {
+    const decodedCallData = await this.userOpParser.parseCallData(baseUserOp.callData)
+    return {
+      ...baseUserOp,
+      walletFunction: {
+        name: decodedCallData.walletFunction[0].walletFunction,
+        arguments: decodedCallData.walletFunction[0].arguments
+      },
+      targetFunction: decodedCallData.targetFunction
+    }
+  } 
+
 }
 
 export async function decodeCalldata (callData: string) {

@@ -1,9 +1,10 @@
 import { Model, PaginateModel } from 'mongoose'
 import { Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
-import { BaseUserOp, UserOp } from './interfaces/user-op.interface'
+import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import { UserOpFactory } from '@app/smart-wallets-service/common/utils/user-op-parser'
-import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/helper-functions'
+// import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/helper-functions'
+import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
 
 @Injectable()
@@ -28,8 +29,12 @@ export class DataLayerService {
   }
 
   async createWalletAction (parsedUserOp: any) {
-    const walletAction = await parsedUserOpToWalletAction(parsedUserOp)
-    return this.paginatedWalletActionModel.create(walletAction)
+    try {
+      const walletAction = await parsedUserOpToWalletAction(parsedUserOp)
+      return this.paginatedWalletActionModel.create(walletAction)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async getPaginatedWalletActions (pageNumber: number, walletAddress) {

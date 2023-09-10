@@ -20,7 +20,6 @@ import { assert } from "chai"
 
 
 describe("UserOpParser Tests", () => {
-
   let parser, builder
   beforeEach(function () {
     parser = new UserOpParser()

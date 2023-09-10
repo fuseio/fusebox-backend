@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { decodeWithCalldata, sigHashFromCalldata, decodeWithEventProps } from '../../../../../libs/common/src/utils/dtools/decodeBySigHash'
-import { EventProps } from '../../../../../libs/common/src/utils/dtools/decodeEvent'
+import { decodeWithCalldata, sigHashFromCalldata, decodeWithEventProps } from 'libs/common/src/utils/dtools/decodeBySigHash'
+import { EventProps } from 'libs/common/src/utils/dtools/decodeEvent'
 import { isNil } from 'lodash'
 import { BigNumber } from 'ethers'
-import { DecodeResult } from '../../../../../libs/common/src/utils/dtools/decodeCalldata'
+import { DecodeResult } from 'libs/common/src/utils/dtools/decodeCalldata'
 import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 export class UserOpParser {
@@ -24,8 +24,10 @@ export class UserOpParser {
 
     if (walletFunction[0].walletFunction === 'executeBatch') {
       const targetFunction = []
+      const batchType = walletFunction[0].arguments[2] ? 2 : 1
+
       for (let i = 0; i < walletFunction[0].arguments[0].length; i++) {
-        const decodedSingleBatchRes = await decodeCalldata(walletFunction[0].arguments[2][i] as string)
+        const decodedSingleBatchRes = await decodeCalldata(walletFunction[0].arguments[batchType][i] as string)
         const mappedDecodedSingleBatch = decodedSingleBatchRes.map((decoded) => {
           return {
             name: decoded.fragment.name,

@@ -18,7 +18,7 @@ export class SmartWalletsAPIV2Controller {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('actions')
-  getHistoricalTxs(@SmartWalletOwner() user: ISmartWalletUser, @Query() page?: string) {
+  getHistoricalTxs(@SmartWalletOwner() user: ISmartWalletUser, @Query('page') page?: string) {
     return this.smartWalletsAPIService.getWalletActions(user.smartWalletAddress, page)
   }
 

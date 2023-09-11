@@ -56,21 +56,21 @@ export class SmartWalletsAPIController {
     return this.smartWalletsAPIService.installUpgrade()
   }
 
-  @Post('record-user-op')
-  recordUserop(@Body() userOp: UserOp) {
-    return this.smartWalletsAPIService.recordUserOp(userOp)
-  }
+  // @Post('record-user-op')
+  // recordUserop(@Body() userOp: UserOp) {
+  //   return this.smartWalletsAPIService.recordUserOp(userOp)
+  // }
 
-  @Post('update-user-op')
-  updateUserop(@Body() userOp: UserOp) {
-    return this.smartWalletsAPIService.updateUserOp(userOp)
-  }
+  // @Post('update-user-op')
+  // updateUserop(@Body() userOp: UserOp) {
+  //   return this.smartWalletsAPIService.updateUserOp(userOp)
+  // }
 
-  @Get('get-wallet-actions')
-  getWalletActions(
-    @Query('walletAddress') walletAddress: string,
-    @Query('page') page?: string
-  ) {
-    return this.smartWalletsAPIService.getWalletActions(walletAddress, page)
-  }
+  // @Get('get-wallet-actions')
+  // getWalletActions(
+  //   @Query('walletAddress') walletAddress: string,
+  //   @Query('page') page?: string
+  // ) {
+  //   return this.smartWalletsAPIService.getWalletActions(walletAddress, page)
+  // }
 }

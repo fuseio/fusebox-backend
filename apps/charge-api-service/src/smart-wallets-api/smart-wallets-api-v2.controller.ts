@@ -18,8 +18,13 @@ export class SmartWalletsAPIV2Controller {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('actions')
-  getHistoricalTxs(@SmartWalletOwner() user: ISmartWalletUser, @Query('page') page?: string) {
-    return this.smartWalletsAPIService.getWalletActions(user.smartWalletAddress, page)
+  getHistoricalTxs(
+    @SmartWalletOwner() user: ISmartWalletUser,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('tokenAddress') tokenAddress?: string
+  ) {
+    return this.smartWalletsAPIService.getWalletActions(user.smartWalletAddress, page, limit, tokenAddress)
   }
 
 }

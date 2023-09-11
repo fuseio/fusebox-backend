@@ -42,16 +42,18 @@ export class SmartWalletsAPIService {
   }
 
 
-  //endpoints for internal testing, will be deleted before deploing to production
-  // async recordUserOp(userOp: UserOp): Promise<any> {
-  //   return callMSFunction(this.smartWalletsClient, 'record-user-op', userOp)
-  // }
+
+  // endpoints for internal testing, will be deleted before deploing to production
+
+  async recordUserOp(userOp: UserOp): Promise<any> {
+    return callMSFunction(this.smartWalletsClient, 'record-user-op', userOp)
+  }
 
   // async updateUserOp(userOp: UserOp): Promise<any> {
   //   return callMSFunction(this.smartWalletsClient, 'update-user-op', userOp)
   // }
 
-  async getWalletActions(walletAddress, page): Promise<any> {
-    return callMSFunction(this.smartWalletsClient, 'get-all-wallet-actions', { walletAddress, page })
+  async getWalletActions(walletAddress, page, limit, tokenAddress): Promise<any> {
+    return callMSFunction(this.smartWalletsClient, 'get-all-wallet-actions', { walletAddress, page, limit, tokenAddress })
   }
 }

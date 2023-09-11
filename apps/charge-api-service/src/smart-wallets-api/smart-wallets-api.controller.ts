@@ -56,10 +56,10 @@ export class SmartWalletsAPIController {
     return this.smartWalletsAPIService.installUpgrade()
   }
 
-  // @Post('record-user-op')
-  // recordUserop(@Body() userOp: UserOp) {
-  //   return this.smartWalletsAPIService.recordUserOp(userOp)
-  // }
+  @Post('record-user-op')
+  recordUserop(@Body() userOp: UserOp) {
+    return this.smartWalletsAPIService.recordUserOp(userOp)
+  }
 
   // @Post('update-user-op')
   // updateUserop(@Body() userOp: UserOp) {

@@ -3,15 +3,14 @@ import { fetchERC20Data, fetchNftData } from '@app/smart-wallets-service/common/
 
 // Base class for all operations
 abstract class WalletAction {
-  async execute (parsedUserOp: any): Promise<any> {
-    // Default implementation, can be overridden in subclasses
+  async execute(parsedUserOp: any): Promise<any> {
     return null
   }
 }
 
 // Sealed classes for each operation type
 class NativeTokenTransfer extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     return {
       walletAddress: parsedUserOp.sender,
       name: 'tokenTransfer',
@@ -31,7 +30,7 @@ class NativeTokenTransfer extends WalletAction {
 }
 
 class ERC20Transfer extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
     return {
       walletAddress: parsedUserOp.sender,
@@ -52,7 +51,7 @@ class ERC20Transfer extends WalletAction {
   }
 }
 class NftTransfer extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const tokenData = await fetchNftData(parsedUserOp.walletFunction.arguments[0])
     return {
       walletAddress: parsedUserOp.sender,
@@ -73,7 +72,7 @@ class NftTransfer extends WalletAction {
 }
 
 class ApproveToken extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
     return {
       name: 'approveToken',
@@ -94,19 +93,20 @@ class ApproveToken extends WalletAction {
   }
 }
 class BatchTransaction extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const sent = []
     for (let i = 0; i < parsedUserOp.targetFunction.length; i++) {
       const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[i].targetAddress)
       const token =
-            {
-              name: tokenData.name,
-              symbol: tokenData.symbol,
-              decimals: tokenData.decimals,
-              to: parsedUserOp.targetFunction[0].arguments[0],
-              value: parsedUserOp.targetFunction[0].arguments[1],
-              targetAddress: parsedUserOp.targetFunction[i].targetAddress
-            }
+      {
+        name: tokenData.name,
+        symbol: tokenData.symbol,
+        decimals: tokenData.decimals,
+        address: parsedUserOp.targetFunction[i].targetAddress,
+        to: parsedUserOp.targetFunction[0].arguments[0],
+        value: parsedUserOp.targetFunction[0].arguments[1],
+        targetAddress: parsedUserOp.targetFunction[i].targetAddress
+      }
       sent.push(token)
     }
     return {
@@ -121,7 +121,7 @@ class BatchTransaction extends WalletAction {
   }
 }
 class StakeTokens extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     if (parsedUserOp.targetFunction[0]?.name === 'deposit') {
       return {
         name: 'stakeTokens',
@@ -160,7 +160,7 @@ class StakeTokens extends WalletAction {
 }
 
 class UnstakeTokens extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0][0])
     return {
       name: 'unstakeTokens',
@@ -181,7 +181,7 @@ class UnstakeTokens extends WalletAction {
 }
 
 class SwapTokens extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') {
       const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].arguments[1][1])
       return {
@@ -264,73 +264,73 @@ class SwapTokens extends WalletAction {
 
 // Define other sealed classes for different operation types in a similar manner
 // Factory function to determine the type of operation
-function getWalletActionType (parsedUserOp: any): WalletAction {
+function getWalletActionType(parsedUserOp: any): WalletAction {
   try {
     if (parsedUserOp.targetFunction.name === 'nativeTokenTransfer') {
       return new NativeTokenTransfer()
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'transfer' &&
-            parsedUserOp.walletFunction.name === 'execute'
+      parsedUserOp.walletFunction.name === 'execute'
     ) {
       return new ERC20Transfer()
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'transferFrom' &&
-            parsedUserOp.walletFunction.name === 'execute'
+      parsedUserOp.walletFunction.name === 'execute'
     ) {
       return new NftTransfer()
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'approve' &&
-            parsedUserOp.walletFunction.name === 'execute'
+      parsedUserOp.walletFunction.name === 'execute'
     ) {
       return new ApproveToken()
       // Define and return the class for 'approveToken' here
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'deposit' &&
-            parsedUserOp.walletFunction.name === 'execute'
+      parsedUserOp.walletFunction.name === 'execute'
     ) {
       return new StakeTokens()
       // Define and return the class for 'stakeTokens' here
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'approve' &&
-            parsedUserOp.targetFunction[1]?.name === 'enter' &&
-            parsedUserOp.walletFunction.name === 'executeBatch'
+      parsedUserOp.targetFunction[1]?.name === 'enter' &&
+      parsedUserOp.walletFunction.name === 'executeBatch'
     ) {
       return new StakeTokens()
       // Define and return the class for 'stakeTokens' here
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'approve' &&
-            parsedUserOp.targetFunction[1]?.name === 'leave' &&
-            parsedUserOp.walletFunction.name === 'executeBatch'
+      parsedUserOp.targetFunction[1]?.name === 'leave' &&
+      parsedUserOp.walletFunction.name === 'executeBatch'
     ) {
       return new UnstakeTokens()
       // Define and return the class for 'unstakeTokens' here
     }
     if (
       parsedUserOp.targetFunction[1]?.name === 'leave' &&
-            parsedUserOp.walletFunction.name === 'execute'
+      parsedUserOp.walletFunction.name === 'execute'
     ) {
       return new UnstakeTokens()
       // Define and return the class for 'unstakeTokens' here
     }
     if (
       parsedUserOp.targetFunction[0]?.name === 'approve' &&
-            parsedUserOp.targetFunction[1]?.name === 'withdraw' &&
-            parsedUserOp.walletFunction.name === 'executeBatch'
+      parsedUserOp.targetFunction[1]?.name === 'withdraw' &&
+      parsedUserOp.walletFunction.name === 'executeBatch'
     ) {
       return new UnstakeTokens()
       // Define and return the class for 'unstakeTokens' here
     }
     if (
       (parsedUserOp.targetFunction[0]?.name === 'approve' &&
-                parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens') ||
-            parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' &&
-            parsedUserOp.walletFunction.name === 'executeBatch'
+        parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens') ||
+      parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' &&
+      parsedUserOp.walletFunction.name === 'executeBatch'
     ) {
       return new SwapTokens()
 
@@ -338,16 +338,16 @@ function getWalletActionType (parsedUserOp: any): WalletAction {
     }
     if (
       (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' ||
-                parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') &&
-            parsedUserOp.walletFunction.name === 'execute'
+        parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') &&
+      parsedUserOp.walletFunction.name === 'execute'
     ) {
       return new SwapTokens()
       // Define and return the class for 'swapTokens' here
     }
     if (
       (parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactETH' ||
-                parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH') &&
-            parsedUserOp.walletFunction.name === 'executeBatch'
+        parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH') &&
+      parsedUserOp.walletFunction.name === 'executeBatch'
     ) {
       return new SwapTokens()
       // Define and return the class for 'swapTokens' here
@@ -365,7 +365,7 @@ function getWalletActionType (parsedUserOp: any): WalletAction {
   }
 }
 
-export async function parsedUserOpToWalletAction (parsedUserOp: any) {
+export async function parsedUserOpToWalletAction(parsedUserOp: any) {
   const actionType = await getWalletActionType(parsedUserOp)
   return await actionType.execute(parsedUserOp)
 }

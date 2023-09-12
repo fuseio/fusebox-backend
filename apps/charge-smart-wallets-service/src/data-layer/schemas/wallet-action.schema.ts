@@ -32,7 +32,6 @@ export const WalletActionSchema = new mongoose.Schema(
 
 )
 WalletActionSchema.index({ walletAddress: 1 })
-WalletActionSchema.index({ tokenAddress: 1 })
 WalletActionSchema.plugin(paginate)
 
 export interface WalletActionDocument extends mongoose.Document { }

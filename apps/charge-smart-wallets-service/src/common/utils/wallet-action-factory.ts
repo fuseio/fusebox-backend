@@ -31,93 +31,110 @@ class NativeTokenTransfer extends WalletAction {
 
 class ERC20Transfer extends WalletAction {
   async execute(parsedUserOp: any) {
-    const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
-    return {
-      walletAddress: parsedUserOp.sender,
-      name: 'tokenTransfer',
-      status: 'pending',
-      sent: [{
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-        decimals: tokenData.decimals,
-        address: parsedUserOp.walletFunction.arguments[0],
-        to: parsedUserOp.targetFunction[0].arguments[0],
-        value: parsedUserOp.targetFunction[0].arguments[1]
-      }],
-      userOpHash: parsedUserOp.userOpHash,
-      txHash: '',
-      blockNumber: 0
+    try {
+      const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
+      return {
+        walletAddress: parsedUserOp.sender,
+        name: 'tokenTransfer',
+        status: 'pending',
+        sent: [{
+          name: tokenData.name,
+          symbol: tokenData.symbol,
+          decimals: tokenData.decimals,
+          address: parsedUserOp.walletFunction.arguments[0],
+          to: parsedUserOp.targetFunction[0].arguments[0],
+          value: parsedUserOp.targetFunction[0].arguments[1]
+        }],
+        userOpHash: parsedUserOp.userOpHash,
+        txHash: '',
+        blockNumber: 0
+      }
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
 class NftTransfer extends WalletAction {
   async execute(parsedUserOp: any) {
-    const tokenData = await fetchNftData(parsedUserOp.walletFunction.arguments[0])
-    return {
-      walletAddress: parsedUserOp.sender,
-      name: 'nftTransfer',
-      status: 'pending',
-      sent: [{
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-        address: parsedUserOp.walletFunction.arguments[0],
-        to: parsedUserOp.targetFunction[0].arguments[0],
-        value: parsedUserOp.targetFunction[0].arguments[1]
-      }],
-      userOpHash: parsedUserOp.userOpHash,
-      txHash: '',
-      blockNumber: 0
+    try {
+      const tokenData = await fetchNftData(parsedUserOp.walletFunction.arguments[0])
+      return {
+        walletAddress: parsedUserOp.sender,
+        name: 'nftTransfer',
+        status: 'pending',
+        sent: [{
+          name: tokenData.name,
+          symbol: tokenData.symbol,
+          address: parsedUserOp.walletFunction.arguments[0],
+          to: parsedUserOp.targetFunction[0].arguments[0],
+          value: parsedUserOp.targetFunction[0].arguments[1]
+        }],
+        userOpHash: parsedUserOp.userOpHash,
+        txHash: '',
+        blockNumber: 0
+      }
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
 
 class ApproveToken extends WalletAction {
   async execute(parsedUserOp: any) {
-    const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
-    return {
-      name: 'approveToken',
-      walletAddress: parsedUserOp.sender,
-      status: 'pending',
-      sent: [{
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-        decimals: tokenData.decimals,
-        address: parsedUserOp.walletFunction.arguments[0],
-        to: parsedUserOp.targetFunction[0].arguments[0],
-        value: parsedUserOp.targetFunction[0].arguments[1]
-      }],
-      userOpHash: parsedUserOp.userOpHash,
-      txHash: '',
-      blockNumber: 0
+    try {
+      const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
+      return {
+        name: 'approveToken',
+        walletAddress: parsedUserOp.sender,
+        status: 'pending',
+        sent: [{
+          name: tokenData.name,
+          symbol: tokenData.symbol,
+          decimals: tokenData.decimals,
+          address: parsedUserOp.walletFunction.arguments[0],
+          to: parsedUserOp.targetFunction[0].arguments[0],
+          value: parsedUserOp.targetFunction[0].arguments[1]
+        }],
+        userOpHash: parsedUserOp.userOpHash,
+        txHash: '',
+        blockNumber: 0
+      }
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
 class BatchTransaction extends WalletAction {
   async execute(parsedUserOp: any) {
-    const sent = []
-    for (let i = 0; i < parsedUserOp.targetFunction.length; i++) {
-      const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[i].targetAddress)
-      const token =
-      {
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-        decimals: tokenData.decimals,
-        address: parsedUserOp.targetFunction[i].targetAddress,
-        to: parsedUserOp.targetFunction[0].arguments[0],
-        value: parsedUserOp.targetFunction[0].arguments[1],
-        targetAddress: parsedUserOp.targetFunction[i].targetAddress
+    try {
+      const sent = []
+      for (let i = 0; i < parsedUserOp.targetFunction.length; i++) {
+        const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[i].targetAddress)
+        const token =
+        {
+          name: tokenData.name,
+          symbol: tokenData.symbol,
+          decimals: tokenData.decimals,
+          address: parsedUserOp.targetFunction[i].targetAddress,
+          to: parsedUserOp.targetFunction[0].arguments[0],
+          value: parsedUserOp.targetFunction[0].arguments[1],
+          targetAddress: parsedUserOp.targetFunction[i].targetAddress
+        }
+        sent.push(token)
       }
-      sent.push(token)
+      return {
+        walletAddress: parsedUserOp.sender,
+        name: 'batchTransaction',
+        status: 'pending',
+        sent,
+        userOpHash: parsedUserOp.userOpHash,
+        txHash: '',
+        blockNumber: 0
+      }
+    } catch (error) {
+      throw new Error(error);
     }
-    return {
-      walletAddress: parsedUserOp.sender,
-      name: 'batchTransaction',
-      status: 'pending',
-      sent,
-      userOpHash: parsedUserOp.userOpHash,
-      txHash: '',
-      blockNumber: 0
-    }
+
   }
 }
 class StakeTokens extends WalletAction {
@@ -139,21 +156,25 @@ class StakeTokens extends WalletAction {
       }
     }
     if (parsedUserOp.targetFunction[0]?.name === 'approve') {
-      const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].targetAddress)
-      return {
-        name: 'stakeTokens',
-        walletAddress: parsedUserOp.sender,
-        status: 'pending',
-        sent: [{
-          name: tokenData.name,
-          symbol: tokenData.symbol,
-          decimals: tokenData.decimals,
-          address: parsedUserOp.targetFunction[0].targetAddress,
-          value: parsedUserOp.targetFunction[0].arguments[1]
-        }],
-        userOpHash: parsedUserOp.userOpHash,
-        txHash: '',
-        blockNumber: 0
+      try {
+        const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].targetAddress)
+        return {
+          name: 'stakeTokens',
+          walletAddress: parsedUserOp.sender,
+          status: 'pending',
+          sent: [{
+            name: tokenData.name,
+            symbol: tokenData.symbol,
+            decimals: tokenData.decimals,
+            address: parsedUserOp.targetFunction[0].targetAddress,
+            value: parsedUserOp.targetFunction[0].arguments[1]
+          }],
+          userOpHash: parsedUserOp.userOpHash,
+          txHash: '',
+          blockNumber: 0
+        }
+      } catch (error) {
+        throw new Error(error);
       }
     }
   }
@@ -161,103 +182,112 @@ class StakeTokens extends WalletAction {
 
 class UnstakeTokens extends WalletAction {
   async execute(parsedUserOp: any) {
-    const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0][0])
-    return {
-      name: 'unstakeTokens',
-      walletAddress: parsedUserOp.sender,
-      status: 'pending',
-      received: [{
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-        decimals: tokenData.decimals,
-        address: parsedUserOp.walletFunction.arguments[0][0],
-        value: parsedUserOp.targetFunction[0].arguments[1]
-      }],
-      userOpHash: parsedUserOp.userOpHash,
-      txHash: '',
-      blockNumber: 0
+    try {
+      const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0][0])
+      return {
+        name: 'unstakeTokens',
+        walletAddress: parsedUserOp.sender,
+        status: 'pending',
+        received: [{
+          name: tokenData.name,
+          symbol: tokenData.symbol,
+          decimals: tokenData.decimals,
+          address: parsedUserOp.walletFunction.arguments[0][0],
+          value: parsedUserOp.targetFunction[0].arguments[1]
+        }],
+        userOpHash: parsedUserOp.userOpHash,
+        txHash: '',
+        blockNumber: 0
+      }
+    } catch (error) {
+      throw new Error(error)
     }
+
   }
 }
 
 class SwapTokens extends WalletAction {
   async execute(parsedUserOp: any) {
-    if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') {
-      const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].arguments[1][1])
-      return {
-        name: 'swapTokens',
-        walletAddress: parsedUserOp.sender,
-        status: 'pending',
-        sent: [{
-          name: 'Fuse',
-          address: NATIVE_FUSE_ADDRESS,
-          symbol: 'FUSE',
-          decimals: 18,
-          to: parsedUserOp.walletFunction.arguments[0],
-          value: parsedUserOp.walletFunction.arguments[1]
-        }],
-        received: [{
-          name: receivedTokenData.name,
-          symbol: receivedTokenData.symbol,
-          decimals: receivedTokenData.decimals,
-          address: parsedUserOp.targetFunction[0].arguments[1][1],
-          value: parsedUserOp.targetFunction[0].arguments[3]
-        }],
-        userOpHash: parsedUserOp.userOpHash,
-        txHash: '',
-        blockNumber: 0
+    try {
+      if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') {
+        const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].arguments[1][1])
+        return {
+          name: 'swapTokens',
+          walletAddress: parsedUserOp.sender,
+          status: 'pending',
+          sent: [{
+            name: 'Fuse',
+            address: NATIVE_FUSE_ADDRESS,
+            symbol: 'FUSE',
+            decimals: 18,
+            to: parsedUserOp.walletFunction.arguments[0],
+            value: parsedUserOp.walletFunction.arguments[1]
+          }],
+          received: [{
+            name: receivedTokenData.name,
+            symbol: receivedTokenData.symbol,
+            decimals: receivedTokenData.decimals,
+            address: parsedUserOp.targetFunction[0].arguments[1][1],
+            value: parsedUserOp.targetFunction[0].arguments[3]
+          }],
+          userOpHash: parsedUserOp.userOpHash,
+          txHash: '',
+          blockNumber: 0
+        }
       }
-    }
-    if (parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactETH' || parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH') {
-      const sentTokenData = await fetchERC20Data(parsedUserOp.targetFunction[1].arguments[2][0])
-      return {
-        name: 'swapTokens',
-        walletAddress: parsedUserOp.sender,
-        status: 'pending',
-        sent: [{
-          name: sentTokenData.name,
-          symbol: sentTokenData.symbol,
-          decimals: sentTokenData.decimals,
-          address: parsedUserOp.targetFunction[1].arguments[2][0],
-          to: parsedUserOp.targetFunction[1].arguments[2][1],
-          value: parsedUserOp.targetFunction[1].arguments[0]
-        }],
-        received: [{
-          name: 'FUSE',
-          address: NATIVE_FUSE_ADDRESS,
-          value: parsedUserOp.targetFunction[1].arguments[1]
-        }],
-        userOpHash: parsedUserOp.userOpHash,
-        txHash: '',
-        blockNumber: 0
+      if (parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactETH' || parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH') {
+        const sentTokenData = await fetchERC20Data(parsedUserOp.targetFunction[1].arguments[2][0])
+        return {
+          name: 'swapTokens',
+          walletAddress: parsedUserOp.sender,
+          status: 'pending',
+          sent: [{
+            name: sentTokenData.name,
+            symbol: sentTokenData.symbol,
+            decimals: sentTokenData.decimals,
+            address: parsedUserOp.targetFunction[1].arguments[2][0],
+            to: parsedUserOp.targetFunction[1].arguments[2][1],
+            value: parsedUserOp.targetFunction[1].arguments[0]
+          }],
+          received: [{
+            name: 'FUSE',
+            address: NATIVE_FUSE_ADDRESS,
+            value: parsedUserOp.targetFunction[1].arguments[1]
+          }],
+          userOpHash: parsedUserOp.userOpHash,
+          txHash: '',
+          blockNumber: 0
+        }
       }
-    }
-    if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens' || parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' && parsedUserOp.walletFunction.name === 'executeBatch') {
-      const sentTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].targetAddress)
-      const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1])
-      return {
-        name: 'swapTokens',
-        walletAddress: parsedUserOp.sender,
-        status: 'pending',
-        sent: [{
-          name: sentTokenData.name,
-          symbol: sentTokenData.symbol,
-          decimals: sentTokenData.decimals,
-          address: parsedUserOp.targetFunction[0].targetAddress,
-          to: parsedUserOp.targetFunction[0].arguments[0],
-          value: parsedUserOp.targetFunction[0].arguments[1]
-        }],
-        received: [{
-          name: receivedTokenData.name,
-          symbol: receivedTokenData.symbol,
-          decimals: receivedTokenData.decimals,
-          address: parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1],
-          value: parsedUserOp.targetFunction[1].arguments[1]
-        }],
-        userOpHash: parsedUserOp.userOpHash,
-        txHash: '',
-        blockNumber: 0
+      if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens' || parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' && parsedUserOp.walletFunction.name === 'executeBatch') {
+        const sentTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].targetAddress)
+        const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1])
+        return {
+          name: 'swapTokens',
+          walletAddress: parsedUserOp.sender,
+          status: 'pending',
+          sent: [{
+            name: sentTokenData.name,
+            symbol: sentTokenData.symbol,
+            decimals: sentTokenData.decimals,
+            address: parsedUserOp.targetFunction[0].targetAddress,
+            to: parsedUserOp.targetFunction[0].arguments[0],
+            value: parsedUserOp.targetFunction[0].arguments[1]
+          }],
+          received: [{
+            name: receivedTokenData.name,
+            symbol: receivedTokenData.symbol,
+            decimals: receivedTokenData.decimals,
+            address: parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1],
+            value: parsedUserOp.targetFunction[1].arguments[1]
+          }],
+          userOpHash: parsedUserOp.userOpHash,
+          txHash: '',
+          blockNumber: 0
+        }
       }
+    } catch (error) {
+      throw new Error(error)
     }
   }
 }

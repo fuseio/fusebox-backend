@@ -3,7 +3,6 @@ import { Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import { UserOpFactory } from '@app/smart-wallets-service/common/utils/user-op-parser'
-// import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/helper-functions'
 import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
 
@@ -47,7 +46,6 @@ export class DataLayerService {
           {
             "sent": {
               $elemMatch: {
-
                 "address": tokenAddress
               }
             }
@@ -67,10 +65,7 @@ export class DataLayerService {
         walletAddress
       }
     }
-
-
     try {
-
       const options = {
         page: pageNumber ? pageNumber : 1,
         limit: limit ? limit : 20,

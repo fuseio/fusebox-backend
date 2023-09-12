@@ -4,7 +4,6 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import { Model } from 'mongoose'
 import { ConfigService } from '@nestjs/config'
 import { BigNumber } from 'ethers'
-
 @Injectable()
 export class PaymasterService {
   constructor (

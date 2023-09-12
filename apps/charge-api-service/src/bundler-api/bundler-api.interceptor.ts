@@ -5,17 +5,22 @@ import {
   ExecutionContext,
   HttpException,
   CallHandler,
-  InternalServerErrorException
+  InternalServerErrorException,
+  Inject
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, Observable } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { isEmpty, capitalize } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { ClientProxy } from '@nestjs/microservices'
+import { callMSFunction } from '@app/common/utils/client-proxy'
+import { smartWalletsService } from '@app/common/constants/microservices.constants'
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
   constructor (
+    @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy,
     private httpService: HttpService,
     private configService: ConfigService
   ) { }
@@ -47,6 +52,15 @@ export class BundlerApiInterceptor implements NestInterceptor {
           })
         )
     )
+
+    if (requestConfig.data?.method === 'eth_sendUserOperation') {
+      const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result }
+      try {
+        await callMSFunction(this.dataLayerClient, 'record-user-op', userOp)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     return next.handle().pipe(map(() => response))
   }

@@ -6,10 +6,10 @@ const randomInteger = (
   max: number
 ): number => Math.floor(Math.random() * (max - min + 1)) + min
 
-export function generateSalt() {
+export function generateSalt () {
   return BigNumber.from(randomBytes(32)).toHexString()
 }
 
-export function generateTransactionId(data) {
+export function generateTransactionId (data) {
   return `0x${createHash('sha256').update(data + Date.now() + randomInteger(1, 1000)).digest('hex')}`
 }

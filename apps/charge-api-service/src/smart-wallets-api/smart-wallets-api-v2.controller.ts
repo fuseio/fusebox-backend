@@ -9,16 +9,16 @@ import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '2' })
 export class SmartWalletsAPIV2Controller {
-  constructor(private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
+  constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
   @Post('auth')
-  auth(@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
+  auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('actions')
-  getHistoricalTxs(
+  getHistoricalTxs (
     @SmartWalletOwner() user: ISmartWalletUser,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
@@ -26,5 +26,4 @@ export class SmartWalletsAPIV2Controller {
   ) {
     return this.smartWalletsAPIService.getWalletActions(user.smartWalletAddress, page, limit, tokenAddress)
   }
-
 }

@@ -7,12 +7,12 @@ import { DecodeResult } from '../../../../../libs/common/src/utils/dtools/decode
 import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 export class UserOpParser {
-  async parseCallData(callData: string) {
+  async parseCallData (callData: string) {
     const decodeResults = await decodeCalldata(
       callData
     )
     if (!decodeResults) {
-      throw new Error('Signature is wrong or undefined');
+      throw new Error('Signature is wrong or undefined')
     }
 
     const walletFunction = decodeResults.map((decoded) => {
@@ -21,7 +21,7 @@ export class UserOpParser {
         arguments: this.parseDecodedResult(decoded) as Array<Array<String>>
       }
     })
-    let targetFunction;
+    let targetFunction
     if (walletFunction[0].walletFunction === 'executeBatch') {
       targetFunction = []
       const batchType = walletFunction[0].arguments[2] ? 2 : 1
@@ -39,7 +39,6 @@ export class UserOpParser {
           name: mappedDecodedSingleBatch[0].name,
           arguments: mappedDecodedSingleBatch[0].arguments
         })
-
       }
       return { walletFunction, targetFunction }
     }
@@ -62,13 +61,13 @@ export class UserOpParser {
     return { walletFunction, targetFunction }
   }
 
-  async parseEvent(eventProps: EventProps) {
+  async parseEvent (eventProps: EventProps) {
     const sigHash = eventProps.topics[0]
     const parsedEvent = await decodeWithEventProps(sigHash, eventProps)
     return parsedEvent[0]
   }
 
-  parseDecodedResult(decodedCallData: DecodeResult) {
+  parseDecodedResult (decodedCallData: DecodeResult) {
     const args = []
     for (let i = 0; i < decodedCallData.decoded.length; i++) {
       if (BigNumber.isBigNumber(decodedCallData.decoded[i])) {
@@ -84,12 +83,12 @@ export class UserOpParser {
 @Injectable()
 export class UserOpFactory {
   private userOpParser: UserOpParser
-  constructor(
+  constructor (
   ) {
     this.userOpParser = new UserOpParser()
   }
 
-  async createUserOp(baseUserOp): Promise<UserOp> {
+  async createUserOp (baseUserOp): Promise<UserOp> {
     const decodedCallData = await this.userOpParser.parseCallData(baseUserOp.callData)
     return {
       ...baseUserOp,
@@ -102,7 +101,7 @@ export class UserOpFactory {
   }
 }
 
-export async function decodeCalldata(callData: string) {
+export async function decodeCalldata (callData: string) {
   return decodeWithCalldata(sigHashFromCalldata(callData), callData)
 }
 

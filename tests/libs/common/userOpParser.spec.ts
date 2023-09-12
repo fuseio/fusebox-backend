@@ -116,13 +116,7 @@ describe("UserOpParser Tests", () => {
     }
     const parsedEvent = await parser.parseEvent(event)
     assert(parsedEvent.signature, 'UserOperationEvent(bytes32,address,address,uint256,bool,uint256,uint256)')
-    // console.log(typeof parsedEvent.args)
 
-    // assert(parsedEvent.decoded[0], '0xb1232fD89d027e4B949cED570609e8aD0e18811e')
-    // assert(walletMethod.fragment.name, 'execute')
-
-    // assert(targetMethod.decoded[0], '0xcc95E80DA76bd41507b99d9b977Dc3062bcf6430')
-    // assert(targetMethod.fragment.name, 'transfer')
   });
 
 

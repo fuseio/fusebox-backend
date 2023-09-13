@@ -9,6 +9,8 @@ const tokenSchema = new mongoose.Schema({
   value: String,
   from: String,
   to: String,
+  type: String,
+  tokenId: String,
   logIndex: String
 })
 
@@ -23,7 +25,8 @@ export const WalletActionSchema = new mongoose.Schema(
     txHash: { type: String },
     blockNumber: { type: Number },
     timestamp: { type: Number },
-    value: { type: Number }
+    value: { type: Number },
+    description: { type: String }
   }
   ,
   {

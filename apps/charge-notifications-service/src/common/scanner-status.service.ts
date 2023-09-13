@@ -1,12 +1,11 @@
-
 export class ScannerStatusService {
-
   constructor (
     protected readonly statusModel,
     protected readonly statusFilter
   ) {
-    
+
   }
+
   async getStatus () {
     const status = await this.statusModel.findOne({
       filter: this.statusFilter
@@ -25,5 +24,4 @@ export class ScannerStatusService {
   async updateStatus (blockNumber: number) {
     // await this.statusModel.updateOne({ filter: this.statusFilter }, { blockNumber }, { upsert: true })
   }
-
 }

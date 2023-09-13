@@ -32,7 +32,7 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
     ConfigModule.forFeature(rpcConfig),
     BroadcasterModule
   ],
-  providers: [ 
+  providers: [
     // ERC20EventsScannerService,
     UserOpEventsScannerService,
     ...eventsScannerProviders,

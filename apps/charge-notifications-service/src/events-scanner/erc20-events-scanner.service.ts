@@ -1,6 +1,6 @@
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import { getTokenTypeAbi, getTransferEventTokenType, parseLog  } from '@app/notifications-service/common/utils/helper-functions'
+import { getTokenTypeAbi, getTransferEventTokenType, parseLog } from '@app/notifications-service/common/utils/helper-functions'
 import { ERC20LogsFilterString, ERC20ScannerStatusServiceString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -8,7 +8,7 @@ import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersCon
 import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
-import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter';
+import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
 import { has } from 'lodash'
 import { EventsScannerService } from './events-scanner.service'
 import { ScannerStatusService } from '../common/scanner-status.service'

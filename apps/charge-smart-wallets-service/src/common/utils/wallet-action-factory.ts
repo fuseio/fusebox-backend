@@ -5,23 +5,24 @@ import { symbol } from 'zod'
 
 // Base class for all operations
 abstract class WalletAction {
-  async execute(parsedUserOp: any): Promise<any> {
+  async execute (parsedUserOp: any): Promise<any> {
     return null
   }
 
   abstract descGenerator(data: any): string;
 
-  generateDescription(data: any) {
-    return this.descGenerator(data);
+  generateDescription (data: any) {
+    return this.descGenerator(data)
   }
 }
 
 // Sealed classes for each operation type
 class NativeTokenTransfer extends WalletAction {
-  descGenerator(data: any) {
-    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`;
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     return {
       walletAddress: parsedUserOp.sender,
       name: 'tokenTransfer',
@@ -42,18 +43,18 @@ class NativeTokenTransfer extends WalletAction {
         action: 'Transferred',
         symbol: NATIVE_FUSE_TOKEN.symbol,
         valueInWei: parsedUserOp.walletFunction.arguments[1],
-        decimals: NATIVE_FUSE_TOKEN.decimals,
-      }),
+        decimals: NATIVE_FUSE_TOKEN.decimals
+      })
     }
   }
-
 }
 
 class ERC20Transfer extends WalletAction {
-  descGenerator(data: any) {
-    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`;
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
       return {
@@ -76,22 +77,20 @@ class ERC20Transfer extends WalletAction {
           action: 'Transferred',
           symbol: tokenData.symbol,
           valueInWei: parsedUserOp.targetFunction[0].arguments[1],
-          decimals: tokenData.decimals,
-        }),
+          decimals: tokenData.decimals
+        })
       }
-
     } catch (error) {
       throw new Error(error)
     }
   }
-
-
 }
 class NftTransfer extends WalletAction {
-  descGenerator(data: any) {
-    return `${data.symbol} #${data.tokenId} sent to ${data.tokenAddress}`;
+  descGenerator (data: any) {
+    return `${data.symbol} #${data.tokenId} sent to ${data.tokenAddress}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchNftData(parsedUserOp.walletFunction.arguments[0])
       return {
@@ -121,14 +120,14 @@ class NftTransfer extends WalletAction {
       throw new Error(error)
     }
   }
-
 }
 
 class ApproveToken extends WalletAction {
-  descGenerator(data: any) {
+  descGenerator (data: any) {
     return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
       return {
@@ -158,14 +157,13 @@ class ApproveToken extends WalletAction {
       throw new Error(error)
     }
   }
-
-
 }
 class BatchTransaction extends WalletAction {
-  descGenerator(data: any) {
+  descGenerator (data: any) {
     return `${data.action} transferring to ${data.sent.length} recipients`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     try {
       const sent = []
       for (let i = 0; i < parsedUserOp.targetFunction.length; i++) {
@@ -199,13 +197,13 @@ class BatchTransaction extends WalletAction {
       throw new Error(error)
     }
   }
-
 }
 class StakeTokens extends WalletAction {
-  descGenerator(data: any) {
+  descGenerator (data: any) {
     return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     if (parsedUserOp.targetFunction[0]?.name === 'deposit') {
       return {
         name: 'stakeTokens',
@@ -258,17 +256,16 @@ class StakeTokens extends WalletAction {
       } catch (error) {
         throw new Error(error)
       }
-
     }
   }
-
 }
 
 class UnstakeTokens extends WalletAction {
-  descGenerator(data: any) {
+  descGenerator (data: any) {
     return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0][0])
       return {
@@ -296,16 +293,16 @@ class UnstakeTokens extends WalletAction {
       throw new Error(error)
     }
   }
-
 }
 
 class SwapTokens extends WalletAction {
-  descGenerator(data: any) {
+  descGenerator (data: any) {
     const sentValue = data.sentTokenValueInWei / Math.pow(10, data.sentTokenDecimals)
     const recValue = data.recTokenValueInWei / Math.pow(10, data.recTokenDecimals)
     return `${sentValue} ${data.sentToken} was swapped to ${recValue} ${data.recToken}`
   }
-  async execute(parsedUserOp: any) {
+
+  async execute (parsedUserOp: any) {
     try {
       if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') {
         const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].arguments[1][1])
@@ -423,12 +420,11 @@ class SwapTokens extends WalletAction {
       throw new Error(error)
     }
   }
-
 }
 
 // Define other sealed classes for different operation types in a similar manner
 // Factory function to determine the type of operation
-function getWalletActionType(parsedUserOp: any): WalletAction {
+function getWalletActionType (parsedUserOp: any): WalletAction {
   try {
     if (parsedUserOp.targetFunction.name === 'nativeTokenTransfer') {
       return new NativeTokenTransfer()
@@ -529,9 +525,7 @@ function getWalletActionType(parsedUserOp: any): WalletAction {
   }
 }
 
-
-
-export async function parsedUserOpToWalletAction(parsedUserOp: any) {
+export async function parsedUserOpToWalletAction (parsedUserOp: any) {
   const actionType = await getWalletActionType(parsedUserOp)
   return await actionType.execute(parsedUserOp)
 }

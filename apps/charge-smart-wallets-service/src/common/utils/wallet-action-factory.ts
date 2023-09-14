@@ -87,7 +87,7 @@ class ERC20Transfer extends WalletAction {
 }
 class NftTransfer extends WalletAction {
   descGenerator (data: any) {
-    return `${data.symbol} #${data.tokenId} sent to ${data.tokenAddress}`
+    return `${data.symbol} #${data.tokenId} sent to ${data.to}`
   }
 
   async execute (parsedUserOp: any) {

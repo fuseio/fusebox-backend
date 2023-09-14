@@ -89,7 +89,7 @@ class ERC20Transfer extends WalletAction {
 }
 class NftTransfer extends WalletAction {
   descGenerator(data: any) {
-    return `${data.action} 1 ${data.symbol} transferred`;
+    return `${data.symbol} #${data.tokenId} sent to ${data.tokenAddress}`;
   }
   async execute(parsedUserOp: any) {
     try {
@@ -111,7 +111,8 @@ class NftTransfer extends WalletAction {
         txHash: '',
         blockNumber: 0,
         description: this.generateDescription({
-          action: 'ERC-721 ',
+          tokenId: parsedUserOp.targetFunction[0].arguments[2],
+          to: parsedUserOp.targetFunction[0].arguments[0],
           symbol: tokenData.symbol
         })
 
@@ -162,7 +163,7 @@ class ApproveToken extends WalletAction {
 }
 class BatchTransaction extends WalletAction {
   descGenerator(data: any) {
-    return `${data.action}transferring to ${data.sent.length} recipients`
+    return `${data.action} transferring to ${data.sent.length} recipients`
   }
   async execute(parsedUserOp: any) {
     try {
@@ -302,7 +303,7 @@ class SwapTokens extends WalletAction {
   descGenerator(data: any) {
     const sentValue = data.sentTokenValueInWei / Math.pow(10, data.sentTokenDecimals)
     const recValue = data.recTokenValueInWei / Math.pow(10, data.recTokenDecimals)
-    return `${sentValue}  ${data.sentToken} was swapped to  ${recValue} ${data.recToken}  `
+    return `${sentValue} ${data.sentToken} was swapped to ${recValue} ${data.recToken}`
   }
   async execute(parsedUserOp: any) {
     try {

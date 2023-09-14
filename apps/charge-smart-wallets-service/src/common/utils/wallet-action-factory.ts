@@ -1,35 +1,59 @@
-import { NATIVE_FUSE_ADDRESS } from '@app/notifications-service/common/constants/addresses'
+import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { fetchERC20Data, fetchNftData } from '@app/smart-wallets-service/common/utils/token'
+import { NATIVE_TOKEN_TYPE, ERC_20_TYPE, ERC_721_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
+import { symbol } from 'zod'
 
 // Base class for all operations
 abstract class WalletAction {
   async execute (parsedUserOp: any): Promise<any> {
     return null
   }
+
+  abstract descGenerator(data: any): string;
+
+  generateDescription (data: any) {
+    return this.descGenerator(data)
+  }
 }
 
 // Sealed classes for each operation type
 class NativeTokenTransfer extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
+  }
+
   async execute (parsedUserOp: any) {
     return {
       walletAddress: parsedUserOp.sender,
       name: 'tokenTransfer',
       status: 'pending',
       sent: [{
-        name: 'FUSE',
-        address: NATIVE_FUSE_ADDRESS,
-        decimals: 18,
+        type: NATIVE_TOKEN_TYPE,
+        name: NATIVE_FUSE_TOKEN.name,
+        symbol: NATIVE_FUSE_TOKEN.symbol,
+        address: NATIVE_FUSE_TOKEN.address,
+        decimals: NATIVE_FUSE_TOKEN.decimals,
         value: parsedUserOp.walletFunction.arguments[1],
         to: parsedUserOp.walletFunction.arguments[0]
       }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
-      blockNumber: 0
+      blockNumber: 0,
+      description: this.generateDescription({
+        action: 'Transferred',
+        symbol: NATIVE_FUSE_TOKEN.symbol,
+        valueInWei: parsedUserOp.walletFunction.arguments[1],
+        decimals: NATIVE_FUSE_TOKEN.decimals
+      })
     }
   }
 }
 
 class ERC20Transfer extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
+  }
+
   async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
@@ -38,6 +62,7 @@ class ERC20Transfer extends WalletAction {
         name: 'tokenTransfer',
         status: 'pending',
         sent: [{
+          type: ERC_20_TYPE,
           name: tokenData.name,
           symbol: tokenData.symbol,
           decimals: tokenData.decimals,
@@ -47,7 +72,13 @@ class ERC20Transfer extends WalletAction {
         }],
         userOpHash: parsedUserOp.userOpHash,
         txHash: '',
-        blockNumber: 0
+        blockNumber: 0,
+        description: this.generateDescription({
+          action: 'Transferred',
+          symbol: tokenData.symbol,
+          valueInWei: parsedUserOp.targetFunction[0].arguments[1],
+          decimals: tokenData.decimals
+        })
       }
     } catch (error) {
       throw new Error(error)
@@ -55,6 +86,10 @@ class ERC20Transfer extends WalletAction {
   }
 }
 class NftTransfer extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.symbol} #${data.tokenId} sent to ${data.to}`
+  }
+
   async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchNftData(parsedUserOp.walletFunction.arguments[0])
@@ -63,15 +98,23 @@ class NftTransfer extends WalletAction {
         name: 'nftTransfer',
         status: 'pending',
         sent: [{
+          type: ERC_721_TYPE,
           name: tokenData.name,
           symbol: tokenData.symbol,
           address: parsedUserOp.walletFunction.arguments[0],
           to: parsedUserOp.targetFunction[0].arguments[0],
-          value: parsedUserOp.targetFunction[0].arguments[1]
+          tokenId: parsedUserOp.targetFunction[0].arguments[2],
+          value: 0
         }],
         userOpHash: parsedUserOp.userOpHash,
         txHash: '',
-        blockNumber: 0
+        blockNumber: 0,
+        description: this.generateDescription({
+          tokenId: parsedUserOp.targetFunction[0].arguments[2],
+          to: parsedUserOp.targetFunction[0].arguments[0],
+          symbol: tokenData.symbol
+        })
+
       }
     } catch (error) {
       throw new Error(error)
@@ -80,6 +123,10 @@ class NftTransfer extends WalletAction {
 }
 
 class ApproveToken extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
+  }
+
   async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
@@ -97,7 +144,14 @@ class ApproveToken extends WalletAction {
         }],
         userOpHash: parsedUserOp.userOpHash,
         txHash: '',
-        blockNumber: 0
+        blockNumber: 0,
+        description: this.generateDescription({
+          action: 'Approved',
+          symbol: tokenData.symbol,
+          valueInWei: parsedUserOp.targetFunction[0].arguments[1],
+          decimals: tokenData.decimals
+        })
+
       }
     } catch (error) {
       throw new Error(error)
@@ -105,6 +159,10 @@ class ApproveToken extends WalletAction {
   }
 }
 class BatchTransaction extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.action} transferring to ${data.sent.length} recipients`
+  }
+
   async execute (parsedUserOp: any) {
     try {
       const sent = []
@@ -129,7 +187,11 @@ class BatchTransaction extends WalletAction {
         sent,
         userOpHash: parsedUserOp.userOpHash,
         txHash: '',
-        blockNumber: 0
+        blockNumber: 0,
+        description: this.generateDescription({
+          action: 'Batch',
+          sent
+        })
       }
     } catch (error) {
       throw new Error(error)
@@ -137,6 +199,10 @@ class BatchTransaction extends WalletAction {
   }
 }
 class StakeTokens extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
+  }
+
   async execute (parsedUserOp: any) {
     if (parsedUserOp.targetFunction[0]?.name === 'deposit') {
       return {
@@ -144,14 +210,22 @@ class StakeTokens extends WalletAction {
         walletAddress: parsedUserOp.sender,
         status: 'pending',
         sent: [{
-          name: 'FUSE',
-          address: NATIVE_FUSE_ADDRESS,
-          decimals: 18,
+          type: NATIVE_TOKEN_TYPE,
+          name: NATIVE_FUSE_TOKEN.name,
+          symbol: NATIVE_FUSE_TOKEN.symbol,
+          address: NATIVE_FUSE_TOKEN.address,
+          decimals: NATIVE_FUSE_TOKEN.decimals,
           value: parsedUserOp.walletFunction.arguments[1]
         }],
         userOpHash: parsedUserOp.userOpHash,
         txHash: '',
-        blockNumber: 0
+        blockNumber: 0,
+        description: this.generateDescription({
+          action: 'Staked',
+          symbol: NATIVE_FUSE_TOKEN.symbol,
+          decimals: NATIVE_FUSE_TOKEN.decimals,
+          valueInWei: parsedUserOp.walletFunction.arguments[1]
+        })
       }
     }
     if (parsedUserOp.targetFunction[0]?.name === 'approve') {
@@ -162,6 +236,7 @@ class StakeTokens extends WalletAction {
           walletAddress: parsedUserOp.sender,
           status: 'pending',
           sent: [{
+            type: ERC_20_TYPE,
             name: tokenData.name,
             symbol: tokenData.symbol,
             decimals: tokenData.decimals,
@@ -170,7 +245,13 @@ class StakeTokens extends WalletAction {
           }],
           userOpHash: parsedUserOp.userOpHash,
           txHash: '',
-          blockNumber: 0
+          blockNumber: 0,
+          description: this.generateDescription({
+            action: 'Staked',
+            symbol: tokenData.symbol,
+            decimals: tokenData.decimals,
+            valueInWei: parsedUserOp.targetFunction[0].arguments[1]
+          })
         }
       } catch (error) {
         throw new Error(error)
@@ -180,6 +261,10 @@ class StakeTokens extends WalletAction {
 }
 
 class UnstakeTokens extends WalletAction {
+  descGenerator (data: any) {
+    return `${data.action} ${data.valueInWei / Math.pow(10, data.decimals)} ${data.symbol}`
+  }
+
   async execute (parsedUserOp: any) {
     try {
       const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0][0])
@@ -196,7 +281,13 @@ class UnstakeTokens extends WalletAction {
         }],
         userOpHash: parsedUserOp.userOpHash,
         txHash: '',
-        blockNumber: 0
+        blockNumber: 0,
+        description: this.generateDescription({
+          action: 'Unstaked',
+          symbol: tokenData.symbol,
+          decimals: tokenData.decimals,
+          valueInWei: parsedUserOp.targetFunction[0].arguments[1]
+        })
       }
     } catch (error) {
       throw new Error(error)
@@ -205,6 +296,12 @@ class UnstakeTokens extends WalletAction {
 }
 
 class SwapTokens extends WalletAction {
+  descGenerator (data: any) {
+    const sentValue = data.sentTokenValueInWei / Math.pow(10, data.sentTokenDecimals)
+    const recValue = data.recTokenValueInWei / Math.pow(10, data.recTokenDecimals)
+    return `${sentValue} ${data.sentToken} was swapped to ${recValue} ${data.recToken}`
+  }
+
   async execute (parsedUserOp: any) {
     try {
       if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') {
@@ -214,14 +311,16 @@ class SwapTokens extends WalletAction {
           walletAddress: parsedUserOp.sender,
           status: 'pending',
           sent: [{
-            name: 'Fuse',
-            address: NATIVE_FUSE_ADDRESS,
-            symbol: 'FUSE',
-            decimals: 18,
+            type: NATIVE_TOKEN_TYPE,
+            name: NATIVE_FUSE_TOKEN.name,
+            symbol: NATIVE_FUSE_TOKEN.symbol,
+            address: NATIVE_FUSE_TOKEN.address,
+            decimals: NATIVE_FUSE_TOKEN.decimals,
             to: parsedUserOp.walletFunction.arguments[0],
             value: parsedUserOp.walletFunction.arguments[1]
           }],
           received: [{
+            type: ERC_20_TYPE,
             name: receivedTokenData.name,
             symbol: receivedTokenData.symbol,
             decimals: receivedTokenData.decimals,
@@ -230,7 +329,16 @@ class SwapTokens extends WalletAction {
           }],
           userOpHash: parsedUserOp.userOpHash,
           txHash: '',
-          blockNumber: 0
+          blockNumber: 0,
+          description: this.generateDescription({
+            action: 'Swapped',
+            sentToken: NATIVE_FUSE_TOKEN.symbol,
+            sentTokenDecimals: NATIVE_FUSE_TOKEN.decimals,
+            sentTokenValueInWei: parsedUserOp.walletFunction.arguments[1],
+            recToken: receivedTokenData.symbol,
+            recTokenDecimals: receivedTokenData.decimals,
+            recTokenValueInWei: parsedUserOp.targetFunction[0].arguments[3]
+          })
         }
       }
       if (parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactETH' || parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH') {
@@ -240,6 +348,7 @@ class SwapTokens extends WalletAction {
           walletAddress: parsedUserOp.sender,
           status: 'pending',
           sent: [{
+            type: ERC_20_TYPE,
             name: sentTokenData.name,
             symbol: sentTokenData.symbol,
             decimals: sentTokenData.decimals,
@@ -248,13 +357,25 @@ class SwapTokens extends WalletAction {
             value: parsedUserOp.targetFunction[1].arguments[0]
           }],
           received: [{
-            name: 'FUSE',
-            address: NATIVE_FUSE_ADDRESS,
+            type: NATIVE_TOKEN_TYPE,
+            name: NATIVE_FUSE_TOKEN.name,
+            symbol: NATIVE_FUSE_TOKEN.symbol,
+            address: NATIVE_FUSE_TOKEN.address,
+            decimals: NATIVE_FUSE_TOKEN.decimals,
             value: parsedUserOp.targetFunction[1].arguments[1]
           }],
           userOpHash: parsedUserOp.userOpHash,
           txHash: '',
-          blockNumber: 0
+          blockNumber: 0,
+          description: this.generateDescription({
+            action: 'Swapped',
+            sentToken: sentTokenData.symbol,
+            sentTokenDecimals: sentTokenData.decimals,
+            sentTokenValueInWei: parsedUserOp.targetFunction[1].arguments[0],
+            recToken: NATIVE_FUSE_TOKEN.symbol,
+            recTokenDecimals: NATIVE_FUSE_TOKEN.decimals,
+            recTokenValueInWei: parsedUserOp.targetFunction[1].arguments[1]
+          })
         }
       }
       if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens' || parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' && parsedUserOp.walletFunction.name === 'executeBatch') {
@@ -265,6 +386,7 @@ class SwapTokens extends WalletAction {
           walletAddress: parsedUserOp.sender,
           status: 'pending',
           sent: [{
+            type: ERC_20_TYPE,
             name: sentTokenData.name,
             symbol: sentTokenData.symbol,
             decimals: sentTokenData.decimals,
@@ -273,6 +395,7 @@ class SwapTokens extends WalletAction {
             value: parsedUserOp.targetFunction[0].arguments[1]
           }],
           received: [{
+            type: ERC_20_TYPE,
             name: receivedTokenData.name,
             symbol: receivedTokenData.symbol,
             decimals: receivedTokenData.decimals,
@@ -281,7 +404,16 @@ class SwapTokens extends WalletAction {
           }],
           userOpHash: parsedUserOp.userOpHash,
           txHash: '',
-          blockNumber: 0
+          blockNumber: 0,
+          description: this.generateDescription({
+            action: 'Swapped',
+            sentToken: sentTokenData.symbol,
+            sentTokenDecimals: sentTokenData.decimals,
+            sentTokenValueInWei: parsedUserOp.targetFunction[0].arguments[1],
+            recToken: receivedTokenData.symbol,
+            recTokenDecimals: receivedTokenData.decimals,
+            recTokenValueInWei: parsedUserOp.targetFunction[1].arguments[1]
+          })
         }
       }
     } catch (error) {

@@ -1,14 +1,14 @@
 import Web3 from 'web3'
-import { NATIVE_FUSE_ADDRESS } from '@app/notifications-service/common/constants/addresses'
+import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 const BasicTokenAbi = require('@app/smart-wallets-service/common/config/abi/BasicToken.json')
 const web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.fuse.io'))
 
 export const fetchERC20Data = async (address) => {
-  if (address === NATIVE_FUSE_ADDRESS) {
+  if (address === NATIVE_FUSE_TOKEN.address) {
     return {
-      name: 'Fuse',
-      address: NATIVE_FUSE_ADDRESS,
-      symbol: 'FUSE',
+      name: NATIVE_FUSE_TOKEN.name,
+      address: NATIVE_FUSE_TOKEN.address,
+      symbol: NATIVE_FUSE_TOKEN.symbol,
       decimals: 18
     }
   }

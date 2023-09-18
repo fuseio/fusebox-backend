@@ -13,23 +13,23 @@ export const fetchERC20Data = async (address) => {
     }
   }
   const tokenContractInstance = new web3.eth.Contract(BasicTokenAbi, address)
-  const [name, symbol, totalSupply, decimals] = await Promise.all([
-    tokenContractInstance.methods.name().call(),
-    tokenContractInstance.methods.symbol().call(),
-    tokenContractInstance.methods.totalSupply().call(),
-    tokenContractInstance.methods.decimals().call()
-  ])
-  const fetchedTokedData = { name, symbol, totalSupply: totalSupply.toString(), decimals }
-  return fetchedTokedData
-}
-
-export const fetchNftData = async (address) => {
-  const tokenContractInstance = new web3.eth.Contract(BasicTokenAbi, address)
-  const [name, symbol, totalSupply] = await Promise.all([
-    tokenContractInstance.methods.name().call(),
-    tokenContractInstance.methods.symbol().call(),
-    tokenContractInstance.methods.totalSupply().call()
-  ])
-  const fetchedTokedData = { name, symbol, totalSupply: totalSupply.toString() }
-  return fetchedTokedData
+  try {
+    const [name, symbol, totalSupply, decimals] = await Promise.all([
+      tokenContractInstance.methods.name().call(),
+      tokenContractInstance.methods.symbol().call(),
+      tokenContractInstance.methods.totalSupply().call(),
+      tokenContractInstance.methods.decimals().call()
+    ])
+    const fetchedTokedData = { name, symbol, totalSupply: totalSupply.toString(), decimals }
+    return fetchedTokedData
+  } catch (error) {
+    const decimals = 0
+    const [name, symbol, totalSupply] = await Promise.all([
+      tokenContractInstance.methods.name().call(),
+      tokenContractInstance.methods.symbol().call(),
+      tokenContractInstance.methods.totalSupply().call()
+    ])
+    const fetchedTokedData = { name, symbol, totalSupply: totalSupply.toString(), decimals }
+    return fetchedTokedData
+  }
 }

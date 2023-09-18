@@ -8,4 +8,4 @@ import { GraphqlModule } from '@app/network-service/graphql/graphql.module'
   imports: [StakingModule, HttpModule, GraphqlModule],
   controllers: [ChargeNetworkServiceController]
 })
-export class ChargeNetworkServiceModule {}
+export class ChargeNetworkServiceModule { }

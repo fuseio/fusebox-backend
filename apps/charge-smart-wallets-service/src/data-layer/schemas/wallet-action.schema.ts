@@ -10,8 +10,7 @@ const tokenSchema = new mongoose.Schema({
   from: String,
   to: String,
   type: String,
-  tokenId: String,
-  logIndex: String
+  tokenId: String
 })
 
 export const WalletActionSchema = new mongoose.Schema(

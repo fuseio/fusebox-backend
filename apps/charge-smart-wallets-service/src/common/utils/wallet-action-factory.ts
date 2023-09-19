@@ -1,5 +1,5 @@
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
-import { fetchERC20Data } from '@app/smart-wallets-service/common/utils/token'
+import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { NATIVE_TOKEN_TYPE, ERC_20_TYPE, ERC_721_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import { ERC721TransferInterface, ERC20TransferInterface } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { LIQUID_STAKING_POOL } from '../constants/addresess'
@@ -58,7 +58,7 @@ class ERC20Transfer extends WalletAction {
 
   async execute (parsedUserOp: any) {
     try {
-      const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
+      const tokenData = await fetchTokenDetails(parsedUserOp.walletFunction.arguments[0])
       const tokenTransferData: ERC20TransferInterface = {
         type: ERC_20_TYPE,
         name: tokenData.name,
@@ -95,7 +95,7 @@ class NftTransfer extends WalletAction {
 
   async execute (parsedUserOp: any) {
     try {
-      const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
+      const tokenData = await fetchTokenDetails(parsedUserOp.walletFunction.arguments[0])
       const tokenTransferData: ERC721TransferInterface = {
         type: ERC_721_TYPE,
         name: tokenData.name,
@@ -134,7 +134,7 @@ class ApproveToken extends WalletAction {
 
   async execute (parsedUserOp: any) {
     try {
-      const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
+      const tokenData = await fetchTokenDetails(parsedUserOp.walletFunction.arguments[0])
       const tokenTransferData: ERC20TransferInterface = {
         type: tokenData.decimals === 0 ? ERC_721_TYPE : ERC_20_TYPE,
         name: tokenData.name,
@@ -175,7 +175,7 @@ class BatchTransaction extends WalletAction {
     try {
       const sent = []
       for (let i = 0; i < parsedUserOp.targetFunction.length; i++) {
-        const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[i].targetAddress)
+        const tokenData = await fetchTokenDetails(parsedUserOp.targetFunction[i].targetAddress)
         if (tokenData.decimals === 0) {
           const tokenTransferData: ERC721TransferInterface = {
             type: ERC_721_TYPE,
@@ -253,7 +253,7 @@ class StakeTokens extends WalletAction {
     }
     if (parsedUserOp.targetFunction[0]?.name === 'approve') {
       try {
-        const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].targetAddress)
+        const tokenData = await fetchTokenDetails(parsedUserOp.targetFunction[0].targetAddress)
         const tokenTransferData: ERC20TransferInterface = {
           type: ERC_20_TYPE,
           name: tokenData.name,
@@ -293,7 +293,7 @@ class UnstakeTokens extends WalletAction {
   async execute (parsedUserOp: any) {
     if (parsedUserOp.targetFunction[0].name === 'leave') {
       try {
-        const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0])
+        const tokenData = await fetchTokenDetails(parsedUserOp.walletFunction.arguments[0])
         const sentTokenData: ERC20TransferInterface = {
           name: tokenData.name,
           symbol: tokenData.symbol,
@@ -304,7 +304,7 @@ class UnstakeTokens extends WalletAction {
           value: parsedUserOp.targetFunction[0].arguments[0]
         }
 
-        const recTokenData = await fetchERC20Data('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
+        const recTokenData = await fetchTokenDetails('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
         const receivedTokenData: ERC20TransferInterface = {
           name: recTokenData.name,
           symbol: recTokenData.symbol,
@@ -348,7 +348,7 @@ class UnstakeTokens extends WalletAction {
         value: parsedUserOp.targetFunction[0].arguments[1]
       }
       try {
-        const tokenData = await fetchERC20Data(parsedUserOp.walletFunction.arguments[0][0])
+        const tokenData = await fetchTokenDetails(parsedUserOp.walletFunction.arguments[0][0])
         const sentTokenData: ERC20TransferInterface = {
           name: tokenData.name,
           symbol: tokenData.symbol,
@@ -391,7 +391,7 @@ class SwapTokens extends WalletAction {
   async execute (parsedUserOp: any) {
     try {
       if (parsedUserOp.targetFunction[0]?.name === 'swapExactETHForTokens' || parsedUserOp.targetFunction[0]?.name === 'swapETHForExactTokens') {
-        const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].arguments[1][1])
+        const tokenData = await fetchTokenDetails(parsedUserOp.targetFunction[0].arguments[1][1])
         const receivedTokenData: ERC20TransferInterface = {
           type: ERC_20_TYPE,
           name: tokenData.name,
@@ -433,7 +433,7 @@ class SwapTokens extends WalletAction {
         }
       }
       if (parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactETH' || parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForETH') {
-        const tokenData = await fetchERC20Data(parsedUserOp.targetFunction[1].arguments[2][0])
+        const tokenData = await fetchTokenDetails(parsedUserOp.targetFunction[1].arguments[2][0])
         const sentTokenData: ERC20TransferInterface =
         {
           type: ERC_20_TYPE,
@@ -477,7 +477,7 @@ class SwapTokens extends WalletAction {
         }
       }
       if (parsedUserOp.targetFunction[0]?.name === 'approve' && parsedUserOp.targetFunction[1]?.name === 'swapExactTokensForTokens' || parsedUserOp.targetFunction[1]?.name === 'swapTokensForExactTokens' && parsedUserOp.walletFunction.name === 'executeBatch') {
-        const sentTokenData = await fetchERC20Data(parsedUserOp.targetFunction[0].targetAddress)
+        const sentTokenData = await fetchTokenDetails(parsedUserOp.targetFunction[0].targetAddress)
         const sentTokenDetails: ERC20TransferInterface =
         {
           type: ERC_20_TYPE,
@@ -488,7 +488,7 @@ class SwapTokens extends WalletAction {
           to: parsedUserOp.targetFunction[0].arguments[0],
           value: parsedUserOp.targetFunction[0].arguments[1]
         }
-        const receivedTokenData = await fetchERC20Data(parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1])
+        const receivedTokenData = await fetchTokenDetails(parsedUserOp.targetFunction[1].arguments[2][parsedUserOp.targetFunction[1].arguments[2].length - 1])
         const receivedTokenDetails: ERC20TransferInterface =
         {
           type: ERC_20_TYPE,

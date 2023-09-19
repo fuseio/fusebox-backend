@@ -18,5 +18,11 @@ interface ERC721TransferInterface {
     type: string;
     tokenId: number;
 }
+interface FetchedTokenInterface {
+    name: string;
+    symbol: string;
+    totalSupply: string;
+    decimals: number;
+}
 
-export { ERC20TransferInterface, ERC721TransferInterface }
+export { ERC20TransferInterface, ERC721TransferInterface, FetchedTokenInterface }

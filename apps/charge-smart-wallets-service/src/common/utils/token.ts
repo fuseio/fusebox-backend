@@ -1,9 +1,10 @@
 import Web3 from 'web3'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { FetchedTokenInterface } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 const BasicTokenAbi = require('@app/smart-wallets-service/common/config/abi/BasicToken.json')
 const web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.fuse.io'))
 
-export const fetchERC20Data = async (address) => {
+export const fetchTokenDetails = async (address) => {
   if (address === NATIVE_FUSE_TOKEN.address) {
     return {
       name: NATIVE_FUSE_TOKEN.name,
@@ -20,7 +21,7 @@ export const fetchERC20Data = async (address) => {
       tokenContractInstance.methods.totalSupply().call(),
       tokenContractInstance.methods.decimals().call()
     ])
-    const fetchedTokedData = { name, symbol, totalSupply: totalSupply.toString(), decimals }
+    const fetchedTokedData: FetchedTokenInterface = { name, symbol, totalSupply: totalSupply.toString(), decimals }
     return fetchedTokedData
   } catch (error) {
     const decimals = 0
@@ -29,7 +30,7 @@ export const fetchERC20Data = async (address) => {
       tokenContractInstance.methods.symbol().call(),
       tokenContractInstance.methods.totalSupply().call()
     ])
-    const fetchedTokedData = { name, symbol, totalSupply: totalSupply.toString(), decimals }
+    const fetchedTokedData: FetchedTokenInterface = { name, symbol, totalSupply: totalSupply.toString(), decimals }
     return fetchedTokedData
   }
 }

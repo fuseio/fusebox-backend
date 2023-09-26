@@ -10,6 +10,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
 import { webhookEventProviders } from '@app/notifications-service/common/providers/webhook-event.provider'
 import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.module'
+import { ClientsModule, Transport } from '@nestjs/microservices'
+import { smartWalletsService } from '@app/common/constants/microservices.constants'
 
 @Module({
   imports: [
@@ -27,19 +29,29 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
         }
       }
     }),
+    ClientsModule.register([
+      {
+        name: smartWalletsService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.SMART_WALLETS_HOST,
+          port: parseInt(process.env.SMART_WALLETS_TCP_PORT)
+        }
+      }
+    ]),
     WebhooksModule,
     DatabaseModule,
     ConfigModule.forFeature(rpcConfig),
     BroadcasterModule
   ],
   providers: [
-    // ERC20EventsScannerService,
+    ERC20EventsScannerService,
     UserOpEventsScannerService,
     ...eventsScannerProviders,
     ...webhookEventProviders,
     Logger
   ]
 })
-export class EventsScannerModule {}
+export class EventsScannerModule { }
 
 // TODO: webhookEventProviders verify that not needed here

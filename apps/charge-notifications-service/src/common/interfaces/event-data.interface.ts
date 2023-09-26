@@ -1,6 +1,11 @@
 export interface EventData extends Object {
-  to: string,
   from: string,
+  txHash: string,
+  blockNumber: number,
+  blockHash: string,
+}
+export interface TokenEventData extends EventData {
+  to: string,
   txHash: string,
   tokenAddress: string,
   blockNumber: number,
@@ -13,4 +18,12 @@ export interface EventData extends Object {
   tokenId: number | null,
   valueEth: string | null,
   isInternalTransaction: boolean
+}
+export interface UserOpEventData extends EventData {
+  userOpHash: string;
+  nonce: number;
+  paymasterAndData?: string;
+  success: boolean;
+  actualGasCost: string;
+  actualGasUsed: string;
 }

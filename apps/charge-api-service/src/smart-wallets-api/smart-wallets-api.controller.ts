@@ -11,50 +11,48 @@ import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '1' })
 export class SmartWalletsAPIController {
-  constructor(private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
+  constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
   @Post('auth')
-  auth(@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
+  auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getWallet(@SmartWalletOwner() user: ISmartWalletUser) {
+  getWallet (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.getWallet(user)
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
-  createWallet(@SmartWalletOwner() user: ISmartWalletUser) {
+  createWallet (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.createWallet(user)
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('relay')
-  relay(@Body() relayDto: RelayDto, @SmartWalletOwner() user: ISmartWalletUser) {
+  relay (@Body() relayDto: RelayDto, @SmartWalletOwner() user: ISmartWalletUser) {
     relayDto.ownerAddress = user.ownerAddress
     return this.smartWalletsAPIService.relay(relayDto)
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('historical_txs')
-  getHistoricalTxs(@Query() query, @SmartWalletOwner() user: ISmartWalletUser) {
+  getHistoricalTxs (@Query() query, @SmartWalletOwner() user: ISmartWalletUser) {
     user.query = query
     return this.smartWalletsAPIService.getHistoricalTxs(user)
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('available_upgrades')
-  getAvailableUpgrades(@SmartWalletOwner() user: ISmartWalletUser) {
+  getAvailableUpgrades (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.getAvailableUpgrades()
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('install_upgrade')
-  installUpgrade(@SmartWalletOwner() user: ISmartWalletUser) {
+  installUpgrade (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.installUpgrade()
   }
-
-
 }

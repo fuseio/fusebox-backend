@@ -397,3 +397,12 @@ export async function parsedUserOpToWalletAction (parsedUserOp: any) {
   const actionType = await getWalletActionType(parsedUserOp)
   return await actionType.execute(parsedUserOp)
 }
+
+export function confirmedUserOpToWalletAction (userOp: any) {
+  return {
+    userOpHash: userOp.userOpHash,
+    txHash: userOp.txHash,
+    status: userOp.success ? 'success' : 'failed',
+    blockNumber: userOp.blockNumber
+  }
+}

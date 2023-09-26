@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import { UserOpFactory } from '@app/smart-wallets-service/common/utils/user-op-parser'
-import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
+import { parsedUserOpToWalletAction, confirmedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
 
 @Injectable()
@@ -24,7 +24,9 @@ export class DataLayerService {
   }
 
   async updateUserOp (body: UserOp) {
-    return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
+    const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
+    this.updateWalletAction(updatedUserOp)
+    return updatedUserOp
   }
 
   async createWalletAction (parsedUserOp: any) {
@@ -34,6 +36,17 @@ export class DataLayerService {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  async updateWalletAction (userOp: any) {
+    const walletAction = {
+      userOpHash: userOp.userOpHash,
+      txHash: userOp.txHash,
+      status: userOp.success ? 'success' : 'failed',
+      blockNumber: userOp.blockNumber
+    }
+
+    return this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { upsert: true })
   }
 
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {

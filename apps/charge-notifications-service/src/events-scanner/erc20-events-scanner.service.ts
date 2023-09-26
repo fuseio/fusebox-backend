@@ -5,7 +5,7 @@ import { ERC20LogsFilterString, ERC20ScannerStatusServiceString } from '@app/not
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
-import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { EventData, TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
@@ -75,7 +75,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
       this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
-    const eventData: EventData = {
+    const eventData: TokenEventData = {
       to: toAddress,
       from: fromAddress,
       txHash: parsedLog.transactionHash,
@@ -100,7 +100,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
       eventData.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
 
-    this.webhooksService.processWebhookEvents(eventData).catch((error) => {
+    this.webhooksService.processWebhookTokenEvents(eventData).catch((error) => {
       this.logger.error(`Failed to process webhook events for event data :${eventData} - Error: ${error}`)
     })
   }

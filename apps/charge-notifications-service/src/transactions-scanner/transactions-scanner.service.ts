@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
 import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'nestjs-ethers'
-import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { ScannerService } from '../common/scanner-service'
 import { transactionsScannerStatusServiceString } from './transactions-scanner.constants'
@@ -73,7 +73,7 @@ export class TransactionsScannerService extends ScannerService {
 
   @logPerformance('TransactionsScanner::ProcessTrace')
   async processTrace (trace: any) {
-    const eventData: EventData = {
+    const eventData: TokenEventData = {
       to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
       from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
       value: BigNumber.from(trace.action.value).toString(),
@@ -94,7 +94,7 @@ export class TransactionsScannerService extends ScannerService {
       eventData.isInternalTransaction = true
     }
 
-    this.webhooksService.processWebhookEvents(eventData).catch((error) => {
+    this.webhooksService.processWebhookTokenEvents(eventData).catch((error) => {
       this.logger.error(`Failed to process webhook events for event data :${eventData} - Error: ${error}`)
     })
   }

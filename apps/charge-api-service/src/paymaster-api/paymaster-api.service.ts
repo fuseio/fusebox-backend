@@ -40,7 +40,7 @@ export class PaymasterApiService {
     // if (op.initCode !== '0x') {
     op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(5).toHexString()
     op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(5).toHexString()
-    op.callGasLimit = BigNumber.from(1000000).toHexString()
+    op.callGasLimit = BigNumber.from(3000000).toHexString()
     // }
     const paymasterAddress = paymasterInfo.paymasterAddress
     const paymasterContract: any = new web3.eth.Contract(

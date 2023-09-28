@@ -1,28 +1,29 @@
-
-interface ERC20TransferInterface {
+interface ERC20Transfer {
     name: string;
     symbol: string;
     address: string;
     decimals: number;
-    value: string;
-    to: string;
     type: string;
+    to?: string;
+    from?: string
+    value?: string;
 }
-interface ERC721TransferInterface {
+
+interface ERC721Transfer {
     name: string;
     symbol: string;
     address: string;
     decimals: number;
-    value: string;
     to: string;
     type: string;
     tokenId: number;
 }
-interface FetchedTokenInterface {
+
+interface Token {
     name: string;
     symbol: string;
-    totalSupply: string;
+    address: string;
     decimals: number;
 }
 
-export { ERC20TransferInterface, ERC721TransferInterface, FetchedTokenInterface }
+export { ERC20Transfer, ERC721Transfer, Token }

@@ -38,9 +38,9 @@ export class PaymasterApiService {
     // When the initCode is not empty, we need to increase the gas values. Multiplying everything by 3 seems to work, but we
     // need to have a better approach to estimate gas and update accordingly.
     // if (op.initCode !== '0x') {
-    op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(5).toHexString()
-    op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(5).toHexString()
-    op.callGasLimit = BigNumber.from(3000000).toHexString()
+    // op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(5).toHexString()
+    // op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(5).toHexString()
+    // op.callGasLimit = BigNumber.from(3000000).toHexString()
     // }
     const paymasterAddress = paymasterInfo.paymasterAddress
     const paymasterContract: any = new web3.eth.Contract(
@@ -53,6 +53,15 @@ export class PaymasterApiService {
     // op.verificationGasLimit = BigNumber.from(400000).toHexString();
     // op.preVerificationGas = BigNumber.from(150000).toHexString();
     // op.callGasLimit = BigNumber.from(150000).toHexString();
+    const {
+      preVerificationGas,
+      verificationGasLimit,
+      callGasLimit
+    } = await this.estimateUserOpGas(web3, op, paymasterAddress);
+    op.verificationGasLimit = preVerificationGas;
+    op.preVerificationGas = verificationGasLimit;
+    op.callGasLimit = callGasLimit;
+
     const hash = await paymasterContract.methods
       .getHash(op, validUntil, validAfter, sponsorId)
       .call()
@@ -78,6 +87,22 @@ export class PaymasterApiService {
       preVerificationGas: op.preVerificationGas,
       verificationGasLimit: op.verificationGasLimit,
       callGasLimit: op.callGasLimit
+    }
+  }
+
+  async estimateUserOpGas (web3: any, op: any) {
+    const verificationGasLimit = BigNumber.from(300000).toHexString();
+    const preVerificationGas = BigNumber.from(150000).toHexString();
+
+    const callGasLimit = await web3.eth.estimateGas({
+      from: op.sender,
+      data: op.callData,
+    })
+
+    return {
+      preVerificationGas,
+      verificationGasLimit,
+      callGasLimit
     }
   }
 

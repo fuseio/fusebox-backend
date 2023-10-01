@@ -81,8 +81,8 @@ export class WebhooksService {
 
   async deleteAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
     const query = {
-      address: {
-        $in: createWebhookAddressesDto.addresses
+      lowercaseAddress: {
+        $in: createWebhookAddressesDto.addresses.map(address => address.toLowerCase())
       },
       webhookId: {
         $eq: createWebhookAddressesDto.webhookId
@@ -93,11 +93,11 @@ export class WebhooksService {
   }
 
   async getAddressWatchers (address: string): Promise<any> {
-    let addressWatchers = await this.webhookAddressModel
-      .find({ address: { $regex: new RegExp(address, 'i') } })
+    const addressWatchers = await this.webhookAddressModel
+      .find({ lowercaseAddress: address.toLowerCase() })
       .populate('webhookId', 'webhookUrl eventType projectId')
 
-    addressWatchers = addressWatchers.map(watcher => {
+    return addressWatchers.map(watcher => {
       const watcherJson = watcher.toJSON()
 
       if (!isEmpty(watcherJson.webhookId)) {
@@ -106,8 +106,6 @@ export class WebhooksService {
 
       return watcherJson
     })
-
-    return addressWatchers
   }
 
   async processWebhookEvents (eventData: EventData) {

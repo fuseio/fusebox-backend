@@ -20,7 +20,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
   // TODO: Create a Base class for events scanner and transaction scanner services
   private tokenInfoCache: TokenInfoCache = {}
 
-  constructor(
+  constructor (
     configService: ConfigService,
     @Inject(UserOpScannerStatusServiceString)
     scannerStatusService: ScannerStatusService,
@@ -39,7 +39,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
   }
 
   @logPerformance('UserOpEventsScannerService::ProcessBlocks')
-  async processBlocks(fromBlock: number, toBlock: number) {
+  async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
     this.logger.log(`UserOpEventsScannerService: Processing blocks from ${fromBlock} to ${toBlock}`)
@@ -58,7 +58,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
   }
 
   @logPerformance('UserOpEventsScannerService::ProcessEvent')
-  async processEvent(log: Log) {
+  async processEvent (log: Log) {
     this.logger.log(`Processing UserOp event from block: ${log.blockNumber} & txHash:  ${log.transactionHash}`)
 
     const parsedLog = parseLog(log, ENTRY_POINT_ABI)
@@ -79,6 +79,5 @@ export class UserOpEventsScannerService extends EventsScannerService {
     } catch (error) {
       console.log(error)
     }
-
   }
 }

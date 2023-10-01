@@ -32,7 +32,7 @@ describe("UserOpParser Tests", () => {
         const res = await parser.parseCallData(NATIVE_TRANSFER_CALLDATA)
         assert.equal(res.calls[0].targetAddress, '0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
         assert.equal(res.name, 'execute')
-        assert.equal(res.targetFunctions[0].name, 'nativeTokenTransfer')
+        assert.equal(res.targetFunctions[0].name, 'nativeTransfer')
     });
 
 
@@ -172,7 +172,7 @@ describe("UserOpParser Tests", () => {
     it('userOp batch transaction with native and ERC-20 tranfers calldata', async () => {
         const res = await parser.parseCallData(BATCH_TRANSACTION_CALLDATA)
         assert.equal(res.targetFunctions[0].targetAddress, '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') //Goodollar 
-        assert.equal(res.targetFunctions[0].name, 'nativeTokenTransfer')
+        assert.equal(res.targetFunctions[0].name, 'nativeTransfer')
         assert.equal(res.targetFunctions[1].targetAddress, '0x495d133B938596C9984d462F007B676bDc57eCEC') //Goodollar 
         assert.equal(res.targetFunctions[1].callData[0], '0xE65513Fe95F52F4350D2184c2fD722c37e6Fd995')
         assert.equal(res.targetFunctions[1].name, 'transfer')

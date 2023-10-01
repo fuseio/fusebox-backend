@@ -8,7 +8,8 @@ export const WebhookAddressSchema = new mongoose.Schema(
       required: true,
       immutable: true
     },
-    address: { type: String, required: true }
+    address: { type: String, required: true },
+    lowercaseAddress: { type: String, index: true }
   },
   {
     timestamps: true
@@ -16,3 +17,8 @@ export const WebhookAddressSchema = new mongoose.Schema(
 )
 
 WebhookAddressSchema.index({ webhookId: 1, address: 1 }, { unique: true })
+
+WebhookAddressSchema.pre('save', function (next) {
+  this.lowercaseAddress = this.address.toLowerCase()
+  next()
+})

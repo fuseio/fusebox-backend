@@ -1,7 +1,7 @@
 
 import { assert } from "chai"
-import { UserOpParser } from "../../../apps/charge-smart-wallets-service/src/common/utils/user-op-parser"
-import { UserOperationBuilder } from "userop"
+import { UserOpParser } from "../../../apps/charge-smart-wallets-service/src/common/services/user-op-parser.service"
+import { Test, TestingModule } from '@nestjs/testing';
 
 export const NATIVE_TRANSFER_CALLDATA = '0xb61d27f60000000000000000000000005bbea139c1b1b32cf7b5c7fd1d1ff802de006117000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000'
 export const ERC20_CALLDATA = '0xb61d27f6000000000000000000000000b1232fd89d027e4b949ced570609e8ad0e18811e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000cc95e80da76bd41507b99d9b977dc3062bcf64300000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000'
@@ -23,13 +23,18 @@ export const TRANSFER_NFT_CALLDATA = '0xb61d27f600000000000000000000000032319834
 
 
 describe("UserOpParser Tests", () => {
-    const parser = new UserOpParser()
-    beforeEach(function () {
+    let parser: UserOpParser;
 
-    })
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [UserOpParser],
+        }).compile();
+        parser = module.get<UserOpParser>(UserOpParser);
+    });
 
     it("userOp native token transfer calldata", async () => {
         const res = await parser.parseCallData(NATIVE_TRANSFER_CALLDATA)
+
         assert.equal(res.calls[0].targetAddress, '0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
         assert.equal(res.name, 'execute')
         assert.equal(res.targetFunctions[0].name, 'nativeTransfer')
@@ -134,6 +139,8 @@ describe("UserOpParser Tests", () => {
 
     it("swapExactTokensForEth function calldata", async () => {
         const res = await parser.parseCallData(SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA)
+        console.log(res);
+
         assert.equal(res.name, 'executeBatch')
         assert.equal(res.calls[0].targetAddress, '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
         assert.equal(res.calls[1].targetAddress, '0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5')
@@ -194,6 +201,4 @@ describe("UserOpParser Tests", () => {
     //     // assert.equal(targetFunction[0].arguments.pop(), '0x588e24DEd8f850b14BB2e62E9c50A7Cd5Ee13Da9') //TerraLuna
     //     // assert.equal(targetFunction[1].arguments[2], '0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
     // });
-
-
 });

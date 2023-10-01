@@ -8,7 +8,7 @@ import { UserOpFactory } from '../common/services/user-op-factory.service'
 
 @Injectable()
 export class DataLayerService {
-  constructor(
+  constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
@@ -16,18 +16,18 @@ export class DataLayerService {
     private userOpFactory: UserOpFactory
   ) { }
 
-  async recordUserOp(baseUserOp: BaseUserOp) {
+  async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = this.userOpModel.create(userOp)
     this.createWalletAction(userOp)
     return response
   }
 
-  async updateUserOp(body: UserOp) {
+  async updateUserOp (body: UserOp) {
     return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
   }
 
-  async createWalletAction(parsedUserOp: any) {
+  async createWalletAction (parsedUserOp: any) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp)
       return this.paginatedWalletActionModel.create(walletAction)
@@ -36,7 +36,7 @@ export class DataLayerService {
     }
   }
 
-  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       query =

@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers'
 import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 export class UserOpParser {
-  transformArray(input) {
+  transformArray (input) {
     const [targets, values, data] = input
 
     return targets.map((targetAddress, index) => ({
@@ -14,7 +14,7 @@ export class UserOpParser {
     }))
   }
 
-  async getTargetFunction(calls) {
+  async getTargetFunction (calls) {
     return Promise.all(calls.map(async (call) => {
       if (call.data === '0x') {
         return {
@@ -35,7 +35,7 @@ export class UserOpParser {
     }))
   }
 
-  async parseCallData(callData: string) {
+  async parseCallData (callData: string) {
     const decodeResults = await decodeCalldata(
       callData
     )
@@ -62,12 +62,12 @@ export class UserOpParser {
 @Injectable()
 export class UserOpFactory {
   private userOpParser: UserOpParser
-  constructor(
+  constructor (
   ) {
     this.userOpParser = new UserOpParser()
   }
 
-  async createUserOp(baseUserOp): Promise<UserOp> {
+  async createUserOp (baseUserOp): Promise<UserOp> {
     const { targetFunctions, name } = await this.userOpParser.parseCallData(baseUserOp.callData)
     return {
       ...baseUserOp,
@@ -77,6 +77,6 @@ export class UserOpFactory {
   }
 }
 
-export async function decodeCalldata(callData: string) {
+export async function decodeCalldata (callData: string) {
   return decodeWithCalldata(sigHashFromCalldata(callData), callData)
 }

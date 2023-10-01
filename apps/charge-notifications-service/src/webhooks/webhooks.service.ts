@@ -81,8 +81,8 @@ export class WebhooksService {
 
   async deleteAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
     const query = {
-      address: {
-        $in: createWebhookAddressesDto.addresses
+      lowercaseAddress: {
+        $in: createWebhookAddressesDto.addresses.map(address => address.toLowerCase())
       },
       webhookId: {
         $eq: createWebhookAddressesDto.webhookId

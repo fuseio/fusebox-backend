@@ -17,7 +17,7 @@ export interface BaseUserOp {
 export interface UserOp extends BaseUserOp, Document {
   userOpHash: string; // UserOpHash is a string of hexadecimal characters
   walletFunction: object;
-  targetFunctions: object;
+  targetFunctions: Array<object>;
   paymaster: string; // Paymaster is an address of hexadecimal characters
   success: boolean; // Success is a boolean value that indicates whether the operation was successful or not
   actualGasCost: number; // ActualGasCost is a number that indicates how much gas was spent for the operation

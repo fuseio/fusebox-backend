@@ -3,7 +3,7 @@ import { ERC20Transfer } from '../../interfaces/token-interfaces'
 import WalletAction from './base'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 
-export default class NativeTokenTransfer extends WalletAction {
+export default class NativeTransfer extends WalletAction {
   constructTokenTransferData (targetAddress, value) {
     return {
       ...NATIVE_FUSE_TOKEN,

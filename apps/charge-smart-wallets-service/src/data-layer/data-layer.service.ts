@@ -2,13 +2,13 @@ import { Model, PaginateModel } from 'mongoose'
 import { Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
-import { UserOpFactory } from '@app/smart-wallets-service/common/utils/user-op-parser'
-import { parsedUserOpToWalletAction, confirmedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
+import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
+import { UserOpFactory } from '../common/services/user-op-factory.service'
 
 @Injectable()
 export class DataLayerService {
-  constructor (
+  constructor(
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
@@ -16,20 +16,18 @@ export class DataLayerService {
     private userOpFactory: UserOpFactory
   ) { }
 
-  async recordUserOp (baseUserOp: BaseUserOp) {
+  async recordUserOp(baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = this.userOpModel.create(userOp)
     this.createWalletAction(userOp)
     return response
   }
 
-  async updateUserOp (body: UserOp) {
-    const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
-    this.updateWalletAction(updatedUserOp)
-    return updatedUserOp
+  async updateUserOp(body: UserOp) {
+    return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
   }
 
-  async createWalletAction (parsedUserOp: any) {
+  async createWalletAction(parsedUserOp: any) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp)
       return this.paginatedWalletActionModel.create(walletAction)
@@ -38,18 +36,7 @@ export class DataLayerService {
     }
   }
 
-  async updateWalletAction (userOp: any) {
-    const walletAction = {
-      userOpHash: userOp.userOpHash,
-      txHash: userOp.txHash,
-      status: userOp.success ? 'success' : 'failed',
-      blockNumber: userOp.blockNumber
-    }
-
-    return this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { upsert: true })
-  }
-
-  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       query =

@@ -1,6 +1,6 @@
 import {
   WalletAction,
-  NativeTokenTransfer,
+  NativeTransfer,
   ERC20Transfer,
   ApproveToken,
   SwapTokens,
@@ -10,7 +10,7 @@ import {
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
 const singleActionMap = {
-  nativeTokenTransfer: NativeTokenTransfer,
+  nativeTransfer: NativeTransfer,
   transfer: ERC20Transfer,
   approve: ApproveToken,
   leave: UnstakeTokens,

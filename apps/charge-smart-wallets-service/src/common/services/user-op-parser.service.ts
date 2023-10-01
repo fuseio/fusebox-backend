@@ -1,10 +1,14 @@
+import { decodeWithCalldata, sigHashFromCalldata } from '@app/common/utils/dtools/decodeBySigHash'
 import { Injectable } from '@nestjs/common'
-import { decodeWithCalldata, sigHashFromCalldata } from '../../../../../libs/common/src/utils/dtools/decodeBySigHash'
-import { BigNumber } from 'ethers'
-import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
+import { BigNumber } from 'nestjs-ethers'
 
+@Injectable()
 export class UserOpParser {
-  transformArray (input) {
+  async decodeCalldata (callData: string) {
+    return decodeWithCalldata(sigHashFromCalldata(callData), callData)
+  }
+
+  private transformArray (input) {
     const [targets, values, data] = input
 
     return targets.map((targetAddress, index) => ({
@@ -24,7 +28,7 @@ export class UserOpParser {
           name: 'nativeTransfer'
         }
       } else {
-        const decodedCallData = await decodeCalldata(call.data)
+        const decodedCallData = await this.decodeCalldata(call.data)
         return {
           targetAddress: call.targetAddress,
           value: call.value.toString(),
@@ -36,7 +40,7 @@ export class UserOpParser {
   }
 
   async parseCallData (callData: string) {
-    const decodeResults = await decodeCalldata(
+    const decodeResults = await this.decodeCalldata(
       callData
     )
     if (!decodeResults) {
@@ -57,26 +61,4 @@ export class UserOpParser {
 
     return { name: fragment.name, targetFunctions }
   }
-}
-
-@Injectable()
-export class UserOpFactory {
-  private userOpParser: UserOpParser
-  constructor (
-  ) {
-    this.userOpParser = new UserOpParser()
-  }
-
-  async createUserOp (baseUserOp): Promise<UserOp> {
-    const { targetFunctions, name } = await this.userOpParser.parseCallData(baseUserOp.callData)
-    return {
-      ...baseUserOp,
-      walletFunction: { name },
-      targetFunctions
-    }
-  }
-}
-
-export async function decodeCalldata (callData: string) {
-  return decodeWithCalldata(sigHashFromCalldata(callData), callData)
 }

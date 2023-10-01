@@ -1,7 +1,7 @@
 import WalletAction from './base'
 import ApproveToken from './approve-token'
 import ERC20Transfer from './erc20-transfer'
-import NativeTokenTransfer from './native-token-transfer'
+import NativeTransfer from './native-transfer'
 import NftTransfer from './nft-transfer'
 import StakeTokens from './stake'
 import SwapTokens from './swap'
@@ -12,7 +12,7 @@ export {
   WalletAction,
   ApproveToken,
   ERC20Transfer,
-  NativeTokenTransfer,
+  NativeTransfer,
   NftTransfer,
   StakeTokens,
   SwapTokens,

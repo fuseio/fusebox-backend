@@ -42,16 +42,4 @@ export class SmartWalletsAPIController {
     user.query = query
     return this.smartWalletsAPIService.getHistoricalTxs(user)
   }
-
-  // @UseGuards(AuthGuard('jwt'))
-  // @Get('available_upgrades')
-  // getAvailableUpgrades (@SmartWalletOwner() user: ISmartWalletUser) {
-  //   return this.smartWalletsAPIService.getAvailableUpgrades()
-  // }
-
-  // @UseGuards(AuthGuard('jwt'))
-  // @Post('install_upgrade')
-  // installUpgrade (@SmartWalletOwner() user: ISmartWalletUser) {
-  //   return this.smartWalletsAPIService.installUpgrade()
-  // }
 }

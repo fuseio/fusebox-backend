@@ -15,7 +15,7 @@ export const UserOpSchema = new mongoose.Schema(
     signature: { type: String, required: true }, // Signature is a buffer of bytes that contains the signature of the sender
     userOpHash: { type: String, required: true, default: '0x' },
     walletFunction: { type: Object, required: false, default: {} },
-    targetFunctions: { type: Object, required: false },
+    targetFunctions: { type: Array, of: Object, required: false },
     paymaster: { type: String, required: true, default: '0x' },
     success: { type: Boolean, required: true, default: false },
     actualGasCost: { type: Number, required: true, default: 0 },

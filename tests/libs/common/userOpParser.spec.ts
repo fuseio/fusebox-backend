@@ -31,7 +31,7 @@
 
 //     assert(walletFunction[0].arguments[0], '0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
 //     assert(walletFunction[0].walletFunction, 'execute')
-//     assert(targetFunctions.name, 'nativeTokenTransfer')
+//     assert(targetFunctions.name, 'nativeTransfer')
 //   });
 
 

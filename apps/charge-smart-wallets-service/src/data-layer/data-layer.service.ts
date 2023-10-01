@@ -2,9 +2,9 @@ import { Model, PaginateModel } from 'mongoose'
 import { Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
-import { UserOpFactory } from '@app/smart-wallets-service/common/utils/user-op-parser'
 import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
+import { UserOpFactory } from '../common/services/user-op-factory.service'
 
 @Injectable()
 export class DataLayerService {

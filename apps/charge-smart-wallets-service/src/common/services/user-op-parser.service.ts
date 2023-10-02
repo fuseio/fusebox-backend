@@ -59,6 +59,6 @@ export class UserOpParser {
 
     const targetFunctions = await this.getTargetFunction(calls)
 
-    return { name: fragment.name, calls, targetFunctions }
+    return { name: fragment.name, targetFunctions }
   }
 }

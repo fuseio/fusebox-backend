@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose'
 
-export const TransactionsScannerStatusSchema = new mongoose.Schema(
+export const ScannerStatusSchema = new mongoose.Schema(
   {
     filter: {
       type: String,

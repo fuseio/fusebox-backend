@@ -32,7 +32,7 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
     BroadcasterModule
   ],
   providers: [
-    TransactionsScannerService,
+    // TransactionsScannerService,
     Web3ProviderService,
     ...transactionsScannerProviders,
     ...webhookEventProviders,

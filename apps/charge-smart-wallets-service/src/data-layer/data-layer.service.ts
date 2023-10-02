@@ -5,6 +5,8 @@ import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interf
 import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
 import { UserOpFactory } from '../common/services/user-op-factory.service'
+import { confirmedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
+import { isNil } from 'lodash'
 
 @Injectable()
 export class DataLayerService {
@@ -24,7 +26,14 @@ export class DataLayerService {
   }
 
   async updateUserOp (body: UserOp) {
-    return this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, { ...body }, { upsert: true })
+    const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
+    if (isNil(existingUserOp)) {
+      return 'No record found with the provided userOpHash'
+    }
+    const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
+
+    this.updateWalletAction(updatedUserOp)
+    return updatedUserOp
   }
 
   async createWalletAction (parsedUserOp: any) {
@@ -34,6 +43,11 @@ export class DataLayerService {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  async updateWalletAction (userOp: any) {
+    const walletAction = confirmedUserOpToWalletAction(userOp)
+    return this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction)
   }
 
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {

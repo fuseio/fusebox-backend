@@ -41,28 +41,34 @@ const targetActionMap = {
   }
 }
 
-function executeSingleAction(name, targetAddress) {
+function executeSingleAction (name, targetAddress) {
   const addressActionMap = targetActionMap[targetAddress.toLowerCase()]
   const ActionClass = addressActionMap?.[name] || singleActionMap[name]
   return ActionClass ? new ActionClass() : null
 }
 
-function executeBatchAction(targetFunctions) {
+function executeBatchAction (targetFunctions) {
   if (targetFunctions.length !== 2) {
     // TODO: support more than 2 calls
     throw new Error('Unsupported batch action')
   }
 
   const [firstCall, lastCall] = targetFunctions
+
   const addressActionMap = targetActionMap[lastCall.targetAddress.toLowerCase()]
-  const ActionClass = addressActionMap?.[lastCall.name]
+
+  let ActionClass = addressActionMap?.[lastCall.name]
+
+  if (ActionClass && !(ActionClass.prototype instanceof WalletAction)) {
+    ActionClass = ActionClass(firstCall.name)
+  }
+
   return ActionClass ? new ActionClass(firstCall.name) : null
 }
 
-function getWalletActionType(parsedUserOp): WalletAction {
+function getWalletActionType (parsedUserOp): WalletAction {
   const walletFunctionName = parsedUserOp.walletFunction.name
   const { name, targetAddress } = parsedUserOp.targetFunctions[0]
-
   if (walletFunctionName === 'execute') {
     return executeSingleAction(name, targetAddress)
   } else if (walletFunctionName === 'executeBatch') {
@@ -72,7 +78,7 @@ function getWalletActionType(parsedUserOp): WalletAction {
   throw new Error('Unsupported wallet function name')
 }
 
-export async function parsedUserOpToWalletAction(parsedUserOp) {
+export async function parsedUserOpToWalletAction (parsedUserOp) {
   const actionType = getWalletActionType(parsedUserOp)
   if (!actionType) {
     throw new Error('Unsupported action')
@@ -81,10 +87,11 @@ export async function parsedUserOpToWalletAction(parsedUserOp) {
   return actionType.execute(parsedUserOp)
 }
 
-export function confirmedUserOpToWalletAction(userOp: any) {
+export function confirmedUserOpToWalletAction (userOp: any) {
   return {
     userOpHash: userOp.userOpHash,
     txHash: userOp.txHash,
     status: userOp.success ? 'success' : 'failed',
     blockNumber: userOp.blockNumber
   }
+}

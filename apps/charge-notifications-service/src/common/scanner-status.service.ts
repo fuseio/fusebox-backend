@@ -22,6 +22,6 @@ export class ScannerStatusService {
   }
 
   async updateStatus (blockNumber: number) {
-    // await this.statusModel.updateOne({ filter: this.statusFilter }, { blockNumber }, { upsert: true })
+    await this.statusModel.updateOne({ filter: this.statusFilter }, { blockNumber }, { upsert: true })
   }
 }

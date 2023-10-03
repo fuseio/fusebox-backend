@@ -8,6 +8,7 @@ import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-ap
 import { accountsService } from '@app/common/constants/microservices.constants'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
+import { UserOpParser } from '@app/common/services/user-op-parser.service'
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-pr
   controllers: [
     PaymasterApiController
   ],
-  providers: [PaymasterApiService, PaymasterWeb3ProviderService]
+  providers: [PaymasterApiService, PaymasterWeb3ProviderService, UserOpParser]
 })
 
 export class PaymasterApiModule { }

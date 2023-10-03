@@ -22,3 +22,10 @@ WebhookAddressSchema.pre('save', function (next) {
   this.lowercaseAddress = this.address.toLowerCase()
   next()
 })
+
+WebhookAddressSchema.pre('insertMany', async function (next, docs) {
+  docs.forEach(doc => {
+    doc.lowercaseAddress = doc.address.toLowerCase()
+  })
+  next()
+})

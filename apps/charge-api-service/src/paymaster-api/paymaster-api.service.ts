@@ -89,7 +89,6 @@ export class PaymasterApiService {
     const { callData, sender } = op
     const preVerificationGas = BigNumber.from(op.preVerificationGas).toHexString()
     const verificationGasLimit = BigNumber.from(op.verificationGasLimit).toHexString()
-    let callGasLimit
 
     const { calls } = await this.userOpParser.parseCallData(callData)
 
@@ -100,10 +99,12 @@ export class PaymasterApiService {
         value,
         from: sender
       })
-      callGasLimit = BigNumber.from(op.callGasLimit).add(innerCallGas).toHexString()
+      op.callGasLimit = BigNumber.from(op.callGasLimit).add(innerCallGas).toHexString()
     }
 
-    callGasLimit = BigNumber.from(callGasLimit).mul(15).toHexString() // add 15% to the call gas limit
+    op.callGasLimit = BigNumber.from(op.callGasLimit).mul(15).toHexString() // add 15% to the call gas limit
+
+    const callGasLimit = BigNumber.from(op.callGasLimit).toHexString()
 
     return {
       preVerificationGas,

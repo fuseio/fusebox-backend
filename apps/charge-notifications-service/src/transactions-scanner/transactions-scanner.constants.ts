@@ -1,1 +1,3 @@
 export const transactionsScannerStatusModelString = 'TRANSACTIONS_SCANNER_STATUS_MODEL'
+
+export const transactionsScannerStatusServiceString = 'TRANSACTIONS_SCANNER_STATUS_SERVICE_MODEL'

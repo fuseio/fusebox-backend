@@ -1,40 +1,38 @@
 import * as mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-const tokenSchema = new mongoose.Schema({
-  name: String,
-  symbol: String,
-  address: String,
-  decimals: Number,
-  value: String,
-  from: String,
-  to: String,
-  type: String,
-  tokenId: String,
-  logIndex: String
-})
+const ercTransferMetadata = {
+  name: { type: String, required: true },
+  symbol: { type: String, required: true },
+  address: { type: String, required: true },
+  decimals: { type: Number, default: 0 },
+  type: { type: String, required: true },
+  value: { type: String, nullable: true },
+  to: { type: String, nullable: true },
+  from: { type: String, nullable: true },
+  tokenId: { type: String, nullable: true }
+}
 
 export const WalletActionSchema = new mongoose.Schema(
   {
     walletAddress: { type: String, required: true },
     name: { type: String, required: true },
     status: { type: String, required: true, default: false },
-    received: [tokenSchema],
-    sent: [tokenSchema],
-    userOpHash: { type: String },
+    received: [ercTransferMetadata],
+    sent: [ercTransferMetadata],
+    userOpHash: { type: String, required: true },
     txHash: { type: String },
     blockNumber: { type: Number },
-    timestamp: { type: Number },
     value: { type: Number },
     description: { type: String }
-  }
-  ,
+  },
   {
     timestamps: true
   }
-
 )
+
 WalletActionSchema.index({ walletAddress: 1 })
+WalletActionSchema.index({ userOpHash: 1 })
 WalletActionSchema.plugin(paginate)
 
 export interface WalletActionDocument extends mongoose.Document { }

@@ -39,4 +39,4 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
     Logger
   ]
 })
-export class TransactionsScannerModule {}
+export class TransactionsScannerModule { }

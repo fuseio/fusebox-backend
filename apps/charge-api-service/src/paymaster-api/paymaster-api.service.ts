@@ -48,7 +48,7 @@ export class PaymasterApiService {
       } = await this.estimateUserOpGas(
         op,
         env,
-        paymasterInfo.entryPointAddress
+        paymasterInfo.entrypointAddress
       )
 
       op.callGasLimit = callGasLimit
@@ -93,18 +93,20 @@ export class PaymasterApiService {
   }
 
   async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {
+    const data = {
+      jsonrpc: '2.0',
+      method: 'eth_estimateUserOperationGas',
+      params: [
+        op,
+        entrypointAddress
+      ],
+      id: 1
+    }
+
     const requestConfig: AxiosRequestConfig = {
       url: this.prepareUrl(requestEnvironment),
       method: 'post',
-      data: {
-        jsonrpc: '2.0',
-        method: 'eth_estimateUserOperationGas',
-        params: [
-          op,
-          entrypointAddress
-        ],
-        id: 1
-      }
+      data
     }
 
     const response = await lastValueFrom(
@@ -127,7 +129,9 @@ export class PaymasterApiService {
         )
     )
 
-    const callGasLimit = BigNumber.from(response.result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+    const { result } = response
+
+    const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 
     return {
       ...response.result,

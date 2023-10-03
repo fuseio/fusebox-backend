@@ -44,7 +44,7 @@ export class PaymasterApiService {
         callGasLimit
       } = await this.estimateUserOpGas(web3, op)
 
-      op.callGasLimit = BigNumber.from(callGasLimit).mul(15).toHexString() // add 15% to the call gas limit
+      op.callGasLimit = callGasLimit
       op.verificationGasLimit = verificationGasLimit
       op.preVerificationGas = preVerificationGas
 
@@ -102,6 +102,8 @@ export class PaymasterApiService {
       })
       callGasLimit = BigNumber.from(op.callGasLimit).add(innerCallGas).toHexString()
     }
+
+    callGasLimit = BigNumber.from(callGasLimit).mul(15).toHexString() // add 15% to the call gas limit
 
     return {
       preVerificationGas,

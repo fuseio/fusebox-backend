@@ -78,12 +78,12 @@ function getWalletActionType (parsedUserOp): WalletAction {
   throw new Error('Unsupported wallet function name')
 }
 
-export async function parsedUserOpToWalletAction (parsedUserOp) {
+export async function parsedUserOpToWalletAction (parsedUserOp, tokenService) {
   const actionType = getWalletActionType(parsedUserOp)
   if (!actionType) {
     throw new Error('Unsupported action')
   }
-
+  actionType.setTokenService(tokenService)
   return actionType.execute(parsedUserOp)
 }
 

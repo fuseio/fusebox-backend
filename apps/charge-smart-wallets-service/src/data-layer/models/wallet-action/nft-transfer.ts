@@ -1,6 +1,5 @@
 import { ERC_721_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
-import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { ERC721Transfer } from '../../interfaces/token-interfaces'
 
 export default class NftTransfer extends WalletAction {
@@ -10,7 +9,7 @@ export default class NftTransfer extends WalletAction {
 
   async fetchTokenTransferData ({ targetAddress, callData }) {
     const [, to, tokenId] = callData
-    const tokenData = await fetchTokenDetails(targetAddress)
+    const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
     return {
       type: ERC_721_TYPE,
       ...tokenData,

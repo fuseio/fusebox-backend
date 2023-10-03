@@ -7,6 +7,7 @@ import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/sche
 import { UserOpFactory } from '../common/services/user-op-factory.service'
 import { confirmedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { isNil } from 'lodash'
+import { TokenService } from '../common/services/token.service'
 
 @Injectable()
 export class DataLayerService {
@@ -15,7 +16,8 @@ export class DataLayerService {
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
     private paginatedWalletActionModel: PaginateModel<WalletActionDocument>,
-    private userOpFactory: UserOpFactory
+    private userOpFactory: UserOpFactory,
+    private tokenService: TokenService
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
@@ -38,7 +40,7 @@ export class DataLayerService {
 
   async createWalletAction (parsedUserOp: any) {
     try {
-      const walletAction = await parsedUserOpToWalletAction(parsedUserOp)
+      const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
       return this.paginatedWalletActionModel.create(walletAction)
     } catch (error) {
       console.log(error)

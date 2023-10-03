@@ -1,6 +1,5 @@
 import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
-import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { LIQUID_STAKING_CONTRACT_ADDRESS } from '@app/smart-wallets-service/common/constants/addresess'
@@ -22,7 +21,7 @@ export default class UnstakeTokens extends WalletAction {
           value: '0'
         }
 
-        const tokenData = await fetchTokenDetails(firstCallData.targetAddress)
+        const tokenData = await this.tokenService.fetchTokenDetails(firstCallData.targetAddress)
 
         const sentTokenData: ERC20Transfer = {
           ...tokenData,
@@ -47,42 +46,40 @@ export default class UnstakeTokens extends WalletAction {
             valueInWei: sentTokenData.value
           })
         }
-      }
-    } else {
-      const { name, targetAddress, callData } = parsedUserOp.targetFunctions[0]
-      if (name === 'leave') {
-        const [value] = callData
-        const tokenData = await fetchTokenDetails(targetAddress)
-        const sentTokenData: ERC20Transfer = {
-          ...tokenData,
-          to: LIQUID_STAKING_CONTRACT_ADDRESS,
-          type: ERC_20_TYPE,
-          value: value.toString()
-        }
-
-        const recTokenData = await fetchTokenDetails('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
-        const receivedTokenData: ERC20Transfer = {
-          ...recTokenData,
-          to: parsedUserOp.sender,
-          type: ERC_20_TYPE,
-          value: '0'
-        }
-
-        return {
-          name: 'unstakeTokens',
-          walletAddress: parsedUserOp.sender,
-          status: 'pending',
-          received: [receivedTokenData],
-          sent: [sentTokenData],
-          userOpHash: parsedUserOp.userOpHash,
-          txHash: '',
-          blockNumber: 0,
-          description: this.generateDescription({
-            action: 'Unstake',
-            symbol: sentTokenData.symbol,
-            decimals: sentTokenData.decimals,
-            valueInWei: sentTokenData.value
-          })
+      } else {
+        const { name, targetAddress, callData } = parsedUserOp.targetFunctions[1]
+        if (name === 'leave') {
+          const [value] = callData
+          const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
+          const sentTokenData: ERC20Transfer = {
+            ...tokenData,
+            to: LIQUID_STAKING_CONTRACT_ADDRESS,
+            type: ERC_20_TYPE,
+            value: value.toString()
+          }
+          const recTokenData = await this.tokenService.fetchTokenDetails('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
+          const receivedTokenData: ERC20Transfer = {
+            ...recTokenData,
+            to: parsedUserOp.sender,
+            type: ERC_20_TYPE,
+            value: '0'
+          }
+          return {
+            name: 'unstakeTokens',
+            walletAddress: parsedUserOp.sender,
+            status: 'pending',
+            received: [receivedTokenData],
+            sent: [sentTokenData],
+            userOpHash: parsedUserOp.userOpHash,
+            txHash: '',
+            blockNumber: 0,
+            description: this.generateDescription({
+              action: 'Unstake',
+              symbol: sentTokenData.symbol,
+              decimals: sentTokenData.decimals,
+              valueInWei: sentTokenData.value
+            })
+          }
         }
       }
     }

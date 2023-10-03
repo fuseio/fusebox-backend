@@ -5,7 +5,7 @@ import { ERC20LogsFilterString, ERC20ScannerStatusServiceString } from '@app/not
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
-import { EventData, TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'

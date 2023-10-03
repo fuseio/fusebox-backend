@@ -1,6 +1,12 @@
 import { formatUnits } from 'nestjs-ethers'
-
+import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 export default abstract class WalletAction {
+  protected tokenService: TokenService
+
+  setTokenService (tokenService: TokenService): void {
+    this.tokenService = tokenService
+  }
+
   async execute (parsedUserOp: Record<string, any>): Promise<any> {
     return parsedUserOp
   }

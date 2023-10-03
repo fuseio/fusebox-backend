@@ -1,12 +1,12 @@
 import { ERC_20_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
-import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { ERC20Transfer as IERC20Transfer } from '../../interfaces/token-interfaces'
 
 export default class ERC20Transfer extends WalletAction {
   async constructTokenTransferData ({ callData, targetAddress }) {
     const [to, value] = callData
-    const tokenDetails = await fetchTokenDetails(targetAddress)
+    const tokenDetails = await this.tokenService.fetchTokenDetails(targetAddress)
+
     return {
       ...tokenDetails,
       type: ERC_20_TYPE,

@@ -1,6 +1,5 @@
 import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
-import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
@@ -47,7 +46,7 @@ export default class StakeTokens extends WalletAction {
 
   async getERC20TransferData ({ targetAddress, callData }) {
     const [to, value] = callData
-    const sentTokenDetails = await fetchTokenDetails(targetAddress)
+    const sentTokenDetails = await this.tokenService.fetchTokenDetails(targetAddress)
     return {
       type: ERC_20_TYPE,
       ...sentTokenDetails,
@@ -57,7 +56,7 @@ export default class StakeTokens extends WalletAction {
   }
 
   async getReceivedTokenData (to) {
-    const receiveTokenDetails = await fetchTokenDetails(to)
+    const receiveTokenDetails = await this.tokenService.fetchTokenDetails(to)
     return {
       type: ERC_20_TYPE,
       ...receiveTokenDetails,

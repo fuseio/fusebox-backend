@@ -5,11 +5,12 @@ import { Module } from '@nestjs/common'
 import { DatabaseModule } from '@app/common'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
+import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 
 @Module({
   imports: [DatabaseModule],
   controllers: [DataLayerController],
-  providers: [DataLayerService, ...dataLayerProviders, UserOpFactory, UserOpParser]
+  providers: [DataLayerService, ...dataLayerProviders, UserOpFactory, UserOpParser, TokenService]
 })
 
 export class DataLayerModule { }

@@ -1,12 +1,11 @@
 import { ERC_20_TYPE, ERC_721_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
-import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
 
 export default class ApproveToken extends WalletAction {
   async constructTokenTransferData ({ callData, targetAddress }) {
     const [to, value] = callData
-    const tokenData = await fetchTokenDetails(targetAddress)
+    const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
     const type = tokenData.decimals === 0 ? ERC_721_TYPE : ERC_20_TYPE
     return {
       type,

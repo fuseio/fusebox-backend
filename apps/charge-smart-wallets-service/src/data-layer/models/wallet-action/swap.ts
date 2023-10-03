@@ -1,6 +1,5 @@
 import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
-import { fetchTokenDetails } from '@app/smart-wallets-service/common/utils/token'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
@@ -28,8 +27,8 @@ export default class SwapTokens extends WalletAction {
       const [amountOut, amountInMax, path, to] = callData
       const tokenOut = first(path)
       const tokenIn = last(path)
-      const sentTokenData = await fetchTokenDetails(tokenOut)
-      const receivedTokenData = await fetchTokenDetails(tokenIn)
+      const sentTokenData = await this.tokenService.fetchTokenDetails(tokenOut as string)
+      const receivedTokenData = await this.tokenService.fetchTokenDetails(tokenIn as string)
       const sentTokenDetails: ERC20Transfer = {
         type: ERC_20_TYPE,
         ...sentTokenData,
@@ -67,8 +66,8 @@ export default class SwapTokens extends WalletAction {
       const [amountIn, amountOutMin, path, to] = callData
       const tokenOut = first(path)
       const tokenIn = last(path)
-      const sentTokenData = await fetchTokenDetails(tokenOut)
-      const receivedTokenData = await fetchTokenDetails(tokenIn)
+      const sentTokenData = await this.tokenService.fetchTokenDetails(tokenOut as string)
+      const receivedTokenData = await this.tokenService.fetchTokenDetails(tokenIn as string)
       const sentTokenDetails: ERC20Transfer = {
         type: ERC_20_TYPE,
         ...sentTokenData,
@@ -108,7 +107,7 @@ export default class SwapTokens extends WalletAction {
       // const tokenOut = first(path)
       const tokenIn = last(path)
       // const sentTokenData = await fetchTokenDetails(tokenOut)
-      const receivedTokenData = await fetchTokenDetails(tokenIn)
+      const receivedTokenData = await this.tokenService.fetchTokenDetails(tokenIn as string)
       const sentTokenDetails: ERC20Transfer = {
         type: NATIVE_TOKEN_TYPE,
         ...NATIVE_FUSE_TOKEN,
@@ -145,7 +144,7 @@ export default class SwapTokens extends WalletAction {
     } else if (name === 'swapTokensForExactETH') {
       const [amountOut, amountInMax, path, to] = callData
       const tokenOut = first(path)
-      const sentTokenData = await fetchTokenDetails(tokenOut)
+      const sentTokenData = await this.tokenService.fetchTokenDetails(tokenOut as string)
       const sentTokenDetails: ERC20Transfer = {
         type: ERC_20_TYPE,
         ...sentTokenData,
@@ -182,7 +181,7 @@ export default class SwapTokens extends WalletAction {
     } else if (name === 'swapExactTokensForETH') {
       const [amountIn, amountOutMin, path, to] = callData
       const tokenOut = first(path)
-      const sentTokenData = await fetchTokenDetails(tokenOut)
+      const sentTokenData = await this.tokenService.fetchTokenDetails(tokenOut as string)
       const sentTokenDetails: ERC20Transfer = {
         type: ERC_20_TYPE,
         ...sentTokenData,
@@ -220,7 +219,7 @@ export default class SwapTokens extends WalletAction {
       const { value } = call
       const [amountOut, path, to] = callData
       const tokenOut = first(path)
-      const receiveTokenData = await fetchTokenDetails(tokenOut)
+      const receiveTokenData = await this.tokenService.fetchTokenDetails(tokenOut as string)
       const sentTokenDetails: ERC20Transfer = {
         type: ERC_20_TYPE,
         ...receiveTokenData,
@@ -257,7 +256,7 @@ export default class SwapTokens extends WalletAction {
     } else if (name === 'withdraw') {
       const { targetAddress } = call
       const [value] = callData
-      const tokenData = await fetchTokenDetails(targetAddress)
+      const tokenData = await this.tokenService.fetchTokenDetails(targetAddress as string)
       const sentTokenData: ERC20Transfer = {
         type: ERC_20_TYPE,
         ...tokenData,
@@ -293,7 +292,7 @@ export default class SwapTokens extends WalletAction {
       }
     } else if (name === 'deposit') {
       const { targetAddress, value } = call
-      const tokenData = await fetchTokenDetails(targetAddress)
+      const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
       const sentTokenData: ERC20Transfer = {
         type: NATIVE_TOKEN_TYPE,
         ...NATIVE_FUSE_TOKEN,

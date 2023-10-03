@@ -103,7 +103,7 @@ export class PaymasterApiService {
       callGasLimit = BigNumber.from(callGasLimit).add(innerCallGas).toHexString()
     }
 
-    callGasLimit = BigNumber.from(callGasLimit).mul(115).div(100).toHexString()
+    callGasLimit = BigNumber.from(callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 
     return {
       preVerificationGas,

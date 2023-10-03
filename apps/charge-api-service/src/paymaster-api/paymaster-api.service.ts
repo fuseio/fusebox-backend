@@ -12,92 +12,96 @@ import { ConfigService } from '@nestjs/config'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { isEmpty } from 'lodash'
+import { UserOpParser } from '@app/common/services/user-op-parser.service'
 
 @Injectable()
 export class PaymasterApiService {
   constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
-    private paymasterWeb3ProviderService: PaymasterWeb3ProviderService
+    private paymasterWeb3ProviderService: PaymasterWeb3ProviderService,
+    private userOpParser: UserOpParser
   ) { }
 
   async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
-    const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
-    const [op] = body
-    const { timestamp } = await web3.eth.getBlock('latest')
-    const validUntil = parseInt(timestamp.toString()) + 240
-    const validAfter = 0
-    const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
+    try {
+      const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
+      const [op] = body
+      const { timestamp } = await web3.eth.getBlock('latest')
+      const validUntil = parseInt(timestamp.toString()) + 240
+      const validAfter = 0
+      const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
 
-    if (isEmpty(paymasterInfo)) {
-      throw new RpcException(`Error getting paymaster for project: ${projectId} in ${env} environment`)
-    }
+      if (isEmpty(paymasterInfo)) {
+        throw new RpcException(`Error getting paymaster for project: ${projectId} in ${env} environment`)
+      }
 
-    const sponsorId = paymasterInfo.sponsorId
+      const sponsorId = paymasterInfo.sponsorId
 
-    // When the initCode is not empty, we need to increase the gas values. Multiplying everything by 3 seems to work, but we
-    // need to have a better approach to estimate gas and update accordingly.
-    // if (op.initCode !== '0x') {
-    // op.preVerificationGas = BigNumber.from(op.preVerificationGas).mul(5).toHexString()
-    // op.verificationGasLimit = BigNumber.from(op.verificationGasLimit).mul(5).toHexString()
-    // op.callGasLimit = BigNumber.from(3000000).toHexString()
-    // }
-    const paymasterAddress = paymasterInfo.paymasterAddress
-    const paymasterContract: any = new web3.eth.Contract(
-      fusePaymasterABI as any,
-      paymasterAddress
-    )
+      const {
+        preVerificationGas,
+        verificationGasLimit,
+        callGasLimit
+      } = await this.estimateUserOpGas(web3, op)
 
-    // TODO: Add a check if the sender account address is whitelisted for the paymaster account
-    // TODO: we need to figure out whether the gases needs to be update. If so, they needs to be updated prior signing calling `getHash` on the paymaster
-    // op.verificationGasLimit = BigNumber.from(400000).toHexString();
-    // op.preVerificationGas = BigNumber.from(150000).toHexString();
-    // op.callGasLimit = BigNumber.from(150000).toHexString();
-    const {
-      preVerificationGas,
-      verificationGasLimit,
-      callGasLimit
-    } = await this.estimateUserOpGas(web3, op, paymasterAddress);
-    op.verificationGasLimit = preVerificationGas;
-    op.preVerificationGas = verificationGasLimit;
-    op.callGasLimit = callGasLimit;
+      op.callGasLimit = BigNumber.from(callGasLimit).mul(15).toHexString() // add 15% to the call gas limit
+      op.verificationGasLimit = verificationGasLimit
+      op.preVerificationGas = preVerificationGas
 
-    const hash = await paymasterContract.methods
-      .getHash(op, validUntil, validAfter, sponsorId)
-      .call()
+      const paymasterAddress = paymasterInfo.paymasterAddress
+      const paymasterContract: any = new web3.eth.Contract(
+        fusePaymasterABI as any,
+        paymasterAddress
+      )
 
-    const privateKeyString = this.configService.getOrThrow(
-      `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
-    )
+      const hash = await paymasterContract.methods
+        .getHash(op, validUntil, validAfter, sponsorId)
+        .call()
 
-    const paymasterSigner = new Wallet(privateKeyString)
-    const signature = await paymasterSigner.signMessage(arrayify(hash))
+      const privateKeyString = this.configService.getOrThrow(
+        `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
+      )
 
-    const paymasterAndData = hexConcat([
-      paymasterAddress,
-      defaultAbiCoder.encode(
-        ['uint48', 'uint48', 'uint256', 'bytes'],
-        [validUntil, validAfter, sponsorId, signature]
-      ),
-      signature
-    ])
+      const paymasterSigner = new Wallet(privateKeyString)
+      const signature = await paymasterSigner.signMessage(arrayify(hash))
 
-    return {
-      paymasterAndData,
-      preVerificationGas: op.preVerificationGas,
-      verificationGasLimit: op.verificationGasLimit,
-      callGasLimit: op.callGasLimit
+      const paymasterAndData = hexConcat([
+        paymasterAddress,
+        defaultAbiCoder.encode(
+          ['uint48', 'uint48', 'uint256', 'bytes'],
+          [validUntil, validAfter, sponsorId, signature]
+        ),
+        signature
+      ])
+
+      return {
+        paymasterAndData,
+        preVerificationGas: op.preVerificationGas,
+        verificationGasLimit: op.verificationGasLimit,
+        callGasLimit: op.callGasLimit
+      }
+    } catch (error) {
+      throw new RpcException(error.message)
     }
   }
 
   async estimateUserOpGas (web3: any, op: any) {
-    const verificationGasLimit = BigNumber.from(300000).toHexString();
-    const preVerificationGas = BigNumber.from(150000).toHexString();
+    const { callData, sender } = op
+    const preVerificationGas = BigNumber.from(op.preVerificationGas).toHexString()
+    const verificationGasLimit = BigNumber.from(op.verificationGasLimit).toHexString()
+    let callGasLimit
 
-    const callGasLimit = await web3.eth.estimateGas({
-      from: op.sender,
-      data: op.callData,
-    })
+    const { calls } = await this.userOpParser.parseCallData(callData)
+
+    for (const { targetAddress, value, data } of calls) {
+      const innerCallGas = await web3.eth.estimateGas({
+        to: targetAddress,
+        data,
+        value,
+        from: sender
+      })
+      callGasLimit = BigNumber.from(op.callGasLimit).add(innerCallGas).toHexString()
+    }
 
     return {
       preVerificationGas,

@@ -83,6 +83,8 @@ services:
       context: .
       dockerfile: ./apps/charge-notifications-service/Dockerfile
       target: development
+    depends_on:
+      - charge-smart-wallets-service
     command: npm run start:dev charge-notifications-service
     environment:
       - NOTIFICATIONS_HOST
@@ -95,6 +97,7 @@ services:
       - MAX_BLOCKS
       - TIMEOUT_INTERVAL
       - MONGO_URI=${NOTIFICATIONS_MONGO_URI}
+      - SMART_WALLETS_JWT_SECRET
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

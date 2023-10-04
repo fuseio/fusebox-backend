@@ -78,11 +78,13 @@ services:
     depends_on:
       - mongo
       - redis
+      - charge-smart-wallets-service
     environment:
       - REDIS_HOST
       - REDIS_PORT
       - REDIS_PASSWORD
       - REDIS_DB
+      - SMART_WALLETS_JWT_SECRET
     command: npm run start:dev charge-notifications-service
     networks:
       - chargenet

@@ -54,16 +54,16 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:
     explorer_api_url: "https://fuse.blockscout.com/api"
-    qa_mode: "true"
+    qa_mode: "false"
     bundler_api_prd_url: "https://bundler.fuse.io/122"
     bundler_api_sandbox_url: "https://bundler.fuse.io/123"
     spark_rpc_url: "https://rpc.fusespark.io/"
@@ -100,11 +100,11 @@ notifications:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:
@@ -124,11 +124,11 @@ network:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:

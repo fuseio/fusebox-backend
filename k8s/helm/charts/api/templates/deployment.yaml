@@ -37,7 +37,7 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
         - name: api
-          image: "{{ .Values.global.region }}/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/api:{{ .Values.global.image.tag }}"
+          image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/api:{{ .Values.global.image.tag }}"
           imagePullPolicy: Always
           env:
             # ConfigMap

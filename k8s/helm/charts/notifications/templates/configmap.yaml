@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notifications
+  namespace: {{ .Values.global.namespace }}
+data:
+  notifications_host: "0.0.0.0"
+  notifications_port: "5004"
+  notifications_tcp_port: "8878"
+  network_name: {{ .Values.configMap.network_name }}
+  chain_id: {{ .Values.configMap.chain_id }}
+  max_blocks: {{ .Values.configMap.max_blocks }}
+  timeout_interval: {{ .Values.configMap.timeout_interval }}
+
+  # Host & Port ('notifications' use 'smart-wallets' hostname and TCP port)
+  smart_wallets_host: "smart-wallets"
+  smart_wallets_tcp_port: "8881"

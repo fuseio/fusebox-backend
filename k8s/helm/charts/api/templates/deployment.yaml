@@ -1,0 +1,210 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: api
+    environment: {{ .Values.global.environment }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: api
+      environment: {{ .Values.global.environment }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      labels:
+        app: api
+        environment: {{ .Values.global.environment }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - api
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: api
+          image: "{{ .Values.global.region }}/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/api:{{ .Values.global.image.tag }}"
+          imagePullPolicy: Always
+          env:
+            # ConfigMap
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: api_host
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: api_port
+            - name: API_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: api_tcp_port
+            - name: EXPLORER_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: explorer_api_url
+            - name: QA_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: qa_mode
+            - name: BUNDLER_API_PRD_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: bundler_api_prd_url
+            - name: BUNDLER_API_SANDBOX_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: bundler_api_sandbox_url
+            - name: SPARK_RPC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: spark_rpc_url
+            - name: LEGACY_FUSE_ADMIN_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: legacy_fuse_admin_api_url
+            - name: LEGACY_FUSE_WALLET_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: legacy_fuse_wallet_api_url
+            - name: LEGACY_FUSE_TRADE_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: legacy_fuse_trade_api_url
+            - name: ACCOUNTS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: accounts_host
+            - name: ACCOUNTS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: accounts_tcp_port
+            - name: NOTIFICATIONS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: notifications_host
+            - name: NOTIFICATIONS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: notifications_tcp_port
+            - name: NETWORK_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: network_host
+            - name: NETWORK_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: network_tcp_port
+            - name: SMART_WALLETS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: smart_wallets_host
+            - name: SMART_WALLETS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: smart_wallets_port
+            - name: SMART_WALLETS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: smart_wallets_tcp_port
+
+            # Secrets
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: mongo_uri
+            - name: RPC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: rpc_url
+            - name: FUSE_STUDIO_ADMIN_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: fuse_studio_admin_jwt
+            - name: LEGACY_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: legacy_jwt_secret
+            - name: SMART_WALLETS_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: smart_wallets_jwt_secret
+            - name: PAYMASTER_PRODUCTION_SIGNER_PRIVATE_KEY_V_0_1_0
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: paymaster_production_signer_private_key_v_0_1_0
+            - name: PAYMASTER_SANDBOX_SIGNER_PRIVATE_KEY_V_0_1_0
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: paymaster_sandbox_signer_private_key_v_0_1_0
+
+          # Ports
+          ports:
+            - containerPort: 5002
+              name: http
+            - containerPort: 8876
+              name: tcp
+
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 5002
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 5002
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          # Resources
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory:  {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory:  {{ .Values.resources.limits.memory }}

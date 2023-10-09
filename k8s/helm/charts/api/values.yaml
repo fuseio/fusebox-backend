@@ -1,0 +1,52 @@
+# Default values for api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # Namespace & Environment
+  namespace: ""
+  environment: ""
+
+  # Google Cloud
+  project_id: ""
+  region: ""
+
+  # DNS domain
+  domain: ""
+
+  # Image
+  image:
+    repository: ""
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+# Resources (requests & limits)
+resources:
+  requests:
+    cpu: ""
+    memory: ""
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  explorer_api_url: ""
+  qa_mode: ""
+  bundler_api_prd_url: ""
+  bundler_api_sandbox_url: ""
+  spark_rpc_url: ""
+  legacy_fuse_admin_api_url: ""
+  legacy_fuse_wallet_api_url: ""
+  legacy_fuse_trade_api_url: ""
+
+# Secrets (through environment variables)
+secrets:
+  mongo_uri: ""
+  rpc_url: ""
+  fuse_studio_admin_jwt: ""
+  legacy_jwt_secret: ""
+  smart_wallets_jwt_secret: ""
+  paymaster_production_signer_private_key_v_0_1_0: ""
+  paymaster_sandbox_signer_private_key_v_0_1_0: ""

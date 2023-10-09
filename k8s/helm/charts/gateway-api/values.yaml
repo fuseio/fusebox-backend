@@ -1,0 +1,12 @@
+# Default values for gateway-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # Namespace
+  namespace: "fusebox-staging"
+
+# Name & Global address
+name: ""
+global_address: ""

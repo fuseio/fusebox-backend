@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apps
+  namespace: {{ .Values.global.namespace }}
+data:
+  apps_host: "0.0.0.0"
+  apps_port: "5006"
+  apps_tcp_port: "8880"
+  charge_wallet_phone_number: {{ .Values.configMap.charge_wallet_phone_number }}
+  charge_base_url: {{ .Values.configMap.charge_base_url }}
+  job_sleep_ms: {{ .Values.configMap.job_sleep_ms }}
+  unmarshal_base_url: {{ .Values.configMap.unmarshal_base_url }}
+  alchemy_base_url: {{ .Values.configMap.alchemy_base_url }}
+  ethereum_payments_network_name: {{ .Values.configMap.ethereum_payments_network_name }}

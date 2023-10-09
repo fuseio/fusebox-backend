@@ -1,0 +1,51 @@
+# Default values for apps.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # Namespace & Environment
+  namespace: "fusebox-staging"
+  environment: "staging"
+
+  # Google Cloud
+  project_id: "fusebox-staging"
+  region: "europe-west1"
+
+  # DNS domain
+  domain: "staging.fuse.io"
+
+  # Image
+  image:
+    repository: "fusebox-staging"
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+# Resources (requests & limits)
+resources:
+  requests:
+    cpu: ""
+    memory: ""
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  charge_wallet_phone_number: ""
+  charge_base_url: ""
+  job_sleep_ms: ""
+  unmarshal_base_url: ""
+  alchemy_base_url: ""
+  ethereum_payments_network_name: ""
+
+# Secrets (through environment variables)
+secrets:
+  mongo_uri: ""
+  charge_public_key: ""
+  charge_secret_key: ""
+  charge_webhook_id: ""
+  unmarshal_auth_key: ""
+  charge_payments_ethereum_mnemonic: ""
+  alchemy_webhook_id: ""
+  alchemy_auth_key: ""

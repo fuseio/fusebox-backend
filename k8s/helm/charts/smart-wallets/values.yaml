@@ -1,0 +1,45 @@
+# Default values for smart-wallets.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # Namespace & Environment
+  namespace: ""
+  environment: ""
+
+  # Google Cloud
+  project_id: ""
+  region: ""
+
+  # DNS domain
+  domain: ""
+
+  # Image
+  image:
+    repository: ""
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+# Resources (requests & limits)
+resources:
+  requests:
+    cpu: ""
+    memory: ""
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  centrifugo_uri: ""
+  centrifugo_api_url: ""
+  legacy_fuse_wallet_api_url: ""
+
+# Secrets (through environment variables)
+secrets:
+  mongo_uri: ""
+  smart_wallets_jwt_secret: ""
+  fuse_wallet_backend_jwt: ""
+  centrifugo_jwt: ""
+  centrifugo_api_key: ""

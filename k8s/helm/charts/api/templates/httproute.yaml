@@ -1,0 +1,48 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: api
+  namespace: {{ .Values.global.namespace }}
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: "{{ .Values.global.namespace }}-lb"
+      sectionName: https
+  hostnames:
+    - "api.{{ .Values.global.domain }}"
+  rules:
+    - matches:
+        - path:
+            value: /
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: application
+                value: api
+      backendRefs:
+        - name: api
+          port: 5002
+---
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: api
+  namespace: {{ .Values.global.namespace }}
+spec:
+  default:
+    checkIntervalSec: 30
+    timeoutSec: 5
+    healthyThreshold: 3
+    unhealthyThreshold: 5
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: 5002
+        portName: http
+        host: api
+        requestPath: /api/health
+  targetRef:
+    group: ""
+    kind: Service
+    name: api

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: notifications
+    environment: {{ .Values.global.environment }}
+spec:
+  selector:
+    app: notifications
+    environment: {{ .Values.global.environment }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5004
+      targetPort: 5004
+    - name: tcp
+      protocol: TCP
+      port: 8878
+      targetPort: 8878
+  type: ClusterIP

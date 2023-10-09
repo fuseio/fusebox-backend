@@ -1,0 +1,44 @@
+# Default values for accounts.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # Namespace & Environment
+  namespace: ""
+  environment: ""
+
+  # Google Cloud
+  project_id: ""
+  region: ""
+
+  # DNS domain
+  domain: ""
+
+  # Image
+  image:
+    repository: ""
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+# Resources (requests & limits)
+resources:
+  requests:
+    cpu: ""
+    memory: ""
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  auth0_issuer_url: ""
+  auth0_audience: ""
+  paymaster_sandbox_contract_address_v_0_1_0: ""
+  paymaster_production_contract_address_v_0_1_0: ""
+  entrypoint_sandbox_contract_address_v_0_1_0: ""
+  entrypoint_production_contract_address_v_0_1_0: ""
+
+# Secrets (through environment variables)
+secrets:
+  mongo_uri: ""

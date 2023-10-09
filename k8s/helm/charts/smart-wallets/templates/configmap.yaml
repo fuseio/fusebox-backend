@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: smart-wallets
+  namespace: {{ .Values.global.namespace }}
+data:
+  smart_wallets_host: "0.0.0.0"
+  smart_wallets_port: "5007"
+  smart_wallets_tcp_port: "8881"
+  centrifugo_uri: {{ .Values.configMap.centrifugo_uri }}
+  centrifugo_api_url: {{ .Values.configMap.centrifugo_api_url }}
+  legacy_fuse_wallet_api_url: {{ .Values.configMap.legacy_fuse_wallet_api_url }}

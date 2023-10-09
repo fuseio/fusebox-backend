@@ -1,0 +1,45 @@
+# Default values for notifications.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# - Global -
+global:
+  # Namespace & Environment
+  namespace: ""
+  environment: ""
+
+  # Google Cloud
+  project_id: ""
+  region: ""
+
+  # DNS domain
+  domain: ""
+
+  # Image
+  image:
+    repository: ""
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+# Resources (requests & limits)
+resources:
+  requests:
+    cpu: ""
+    memory: ""
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  network_name: ""
+  chain_id: ""
+  max_blocks: ""
+  timeout_interval: ""
+
+# Secrets (through environment variables)
+secrets:
+  mongo_uri: ""
+  smart_wallets_jwt_secret: ""
+  rpc_url: ""
+  full_archive_rpc_url: ""

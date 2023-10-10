@@ -10,12 +10,12 @@ const BasicTokenAbi = require('../config/abi/BasicToken.json')
 
 @Injectable()
 export class TokenService {
-  constructor(
+  constructor (
     private readonly web3ProviderService: Web3ProviderService
 
   ) { }
 
-  async fetchTokenDetails(address: string): Promise<Token> {
+  async fetchTokenDetails (address: string): Promise<Token> {
     if (address === NATIVE_FUSE_TOKEN.address) {
       return {
         name: NATIVE_FUSE_TOKEN.name,

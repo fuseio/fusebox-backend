@@ -6,7 +6,7 @@ import WalletAction from './base'
 import { NATIVE_FUSE_TOKEN } from '../../../common/constants/fuseTokenInfo'
 
 export default class NativeTransfer extends WalletAction {
-  constructTokenTransferData(targetAddress, value) {
+  constructTokenTransferData (targetAddress, value) {
     return {
       ...NATIVE_FUSE_TOKEN,
       type: NATIVE_TOKEN_TYPE,
@@ -15,7 +15,7 @@ export default class NativeTransfer extends WalletAction {
     } as ERC20Transfer
   }
 
-  constructResponse(parsedUserOp, tokenTransferData) {
+  constructResponse (parsedUserOp, tokenTransferData) {
     const { sender: walletAddress, userOpHash } = parsedUserOp
     const { symbol, decimals } = tokenTransferData
     return {
@@ -35,7 +35,7 @@ export default class NativeTransfer extends WalletAction {
     }
   }
 
-  async execute(parsedUserOp) {
+  async execute (parsedUserOp) {
     const { targetAddress, value } = parsedUserOp.targetFunctions[0]
     const tokenTransferData = this.constructTokenTransferData(targetAddress, value)
     return this.constructResponse(parsedUserOp, tokenTransferData)

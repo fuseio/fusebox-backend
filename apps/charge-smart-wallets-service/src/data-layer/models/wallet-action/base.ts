@@ -4,19 +4,19 @@ import { TokenService } from '../../../common/services/token.service'
 export default abstract class WalletAction {
   protected tokenService: TokenService
 
-  setTokenService(tokenService: TokenService): void {
+  setTokenService (tokenService: TokenService): void {
     this.tokenService = tokenService
   }
 
-  async execute(parsedUserOp: Record<string, any>): Promise<any> {
+  async execute (parsedUserOp: Record<string, any>): Promise<any> {
     return parsedUserOp
   }
 
-  descGenerator(data: any): string {
+  descGenerator (data: any): string {
     return `${data.action} ${formatUnits(data.valueInWei, data.decimals)} ${data.symbol}`
   }
 
-  generateDescription(data: any) {
+  generateDescription (data: any) {
     return this.descGenerator(data)
   }
 }

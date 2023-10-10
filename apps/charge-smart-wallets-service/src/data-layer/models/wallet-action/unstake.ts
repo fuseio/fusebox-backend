@@ -9,7 +9,7 @@ import { LIQUID_STAKING_CONTRACT_ADDRESS } from '../../../common/constants/addre
 import { first, last } from 'lodash'
 
 export default class UnstakeTokens extends WalletAction {
-  async execute(parsedUserOp: any) {
+  async execute (parsedUserOp: any) {
     const { name: walletFunctionName } = parsedUserOp.walletFunction
     if (walletFunctionName === 'executeBatch') {
       const firstCallData: any = first(parsedUserOp.targetFunctions)

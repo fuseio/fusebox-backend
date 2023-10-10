@@ -4,7 +4,7 @@ import WalletAction from './base'
 import { ERC20Transfer as IERC20Transfer } from '../../interfaces/token-interfaces'
 
 export default class ERC20Transfer extends WalletAction {
-  async constructTokenTransferData({ callData, targetAddress }) {
+  async constructTokenTransferData ({ callData, targetAddress }) {
     const [to, value] = callData
     const tokenDetails = await this.tokenService.fetchTokenDetails(targetAddress)
 
@@ -16,7 +16,7 @@ export default class ERC20Transfer extends WalletAction {
     } as IERC20Transfer
   }
 
-  constructResponse(parsedUserOp, tokenTransferData) {
+  constructResponse (parsedUserOp, tokenTransferData) {
     const { sender: walletAddress, userOpHash } = parsedUserOp
     const { symbol, decimals, value } = tokenTransferData
     return {
@@ -36,7 +36,7 @@ export default class ERC20Transfer extends WalletAction {
     }
   }
 
-  async execute(parsedUserOp) {
+  async execute (parsedUserOp) {
     const targetFunction = parsedUserOp.targetFunctions[0]
     const tokenTransferData = await this.constructTokenTransferData(targetFunction)
     return this.constructResponse(parsedUserOp, tokenTransferData)

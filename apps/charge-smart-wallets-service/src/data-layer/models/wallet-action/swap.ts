@@ -8,13 +8,13 @@ import { first, last } from 'lodash'
 import { formatUnits } from 'nestjs-ethers'
 
 export default class SwapTokens extends WalletAction {
-  descGenerator(data: any) {
+  descGenerator (data: any) {
     const sentValue = formatUnits(data.sentTokenValueInWei, data.sentTokenDecimals)
     const recValue = formatUnits(data.recTokenValueInWei, data.recTokenDecimals)
     return `${sentValue} ${data.sentToken} was swapped to ${recValue} ${data.recToken}`
   }
 
-  async execute(parsedUserOp: any) {
+  async execute (parsedUserOp: any) {
     const { name: walletFunctionName } = parsedUserOp.walletFunction
     let call
     if (walletFunctionName === 'executeBatch') {

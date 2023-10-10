@@ -4,11 +4,11 @@ import WalletAction from './base'
 import { ERC721Transfer } from '../../interfaces/token-interfaces'
 
 export default class NftTransfer extends WalletAction {
-  descGenerator({ symbol, tokenId, to }) {
+  descGenerator ({ symbol, tokenId, to }) {
     return `${symbol} #${tokenId} sent to ${to}`
   }
 
-  async fetchTokenTransferData({ targetAddress, callData }) {
+  async fetchTokenTransferData ({ targetAddress, callData }) {
     const [, to, tokenId] = callData
     const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
     return {
@@ -19,7 +19,7 @@ export default class NftTransfer extends WalletAction {
     } as ERC721Transfer
   }
 
-  constructResponse(parsedUserOp, tokenTransferData) {
+  constructResponse (parsedUserOp, tokenTransferData) {
     const { sender: walletAddress, userOpHash } = parsedUserOp
     const { tokenId, to, symbol } = tokenTransferData
     return {
@@ -34,7 +34,7 @@ export default class NftTransfer extends WalletAction {
     }
   }
 
-  async execute(parsedUserOp) {
+  async execute (parsedUserOp) {
     const targetFunction = parsedUserOp.targetFunctions[0]
     const tokenTransferData = await this.fetchTokenTransferData(targetFunction)
     return this.constructResponse(parsedUserOp, tokenTransferData)

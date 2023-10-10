@@ -20,7 +20,7 @@ import {
     BATCH_TRANSACTION_CALLDATA_ONLY_ERC20_TOKENS,
     BATCH_TRANSACTION_CALLDATA,
     TRANSFER_NFT_CALLDATA
-} from './calldataExamples';
+} from './consts/calldataExamples';
 
 describe("UserOpParser Tests", () => {
     let parser: UserOpParser;

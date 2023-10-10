@@ -1,13 +1,16 @@
-import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
+// import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
+import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '../../../common/constants/tokenTypes'
 import WalletAction from './base'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
-import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+// import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { NATIVE_FUSE_TOKEN } from '../../../common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
 import { ethers } from 'ethers'
-import { LIQUID_STAKING_CONTRACT_ADDRESS } from '@app/smart-wallets-service/common/constants/addresess'
+// import { LIQUID_STAKING_CONTRACT_ADDRESS } from '@app/smart-wallets-service/common/constants/addresess'
+import { LIQUID_STAKING_CONTRACT_ADDRESS } from '../../../common/constants/addresess'
 
 export default class StakeTokens extends WalletAction {
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const { name: walletFunctionName } = parsedUserOp.walletFunction
 
     if (walletFunctionName === 'executeBatch') {
@@ -17,7 +20,7 @@ export default class StakeTokens extends WalletAction {
     }
   }
 
-  async handleBatchExecution (parsedUserOp: any) {
+  async handleBatchExecution(parsedUserOp: any) {
     const lastCallData: any = last(parsedUserOp.targetFunctions)
     if (lastCallData.name !== 'enter') return
 
@@ -28,7 +31,7 @@ export default class StakeTokens extends WalletAction {
     return this.constructResponse(parsedUserOp, sentTokenData, receivedTokenData)
   }
 
-  async handleSingleExecution (parsedUserOp) {
+  async handleSingleExecution(parsedUserOp) {
     const { name, value, targetAddress } = parsedUserOp.targetFunctions[0]
     if (name !== 'deposit') return
 
@@ -44,7 +47,7 @@ export default class StakeTokens extends WalletAction {
     return this.constructResponse(parsedUserOp, tokenTransferData, receivedTokenData)
   }
 
-  async getERC20TransferData ({ targetAddress, callData }) {
+  async getERC20TransferData({ targetAddress, callData }) {
     const [to, value] = callData
     const sentTokenDetails = await this.tokenService.fetchTokenDetails(targetAddress)
     return {
@@ -55,7 +58,7 @@ export default class StakeTokens extends WalletAction {
     } as ERC20Transfer
   }
 
-  async getReceivedTokenData (to) {
+  async getReceivedTokenData(to) {
     const receiveTokenDetails = await this.tokenService.fetchTokenDetails(to)
     return {
       type: ERC_20_TYPE,
@@ -65,7 +68,7 @@ export default class StakeTokens extends WalletAction {
     } as ERC20Transfer
   }
 
-  constructResponse (parsedUserOp, sentTokenData, receivedTokenData) {
+  constructResponse(parsedUserOp, sentTokenData, receivedTokenData) {
     return {
       name: 'stakeTokens',
       walletAddress: parsedUserOp.sender,

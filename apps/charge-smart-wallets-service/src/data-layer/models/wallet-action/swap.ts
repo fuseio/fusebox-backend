@@ -1,18 +1,20 @@
-import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
+// import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
+import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '../../../common/constants/tokenTypes'
 import WalletAction from './base'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
-import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+// import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { NATIVE_FUSE_TOKEN } from '../../../common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
 import { formatUnits } from 'nestjs-ethers'
 
 export default class SwapTokens extends WalletAction {
-  descGenerator (data: any) {
+  descGenerator(data: any) {
     const sentValue = formatUnits(data.sentTokenValueInWei, data.sentTokenDecimals)
     const recValue = formatUnits(data.recTokenValueInWei, data.recTokenDecimals)
     return `${sentValue} ${data.sentToken} was swapped to ${recValue} ${data.recToken}`
   }
 
-  async execute (parsedUserOp: any) {
+  async execute(parsedUserOp: any) {
     const { name: walletFunctionName } = parsedUserOp.walletFunction
     let call
     if (walletFunctionName === 'executeBatch') {

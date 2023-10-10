@@ -1,18 +1,21 @@
 import Web3 from 'web3'
-import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+// import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { NATIVE_FUSE_TOKEN } from '../constants/fuseTokenInfo'
 import { Token } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { Injectable } from '@nestjs/common'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
-const BasicTokenAbi = require('@app/smart-wallets-service/common/config/abi/BasicToken.json')
+// import Web3ProviderService from '@app/common/services/web3-provider.service'
+import Web3ProviderService from '../../../../../libs/common/src/services/web3-provider.service'
+// const BasicTokenAbi = require('@app/smart-wallets-service/common/config/abi/BasicToken.json')
+const BasicTokenAbi = require('../config/abi/BasicToken.json')
 
 @Injectable()
 export class TokenService {
-  constructor (
+  constructor(
     private readonly web3ProviderService: Web3ProviderService
 
   ) { }
 
-  async fetchTokenDetails (address: string): Promise<Token> {
+  async fetchTokenDetails(address: string): Promise<Token> {
     if (address === NATIVE_FUSE_TOKEN.address) {
       return {
         name: NATIVE_FUSE_TOKEN.name,
@@ -22,6 +25,7 @@ export class TokenService {
       }
     }
     const web3 = this.web3ProviderService.getProvider()
+
     const tokenContractInstance = new web3.eth.Contract(BasicTokenAbi, address)
     try {
       const [name, symbol, decimals] = await Promise.all([

@@ -1,5 +1,4 @@
-// import { ERC_20_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import { ERC_20_TYPE } from '../../../common/constants/tokenTypes'
+import { ERC_20_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
 import { ERC20Transfer as IERC20Transfer } from '../../interfaces/token-interfaces'
 

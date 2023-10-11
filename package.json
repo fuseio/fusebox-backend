@@ -21,7 +21,7 @@
     "run-auth-testing-debug": "npx ts-node -e 'require(\"./scripts/smartWalletsAuthTesting.ts\").getHashAndSig(\"PRIVATE_KEY\")'",
     "run-validate-signature": "npx ts-node -e 'require(\"./scripts/smartWalletsAuthTesting.ts\").isValidSignature(\"SIGNING_ADDRESS\", \"MESSAGE\", \"SIGNATURE\")'",
     "user-op-parser-test": "mocha -r ts-node/register 'tests/libs/common/data-layer/userOpParser.spec.ts'",
-    "wallet-actions-builder-test": "mocha -r ts-node/register 'tests/libs/common/data-layer/walletActionBuilder.spec.ts'",
+    "wallet-actions-builder-test": "jest --config ./jest.config.json 'tests/libs/common/data-layer/walletActionBuilder.spec.ts'",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",

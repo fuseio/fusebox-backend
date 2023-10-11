@@ -1,6 +1,5 @@
 import { formatUnits } from 'nestjs-ethers'
-// import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
-import { TokenService } from '../../../common/services/token.service'
+import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 export default abstract class WalletAction {
   protected tokenService: TokenService
 

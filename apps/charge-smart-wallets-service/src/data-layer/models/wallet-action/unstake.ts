@@ -1,11 +1,8 @@
-// import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '../../../common/constants/tokenTypes'
+import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from './base'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
-// import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
-import { NATIVE_FUSE_TOKEN } from '../../../common/constants/fuseTokenInfo'
-// import { LIQUID_STAKING_CONTRACT_ADDRESS } from '@app/smart-wallets-service/common/constants/addresess'
-import { LIQUID_STAKING_CONTRACT_ADDRESS } from '../../../common/constants/addresess'
+import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { LIQUID_STAKING_CONTRACT_ADDRESS } from '@app/smart-wallets-service/common/constants/addresess'
 import { first, last } from 'lodash'
 
 export default class UnstakeTokens extends WalletAction {

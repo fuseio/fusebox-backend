@@ -1,10 +1,10 @@
-import { assert } from "chai"
-import { UserOpFactory } from "../../../../apps/charge-smart-wallets-service/src/common/services/user-op-factory.service"
-import { UserOpParser } from "../../../../apps/charge-smart-wallets-service/src/common/services/user-op-parser.service"
-import { parsedUserOpToWalletAction } from "../../../../apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory"
-import { TokenService } from "../../../../apps/charge-smart-wallets-service/src/common/services/token.service"
-import Web3ProviderService from "../../../../libs/common/src/services/web3-provider.service"
-import { ConfigService } from '@nestjs/config'
+import { expect } from "@jest/globals";
+import { UserOpFactory } from "@app/smart-wallets-service/common/services/user-op-factory.service";
+import { UserOpParser } from "@app/smart-wallets-service/common/services/user-op-parser.service";
+import { parsedUserOpToWalletAction } from "@app/smart-wallets-service/common/utils/wallet-action-factory";
+import { TokenService } from "@app/smart-wallets-service/common/services/token.service";
+import Web3ProviderService from "@app/common/services/web3-provider.service";
+import { ConfigService } from '@nestjs/config';
 import * as walletActionsExamples from './consts/walletActionsExamples';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
@@ -45,7 +45,6 @@ const basicUserOp = {
     "actualGasCost": 0,
     "actualGasUsed": 0
 }
-
 
 const config = {
     rpcConfig: {
@@ -91,87 +90,98 @@ describe("DataLayerService Tests", () => {
 
     });
 
-    it("native token transfer", async () => {
-        basicUserOp.callData = NATIVE_TRANSFER_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.NATIVE_TOKEN_TRANSFER_WALLET_ACTION)
+    test("native token transfer", async () => {
+        basicUserOp.callData = NATIVE_TRANSFER_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.NATIVE_TOKEN_TRANSFER_WALLET_ACTION);
     });
 
-    it("ERC20 token transfer", async () => {
-        basicUserOp.callData = ERC20_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.ERC_20_TRANSFER_WALLET_ACTION)
-    });
-    it("approve token transfer", async () => {
-        basicUserOp.callData = APPROVE_TOKEN_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.APPROVE_TOKEN_WALLET_ACTION)
-    });
-    it("stake native token transfer", async () => {
-        basicUserOp.callData = STAKE_NATIVE_TOKENS_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.STAKE_NATIVE_TOKEN_WALLET_ACTION)
-    });
-    it("unstake native token transfer", async () => {
-        basicUserOp.callData = UNSTAKE_NATIVE_TOKENS_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.UNSTAKE_NATIVE_TOKENS_WALLET_ACTION)
-    });
-    it("ERC20 token stake", async () => {
-        basicUserOp.callData = ERC_20_STAKE_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.ERC_20_TOKEN_STAKE_WALLET_ACTION)
-    });
-    it("ERC20 token unstake transfer", async () => {
-        basicUserOp.callData = ERC_20_UNSTAKE_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.ERC_20_TOKEN_UNSTAKE_WALLET_ACTION)
-    });
-    it("swap eth for EXACT tokens transfer", async () => {
-        basicUserOp.callData = SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.SWAP_ETH_FOR_EXACT_TOKENS_WALLET_ACTION)
-    });
-    it("swap EXACT eth for tokens transfer", async () => {
-        basicUserOp.callData = SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.SWAP_EXACT_ETH_FOR_TOKENS_WALLET_ACTION)
-    });
-    it("swap EXACT tokens for eth transfer", async () => {
-        basicUserOp.callData = SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.SWAP_EXACT_TOKENS_FOR_ETH_WALLET_ACTION)
+    test("ERC20 token transfer", async () => {
+        basicUserOp.callData = ERC20_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.ERC_20_TRANSFER_WALLET_ACTION);
     });
 
-    it("swap tokens for EXACT eth transfer", async () => {
-        basicUserOp.callData = SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION)
+    test("approve token transfer", async () => {
+        basicUserOp.callData = APPROVE_TOKEN_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.APPROVE_TOKEN_WALLET_ACTION);
     });
-    it("swap EXACT tokens to tokens transfer", async () => {
-        basicUserOp.callData = SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.SWAP_EXACT_TOKENS_TO_TOKENS_WALLET_ACTION)
+
+    test("stake native token transfer", async () => {
+        basicUserOp.callData = STAKE_NATIVE_TOKENS_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.STAKE_NATIVE_TOKEN_WALLET_ACTION);
     });
-    it("swap tokens to EXACT tokens", async () => {
+
+    test("unstake native token transfer", async () => {
+        basicUserOp.callData = UNSTAKE_NATIVE_TOKENS_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.UNSTAKE_NATIVE_TOKENS_WALLET_ACTION);
+    });
+
+    test("ERC20 token stake", async () => {
+        basicUserOp.callData = ERC_20_STAKE_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.ERC_20_TOKEN_STAKE_WALLET_ACTION);
+    });
+
+    test("ERC20 token unstake transfer", async () => {
+        basicUserOp.callData = ERC_20_UNSTAKE_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.ERC_20_TOKEN_UNSTAKE_WALLET_ACTION);
+    });
+
+    test("swap eth for EXACT tokens transfer", async () => {
+        basicUserOp.callData = SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.SWAP_ETH_FOR_EXACT_TOKENS_WALLET_ACTION);
+    });
+
+    test("swap EXACT eth for tokens transfer", async () => {
+        basicUserOp.callData = SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.SWAP_EXACT_ETH_FOR_TOKENS_WALLET_ACTION);
+    });
+
+    test("swap EXACT tokens for eth transfer", async () => {
+        basicUserOp.callData = SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.SWAP_EXACT_TOKENS_FOR_ETH_WALLET_ACTION);
+    });
+
+    test("swap tokens for EXACT eth transfer", async () => {
+        basicUserOp.callData = SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION);
+    });
+
+    test("swap EXACT tokens to tokens transfer", async () => {
+        basicUserOp.callData = SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.SWAP_EXACT_TOKENS_TO_TOKENS_WALLET_ACTION);
+    });
+
+    test("swap tokens to EXACT tokens", async () => {
         //CURRENTLY NOT SUPPORTED
     });
-    it("NFT token transfer", async () => {
-        basicUserOp.callData = TRANSFER_NFT_CALLDATA
-        const userOp = await userOpFactory.createUserOp(basicUserOp)
-        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-        assert.deepEqual(walletActionRes, walletActionsExamples.NFT_TOKEN_TRANSFER_WALLET_ACTION)
+
+    test("NFT token transfer", async () => {
+        basicUserOp.callData = TRANSFER_NFT_CALLDATA;
+        const userOp = await userOpFactory.createUserOp(basicUserOp);
+        const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService);
+        expect(walletActionRes).toEqual(walletActionsExamples.NFT_TOKEN_TRANSFER_WALLET_ACTION);
     });
-})
+});

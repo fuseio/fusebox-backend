@@ -1,9 +1,7 @@
-// import { NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import { NATIVE_TOKEN_TYPE } from '../../../common/constants/tokenTypes'
+import { NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import { ERC20Transfer } from '../../interfaces/token-interfaces'
 import WalletAction from './base'
-// import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
-import { NATIVE_FUSE_TOKEN } from '../../../common/constants/fuseTokenInfo'
+import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 
 export default class NativeTransfer extends WalletAction {
   constructTokenTransferData (targetAddress, value) {

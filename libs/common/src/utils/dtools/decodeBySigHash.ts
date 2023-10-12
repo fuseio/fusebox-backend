@@ -6,7 +6,7 @@ import { decodeCalldata, DecodeResult } from './decodeCalldata'
 import { DecodedEventResult, decodeEvent, EventProps } from './decodeEvent'
 import { parseAbi } from './parseAbi'
 
-export async function decodeWithCalldata(
+export async function decodeWithCalldata (
   sigHash: string,
   calldata: string
 ): Promise<DecodeResult[] | undefined> {
@@ -22,7 +22,7 @@ export async function decodeWithCalldata(
   }
 }
 
-export async function decodeWithEventProps(
+export async function decodeWithEventProps (
   sigHash: string,
   eventProps: EventProps
 ): Promise<DecodedEventResult[] | undefined> {
@@ -33,7 +33,7 @@ export async function decodeWithEventProps(
   }
 }
 
-export function sigHashFromCalldata(calldata: string): string | undefined {
+export function sigHashFromCalldata (calldata: string): string | undefined {
   const chunk = calldata.slice(0, 10)
   if (hexSchema.safeParse(chunk).success) {
     return chunk
@@ -51,7 +51,7 @@ export const fetch4BytesBy = {
 
 const MAX_RETRY = 30
 
-async function fetch4Bytes(
+async function fetch4Bytes (
   hexSig: string,
   hexSigType: HexSigType,
   retries: number = 0
@@ -78,7 +78,7 @@ async function fetch4Bytes(
   return result
 }
 
-async function safeFetch<T>(...args: Parameters<typeof fetch>): Promise<T> {
+async function safeFetch<T> (...args: Parameters<typeof fetch>): Promise<T> {
   return fetch(...args).then(async (response) => {
     if (response.status === 200) {
       return response.json() as unknown as T
@@ -125,12 +125,12 @@ const bytes4Cache: Bytes4Cache = {
 }
 
 // @internal
-function urlTo(hexSigType: HexSigType): string {
+function urlTo (hexSigType: HexSigType): string {
   return `https://www.4byte.directory/api/v1/${hexSigType}/?hex_signature=`
 }
 
 // @internal
-export function parse4BytesResToIfaces(
+export function parse4BytesResToIfaces (
   data: FourBytesReponseEntry[],
   defaultKeyword: string = 'function'
 ): Interface[] {
@@ -147,7 +147,7 @@ export function parse4BytesResToIfaces(
 }
 
 // @internal
-export function decodeByCalldata(
+export function decodeByCalldata (
   ifaces: Interface[],
   calldata: string
 ): DecodeResult[] {
@@ -155,7 +155,7 @@ export function decodeByCalldata(
 }
 
 // @internal
-export function decode4BytesData<T extends unknown, R>(
+export function decode4BytesData<T extends unknown, R> (
   ifaces: Interface[],
   data: T,
   decodeFn: (iface: Interface, data: T) => R | undefined

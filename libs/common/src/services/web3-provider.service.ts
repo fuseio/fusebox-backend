@@ -7,7 +7,7 @@ export default class Web3ProviderService {
   private readonly provider: Web3
   private config: any
 
-  constructor(private configService: ConfigService) {
+  constructor (private configService: ConfigService) {
     const rpcUrl = this.configService.get('rpcConfig').rpc.url
     if (rpcUrl) {
       this.provider = new Web3(rpcUrl)
@@ -16,11 +16,11 @@ export default class Web3ProviderService {
     }
   }
 
-  getProvider() {
+  getProvider () {
     return this.provider
   }
 
-  setConfig(config: any) {
+  setConfig (config: any) {
     this.config = config
   }
 }

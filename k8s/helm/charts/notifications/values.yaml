@@ -2,44 +2,57 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# - Global -
+# Global
 global:
-  # Namespace & Environment
+  # -- Namespace
   namespace: ""
+  # -- Label 'environment'
   environment: ""
 
-  # Google Cloud
+  # -- Google Cloud - Project ID
   project_id: ""
+  # -- Google Cloud - Region
   region: ""
 
-  # DNS domain
+  # -- DNS domain
   domain: ""
 
   # Image
   image:
+    # -- Repository ID
     repository: ""
-    # Overrides the image tag whose default is the chart appVersion.
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
     tag: ""
 
-# Resources (requests & limits)
+# Resources
 resources:
+  # -- Resources - Requests
   requests:
     cpu: ""
     memory: ""
+  # -- Resources - Limits
   limits:
     cpu: ""
     memory: ""
 
 # ConfigMap
 configMap:
+  # -- Network name
   network_name: ""
+  # -- Chain ID
   chain_id: ""
+  # -- Max blocks
   max_blocks: ""
+  # -- Timeout interval (ms)
   timeout_interval: ""
 
 # Secrets (through environment variables)
 secrets:
+  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
+  # -- smart-wallets - JWT secret
   smart_wallets_jwt_secret: ""
+  # -- RPC URL - Standard - Fuse
   rpc_url: ""
+  # -- RPC URL - Archive - Fuse
   full_archive_rpc_url: ""

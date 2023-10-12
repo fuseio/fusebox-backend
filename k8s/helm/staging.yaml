@@ -62,7 +62,7 @@ api:
 
   # ConfigMap
   configMap:
-    explorer_api_url: "https://fuse.blockscout.com/api"
+    explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "true"
     bundler_api_prd_url: "https://bundler.fuse.io/122"
     bundler_api_sandbox_url: "https://bundler.fuse.io/123"

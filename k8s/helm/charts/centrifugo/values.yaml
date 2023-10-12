@@ -4,24 +4,28 @@
 
 # Global
 global:
-  # Namespace & Environment
+  # -- Namespace
   namespace: ""
+  # -- Label 'environment'
   environment: ""
 
-  # DNS domain
+  # -- DNS domain
   domain: ""
 
 # Image
 image:
+  # -- Repository ID
   repository: ""
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Tag; overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-# Resources (requests & limits)
+# Resources
 resources:
+  # -- Resources - Requests
   requests:
     cpu: ""
     memory: ""
+  # -- Resources - Limits
   limits:
     cpu: ""
     memory: ""

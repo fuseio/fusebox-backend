@@ -4,33 +4,40 @@
 
 # Global
 global:
-  # Namespace & Environment
+  # -- Namespace
   namespace: ""
+  # -- Label 'environment'
   environment: ""
 
-  # Google Cloud
+  # -- Google Cloud - Project ID
   project_id: ""
+  # -- Google Cloud - Region
   region: ""
 
-  # DNS domain
+  # -- DNS domain
   domain: ""
 
   # Image
   image:
+    # -- Repository ID
     repository: ""
-    # Overrides the image tag whose default is the chart appVersion.
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
     tag: ""
 
-# Resources (requests & limits)
+# Resources
 resources:
+  # -- Resources - Requests
   requests:
     cpu: ""
     memory: ""
+  # -- Resources - Limits
   limits:
     cpu: ""
     memory: ""
 
 # Secrets (through environment variables)
 secrets:
+  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
+  # -- Secret (could be generated manually)
   relay_secret: ""

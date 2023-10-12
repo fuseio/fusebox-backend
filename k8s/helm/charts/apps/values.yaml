@@ -4,48 +4,67 @@
 
 # Global
 global:
-  # Namespace & Environment
-  namespace: "fusebox-staging"
-  environment: "staging"
+  # -- Namespace
+  namespace: ""
+  # -- Label 'environment'
+  environment: ""
 
-  # Google Cloud
-  project_id: "fusebox-staging"
-  region: "europe-west1"
+  # -- Google Cloud - Project ID
+  project_id: ""
+  # -- Google Cloud - Region
+  region: ""
 
-  # DNS domain
-  domain: "staging.fuse.io"
+  # -- DNS domain
+  domain: ""
 
   # Image
   image:
-    repository: "fusebox-staging"
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    # -- Repository ID
+    repository: ""
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: ""
 
-# Resources (requests & limits)
+# Resources
 resources:
+  # -- Resources - Requests
   requests:
     cpu: ""
     memory: ""
+  # -- Resources - Limits
   limits:
     cpu: ""
     memory: ""
 
 # ConfigMap
 configMap:
+  # -- Charge - Wallet phone number
   charge_wallet_phone_number: ""
+  # -- Charge - Base URL
   charge_base_url: ""
+  # -- Job sleep (ms)
   job_sleep_ms: ""
+  # -- Unmarshal - Base URL
   unmarshal_base_url: ""
+  # -- Alchemy - Base URL
   alchemy_base_url: ""
+  # -- Ethereum - Payments network name
   ethereum_payments_network_name: ""
 
 # Secrets (through environment variables)
 secrets:
+  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
+  # -- Charge - Public key
   charge_public_key: ""
+  # -- Charge - Secret key
   charge_secret_key: ""
+  # -- Charge - Webhook ID
   charge_webhook_id: ""
+  # -- Unmarshal - Auth key
   unmarshal_auth_key: ""
+  # -- Charge - Payments Ethereum mnemonic
   charge_payments_ethereum_mnemonic: ""
+  # -- Alchemy - Webhook ID
   alchemy_webhook_id: ""
+  # -- Alchemy - Auth key
   alchemy_auth_key: ""

@@ -4,49 +4,69 @@
 
 # Global
 global:
-  # Namespace & Environment
+  # -- Namespace
   namespace: ""
+  # -- Label 'environment'
   environment: ""
 
-  # Google Cloud
+  # -- Google Cloud - Project ID
   project_id: ""
+  # -- Google Cloud - Region
   region: ""
 
-  # DNS domain
+  # -- DNS domain
   domain: ""
 
   # Image
   image:
+    # -- Repository ID
     repository: ""
-    # Overrides the image tag whose default is the chart appVersion.
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
     tag: ""
 
-# Resources (requests & limits)
+# Resources
 resources:
+  # -- Resources - Requests
   requests:
     cpu: ""
     memory: ""
+  # -- Resources - Limits
   limits:
     cpu: ""
     memory: ""
 
 # ConfigMap
 configMap:
+  # -- BlockScout API URL
   explorer_api_url: ""
+  # -- QA mode ('true' or 'false')
   qa_mode: ""
+  # -- Bundler - API Production URL
   bundler_api_prd_url: ""
+  # -- Bundler - API Sandbox URL
   bundler_api_sandbox_url: ""
+  # -- RPC URL - Spark
   spark_rpc_url: ""
+  # -- Legacy - Fuse admin API URL
   legacy_fuse_admin_api_url: ""
+  # -- Legacy - Fuse wallet API URL
   legacy_fuse_wallet_api_url: ""
+  # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
 
 # Secrets (through environment variables)
 secrets:
+  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
+  # -- RPC URL - Fuse
   rpc_url: ""
+  # -- Fuse Studio admin JWT
   fuse_studio_admin_jwt: ""
+  # -- Legacy - JWT secret
   legacy_jwt_secret: ""
+  # -- smart-wallets - JWT secret
   smart_wallets_jwt_secret: ""
+  # -- Bundler - Paymaster Production signer private key
   paymaster_production_signer_private_key_v_0_1_0: ""
+  # -- Bundler - Paymaster Sandbox signer private key
   paymaster_sandbox_signer_private_key_v_0_1_0: ""

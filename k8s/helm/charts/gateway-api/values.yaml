@@ -4,9 +4,12 @@
 
 # Global
 global:
-  # Namespace
+  # -- Namespace
   namespace: "fusebox-staging"
 
 # Name & Global address
+# -- Name
 name: ""
+
+# -- Global address name
 global_address: ""

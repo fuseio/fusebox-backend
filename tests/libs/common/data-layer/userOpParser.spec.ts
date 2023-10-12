@@ -1,6 +1,6 @@
 
 import { assert } from "chai"
-import { UserOpParser } from "../../../../apps/charge-smart-wallets-service/src/common/services/user-op-parser.service"
+import { UserOpParser } from "@app/smart-wallets-service/common/services/user-op-parser.service"
 import { Test, TestingModule } from '@nestjs/testing';
 
 import {

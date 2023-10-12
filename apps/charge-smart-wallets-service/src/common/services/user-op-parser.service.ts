@@ -1,14 +1,14 @@
-import { decodeWithCalldata, sigHashFromCalldata } from '../../../../../libs/common/src/utils/dtools/decodeBySigHash'
+import { decodeWithCalldata, sigHashFromCalldata } from '@app/common/utils/dtools/decodeBySigHash'
 import { Injectable } from '@nestjs/common'
 import { BigNumber } from 'nestjs-ethers'
 
 @Injectable()
 export class UserOpParser {
-  async decodeCalldata (callData: string) {
+  async decodeCalldata(callData: string) {
     return decodeWithCalldata(sigHashFromCalldata(callData), callData)
   }
 
-  private transformArray (input) {
+  private transformArray(input) {
     const [targets, values, data] = input
 
     return targets.map((targetAddress, index) => ({
@@ -18,7 +18,7 @@ export class UserOpParser {
     }))
   }
 
-  async getTargetFunction (calls) {
+  async getTargetFunction(calls) {
     return Promise.all(calls.map(async (call) => {
       if (call.data === '0x') {
         return {
@@ -39,7 +39,7 @@ export class UserOpParser {
     }))
   }
 
-  async parseCallData (callData: string) {
+  async parseCallData(callData: string) {
     const decodeResults = await this.decodeCalldata(
       callData
     )

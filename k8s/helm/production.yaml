@@ -4,8 +4,7 @@
 
 # - Global -
 global:
-  # Namespace & Environment
-  namespace: "fusebox"
+  # Label: environment
   environment: "production"
 
   # Google Cloud

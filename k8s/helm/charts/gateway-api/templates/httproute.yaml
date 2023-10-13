@@ -2,10 +2,10 @@ kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: http-to-https
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   parentRefs:
-    - namespace: {{ .Values.global.namespace }}
+    - namespace: {{ .Release.Namespace }}
       name: {{ .Values.name }}
       sectionName: http
   rules:

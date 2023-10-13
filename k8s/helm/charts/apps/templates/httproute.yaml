@@ -2,11 +2,11 @@ kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: apps
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   parentRefs:
     - kind: Gateway
-      name: "{{ .Values.global.namespace }}-lb"
+      name: "{{ .Release.Namespace }}-lb"
       sectionName: https
   hostnames:
     - "api.{{ .Values.global.domain }}"
@@ -28,7 +28,7 @@ apiVersion: networking.gke.io/v1
 kind: HealthCheckPolicy
 metadata:
   name: apps
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   default:
     checkIntervalSec: 30

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: network
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Release.Namespace }}
 data:
   network_host: "0.0.0.0"
   network_port: "5005"

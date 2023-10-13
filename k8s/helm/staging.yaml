@@ -4,8 +4,7 @@
 
 # - Global -
 global:
-  # Namespace & Environment
-  namespace: "fusebox-staging"
+  # Label: environment
   environment: "staging"
 
   # Google Cloud

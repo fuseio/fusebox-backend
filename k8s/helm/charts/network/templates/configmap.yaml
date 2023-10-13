@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: network
+  namespace: {{ .Release.Namespace }}
+data:
+  network_host: "0.0.0.0"
+  network_port: "5005"
+  network_tcp_port: "8879"
+  legacy_fuse_trade_api_url: {{ .Values.configMap.legacy_fuse_trade_api_url }}

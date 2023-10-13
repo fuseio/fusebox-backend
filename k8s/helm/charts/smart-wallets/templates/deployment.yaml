@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-wallets
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: smart-wallets
+    environment: {{ .Values.global.environment }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: smart-wallets
+      environment: {{ .Values.global.environment }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      labels:
+        app: smart-wallets
+        environment: {{ .Values.global.environment }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - smart-wallets
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: smart-wallets
+          image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/smart-wallets:{{ .Values.global.image.tag }}"
+          imagePullPolicy: Always
+          env:
+            # ConfigMap
+            - name: SMART_WALLETS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: smart_wallets_host
+            - name: SMART_WALLETS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: smart_wallets_port
+            - name: SMART_WALLETS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: smart_wallets_tcp_port
+            - name: CENTRIFUGO_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: centrifugo_uri
+            - name: CENTRIFUGO_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: centrifugo_api_url
+            - name: LEGACY_FUSE_WALLET_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: legacy_fuse_wallet_api_url
+
+            # Secrets
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: mongo_uri
+            - name: SMART_WALLETS_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: smart_wallets_jwt_secret
+            - name: FUSE_WALLET_BACKEND_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: fuse_wallet_backend_jwt
+            - name: CENTRIFUGO_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: centrifugo_jwt
+            - name: CENTRIFUGO_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: centrifugo_api_key
+
+          # Ports
+          ports:
+            - containerPort: 5007
+              name: http
+            - containerPort: 8881
+              name: tcp
+          
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: /smart-wallets/v1/health
+              port: 5007
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /smart-wallets/v1/health
+              port: 5007
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          
+          # Resources
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

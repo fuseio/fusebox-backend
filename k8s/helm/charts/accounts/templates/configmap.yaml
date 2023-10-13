@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: accounts
+  namespace: {{ .Release.Namespace }}
+data:
+  accounts_host: "0.0.0.0"
+  accounts_port: "5001"
+  accounts_tcp_port: "8875"
+  auth0_issuer_url: {{ .Values.configMap.auth0_issuer_url }}
+  auth0_audience: {{ .Values.configMap.auth0_audience }}
+  paymaster_sandbox_contract_address_v_0_1_0: {{ .Values.configMap.paymaster_sandbox_contract_address_v_0_1_0 }}
+  paymaster_production_contract_address_v_0_1_0: {{ .Values.configMap.paymaster_production_contract_address_v_0_1_0 }}
+  entrypoint_sandbox_contract_address_v_0_1_0: {{ .Values.configMap.entrypoint_sandbox_contract_address_v_0_1_0 }}
+  entrypoint_production_contract_address_v_0_1_0: {{ .Values.configMap.entrypoint_production_contract_address_v_0_1_0 }}
+
+  # Host & Port ('accounts' use 'api', 'relay' and 'apps' hostname and TCP port)
+  api_host: "api"
+  api_tcp_port: "8876"
+  relay_host: "relay"
+  relay_tcp_port: "8877"
+  apps_host: "apps"
+  apps_tcp_port: "8880"

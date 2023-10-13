@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centrifugo
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: centrifugo
+    environment: {{ .Values.global.environment }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: centrifugo
+      environment: {{ .Values.global.environment }}
+  template:
+    metadata:
+      annotations:
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      labels:
+        app: centrifugo
+        environment: {{ .Values.global.environment }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - centrifugo
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: centrifugo
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          command: ["centrifugo", "-c", "config.json", "--port", "8000", "--health"]
+          
+          # Ports
+          ports:
+            - containerPort: 8000
+              name: http
+          
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          
+          # Resources
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          
+          # Volume mounts (config.json)
+          volumeMounts:
+            - mountPath: /centrifugo
+              name: centrifugo
+              readOnly: true
+      
+      # Volume (config.json)
+      volumes:
+        - name: centrifugo
+          secret:
+            secretName: centrifugo

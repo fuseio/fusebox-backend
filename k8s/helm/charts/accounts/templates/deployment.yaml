@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: accounts
+    environment: {{ .Values.global.environment }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: accounts
+      environment: {{ .Values.global.environment }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      labels:
+        app: accounts
+        environment: {{ .Values.global.environment }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - accounts
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: accounts
+          image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/accounts:{{ .Values.global.image.tag }}"
+          env:
+            # ConfigMap
+            - name: ACCOUNTS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: accounts_host
+            - name: ACCOUNTS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: accounts_port
+            - name: ACCOUNTS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: accounts_tcp_port
+            - name: AUTH0_ISSUER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: auth0_issuer_url
+            - name: AUTH0_AUDIENCE
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: auth0_audience
+            - name: PAYMASTER_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: paymaster_sandbox_contract_address_v_0_1_0
+            - name: PAYMASTER_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: paymaster_production_contract_address_v_0_1_0
+            - name: ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: entrypoint_sandbox_contract_address_v_0_1_0
+            - name: ENTRYPOINT_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: entrypoint_production_contract_address_v_0_1_0
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: api_host
+            - name: API_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: api_tcp_port
+            - name: RELAY_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: relay_host
+            - name: RELAY_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: relay_tcp_port
+            - name: APPS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: apps_host
+            - name: APPS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: apps_tcp_port
+
+            # Secrets
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: accounts
+                  key: mongo_uri
+          # Ports
+          ports:
+            - containerPort: 5001
+              name: http
+            - containerPort: 8875
+              name: tcp
+
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: /accounts/v1/health
+              port: 5001
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /accounts/v1/health
+              port: 5001
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          # Resources
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

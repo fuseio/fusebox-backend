@@ -141,7 +141,7 @@ export function parse4BytesResToIfaces (
     try {
       parsed = parseAbi(frag, defaultKeyword)
       if (parsed instanceof Interface) ifaces.push(parsed)
-    } catch (e) {}
+    } catch (e) { }
   }
   return ifaces
 }

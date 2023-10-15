@@ -84,10 +84,6 @@ describe("DataLayerService Tests", () => {
         tokenService = module.get<TokenService>(TokenService);
         configService = module.get<ConfigService>(ConfigService);
 
-        // Set the config for the Web3ProviderService
-        const web3ProviderService = module.get<Web3ProviderService>(Web3ProviderService);
-        web3ProviderService.setConfig(configService.get('rpc.url'));
-
     });
 
     test("native token transfer", async () => {

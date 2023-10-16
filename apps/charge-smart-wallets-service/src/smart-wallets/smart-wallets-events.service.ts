@@ -14,7 +14,7 @@ import { versionType } from '@app/smart-wallets-service/smart-wallets/schemas/sm
 export class SmartWalletsEventsService {
   private readonly logger = new Logger(SmartWalletsEventsService.name)
 
-  constructor (
+  constructor(
     private readonly configService: ConfigService,
     private readonly centrifuge: Centrifuge,
     private readonly centrifugoAPIService: CentrifugoAPIService,
@@ -22,11 +22,11 @@ export class SmartWalletsEventsService {
     private smartWalletModel: Model<SmartWallet>
   ) { }
 
-  async onModuleInit (): Promise<void> {
+  async onModuleInit(): Promise<void> {
     this.subscribeToPublications()
   }
 
-  async subscribeToPublications () {
+  async subscribeToPublications() {
     this.centrifuge.on('publication', (ctx) => {
       const { data, channel } = ctx
       if (channel === 'relayer') {
@@ -60,19 +60,19 @@ export class SmartWalletsEventsService {
     this.centrifuge.connect()
   }
 
-  get sharedAddresses () {
+  get sharedAddresses() {
     return this.configService.get('sharedAddresses')
   }
 
-  get walletVersion () {
+  get walletVersion() {
     return this.configService.get('version')
   }
 
-  get walletPaddedVersion () {
+  get walletPaddedVersion() {
     return this.configService.get('paddedVersion')
   }
 
-  async onCreateSmartWalletStarted (eventData: any) {
+  async onCreateSmartWalletStarted(eventData: any) {
     const {
       smartWalletAddress,
       smartWalletUser,
@@ -108,14 +108,14 @@ export class SmartWalletsEventsService {
     }
   }
 
-  async onTransactionHash (eventData: any) {
+  async onTransactionHash(eventData: any) {
     await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_HASH,
       eventData
     })
   }
 
-  async onCreateSmartWalletSuccess (eventData: any) {
+  async onCreateSmartWalletSuccess(eventData: any) {
     const {
       ownerAddress,
       smartWalletAddress,
@@ -144,14 +144,14 @@ export class SmartWalletsEventsService {
     this.unsubscribe(eventData)
   }
 
-  async onCreateSmartWalletFailed (eventData: any) {
+  async onCreateSmartWalletFailed(eventData: any) {
     await this.publishMessage(eventData, {
       eventName: websocketEvents.WALLET_CREATION_FAILED
     })
     this.unsubscribe(eventData)
   }
 
-  async onRelaySuccess (eventData: any) {
+  async onRelaySuccess(eventData: any) {
     await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_SUCCEEDED,
       eventData
@@ -159,7 +159,7 @@ export class SmartWalletsEventsService {
     this.unsubscribe(eventData)
   }
 
-  async onRelayFailed (eventData: any) {
+  async onRelayFailed(eventData: any) {
     await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_FAILED,
       eventData
@@ -167,14 +167,14 @@ export class SmartWalletsEventsService {
     this.unsubscribe(eventData)
   }
 
-  async onRelayStarted (eventData: any) {
+  async onRelayStarted(eventData: any) {
     await this.publishMessage(eventData, {
       eventName: websocketEvents.TRANSACTION_STARTED,
       eventData
     })
   }
 
-  async publishMessage (eventData, messageData) {
+  async publishMessage(eventData, messageData) {
     try {
       if (!has(eventData, 'transactionId')) {
         return
@@ -186,8 +186,32 @@ export class SmartWalletsEventsService {
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
     }
   }
+  async publishUserOp(eventData, messageData) {
+    try {
+      if (!has(eventData, 'transactionId')) {
+        return
+      }
+      const { transactionId } = eventData
+      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
+    } catch (error) {
+      this.logger.error({ error })
+      this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
+    }
+  }
+  async publishWalletAction(eventData, messageData) {
+    try {
+      if (!has(eventData, 'sender')) {
+        return
+      }
+      const { transactionId } = eventData
+      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
+    } catch (error) {
+      this.logger.error({ error })
+      this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
+    }
+  }
 
-  async unsubscribe (eventData) {
+  async unsubscribe(eventData) {
     try {
       if (!has(eventData, 'transactionId')) {
         return

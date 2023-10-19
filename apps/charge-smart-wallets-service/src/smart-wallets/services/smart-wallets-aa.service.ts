@@ -15,7 +15,7 @@ export class SmartWalletsAAService implements SmartWalletService {
   constructor (
     private readonly jwtService: JwtService,
     private readonly notificationsService: NotificationsService,
-    private configService: ConfigService,
+    private configService: ConfigService
     // private readonly centrifugoAPIService: CentrifugoAPIService,
   ) { }
 
@@ -47,7 +47,7 @@ export class SmartWalletsAAService implements SmartWalletService {
   }
 
   private async subscribeWalletToNotifications (walletAddress: string) {
-    const webhookID = this.configService.get('CHARGE_WEBHOOK_ID')
+    const webhookID = this.configService.get('TOKEN_TRANSFERS_WEBHOOK_ID')
 
     return this.notificationsService.createAddresses({
       webhookId: webhookID, addresses: [walletAddress]

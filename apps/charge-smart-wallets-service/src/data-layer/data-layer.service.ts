@@ -23,7 +23,7 @@ export class DataLayerService {
   async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = this.userOpModel.create(userOp)
-    this.createWalletAction(userOp)
+    this.createWalletActionFromUserOp(userOp)
     return response
   }
 
@@ -38,7 +38,7 @@ export class DataLayerService {
     return updatedUserOp
   }
 
-  async createWalletAction (parsedUserOp: any) {
+  async createWalletActionFromUserOp (parsedUserOp: any) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
       return this.paginatedWalletActionModel.create(walletAction)

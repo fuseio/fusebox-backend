@@ -9,14 +9,23 @@ import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-o
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
+import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
   imports: [DatabaseModule,
-    ConfigModule.forFeature(web3Config)
+    ConfigModule.forFeature(web3Config),
+    HttpModule
 
   ],
   controllers: [DataLayerController],
-  providers: [DataLayerService, ...dataLayerProviders, UserOpFactory, UserOpParser, TokenService, Web3ProviderService]
+  providers: [DataLayerService,
+    ...dataLayerProviders, UserOpFactory,
+    UserOpParser, TokenService, Web3ProviderService,
+    CentrifugoAPIService,
+    CentrifugeProvider
+  ]
 })
 
 export class DataLayerModule { }

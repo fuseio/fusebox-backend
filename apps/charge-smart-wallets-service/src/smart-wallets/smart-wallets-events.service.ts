@@ -186,30 +186,7 @@ export class SmartWalletsEventsService {
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
     }
   }
-  async publishUserOp(eventData, messageData) {
-    try {
-      if (!has(eventData, 'transactionId')) {
-        return
-      }
-      const { transactionId } = eventData
-      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
-    } catch (error) {
-      this.logger.error({ error })
-      this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
-    }
-  }
-  async publishWalletAction(eventData, messageData) {
-    try {
-      if (!has(eventData, 'sender')) {
-        return
-      }
-      const { transactionId } = eventData
-      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
-    } catch (error) {
-      this.logger.error({ error })
-      this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
-    }
-  }
+
 
   async unsubscribe(eventData) {
     try {

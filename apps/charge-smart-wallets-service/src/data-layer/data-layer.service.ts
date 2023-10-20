@@ -8,37 +8,39 @@ import { UserOpFactory } from '../common/services/user-op-factory.service'
 import { confirmedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { isNil } from 'lodash'
 import { TokenService } from '../common/services/token.service'
+import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
 export class DataLayerService {
-  constructor (
+  constructor(
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
     private paginatedWalletActionModel: PaginateModel<WalletActionDocument>,
     private userOpFactory: UserOpFactory,
+    private centrifugoAPIService: CentrifugoAPIService,
     private tokenService: TokenService
   ) { }
 
-  async recordUserOp (baseUserOp: BaseUserOp) {
+  async recordUserOp(baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = this.userOpModel.create(userOp)
     this.createWalletAction(userOp)
     return response
   }
 
-  async updateUserOp (body: UserOp) {
+  async updateUserOp(body: UserOp) {
     const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
     if (isNil(existingUserOp)) {
       return 'No record found with the provided userOpHash'
     }
     const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
-
+    this.centrifugoAPIService.publish(`userOp:#${updatedUserOp.sender}`, updatedUserOp)
     this.updateWalletAction(updatedUserOp)
     return updatedUserOp
   }
 
-  async createWalletAction (parsedUserOp: any) {
+  async createWalletAction(parsedUserOp: any) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
       return this.paginatedWalletActionModel.create(walletAction)
@@ -47,12 +49,14 @@ export class DataLayerService {
     }
   }
 
-  async updateWalletAction (userOp: any) {
+  async updateWalletAction(userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
-    return this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction)
+    const updatedWalletAction = this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }) as any
+    this.centrifugoAPIService.publish(`walletAction:#${updatedWalletAction.sender}`, updatedWalletAction)
+    return updatedWalletAction
   }
 
-  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       query =

@@ -50,10 +50,9 @@ export class PaymasterApiService {
         env,
         paymasterInfo.entrypointAddress
       )
-
-      op.callGasLimit = callGasLimit
-      op.verificationGasLimit = verificationGasLimit
-      op.preVerificationGas = preVerificationGas
+      op.callGasLimit = op.callGasLimit ? op.callGasLimit : callGasLimit
+      op.verificationGasLimit = op.verificationGasLimit ? op.verificationGasLimit : '70000'
+      op.preVerificationGas = op.preVerificationGas ? op.preVerificationGas : preVerificationGas
 
       const paymasterAddress = paymasterInfo.paymasterAddress
       const paymasterContract: any = new web3.eth.Contract(
@@ -108,6 +107,7 @@ export class PaymasterApiService {
       method: 'post',
       data
     }
+    // console.log(requestConfig);
 
     const response = await lastValueFrom(
       this.httpService

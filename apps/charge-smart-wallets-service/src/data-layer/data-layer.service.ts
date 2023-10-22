@@ -22,6 +22,9 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
+    if (isNil(userOp.userOpHash)) {
+      return 'UserOp should contain userOpHash'
+    }
     const response = this.userOpModel.create(userOp)
     this.createWalletAction(userOp)
     return response

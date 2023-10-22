@@ -1,5 +1,5 @@
 import { Model, PaginateModel } from 'mongoose'
-import { Inject, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
@@ -22,9 +22,7 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
-    if (isNil(userOp.userOpHash)) {
-      return 'UserOp should contain userOpHash'
-    }
+
     const response = this.userOpModel.create(userOp)
     this.createWalletAction(userOp)
     return response

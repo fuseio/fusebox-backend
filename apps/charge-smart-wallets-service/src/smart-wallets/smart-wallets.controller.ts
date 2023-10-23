@@ -5,12 +5,15 @@ import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
+import { TokenTransferWebhookService } from './services/token-transfer-webhook.service'
+import { TokenTransferWebhookDto } from './dto/token-transfer-webhook.dto'
 
 @Controller()
 export class SmartWalletsController {
   constructor (
     private readonly legacyService: SmartWalletsLegacyService,
-    private readonly aaService: SmartWalletsAAService
+    private readonly aaService: SmartWalletsAAService,
+    private readonly tokenTransferWebhookService: TokenTransferWebhookService
   ) { }
 
   @MessagePattern('auth')
@@ -50,5 +53,12 @@ export class SmartWalletsController {
   @MessagePattern('install_upgrade')
   installUpgrade () {
     return this.legacyService.installUpgrade()
+  }
+
+  @MessagePattern('handle-token-transfer-webhook')
+  handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
+    return this.tokenTransferWebhookService.handleTokenTransferWebhook(
+      tokenTransferWebhookDto
+    )
   }
 }

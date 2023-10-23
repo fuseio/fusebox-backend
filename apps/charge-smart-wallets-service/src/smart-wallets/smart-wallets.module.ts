@@ -15,6 +15,7 @@ import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 import { getEnvPath } from '@app/common/utils/env.helper'
 import path from 'path'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
+import { TokenTransferWebhookService } from './services/token-transfer-webhook.service'
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { NotificationsModule } from '@app/api-service/notifications/notification
     RelayAPIService,
     SmartWalletsLegacyService,
     SmartWalletsAAService,
+    TokenTransferWebhookService,
     ...smartWalletsProviders
   ],
   controllers: [SmartWalletsController]

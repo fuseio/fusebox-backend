@@ -1,3 +1,4 @@
+import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import {
   WalletAction,
   NativeTransfer,
@@ -8,6 +9,8 @@ import {
   StakeTokens,
   NftTransfer
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
+import { TokenService } from '../services/token.service'
+import { TokenReceiveAction } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive-action'
 
 const singleActionMap = {
   nativeTransfer: NativeTransfer,
@@ -78,7 +81,9 @@ function getWalletActionType (parsedUserOp): WalletAction {
   throw new Error('Unsupported wallet function name')
 }
 
-export async function parsedUserOpToWalletAction (parsedUserOp, tokenService) {
+export async function parsedUserOpToWalletAction (
+  parsedUserOp: UserOp, tokenService: TokenService
+) {
   const actionType = getWalletActionType(parsedUserOp)
   if (!actionType) {
     throw new Error('Unsupported action')
@@ -94,4 +99,17 @@ export function confirmedUserOpToWalletAction (userOp: any) {
     status: userOp.success ? 'success' : 'failed',
     blockNumber: userOp.blockNumber
   }
+}
+
+export function tokenReceiveToWalletAction (
+  fromWalletAddress: string,
+  txHash: string,
+  tokenTransferData: {value: string, symbol: string, decimals: string},
+  blockNumber: number
+) {
+  const tokenReceiveAction = new TokenReceiveAction()
+
+  return tokenReceiveAction.createWalletAction(
+    fromWalletAddress, txHash, tokenTransferData, blockNumber
+  )
 }

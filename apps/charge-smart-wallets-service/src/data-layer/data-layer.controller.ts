@@ -2,6 +2,7 @@ import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-lay
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
+import { TokenTransferWebhookDto } from '../smart-wallets/dto/token-transfer-webhook.dto'
 
 @Controller()
 export class DataLayerController {
@@ -20,5 +21,12 @@ export class DataLayerController {
   @MessagePattern('get-all-wallet-actions')
   get (@Body() data: any) {
     return this.dataLayerService.getPaginatedWalletActions(data.page, data.walletAddress, data.limit, data.tokenAddress)
+  }
+
+  @MessagePattern('handle-token-transfer-webhook')
+  handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
+    return this.dataLayerService.handleTokenTransferWebhook(
+      tokenTransferWebhookDto
+    )
   }
 }

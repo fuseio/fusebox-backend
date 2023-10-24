@@ -9,8 +9,9 @@ import {
   StakeTokens,
   NftTransfer
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
-import { TokenService } from '../services/token.service'
+
 import { TokenReceiveAction } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive-action'
+import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 
 const singleActionMap = {
   nativeTransfer: NativeTransfer,

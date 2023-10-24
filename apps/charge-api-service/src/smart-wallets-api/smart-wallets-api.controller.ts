@@ -6,7 +6,6 @@ import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '1' })
@@ -42,12 +41,5 @@ export class SmartWalletsAPIController {
   getHistoricalTxs (@Query() query, @SmartWalletOwner() user: ISmartWalletUser) {
     user.query = query
     return this.smartWalletsAPIService.getHistoricalTxs(user)
-  }
-
-  @Post('token-transfers')
-  handleTokenTransferWebhook (@Body() tokenTransferWebhookDto: TokenTransferWebhookDto) {
-    return this.smartWalletsAPIService.handleTokenTransferWebhook(
-      tokenTransferWebhookDto
-    )
   }
 }

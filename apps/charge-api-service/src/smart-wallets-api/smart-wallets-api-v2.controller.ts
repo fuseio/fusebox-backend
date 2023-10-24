@@ -5,6 +5,7 @@ import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart
 import { AuthGuard } from '@nestjs/passport'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
+import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 
 @UseGuards(IsPrdOrSbxKeyGuard)
 @Controller({ path: 'smart-wallets', version: '2' })
@@ -25,5 +26,14 @@ export class SmartWalletsAPIV2Controller {
     @Query('tokenAddress') tokenAddress?: string
   ) {
     return this.smartWalletsAPIService.getWalletActions(user.smartWalletAddress, page, limit, tokenAddress)
+  }
+
+  @Post('token-transfers')
+  handleTokenTransferWebhook (
+    @Body() tokenTransferWebhookDto: TokenTransferWebhookDto
+  ) {
+    return this.smartWalletsAPIService.handleTokenTransferWebhook(
+      tokenTransferWebhookDto
+    )
   }
 }

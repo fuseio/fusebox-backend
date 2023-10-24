@@ -12,13 +12,10 @@ export class TokenTransferWebhookService {
 
   async handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
     const from = tokenTransferWebhookDto.from
-
     const txHash = tokenTransferWebhookDto.txHash
-
     const value = tokenTransferWebhookDto.value
     const symbol = tokenTransferWebhookDto.tokenSymbol
     const decimals = tokenTransferWebhookDto.tokenDecimals
-
     const blockNumber = tokenTransferWebhookDto.blockNumber
 
     // TODO: Check if this implementation supports incoming NFTs.
@@ -31,5 +28,6 @@ export class TokenTransferWebhookService {
     )
 
     await this.walletActionModel.create(walletAction)
+    return true
   }
 }

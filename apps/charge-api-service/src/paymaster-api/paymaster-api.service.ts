@@ -34,6 +34,7 @@ export class PaymasterApiService {
       const validUntil = parseInt(timestamp.toString()) + 240
       const validAfter = 0
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
+      const baseVerificationGasLimit = '70000'
 
       if (isEmpty(paymasterInfo)) {
         throw new RpcException(`Error getting paymaster for project: ${projectId} in ${env} environment`)
@@ -50,10 +51,9 @@ export class PaymasterApiService {
         env,
         paymasterInfo.entrypointAddress
       )
-
-      op.callGasLimit = callGasLimit
-      op.verificationGasLimit = verificationGasLimit
-      op.preVerificationGas = preVerificationGas
+      op.callGasLimit = op.callGasLimit ? op.callGasLimit : callGasLimit
+      op.verificationGasLimit = op.verificationGasLimit ? op.verificationGasLimit : baseVerificationGasLimit
+      op.preVerificationGas = op.preVerificationGas ? op.preVerificationGas : preVerificationGas
 
       const paymasterAddress = paymasterInfo.paymasterAddress
       const paymasterContract: any = new web3.eth.Contract(

@@ -21,11 +21,10 @@ export class SmartWalletsAAService implements SmartWalletService {
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
-      const smartWalletAddress = smartWalletsAuthDto.smartWalletAddress
-      await this.subscribeWalletToNotifications(smartWalletAddress)
-
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
       const recoveredAddress = computeAddress(publicKey)
+
+      const smartWalletAddress = smartWalletsAuthDto.smartWalletAddress
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress && smartWalletAddress) {
         const jwt = this.jwtService.sign({
@@ -36,6 +35,9 @@ export class SmartWalletsAAService implements SmartWalletService {
           },
           channels: ['transaction']
         })
+
+        await this.subscribeWalletToNotifications(smartWalletAddress)
+
         return { jwt }
       } else {
         throw new Error('Owner Address does not match recovered address in signature')

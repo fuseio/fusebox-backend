@@ -19,14 +19,14 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class PaymasterApiService {
-  constructor (
+  constructor(
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
     private paymasterWeb3ProviderService: PaymasterWeb3ProviderService,
     private httpService: HttpService
   ) { }
 
-  async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
+  async pm_sponsorUserOperation(body: any, env: any, projectId: string) {
     try {
       const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
       const [op] = body
@@ -42,6 +42,7 @@ export class PaymasterApiService {
 
       const sponsorId = paymasterInfo.sponsorId
 
+
       const {
         preVerificationGas,
         verificationGasLimit,
@@ -51,9 +52,12 @@ export class PaymasterApiService {
         env,
         paymasterInfo.entrypointAddress
       )
+      const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(baseVerificationGasLimit))
+
       op.callGasLimit = op.callGasLimit ? op.callGasLimit : callGasLimit
-      op.verificationGasLimit = op.verificationGasLimit ? op.verificationGasLimit : baseVerificationGasLimit
+      op.verificationGasLimit = actualVerificationGasLimit.toString()
       op.preVerificationGas = op.preVerificationGas ? op.preVerificationGas : preVerificationGas
+
 
       const paymasterAddress = paymasterInfo.paymasterAddress
       const paymasterContract: any = new web3.eth.Contract(
@@ -92,7 +96,7 @@ export class PaymasterApiService {
     }
   }
 
-  async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {
+  async estimateUserOpGas(op, requestEnvironment, entrypointAddress) {
     const data = {
       jsonrpc: '2.0',
       method: 'eth_estimateUserOperationGas',
@@ -128,7 +132,8 @@ export class PaymasterApiService {
           })
         )
     )
-
+    console.log('Values from estimateUserOpGas func');
+    console.log(response);
     const { result } = response
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
@@ -139,7 +144,7 @@ export class PaymasterApiService {
     }
   }
 
-  private prepareUrl (environment) {
+  private prepareUrl(environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
     const config = this.configService.get(`bundler.${environment}`)
 
@@ -150,7 +155,7 @@ export class PaymasterApiService {
     }
   }
 
-  async pm_accounts (body, env: any, projectId: string) {
+  async pm_accounts(body, env: any, projectId: string) {
     // const [entryPointAddress] = body
     const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
     return [

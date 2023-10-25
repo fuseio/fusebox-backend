@@ -2,7 +2,7 @@ import { DataLayerController } from '@app/smart-wallets-service/data-layer/data-
 import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
 import { dataLayerProviders } from '@app/smart-wallets-service/data-layer/data-layer.providers'
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import web3Config from 'apps/charge-smart-wallets-service/src/common/config/web3Config'
 import { DatabaseModule } from '@app/common'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
@@ -12,7 +12,7 @@ import Web3ProviderService from '@app/common/services/web3-provider.service'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
 import { HttpModule } from '@nestjs/axios'
-
+import { SmartWalletsEventsService } from '../smart-wallets/smart-wallets-events.service'
 @Module({
   imports: [DatabaseModule,
     ConfigModule.forFeature(web3Config),
@@ -23,6 +23,7 @@ import { HttpModule } from '@nestjs/axios'
   providers: [DataLayerService,
     ...dataLayerProviders, UserOpFactory,
     UserOpParser, TokenService, Web3ProviderService,
+    SmartWalletsEventsService,
     CentrifugoAPIService,
     CentrifugeProvider
   ]

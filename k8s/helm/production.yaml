@@ -12,7 +12,7 @@ global:
   region: "europe-west1"
 
   # DNS domain
-  domain: "fuse.io"
+  domain: "alpha.fuse.io"
 
   # Image
   image:
@@ -39,7 +39,7 @@ accounts:
   # ConfigMap
   configMap:
     auth0_issuer_url: "https://auth.fuse.io/"
-    auth0_audience: "https://accounts.fuse.io"
+    auth0_audience: "https://accounts.chargeweb3.com"
     paymaster_sandbox_contract_address_v_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"
     paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
@@ -146,7 +146,7 @@ apps:
   # ConfigMap
   configMap:
     charge_wallet_phone_number: "+15554443322"
-    charge_base_url: "https://api.fuse.io"
+    charge_base_url: "https://api.alpha.fuse.io"
     job_sleep_ms: "6000"
     unmarshal_base_url: "https://api.unmarshal.com"
     alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"

@@ -7,10 +7,10 @@ data:
   notifications_host: "0.0.0.0"
   notifications_port: "5004"
   notifications_tcp_port: "8878"
-  network_name: {{ .Values.configMap.network_name }}
-  chain_id: {{ .Values.configMap.chain_id }}
-  max_blocks: {{ .Values.configMap.max_blocks }}
-  timeout_interval: {{ .Values.configMap.timeout_interval }}
+  network_name: {{ .Values.configMap.network_name | quote }}
+  chain_id: {{ .Values.configMap.chain_id | quote }}
+  max_blocks: {{ .Values.configMap.max_blocks | quote }}
+  timeout_interval: {{ .Values.configMap.timeout_interval | quote }}
 
   # Host & Port ('notifications' use 'smart-wallets' hostname and TCP port)
   smart_wallets_host: "smart-wallets"

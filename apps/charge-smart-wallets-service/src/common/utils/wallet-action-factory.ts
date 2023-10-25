@@ -10,7 +10,7 @@ import {
   NftTransfer
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
-import { TokenReceiveAction } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive-action'
+import { TokenReceive } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 
 const singleActionMap = {
@@ -19,7 +19,8 @@ const singleActionMap = {
   approve: ApproveToken,
   leave: UnstakeTokens,
   safeTransferFrom: NftTransfer,
-  transferFrom: NftTransfer
+  transferFrom: NftTransfer,
+  tokenReceive: TokenReceive
 }
 
 const targetActionMap = {
@@ -45,7 +46,7 @@ const targetActionMap = {
   }
 }
 
-function executeSingleAction (name, targetAddress) {
+function executeSingleAction (name: string, targetAddress: string) {
   const addressActionMap = targetActionMap[targetAddress.toLowerCase()]
   const ActionClass = addressActionMap?.[name] || singleActionMap[name]
   return ActionClass ? new ActionClass() : null
@@ -104,13 +105,15 @@ export function confirmedUserOpToWalletAction (userOp: any) {
 
 export function tokenReceiveToWalletAction (
   fromWalletAddress: string,
+  toWalletAddress: string,
   txHash: string,
   tokenTransferData: {value: string, symbol: string, decimals: string},
   blockNumber: number
 ) {
-  const tokenReceiveAction = new TokenReceiveAction()
+  const action =
+    executeSingleAction('tokenReceive', toWalletAddress) as TokenReceive
 
-  return tokenReceiveAction.createWalletAction(
+  return action.executeReceiveAction(
     fromWalletAddress, txHash, tokenTransferData, blockNumber
   )
 }

@@ -57,6 +57,7 @@ export class DataLayerService {
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     const from = tokenTransferWebhookDto.from
+    const to = tokenTransferWebhookDto.to
     const txHash = tokenTransferWebhookDto.txHash
     const value = tokenTransferWebhookDto.value
     const symbol = tokenTransferWebhookDto.tokenSymbol
@@ -67,6 +68,7 @@ export class DataLayerService {
 
     const walletAction = tokenReceiveToWalletAction(
       from,
+      to,
       txHash,
       { value, symbol, decimals },
       blockNumber

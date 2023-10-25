@@ -1,6 +1,6 @@
 import WalletAction from './base'
 
-export class TokenReceiveAction extends WalletAction {
+export class TokenReceive extends WalletAction {
   constructResponse (
     fromWalletAddress: string,
     txHash: string,
@@ -26,7 +26,8 @@ export class TokenReceiveAction extends WalletAction {
     }
   }
 
-  async createWalletAction (
+  // Rename it to executeReceiveAction
+  async executeReceiveAction (
     fromWalletAddress: string,
     txHash: string,
     tokenTransferData: {value: string, symbol: string, decimals: string},

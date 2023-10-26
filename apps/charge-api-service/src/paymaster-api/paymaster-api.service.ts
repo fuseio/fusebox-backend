@@ -51,11 +51,12 @@ export class PaymasterApiService {
         env,
         paymasterInfo.entrypointAddress
       )
+
       const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
-      op.callGasLimit = op.callGasLimit ? op.callGasLimit : callGasLimit
+      op.callGasLimit = callGasLimit
       op.verificationGasLimit = actualVerificationGasLimit
-      op.preVerificationGas = op.preVerificationGas ? op.preVerificationGas : preVerificationGas
+      op.preVerificationGas = preVerificationGas
 
       const paymasterAddress = paymasterInfo.paymasterAddress
       const paymasterContract: any = new web3.eth.Contract(

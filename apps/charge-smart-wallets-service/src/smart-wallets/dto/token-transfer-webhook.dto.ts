@@ -5,7 +5,9 @@ export class TokenTransferWebhookDto {
 
   txHash: string
 
-  value: string
+  value?: string
+
+  tokenId?: number
 
   tokenType: string
 

@@ -46,6 +46,6 @@ export class SmartWalletsAPIService {
   }
 
   async handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
-    return callMSFunction(this.smartWalletsClient, 'handle-token-transfer-webhook', { tokenTransferWebhookDto })
+    return callMSFunction(this.smartWalletsClient, 'handle-token-transfer-webhook', tokenTransferWebhookDto)
   }
 }

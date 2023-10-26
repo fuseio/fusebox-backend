@@ -107,13 +107,23 @@ export function tokenReceiveToWalletAction (
   fromWalletAddress: string,
   toWalletAddress: string,
   txHash: string,
-  tokenTransferData: {value: string, symbol: string, decimals: string},
-  blockNumber: number
+  value: string,
+  tokenType: string,
+  { name, symbol, address, decimals },
+  blockNumber: number,
+  tokenId?: number
 ) {
   const action =
     executeSingleAction('tokenReceive', toWalletAddress) as TokenReceive
 
   return action.executeReceiveAction(
-    fromWalletAddress, txHash, tokenTransferData, blockNumber
+    fromWalletAddress,
+    toWalletAddress,
+    txHash,
+    value,
+    tokenType,
+    { name, symbol, address, decimals },
+    blockNumber,
+    tokenId
   )
 }

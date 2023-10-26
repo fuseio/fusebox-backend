@@ -60,18 +60,25 @@ export class DataLayerService {
     const to = tokenTransferWebhookDto.to
     const txHash = tokenTransferWebhookDto.txHash
     const value = tokenTransferWebhookDto.value
+    const tokenType = tokenTransferWebhookDto.tokenType
+
+    const address = tokenTransferWebhookDto.tokenAddress
+    const name = tokenTransferWebhookDto.tokenName
+
     const symbol = tokenTransferWebhookDto.tokenSymbol
     const decimals = tokenTransferWebhookDto.tokenDecimals
     const blockNumber = tokenTransferWebhookDto.blockNumber
-
-    // TODO: Check if this implementation supports incoming NFTs.
+    const tokenId = tokenTransferWebhookDto.tokenId
 
     const walletAction = tokenReceiveToWalletAction(
       from,
       to,
       txHash,
-      { value, symbol, decimals },
-      blockNumber
+      value,
+      tokenType,
+      { name, symbol, address, decimals },
+      blockNumber,
+      tokenId
     )
 
     await this.paginatedWalletActionModel.create(walletAction)

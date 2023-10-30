@@ -1,4 +1,4 @@
-# Default values for charge-backend.
+# Default values for fusebox-backend.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -22,11 +22,15 @@ global:
 
 # - Load balancing -
 gateway-api:
+  enabled: true
+
   name: "fusebox-staging-lb"
   global_address: "fusebox-staging-lb"
 
 # - Components -
 accounts:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -50,6 +54,8 @@ accounts:
     mongo_uri: ""
 
 api:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -81,6 +87,8 @@ api:
     paymaster_sandbox_signer_private_key_v_0_1_0: ""
 
 relay:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -96,6 +104,8 @@ relay:
     relay_secret: ""
 
 notifications:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -120,6 +130,8 @@ notifications:
     full_archive_rpc_url: ""
 
 network:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -134,6 +146,8 @@ network:
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
 
 apps:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -164,6 +178,8 @@ apps:
     alchemy_auth_key: ""
 
 smart-wallets:
+  enabled: true
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -188,6 +204,8 @@ smart-wallets:
     centrifugo_api_key: ""
 
 centrifugo:
+  enabled: true
+
   # Image
   image:
     repository: "centrifugo/centrifugo"
@@ -209,3 +227,45 @@ centrifugo:
 # secrets:
 #   ...
 #   ...
+
+# Note: for Staging environment we use Skandha Production endpoint
+skandha:
+  enabled: false
+
+  # Image
+  image:
+    repository: "etherspot/skandha"
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "0.0.44"
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # ConfigMap
+  configMap:
+    skandha_networks: ""
+    skandha_fuse_estimation_static_buffer: ""
+    skandha_fuse_sparknet_estimation_static_buffer: ""
+    skandha_fuse_ban_slack: ""
+    skandha_fuse_sparknet_ban_slack: ""
+    skandha_fuse_throttling_slack: ""
+    skandha_fuse_sparknet_throttling_slack: ""
+    skandha_fuse_min_inclusion_denominator: ""
+    skandha_fuse_sparknet_min_inclusion_denominator: ""
+
+  # Secrets
+  secrets:
+    skandha_fuse_sparknet_relayer: ""
+    skandha_fuse_sparknet_beneficiary: ""
+    skandha_fuse_sparknet_rpc: ""
+    skandha_fuse_sparknet_entrypoints: ""
+    skandha_fuse_relayer: ""
+    skandha_fuse_beneficiary: ""
+    skandha_fuse_rpc: ""
+    skandha_fuse_entrypoints: ""

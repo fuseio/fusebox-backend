@@ -34,6 +34,7 @@ export class PaymasterApiService {
       const validUntil = parseInt(timestamp.toString()) + 240
       const validAfter = 0
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
+      const minVerificationGasLimit = '140000'
 
       if (isEmpty(paymasterInfo)) {
         throw new RpcException(`Error getting paymaster for project: ${projectId} in ${env} environment`)
@@ -51,8 +52,10 @@ export class PaymasterApiService {
         paymasterInfo.entrypointAddress
       )
 
+      const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
+
       op.callGasLimit = callGasLimit
-      op.verificationGasLimit = verificationGasLimit
+      op.verificationGasLimit = actualVerificationGasLimit
       op.preVerificationGas = preVerificationGas
 
       const paymasterAddress = paymasterInfo.paymasterAddress
@@ -128,7 +131,8 @@ export class PaymasterApiService {
           })
         )
     )
-
+    console.log('Values from estimateUserOpGas func')
+    console.log(response)
     const { result } = response
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer

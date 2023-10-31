@@ -6,12 +6,13 @@ import {
   HttpException,
   CallHandler,
   InternalServerErrorException,
-  Inject
+  Inject,
+  HttpStatus
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, Observable } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { isEmpty, capitalize } from 'lodash'
+import { isEmpty, capitalize, isNil } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
@@ -56,6 +57,9 @@ export class BundlerApiInterceptor implements NestInterceptor {
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
       const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result }
       try {
+        if (isNil(userOp.userOpHash)) {
+          throw new HttpException('UserOp should contain userOpHash', HttpStatus.BAD_REQUEST)
+        }
         callMSFunction(this.dataLayerClient, 'record-user-op', userOp)
       } catch (error) {
         console.log(error)

@@ -15,10 +15,12 @@ import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 import { getEnvPath } from '@app/common/utils/env.helper'
 import path from 'path'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
+import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
 
 @Module({
   imports: [
     DatabaseModule,
+    ChargeApiModule,
     NotificationsModule,
     ConfigModule.forRoot({
       envFilePath: getEnvPath(path.join(__dirname, 'common/config')),

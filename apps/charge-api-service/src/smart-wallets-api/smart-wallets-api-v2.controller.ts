@@ -7,7 +7,6 @@ import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.deco
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 
-@UseGuards(IsPrdOrSbxKeyGuard)
 @Controller({ path: 'smart-wallets', version: '2' })
 export class SmartWalletsAPIV2Controller {
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
@@ -17,7 +16,7 @@ export class SmartWalletsAPIV2Controller {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), IsPrdOrSbxKeyGuard)
   @Get('actions')
   getHistoricalTxs (
     @SmartWalletOwner() user: ISmartWalletUser,
@@ -29,11 +28,13 @@ export class SmartWalletsAPIV2Controller {
   }
 
   @Post('token-transfers')
-  handleTokenTransferWebhook (
+  async handleTokenTransferWebhook (
     @Body() tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
-    return this.smartWalletsAPIService.handleTokenTransferWebhook(
+    await this.smartWalletsAPIService.handleTokenTransferWebhook(
       tokenTransferWebhookDto
     )
+
+    return { data: 'ok' }
   }
 }

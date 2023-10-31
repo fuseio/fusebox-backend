@@ -72,9 +72,12 @@ export class TokenReceive extends WalletAction {
       })
     }
 
+    const name =
+      tokenTransferData.type === ERC_721_TYPE ? 'nftReceive' : 'tokenReceive'
+
     return {
       walletAddress: fromWalletAddress,
-      name: 'tokenReceive',
+      name,
       status: 'success',
       sent: [tokenTransferData],
       txHash,

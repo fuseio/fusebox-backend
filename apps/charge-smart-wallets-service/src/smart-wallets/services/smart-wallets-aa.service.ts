@@ -5,6 +5,7 @@ import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-
 import { SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
 import { NotificationsService } from '@app/api-service/notifications/notifications.service'
 import { ConfigService } from '@nestjs/config'
+import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
 // import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 // import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
@@ -15,7 +16,8 @@ export class SmartWalletsAAService implements SmartWalletService {
   constructor (
     private readonly jwtService: JwtService,
     private readonly notificationsService: NotificationsService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private chargeApiService: ChargeApiService
     // private readonly centrifugoAPIService: CentrifugoAPIService,
   ) { }
 
@@ -49,12 +51,9 @@ export class SmartWalletsAAService implements SmartWalletService {
   }
 
   private async subscribeWalletToNotifications (walletAddress: string) {
-    const webhookID =
+    const webhookId =
       this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
 
-    return this.notificationsService.createAddresses({
-      webhookId: webhookID, addresses: [walletAddress]
-    })
+    return this.chargeApiService.addWebhookAddress({ walletAddress, webhookId })
   }
-  // async getHistoricalTxs (user: ISmartWalletUser) { }
 }

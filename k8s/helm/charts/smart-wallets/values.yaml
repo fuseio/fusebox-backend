@@ -56,3 +56,6 @@ secrets:
   centrifugo_jwt: ""
   # - Centrifugo - API key
   centrifugo_api_key: ""
+  charge_public_key: ""
+  charge_secret_key: ""
+  incoming_token_transfers_webhook_id: ""

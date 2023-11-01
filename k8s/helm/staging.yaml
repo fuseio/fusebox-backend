@@ -158,6 +158,7 @@ apps:
     charge_public_key: ""
     charge_secret_key: ""
     charge_webhook_id: ""
+    incoming_token_transfers_webhook_id: ""
     unmarshal_auth_key: ""
     charge_payments_ethereum_mnemonic: ""
     alchemy_webhook_id: ""
@@ -186,6 +187,8 @@ smart-wallets:
     fuse_wallet_backend_jwt: ""
     centrifugo_jwt: ""
     centrifugo_api_key: ""
+    charge_public_key: ""
+    charge_secret_key: ""
 
 centrifugo:
   # Image

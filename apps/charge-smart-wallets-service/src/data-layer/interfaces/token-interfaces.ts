@@ -14,6 +14,7 @@ interface ERC721Transfer {
     symbol: string;
     address: string;
     decimals: number;
+    from?: string;
     to: string;
     type: string;
     tokenId: number;

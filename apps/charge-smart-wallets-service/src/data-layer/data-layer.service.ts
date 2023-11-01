@@ -62,7 +62,7 @@ export class DataLayerService {
     const txHash = tokenTransferWebhookDto.txHash
     const value = tokenTransferWebhookDto.value
     const tokenType = tokenTransferWebhookDto.tokenType
-
+    const direction = tokenTransferWebhookDto.direction
     const address = tokenTransferWebhookDto.tokenAddress
     const name = tokenTransferWebhookDto.tokenName
 
@@ -81,8 +81,9 @@ export class DataLayerService {
       blockNumber,
       tokenId
     )
-
-    await this.paginatedWalletActionModel.create(walletAction)
+    if (direction === 'incoming') {
+      return this.paginatedWalletActionModel.create(walletAction)
+    }
     return true
   }
 

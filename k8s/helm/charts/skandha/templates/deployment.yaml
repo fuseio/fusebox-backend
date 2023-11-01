@@ -153,12 +153,6 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
 
-      # Volumes
-      volumes:
-        - name: skandha
-          persistentVolumeClaim:
-            claimName: skandha
-
           # Resources
           resources:
             requests:
@@ -167,3 +161,9 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
+
+      # Volumes
+      volumes:
+        - name: skandha
+          persistentVolumeClaim:
+            claimName: skandha

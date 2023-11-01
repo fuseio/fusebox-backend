@@ -1,3 +1,4 @@
+import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import {
   WalletAction,
   NativeTransfer,
@@ -9,13 +10,17 @@ import {
   NftTransfer
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
+import { TokenReceive } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive'
+import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
+
 const singleActionMap = {
   nativeTransfer: NativeTransfer,
   transfer: ERC20Transfer,
   approve: ApproveToken,
   leave: UnstakeTokens,
   safeTransferFrom: NftTransfer,
-  transferFrom: NftTransfer
+  transferFrom: NftTransfer,
+  tokenReceive: TokenReceive
 }
 
 const targetActionMap = {
@@ -41,7 +46,7 @@ const targetActionMap = {
   }
 }
 
-function executeSingleAction (name, targetAddress) {
+function executeSingleAction (name: string, targetAddress: string) {
   const addressActionMap = targetActionMap[targetAddress.toLowerCase()]
   const ActionClass = addressActionMap?.[name] || singleActionMap[name]
   return ActionClass ? new ActionClass() : null
@@ -78,7 +83,9 @@ function getWalletActionType (parsedUserOp): WalletAction {
   throw new Error('Unsupported wallet function name')
 }
 
-export async function parsedUserOpToWalletAction (parsedUserOp, tokenService) {
+export async function parsedUserOpToWalletAction (
+  parsedUserOp: UserOp, tokenService: TokenService
+) {
   const actionType = getWalletActionType(parsedUserOp)
   if (!actionType) {
     throw new Error('Unsupported action')
@@ -94,4 +101,29 @@ export function confirmedUserOpToWalletAction (userOp: any) {
     status: userOp.success ? 'success' : 'failed',
     blockNumber: userOp.blockNumber
   }
+}
+
+export function tokenReceiveToWalletAction (
+  fromWalletAddress: string,
+  toWalletAddress: string,
+  txHash: string,
+  value: string,
+  tokenType: string,
+  { name, symbol, address, decimals },
+  blockNumber: number,
+  tokenId?: number
+) {
+  const action =
+    executeSingleAction('tokenReceive', toWalletAddress) as TokenReceive
+
+  return action.executeReceiveAction(
+    fromWalletAddress,
+    toWalletAddress,
+    txHash,
+    value,
+    tokenType,
+    { name, symbol, address, decimals },
+    blockNumber,
+    tokenId
+  )
 }

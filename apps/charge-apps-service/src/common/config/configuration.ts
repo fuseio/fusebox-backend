@@ -1,4 +1,6 @@
 export default () => ({
+  CHARGE_BASE_URL: process.env.CHARGE_BASE_URL,
+  CHARGE_PUBLIC_KEY: process.env.CHARGE_PUBLIC_KEY,
   paymentsAllowedTokens: [
     {
       tokenSymbol: 'USDC',

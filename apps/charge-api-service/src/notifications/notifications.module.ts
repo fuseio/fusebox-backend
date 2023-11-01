@@ -20,6 +20,7 @@ import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
     ApiKeyModule
   ],
   providers: [NotificationsService],
-  controllers: [NotificationsController]
+  controllers: [NotificationsController],
+  exports: [NotificationsService]
 })
 export class NotificationsModule {}

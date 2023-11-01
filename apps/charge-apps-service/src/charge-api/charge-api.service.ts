@@ -162,12 +162,11 @@ export class ChargeApiService {
     return responseData
   }
 
-  async addWebhookAddress (address: string) {
+  async addWebhookAddress (params: { walletAddress: string, webhookId: string }) {
     const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${this.chargePublicKey}`
-
     const requestBody = {
-      webhookId: this.chargeWebhookId,
-      addresses: [address]
+      webhookId: params.webhookId,
+      addresses: [params.walletAddress]
     }
 
     await this.httpProxyPost(url, requestBody)

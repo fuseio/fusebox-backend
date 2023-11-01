@@ -20,7 +20,7 @@ export const WalletActionSchema = new mongoose.Schema(
     status: { type: String, required: true, default: false },
     received: [ercTransferMetadata],
     sent: [ercTransferMetadata],
-    userOpHash: { type: String, required: true },
+    userOpHash: { type: String },
     txHash: { type: String },
     blockNumber: { type: Number },
     value: { type: Number },

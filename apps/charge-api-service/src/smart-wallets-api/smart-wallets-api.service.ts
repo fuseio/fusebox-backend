@@ -5,6 +5,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
+import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 
 @Injectable()
 export class SmartWalletsAPIService {
@@ -42,5 +43,9 @@ export class SmartWalletsAPIService {
 
   async getWalletActions (walletAddress, page, limit, tokenAddress): Promise<any> {
     return callMSFunction(this.smartWalletsClient, 'get-all-wallet-actions', { walletAddress, page, limit, tokenAddress })
+  }
+
+  async handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
+    return callMSFunction(this.smartWalletsClient, 'handle-token-transfer-webhook', tokenTransferWebhookDto)
   }
 }

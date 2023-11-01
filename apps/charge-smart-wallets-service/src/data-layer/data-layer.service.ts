@@ -2,12 +2,13 @@ import { Model, PaginateModel } from 'mongoose'
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
-import { parsedUserOpToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
+import { parsedUserOpToWalletAction, tokenReceiveToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
 import { UserOpFactory } from '../common/services/user-op-factory.service'
 import { confirmedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { isNil } from 'lodash'
 import { TokenService } from '../common/services/token.service'
+import { TokenTransferWebhookDto } from '../smart-wallets/dto/token-transfer-webhook.dto'
 
 @Injectable()
 export class DataLayerService {
@@ -24,7 +25,7 @@ export class DataLayerService {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
 
     const response = this.userOpModel.create(userOp)
-    this.createWalletAction(userOp)
+    this.createWalletActionFromUserOp(userOp)
     return response
   }
 
@@ -39,7 +40,7 @@ export class DataLayerService {
     return updatedUserOp
   }
 
-  async createWalletAction (parsedUserOp: any) {
+  async createWalletActionFromUserOp (parsedUserOp: UserOp) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
       return this.paginatedWalletActionModel.create(walletAction)
@@ -51,6 +52,38 @@ export class DataLayerService {
   async updateWalletAction (userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     return this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction)
+  }
+
+  async handleTokenTransferWebhook (
+    tokenTransferWebhookDto: TokenTransferWebhookDto
+  ) {
+    const from = tokenTransferWebhookDto.from
+    const to = tokenTransferWebhookDto.to
+    const txHash = tokenTransferWebhookDto.txHash
+    const value = tokenTransferWebhookDto.value
+    const tokenType = tokenTransferWebhookDto.tokenType
+
+    const address = tokenTransferWebhookDto.tokenAddress
+    const name = tokenTransferWebhookDto.tokenName
+
+    const symbol = tokenTransferWebhookDto.tokenSymbol
+    const decimals = tokenTransferWebhookDto.tokenDecimals
+    const blockNumber = tokenTransferWebhookDto.blockNumber
+    const tokenId = tokenTransferWebhookDto.tokenId
+
+    const walletAction = tokenReceiveToWalletAction(
+      from,
+      to,
+      txHash,
+      value,
+      tokenType,
+      { name, symbol, address, decimals },
+      blockNumber,
+      tokenId
+    )
+
+    await this.paginatedWalletActionModel.create(walletAction)
+    return true
   }
 
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {

@@ -22,7 +22,10 @@ A Helm chart for Kubernetes related smart-wallets component
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
 | secrets.centrifugo_api_key | string | `""` |  |
 | secrets.centrifugo_jwt | string | `""` | Centrifugo - JWT |
+| secrets.charge_public_key | string | `""` |  |
+| secrets.charge_secret_key | string | `""` |  |
 | secrets.fuse_wallet_backend_jwt | string | `""` | Fuse wallet backend JWT |
+| secrets.incoming_token_transfers_webhook_id | string | `""` |  |
 | secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
 | secrets.smart_wallets_jwt_secret | string | `""` | smart-wallets - JWT secret |
 

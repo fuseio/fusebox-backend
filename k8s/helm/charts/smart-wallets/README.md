@@ -20,12 +20,12 @@ A Helm chart for Kubernetes related smart-wallets component
 | global.region | string | `""` | Google Cloud - Region |
 | resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
-| secrets.centrifugo_api_key | string | `""` |  |
+| secrets.centrifugo_api_key | string | `""` | Centrifugo - API key |
 | secrets.centrifugo_jwt | string | `""` | Centrifugo - JWT |
-| secrets.charge_public_key | string | `""` |  |
-| secrets.charge_secret_key | string | `""` |  |
+| secrets.charge_public_key | string | `""` | The public key of the project. |
+| secrets.charge_secret_key | string | `""` | The secret key of the project. |
 | secrets.fuse_wallet_backend_jwt | string | `""` | Fuse wallet backend JWT |
-| secrets.incoming_token_transfers_webhook_id | string | `""` |  |
+| secrets.incoming_token_transfers_webhook_id | string | `""` | The ID of the incoming token transfers webhook. This webhook is used to create wallet actions from incoming token transfers. |
 | secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
 | secrets.smart_wallets_jwt_secret | string | `""` | smart-wallets - JWT secret |
 

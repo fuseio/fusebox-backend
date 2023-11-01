@@ -43,6 +43,8 @@ configMap:
   centrifugo_api_url: ""
   # -- Legacy - Fuse wallet API URL
   legacy_fuse_wallet_api_url: ""
+  # -- Charge - Base URL
+  charge_base_url: ""
 
 # Secrets (through environment variables)
 secrets:
@@ -62,5 +64,3 @@ secrets:
   charge_secret_key: ""
   # -- The ID of the incoming token transfers webhook. This webhook is used to create wallet actions from incoming token transfers.
   incoming_token_transfers_webhook_id: ""
-  # -- Charge - Base URL
-  charge_base_url: ""

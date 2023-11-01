@@ -186,6 +186,9 @@ smart-wallets:
     fuse_wallet_backend_jwt: ""
     centrifugo_jwt: ""
     centrifugo_api_key: ""
+    charge_public_key: ""
+    charge_secret_key: ""
+    incoming_token_transfers_webhook_id: ""
 
 centrifugo:
   # Image

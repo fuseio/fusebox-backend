@@ -27,12 +27,12 @@ export class TokenReceive extends WalletAction {
       ...token,
       type: tokenType === 'FUSE' ? NATIVE_TOKEN_TYPE : tokenType,
       value,
-      to: targetAddress,
+      from: targetAddress,
       tokenId
     } as ERC20Transfer
   }
 
-  nftDescGenerator (nftInfo: { symbol: string, tokenId: number, from: string}) {
+  nftDescGenerator (nftInfo: { symbol: string, tokenId: number, from: string }) {
     return `${nftInfo.symbol} #${nftInfo.tokenId} received from ${nftInfo.from}`
   }
 
@@ -97,14 +97,14 @@ export class TokenReceive extends WalletAction {
     tokenId?: number
   ) {
     const tokenTransferData = this.constructTokenTransferData(
-      toWalletAddress,
+      fromWalletAddress,
       value,
       tokenType,
       { name, symbol, address, decimals }
     )
 
     return this.constructResponse(
-      fromWalletAddress, txHash, tokenTransferData, blockNumber, tokenId
+      toWalletAddress, txHash, tokenTransferData, blockNumber, tokenId
     )
   }
 }

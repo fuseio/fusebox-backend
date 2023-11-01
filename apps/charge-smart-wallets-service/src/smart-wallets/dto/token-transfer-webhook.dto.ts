@@ -1,6 +1,8 @@
 export class TokenTransferWebhookDto {
   to: string
 
+  direction: string
+
   from: string
 
   txHash: string

@@ -26,7 +26,7 @@ export class ChargeApiService {
   }
 
   get chargeBaseUrl () {
-    return this.configService.get('CHARGE_BASE_URL')
+    return this.configService.getOrThrow('CHARGE_BASE_URL')
   }
 
   get unmarshalBaseUrl () {
@@ -38,7 +38,7 @@ export class ChargeApiService {
   }
 
   get chargePublicKey () {
-    return this.configService.get('CHARGE_PUBLIC_KEY')
+    return this.configService.getOrThrow('CHARGE_PUBLIC_KEY')
   }
 
   get chargeWebhookId () {
@@ -163,6 +163,7 @@ export class ChargeApiService {
   }
 
   async addWebhookAddress (params: { walletAddress: string, webhookId: string }) {
+    console.log('Adding address to the webhook...')
     const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${this.chargePublicKey}`
     const requestBody = {
       webhookId: params.webhookId,

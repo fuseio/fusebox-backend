@@ -51,8 +51,10 @@ export class SmartWalletsAAService implements SmartWalletService {
   }
 
   private async subscribeWalletToNotifications (walletAddress: string) {
+    console.log('Subscribing wallets to notifications...')
+
     const webhookId =
-      this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
+      this.configService.getOrThrow('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
 
     return this.chargeApiService.addWebhookAddress({ walletAddress, webhookId })
   }

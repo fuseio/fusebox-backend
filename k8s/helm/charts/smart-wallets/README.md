@@ -22,6 +22,7 @@ A Helm chart for Kubernetes related smart-wallets component
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
 | secrets.centrifugo_api_key | string | `""` | Centrifugo - API key |
 | secrets.centrifugo_jwt | string | `""` | Centrifugo - JWT |
+| secrets.charge_base_url | string | `""` | Charge - Base URL |
 | secrets.charge_public_key | string | `""` | The public key of the project. |
 | secrets.charge_secret_key | string | `""` | The secret key of the project. |
 | secrets.fuse_wallet_backend_jwt | string | `""` | Fuse wallet backend JWT |

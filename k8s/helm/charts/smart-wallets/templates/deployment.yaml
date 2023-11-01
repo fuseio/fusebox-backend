@@ -71,6 +71,11 @@ spec:
                 configMapKeyRef:
                   name: smart-wallets
                   key: legacy_fuse_wallet_api_url
+            - name: CHARGE_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: charge_base_url
 
             # Secrets
             - name: MONGO_URI

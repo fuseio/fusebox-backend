@@ -73,7 +73,7 @@ export class DataLayerService {
 
     const walletAction = tokenReceiveToWalletAction(
       from,
-      to,
+      to.toLowerCase(),
       txHash,
       value,
       tokenType,

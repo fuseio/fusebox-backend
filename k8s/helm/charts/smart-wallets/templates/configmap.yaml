@@ -10,3 +10,4 @@ data:
   centrifugo_uri: {{ .Values.configMap.centrifugo_uri | quote }}
   centrifugo_api_url: {{ .Values.configMap.centrifugo_api_url | quote }}
   legacy_fuse_wallet_api_url: {{ .Values.configMap.legacy_fuse_wallet_api_url | quote }}
+  charge_base_url: {{ .Values.configMap.charge_base_url | quote }}

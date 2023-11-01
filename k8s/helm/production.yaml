@@ -194,6 +194,7 @@ smart-wallets:
     centrifugo_uri: "wss://ws.fuse.io/connection/websocket"
     centrifugo_api_url: "https://ws.fuse.io/api"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
+    charge_base_url: "https://api.alpha.fuse.io"
 
   # Secrets (through CI/CD process via environment variables)
   secrets:

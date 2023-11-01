@@ -10,6 +10,7 @@ A Helm chart for Kubernetes related smart-wallets component
 |-----|------|---------|-------------|
 | configMap.centrifugo_api_url | string | `""` | Centrifugo - API URL |
 | configMap.centrifugo_uri | string | `""` | Centrifugo - URL |
+| configMap.charge_base_url | string | `""` | Charge - Base URL |
 | configMap.legacy_fuse_wallet_api_url | string | `""` | Legacy - Fuse wallet API URL |
 | global.domain | string | `""` | DNS domain |
 | global.environment | string | `""` | Label 'environment' |

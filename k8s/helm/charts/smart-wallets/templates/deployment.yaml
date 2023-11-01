@@ -71,6 +71,7 @@ spec:
                 configMapKeyRef:
                   name: smart-wallets
                   key: legacy_fuse_wallet_api_url
+
             # Secrets
             - name: MONGO_URI
               valueFrom:

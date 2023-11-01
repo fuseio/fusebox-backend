@@ -98,6 +98,21 @@ spec:
                 secretKeyRef:
                   name: smart-wallets
                   key: centrifugo_api_key
+            - name: CHARGE_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: charge_public_key
+            - name: CHARGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: charge_secret_key
+            - name: INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+              valueFrom:
+                secretKeyRef:
+                  name: smart-wallets
+                  key: incoming_token_transfers_webhook_id
 
           # Ports
           ports:

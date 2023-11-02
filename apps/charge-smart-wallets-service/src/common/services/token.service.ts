@@ -1,4 +1,3 @@
-import Web3 from 'web3'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { Token } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { Injectable } from '@nestjs/common'

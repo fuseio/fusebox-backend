@@ -1,5 +1,5 @@
 import { Model, PaginateModel } from 'mongoose'
-import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import { parsedUserOpToWalletAction, tokenReceiveToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'

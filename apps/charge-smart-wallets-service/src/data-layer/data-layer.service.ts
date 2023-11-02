@@ -1,5 +1,5 @@
 import { Model, PaginateModel } from 'mongoose'
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { userOpString, walletActionString } from './data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 import { parsedUserOpToWalletAction, tokenReceiveToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
@@ -12,6 +12,8 @@ import { TokenTransferWebhookDto } from '../smart-wallets/dto/token-transfer-web
 
 @Injectable()
 export class DataLayerService {
+  private readonly logger = new Logger(DataLayerService.name)
+
   constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
@@ -71,6 +73,9 @@ export class DataLayerService {
     const blockNumber = tokenTransferWebhookDto.blockNumber
     const tokenId = tokenTransferWebhookDto.tokenId
 
+    this.logger.debug('Handling token transfer webhook...')
+    this.logger.debug(`TX hash: ${txHash}, direction: ${direction}`)
+
     const walletAction = tokenReceiveToWalletAction(
       from,
       to.toLowerCase(),
@@ -82,8 +87,15 @@ export class DataLayerService {
       tokenId
     )
     if (direction === 'incoming') {
+      this.logger.debug('Creating a new receive wallet action...')
       return this.paginatedWalletActionModel.create(walletAction)
     }
+
+    this.logger.debug(
+      'Not creating a new receive wallet action ' +
+      'since the direction is not incoming...'
+    )
+
     return true
   }
 

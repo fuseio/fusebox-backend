@@ -38,8 +38,8 @@ export class SmartWalletsAPIV2Controller {
     this.logger.debug(
       'A request has been made to token-transfers:',
       JSON.stringify(tokenTransferWebhookDto),
-      `Headers: ${headers}`,
-      `Request: ${request}`
+      `headers.get('host'): ${headers.get('host')}`,
+      `headers.get('origin'): ${headers.get('origin')}`
     )
 
     await this.smartWalletsAPIService.handleTokenTransferWebhook(

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Query, Get, Logger } from '@nestjs/common'
+import { Controller, Post, Body, UseGuards, Query, Get, Logger, Headers, Req } from '@nestjs/common'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart-wallets-api.service'
@@ -31,10 +31,15 @@ export class SmartWalletsAPIV2Controller {
 
   @Post('token-transfers')
   async handleTokenTransferWebhook (
+    @Headers() headers: Headers,
+    @Req() request: Request,
     @Body() tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     this.logger.debug(
-      `A request has been made to token-transfers: ${JSON.stringify(tokenTransferWebhookDto)}`
+      'A request has been made to token-transfers:',
+      JSON.stringify(tokenTransferWebhookDto),
+      `Headers: ${JSON.stringify(headers)}`,
+      `Request: ${JSON.stringify(request)}`
     )
 
     await this.smartWalletsAPIService.handleTokenTransferWebhook(

@@ -93,16 +93,9 @@ export class WebhooksService {
   }
 
   async getAddressWatchers (address: string): Promise<any> {
-    this.logger.debug(`Getting address watchers for wallet address: ${address}`)
-
     const addressWatchers = await this.webhookAddressModel
       .find({ lowercaseAddress: address.toLowerCase() })
       .populate('webhookId', 'webhookUrl eventType projectId')
-
-    this.logger.debug(
-      `The wallet address ${address} has been added` +
-      `to ${addressWatchers.length} address watchers.`
-    )
 
     return addressWatchers.map(watcher => {
       const watcherJson = watcher.toJSON()

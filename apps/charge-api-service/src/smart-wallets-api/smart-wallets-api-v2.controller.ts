@@ -34,7 +34,7 @@ export class SmartWalletsAPIV2Controller {
     @Body() tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     this.logger.debug(
-      `A request has been made to token-transfers: ${tokenTransferWebhookDto}`
+      `A request has been made to token-transfers: ${JSON.stringify(tokenTransferWebhookDto)}`
     )
 
     await this.smartWalletsAPIService.handleTokenTransferWebhook(

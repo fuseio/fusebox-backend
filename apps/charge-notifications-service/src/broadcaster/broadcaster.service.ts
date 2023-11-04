@@ -39,13 +39,12 @@ export class BroadcasterService {
 
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
-          webhookEvent.numberOfTries++
           this.logger.log(`Starting sending ${webhookEvent}`)
           const response = await this.webhookSendService.sendData(webhookEvent)
 
           this.logger.debug(
             `Response status: ${response.status}, ` +
-            `response body: ${response.data}`
+            `response body: ${JSON.stringify(response.data)}`
           )
 
           this.logger.log(`Completed sending ${webhookEvent}`)
@@ -57,9 +56,13 @@ export class BroadcasterService {
 
           webhookEvent.success = true
         } catch (err) {
-          let errorStatus = err.getStatus()
-          let errorResponse = err.getResponse().toString()
-          this.logger.error(`Webhook ${webhookEvent._id} returned error. Error message: ${err} \nStack: ${err?.stack}`)
+          let errorStatus: number, errorResponse: string
+
+          this.logger.error(
+            `Webhook ${webhookEvent._id} returned error. `,
+            `Error message: ${err} \nStack: ${err?.stack}`
+          )
+
           if (err instanceof HttpException) {
             errorStatus = err.getStatus()
             errorResponse = err.getResponse().toString()
@@ -67,8 +70,14 @@ export class BroadcasterService {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR
             errorResponse = JSON.stringify(err)
           }
-          webhookEvent.responses.push(this.getResponseDetailsWithDate(errorStatus, errorResponse))
-          webhookEvent.retryAfter = new Date(this.getNewRetryAfterDate(webhookEvent))
+
+          webhookEvent.responses.push(
+            this.getResponseDetailsWithDate(errorStatus, errorResponse)
+          )
+
+          webhookEvent.retryAfter = new Date(
+            this.getNewRetryAfterDate(webhookEvent)
+          )
         } finally {
           try {
             webhookEvent.numberOfTries++

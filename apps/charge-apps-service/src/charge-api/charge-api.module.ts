@@ -14,7 +14,7 @@ import configuration from '@app/apps-service/common/config/configuration'
       useFactory: async (configService: ConfigService) => ({
         headers: {
           'Content-Type': 'application/json',
-          'API-SECRET': `${configService.get('CHARGE_SECRET_KEY')}`
+          'API-SECRET': `${configService.getOrThrow('CHARGE_SECRET_KEY')}`
         }
       }),
       inject: [ConfigService]

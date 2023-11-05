@@ -89,7 +89,7 @@ export class DataLayerService {
 
     if (direction === 'incoming') {
       const receiveWalletAction =
-        this.paginatedWalletActionModel.findOne({ txHash })
+        await this.paginatedWalletActionModel.findOne({ txHash })
 
       if (receiveWalletAction) {
         this.logger.debug(

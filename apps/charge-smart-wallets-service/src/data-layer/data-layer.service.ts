@@ -86,7 +86,20 @@ export class DataLayerService {
       blockNumber,
       tokenId
     )
+
     if (direction === 'incoming') {
+      const receiveWalletAction =
+        this.paginatedWalletActionModel.findOne({ txHash })
+
+      if (receiveWalletAction) {
+        this.logger.debug(
+          `Receive wallet action for tx ${txHash} already exists.`,
+          'Not creating another receive wallet action for this tx.'
+        )
+
+        return
+      }
+
       this.logger.debug('Creating a new receive wallet action...')
       return this.paginatedWalletActionModel.create(walletAction)
     }

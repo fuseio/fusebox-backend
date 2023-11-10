@@ -23,12 +23,18 @@ export class SmartWalletsAAService implements SmartWalletService {
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
+      this.logger.debug('Recovering the public key...')
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
+      this.logger.debug('Recovered the public key.')
+
+      this.logger.debug('Computing the address...')
       const recoveredAddress = computeAddress(publicKey)
+      this.logger.debug('Computed the address.')
 
       const smartWalletAddress = smartWalletsAuthDto.smartWalletAddress
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress && smartWalletAddress) {
+        this.logger.debug('Signing the JWT...')
         const jwt = this.jwtService.sign({
           sub: recoveredAddress,
           info: {
@@ -40,6 +46,7 @@ export class SmartWalletsAAService implements SmartWalletService {
 
         await this.subscribeWalletToNotifications(smartWalletAddress)
 
+        this.logger.debug('Returning the JWT...')
         return { jwt }
       } else {
         throw new Error('Owner Address does not match recovered address in signature')
@@ -51,6 +58,8 @@ export class SmartWalletsAAService implements SmartWalletService {
   }
 
   private async subscribeWalletToNotifications (walletAddress: string) {
+    this.logger.debug('Subscribing wallet to notifications...')
+
     const webhookId =
       this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
 

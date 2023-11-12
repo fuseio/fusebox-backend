@@ -2,7 +2,7 @@ import GraphQLService from '@app/common/services/graphql.service'
 import { Controller } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { MessagePattern } from '@nestjs/microservices'
-import { getCollectiblesByOwner } from '../common/constants/graph-queries/nfts'
+import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
 
 @Controller('graphql')
 export class GraphqlController {

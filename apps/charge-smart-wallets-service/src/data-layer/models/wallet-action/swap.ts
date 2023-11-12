@@ -1,6 +1,6 @@
 import { ERC_20_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import WalletAction from './base'
-import { ERC20Transfer } from '../../interfaces/token-interfaces'
+import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
+import { ERC20Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
 import { formatUnits } from 'nestjs-ethers'

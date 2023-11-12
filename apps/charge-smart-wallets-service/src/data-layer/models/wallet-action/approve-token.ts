@@ -1,6 +1,6 @@
 import { ERC_20_TYPE, ERC_721_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import WalletAction from './base'
-import { ERC20Transfer } from '../../interfaces/token-interfaces'
+import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
+import { ERC20Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 
 export default class ApproveToken extends WalletAction {
   async constructTokenTransferData ({ callData, targetAddress }) {

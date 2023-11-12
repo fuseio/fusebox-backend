@@ -8,7 +8,7 @@ import { UserOpEventData } from '@app/notifications-service/common/interfaces/ev
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { EventsScannerService } from './events-scanner.service'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { LogFilter } from './interfaces/logs-filter'
 import ENTRY_POINT_ABI from '@app/notifications-service/common/constants/abi/entryPoint.json'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'

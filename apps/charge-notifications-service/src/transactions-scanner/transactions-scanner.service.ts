@@ -8,9 +8,9 @@ import { isEmpty } from 'lodash'
 import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'nestjs-ethers'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { ScannerService } from '../common/scanner-service'
+import { ScannerService } from '@app/notifications-service/common/scanner-service'
 import { transactionsScannerStatusServiceString } from './transactions-scanner.constants'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 
 @Injectable()
 export class TransactionsScannerService extends ScannerService {

@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { BaseProvider, Log } from 'nestjs-ethers'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { LogFilter } from './interfaces/logs-filter'
 @Injectable()
 export abstract class EventsScannerService extends ScannerService {

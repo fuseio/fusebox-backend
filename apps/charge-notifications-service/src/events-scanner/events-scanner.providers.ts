@@ -3,8 +3,8 @@ import { eventsScannerStatusModelString, ERC20LogsFilterString, userOpLogsFilter
 import { ScannerStatusSchema } from '@app/notifications-service/common/schemas/scanner-status.schema'
 import { Connection } from 'mongoose'
 import { ERC20_TRANSFER_EVENT_HASH, ENTRY_POINT_USER_OP_EVENT_HASH } from '@app/notifications-service/common/constants/events'
-import { ENTRY_POINT_ADDRESS } from '../common/constants/addresses'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { ENTRY_POINT_ADDRESS } from '@app/notifications-service/common/constants/addresses'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 
 export const eventsScannerProviders = [
   {

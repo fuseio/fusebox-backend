@@ -11,7 +11,7 @@ import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-sca
 import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
 import { has } from 'lodash'
 import { EventsScannerService } from './events-scanner.service'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 
 @Injectable()
 export class ERC20EventsScannerService extends EventsScannerService {

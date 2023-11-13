@@ -1,6 +1,6 @@
 import { ERC_721_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import WalletAction from './base'
-import { ERC721Transfer } from '../../interfaces/token-interfaces'
+import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
+import { ERC721Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 
 export default class NftTransfer extends WalletAction {
   descGenerator ({ symbol, tokenId, to }) {

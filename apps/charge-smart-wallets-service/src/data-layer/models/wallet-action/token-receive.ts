@@ -1,6 +1,6 @@
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
-import WalletAction from './base'
-import { ERC20Transfer, ERC721Transfer } from '../../interfaces/token-interfaces'
+import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
+import { ERC20Transfer, ERC721Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { ERC_721_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 
 export class TokenReceive extends WalletAction {

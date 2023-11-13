@@ -1,14 +1,17 @@
 import { Model, PaginateModel } from 'mongoose'
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import { userOpString, walletActionString } from './data-layer.constants'
+import { userOpString, walletActionString } from '@app/smart-wallets-service/data-layer/data-layer.constants'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
-import { parsedUserOpToWalletAction, tokenReceiveToWalletAction } from 'apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory'
 import { WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
-import { UserOpFactory } from '../common/services/user-op-factory.service'
-import { confirmedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
+import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
+import {
+  confirmedUserOpToWalletAction,
+  tokenReceiveToWalletAction,
+  parsedUserOpToWalletAction
+} from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { isNil } from 'lodash'
-import { TokenService } from '../common/services/token.service'
-import { TokenTransferWebhookDto } from '../smart-wallets/dto/token-transfer-webhook.dto'
+import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
+import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 
 @Injectable()
 export class DataLayerService {

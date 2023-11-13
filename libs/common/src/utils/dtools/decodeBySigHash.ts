@@ -1,10 +1,40 @@
 import { Interface } from '@ethersproject/abi'
 import fetch from 'node-fetch'
 
-import { hexSchema } from './validation/schemas/hexSchema'
-import { decodeCalldata, DecodeResult } from './decodeCalldata'
-import { DecodedEventResult, decodeEvent, EventProps } from './decodeEvent'
-import { parseAbi } from './parseAbi'
+import { hexSchema } from '@app/common/utils/dtools/validation/schemas/hexSchema'
+import { decodeCalldata, DecodeResult } from '@app/common/utils/dtools/decodeCalldata'
+import { DecodedEventResult, decodeEvent, EventProps } from '@app/common/utils/dtools/decodeEvent'
+import { parseAbi } from '@app/common/utils/dtools/parseAbi'
+
+// @internal
+interface FourBytesReponseEntry {
+  id: number;
+  text_signature: string;
+  bytes_signature: string;
+  created_at: string;
+  hex_signature: string;
+}
+
+// @internal
+interface FourBytesResponse {
+  count: number;
+  next: unknown;
+  previous: unknown;
+  results: FourBytesReponseEntry[];
+}
+
+// @internal
+// there are more types, but we don't need them for now
+export type HexSigType = 'signatures' | 'event-signatures';
+
+type Bytes4Cache = {
+  [sigType in HexSigType]: {
+    // undefined - not populated
+    // [] - no results
+    // [...] - results
+    [sig: string]: FourBytesReponseEntry[] | undefined;
+  };
+};
 
 export async function decodeWithCalldata (
   sigHash: string,
@@ -87,36 +117,6 @@ async function safeFetch<T> (...args: Parameters<typeof fetch>): Promise<T> {
     }
   })
 }
-
-// @internal
-interface FourBytesReponseEntry {
-  id: number;
-  text_signature: string;
-  bytes_signature: string;
-  created_at: string;
-  hex_signature: string;
-}
-
-// @internal
-interface FourBytesResponse {
-  count: number;
-  next: unknown;
-  previous: unknown;
-  results: FourBytesReponseEntry[];
-}
-
-// @internal
-// there are more types, but we don't need them for now
-export type HexSigType = 'signatures' | 'event-signatures';
-
-type Bytes4Cache = {
-  [sigType in HexSigType]: {
-    // undefined - not populated
-    // [] - no results
-    // [...] - results
-    [sig: string]: FourBytesReponseEntry[] | undefined;
-  };
-};
 
 // @internal
 const bytes4Cache: Bytes4Cache = {

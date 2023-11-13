@@ -7,8 +7,8 @@ import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { aprToApy, encodeFunctionCall } from '@app/network-service/common/utils/helper-functions'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { UnstakeDto } from '../dto/unstake.dto'
-import { StakingOption, StakingProvider } from '../interfaces'
+import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
+import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
 import { formatEther } from 'nestjs-ethers'
 
 @Injectable()

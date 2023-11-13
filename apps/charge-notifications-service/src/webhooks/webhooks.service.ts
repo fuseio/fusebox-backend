@@ -7,7 +7,7 @@ import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.
 import { webhookAddressModelString, webhookModelString } from '@app/notifications-service/webhooks/webhooks.constants'
 import { isEmpty } from 'lodash'
 import { Model } from 'mongoose'
-import { EventData } from '@app/notifications-service/common/interfaces/event-data.interface'
+import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
 import { addressTypes } from '@app/notifications-service/common/schemas/webhook-event.schema'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
@@ -108,25 +108,25 @@ export class WebhooksService {
     })
   }
 
-  async processWebhookEvents (eventData: EventData) {
+  async processWebhookTokenEvents (eventData: TokenEventData) {
     const toAddress = eventData?.to
     const fromAddress = eventData?.from
     const tokenAddress = eventData?.tokenAddress
 
     const tokenAddressWatchers = await this.getAddressWatchers(tokenAddress)
 
-    await this.addRelevantWebhookEventsToQueue(tokenAddressWatchers, eventData, null, addressTypes.TOKEN)
+    await this.addRelevantWebhookTokensEventsToQueue(tokenAddressWatchers, eventData, null, addressTypes.TOKEN)
 
     const toAddressWatchers = await this.getAddressWatchers(toAddress)
 
-    await this.addRelevantWebhookEventsToQueue(toAddressWatchers, eventData, 'incoming', addressTypes.WALLET)
+    await this.addRelevantWebhookTokensEventsToQueue(toAddressWatchers, eventData, 'incoming', addressTypes.WALLET)
 
     const fromAddressWatchers = await this.getAddressWatchers(fromAddress)
 
-    await this.addRelevantWebhookEventsToQueue(fromAddressWatchers, eventData, 'outgoing', addressTypes.WALLET)
+    await this.addRelevantWebhookTokensEventsToQueue(fromAddressWatchers, eventData, 'outgoing', addressTypes.WALLET)
   }
 
-  async addRelevantWebhookEventsToQueue (addressWatchers: any, eventData: EventData, direction: string | null, addressType) {
+  async addRelevantWebhookTokensEventsToQueue (addressWatchers: any, eventData: TokenEventData, direction: string | null, addressType) {
     for (const addressWatcher of addressWatchers) {
       const { webhookId, projectId, webhookUrl, eventType } = addressWatcher
 
@@ -134,9 +134,30 @@ export class WebhooksService {
         !isEmpty(eventType) &&
         this.isRelevantEvent(eventData.tokenType, eventType)) {
         try {
+          const webhookEvent = await this.webhookEventModel.findOne({
+            webhook: webhookId,
+            'eventData.txHash': eventData.txHash
+          })
+
+          if (webhookEvent) {
+            this.logger.debug(
+              `Webhook event for tx ${eventData.txHash} already exists.`,
+              'Not creating another webhook event for this tx.'
+            )
+            continue
+          }
+
+          console.log(
+            `Creating a new webhook event for the tx ${eventData.txHash}`
+          )
+
           await this.webhookEventModel.create({
             webhook: webhookId, projectId, webhookUrl, eventData, direction, addressType
           })
+
+          console.log(
+            `Created a new webhook event for the tx ${eventData.txHash}`
+          )
         } catch (err) {
           this.logger.error(`Webhook event couldn't be added to the DB: ${err}`)
         }

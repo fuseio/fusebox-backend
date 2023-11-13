@@ -6,7 +6,6 @@ import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-import { UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
 
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '1' })
@@ -42,17 +41,5 @@ export class SmartWalletsAPIController {
   getHistoricalTxs (@Query() query, @SmartWalletOwner() user: ISmartWalletUser) {
     user.query = query
     return this.smartWalletsAPIService.getHistoricalTxs(user)
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('available_upgrades')
-  getAvailableUpgrades (@SmartWalletOwner() user: ISmartWalletUser) {
-    return this.smartWalletsAPIService.getAvailableUpgrades()
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Post('install_upgrade')
-  installUpgrade (@SmartWalletOwner() user: ISmartWalletUser) {
-    return this.smartWalletsAPIService.installUpgrade()
   }
 }

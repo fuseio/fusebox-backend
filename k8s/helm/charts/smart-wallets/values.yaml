@@ -1,0 +1,66 @@
+# Default values for smart-wallets.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # -- Namespace
+  namespace: ""
+  # -- Label 'environment'
+  environment: ""
+
+  # -- Google Cloud - Project ID
+  project_id: ""
+  # -- Google Cloud - Region
+  region: ""
+
+  # -- DNS domain
+  domain: ""
+
+  # Image
+  image:
+    # -- Repository ID
+    repository: ""
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+# Resources
+resources:
+  # -- Resources - Requests
+  requests:
+    cpu: ""
+    memory: ""
+  # -- Resources - Limits
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  # -- Centrifugo - URL
+  centrifugo_uri: ""
+  # -- Centrifugo - API URL
+  centrifugo_api_url: ""
+  # -- Legacy - Fuse wallet API URL
+  legacy_fuse_wallet_api_url: ""
+  # -- Charge - Base URL
+  charge_base_url: ""
+
+# Secrets (through environment variables)
+secrets:
+  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
+  mongo_uri: ""
+  # -- smart-wallets - JWT secret
+  smart_wallets_jwt_secret: ""
+  # -- Fuse wallet backend JWT
+  fuse_wallet_backend_jwt: ""
+  # -- Centrifugo - JWT
+  centrifugo_jwt: ""
+  # -- Centrifugo - API key
+  centrifugo_api_key: ""
+  # -- The public key of the project.
+  charge_public_key: ""
+  # -- The secret key of the project.
+  charge_secret_key: ""
+  # -- The ID of the incoming token transfers webhook. This webhook is used to create wallet actions from incoming token transfers.
+  incoming_token_transfers_webhook_id: ""

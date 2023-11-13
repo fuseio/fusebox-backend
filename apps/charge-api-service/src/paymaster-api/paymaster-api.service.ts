@@ -2,7 +2,8 @@ import { accountsService } from '@app/common/constants/microservices.constants'
 import { ClientProxy, RpcException } from '@nestjs/microservices'
 import {
   Injectable,
-  Inject
+  Inject,
+  InternalServerErrorException
 } from '@nestjs/common'
 import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
 import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
@@ -11,8 +12,10 @@ import { BigNumber, Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { isEmpty } from 'lodash'
-import { UserOpParser } from '@app/common/services/user-op-parser.service'
+import { capitalize, isEmpty } from 'lodash'
+import { HttpService } from '@nestjs/axios'
+import { catchError, lastValueFrom, map } from 'rxjs'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class PaymasterApiService {
@@ -20,7 +23,7 @@ export class PaymasterApiService {
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
     private paymasterWeb3ProviderService: PaymasterWeb3ProviderService,
-    private userOpParser: UserOpParser
+    private httpService: HttpService
   ) { }
 
   async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
@@ -31,6 +34,7 @@ export class PaymasterApiService {
       const validUntil = parseInt(timestamp.toString()) + 240
       const validAfter = 0
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
+      const minVerificationGasLimit = '140000'
 
       if (isEmpty(paymasterInfo)) {
         throw new RpcException(`Error getting paymaster for project: ${projectId} in ${env} environment`)
@@ -42,10 +46,16 @@ export class PaymasterApiService {
         preVerificationGas,
         verificationGasLimit,
         callGasLimit
-      } = await this.estimateUserOpGas(web3, op)
+      } = await this.estimateUserOpGas(
+        op,
+        env,
+        paymasterInfo.entrypointAddress
+      )
+
+      const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
       op.callGasLimit = callGasLimit
-      op.verificationGasLimit = verificationGasLimit
+      op.verificationGasLimit = actualVerificationGasLimit
       op.preVerificationGas = preVerificationGas
 
       const paymasterAddress = paymasterInfo.paymasterAddress
@@ -85,28 +95,62 @@ export class PaymasterApiService {
     }
   }
 
-  async estimateUserOpGas (web3: any, op: any) {
-    const { callData, sender } = op
-    const preVerificationGas = BigNumber.from(op.preVerificationGas).toHexString()
-    const verificationGasLimit = BigNumber.from(op.verificationGasLimit).toHexString()
-    let callGasLimit = BigNumber.from(op.callGasLimit).toHexString()
-
-    const { calls } = await this.userOpParser.parseCallData(callData)
-
-    for (const { targetAddress, value, data } of calls) {
-      const innerCallGas = await web3.eth.estimateGas({
-        to: targetAddress,
-        data,
-        value,
-        from: sender
-      })
-      callGasLimit = BigNumber.from(callGasLimit).add(innerCallGas).toHexString()
+  async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {
+    const data = {
+      jsonrpc: '2.0',
+      method: 'eth_estimateUserOperationGas',
+      params: [
+        op,
+        entrypointAddress
+      ],
+      id: 1
     }
 
+    const requestConfig: AxiosRequestConfig = {
+      url: this.prepareUrl(requestEnvironment),
+      method: 'post',
+      data
+    }
+
+    const response = await lastValueFrom(
+      this.httpService
+        .request(requestConfig)
+        .pipe(
+          map((axiosResponse: AxiosResponse) => {
+            return axiosResponse.data
+          })
+        )
+        .pipe(
+          catchError((e) => {
+            const errorReason =
+              e?.response?.data?.error ||
+              e?.response?.data?.errors?.message ||
+              ''
+
+            throw new RpcException(errorReason)
+          })
+        )
+    )
+    console.log('Values from estimateUserOpGas func')
+    console.log(response)
+    const { result } = response
+
+    const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+
     return {
-      preVerificationGas,
-      verificationGasLimit,
+      ...response.result,
       callGasLimit
+    }
+  }
+
+  private prepareUrl (environment) {
+    if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
+    const config = this.configService.get(`bundler.${environment}`)
+
+    if (config.url) {
+      return config.url
+    } else {
+      throw new InternalServerErrorException(`${capitalize(environment)} bundler environment is missing`)
     }
   }
 

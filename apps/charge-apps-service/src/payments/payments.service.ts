@@ -32,6 +32,10 @@ export class PaymentsService {
     return this.configService.get('paymentsAllowedTokens')
   }
 
+  get chargePaymentLinksWebhookId () {
+    return this.configService.get('CHARGE_WEBHOOK_ID')
+  }
+
   get allowedTokenAddresses () {
     return this.allowedPaymentTokens.map(token => token.tokenAddress)
   }
@@ -88,7 +92,10 @@ export class PaymentsService {
 
     paymentLink.save()
 
-    await this.chargeApiService.addWebhookAddress(backendWallet.walletAddress)
+    await this.chargeApiService.addWebhookAddress({
+      walletAddress: backendWallet.walletAddress,
+      webhookId: this.chargePaymentLinksWebhookId
+    })
 
     return paymentLink
   }

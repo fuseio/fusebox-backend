@@ -1,0 +1,71 @@
+# Default values for skandha.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # -- Namespace
+  namespace: ""
+  # -- Label 'environment'
+  environment: ""
+
+  # -- DNS domain
+  domain: ""
+
+# Image
+image:
+  # -- Repository ID
+  repository: ""
+  # -- Tag; overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# Resources
+resources:
+  # -- Resources - Requests
+  requests:
+    cpu: ""
+    memory: ""
+  # -- Resources - Limits
+  limits:
+    cpu: ""
+    memory: ""
+
+# ConfigMap
+configMap:
+  # -- Networks. Possible values: `fuse,fuseSparknet`
+  skandha_networks: ""
+  # -- Estimation static buffer - Fuse
+  skandha_fuse_estimation_static_buffer: ""
+  # -- Estimation static buffer - Spark
+  skandha_fuse_sparknet_estimation_static_buffer: ""
+  # -- Ban Slack - Fuse
+  skandha_fuse_ban_slack: ""
+  # -- Ban Slack - Spark
+  skandha_fuse_sparknet_ban_slack: ""
+  # -- Throttling Slack - Fuse
+  skandha_fuse_throttling_slack: ""
+  # -- Throttling Slack - Spark
+  skandha_fuse_sparknet_throttling_slack: ""
+  # -- Min inclusion denominator - Fuse
+  skandha_fuse_min_inclusion_denominator: ""
+  # -- Min inclusion denominator - Spark
+  skandha_fuse_sparknet_min_inclusion_denominator: ""
+
+# Secrets
+secrets:
+  # -- Relayer - Spark
+  skandha_fuse_sparknet_relayer: ""
+  # -- Beneficiary - Spark
+  skandha_fuse_sparknet_beneficiary: ""
+  # -- RPC endpoint - Spark
+  skandha_fuse_sparknet_rpc: ""
+  # -- Entrypoint - Spark
+  skandha_fuse_sparknet_entrypoints: ""
+  # -- Relayer - Fuse
+  skandha_fuse_relayer: ""
+  # -- Beneficiary - Fuse
+  skandha_fuse_beneficiary: ""
+  # -- RPC endpoint - Fuse
+  skandha_fuse_rpc: ""
+  # -- Entrypoint - Fuse
+  skandha_fuse_entrypoints: ""

@@ -83,6 +83,8 @@ services:
       context: .
       dockerfile: ./apps/charge-notifications-service/Dockerfile
       target: development
+    depends_on:
+      - charge-smart-wallets-service
     command: npm run start:dev charge-notifications-service
     environment:
       - NOTIFICATIONS_HOST
@@ -95,6 +97,7 @@ services:
       - MAX_BLOCKS
       - TIMEOUT_INTERVAL
       - MONGO_URI=${NOTIFICATIONS_MONGO_URI}
+      - SMART_WALLETS_JWT_SECRET
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -168,6 +171,10 @@ services:
       - SMART_WALLETS_HOST
       - SMART_WALLETS_PORT
       - SMART_WALLETS_TCP_PORT
+      - CHARGE_BASE_URL
+      - CHARGE_PUBLIC_KEY
+      - CHARGE_SECRET_KEY
+      - CHARGE_WEBHOOK_ID
       - MONGO_URI=${SMART_WALLETS_MONGO_URI}
       - SMART_WALLETS_JWT_SECRET
       - FUSE_WALLET_BACKEND_JWT
@@ -177,6 +184,7 @@ services:
       - CENTRIFUGO_API_URL
       - CENTRIFUGO_API_KEY
       - NODE_ENV
+      - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

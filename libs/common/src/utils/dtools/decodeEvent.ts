@@ -75,6 +75,8 @@ export function decodeEvent (
   }
 }
 
+type ChangedParamType = Omit<ParamType, 'format' | '_isParamType'>;
+
 /**
  * We assume that we don't have partial indexing information.
  * This may not be true, but it's an edge case and it's PITA to handle.
@@ -160,8 +162,6 @@ export function omitNonNamedKeys<T extends object> (
 export function doesContainNamedKeys<T extends object> (object: T): boolean {
   return Object.keys(object).some((key) => isNaN(parseInt(key)))
 }
-
-type ChangedParamType = Omit<ParamType, 'format' | '_isParamType'>;
 
 function combinationsMap (
   inputs: ParamType[],

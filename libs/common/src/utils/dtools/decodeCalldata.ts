@@ -1,6 +1,14 @@
 import { Fragment, Interface } from '@ethersproject/abi'
 import assert from 'assert'
 
+export interface Decoded extends ReadonlyArray<unknown> { }
+
+export interface DecodeResult {
+  decoded: Decoded;
+  fragment: Fragment;
+  sigHash: string;
+}
+
 export function decodeCalldata (
   iface: Interface,
   calldata: string
@@ -28,12 +36,4 @@ export function decodeCalldata (
   if (decoded && fragment) {
     return { decoded, fragment, sigHash: iface.getSighash(fragment) }
   }
-}
-
-export interface Decoded extends ReadonlyArray<unknown> {}
-
-export interface DecodeResult {
-  decoded: Decoded;
-  fragment: Fragment;
-  sigHash: string;
 }

@@ -41,19 +41,7 @@ export class BroadcasterService {
         try {
           this.logger.log(`Starting sending ${webhookEvent}`)
           const response = await this.webhookSendService.sendData(webhookEvent)
-
-          this.logger.debug(
-            `Response status: ${response.status}, ` +
-            `response body: ${JSON.stringify(response.data)}`
-          )
-
-          this.logger.log(`Completed sending ${webhookEvent}`)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
-
-          this.logger.debug(
-            `Setting webhook with ID ${webhookEvent.id} as successful...`
-          )
-
           webhookEvent.success = true
         } catch (err) {
           let errorStatus: number, errorResponse: string

@@ -23,14 +23,8 @@ export class SmartWalletsAAService implements SmartWalletService {
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
-      this.logger.debug('Recovering the public key...')
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
-      this.logger.debug('Recovered the public key.')
-
-      this.logger.debug('Computing the address...')
       const recoveredAddress = computeAddress(publicKey)
-      this.logger.debug('Computed the address.')
-
       const smartWalletAddress = smartWalletsAuthDto.smartWalletAddress
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress && smartWalletAddress) {

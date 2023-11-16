@@ -41,16 +41,23 @@ export class PaymasterApiService {
       }
 
       const sponsorId = paymasterInfo.sponsorId
+      const paymasterAddress = paymasterInfo.paymasterAddress
+      const paymasterContract: any = new web3.eth.Contract(
+        fusePaymasterABI as any,
+        paymasterAddress
+      )
+
+      const hashForEstimateUserOpGasCall = await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
+      const signatureForEstimateUserOpGasCall = await this.signHash(hashForEstimateUserOpGasCall, paymasterInfo)
+      const paymasterAndDataForEstimateUserOpGasCall = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
+
+      op.paymasterAndData = paymasterAndDataForEstimateUserOpGasCall
 
       const {
         preVerificationGas,
         verificationGasLimit,
         callGasLimit
-      } = await this.estimateUserOpGas(
-        op,
-        env,
-        paymasterInfo.entrypointAddress
-      )
+      } = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
 
       const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
@@ -58,31 +65,9 @@ export class PaymasterApiService {
       op.verificationGasLimit = actualVerificationGasLimit
       op.preVerificationGas = preVerificationGas
 
-      const paymasterAddress = paymasterInfo.paymasterAddress
-      const paymasterContract: any = new web3.eth.Contract(
-        fusePaymasterABI as any,
-        paymasterAddress
-      )
-
-      const hash = await paymasterContract.methods
-        .getHash(op, validUntil, validAfter, sponsorId)
-        .call()
-
-      const privateKeyString = this.configService.getOrThrow(
-        `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
-      )
-
-      const paymasterSigner = new Wallet(privateKeyString)
-      const signature = await paymasterSigner.signMessage(arrayify(hash))
-
-      const paymasterAndData = hexConcat([
-        paymasterAddress,
-        defaultAbiCoder.encode(
-          ['uint48', 'uint48', 'uint256', 'bytes'],
-          [validUntil, validAfter, sponsorId, signature]
-        ),
-        signature
-      ])
+      const hash = await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
+      const signature = await this.signHash(hash, paymasterInfo)
+      const paymasterAndData = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signature)
 
       return {
         paymasterAndData,
@@ -93,6 +78,31 @@ export class PaymasterApiService {
     } catch (error) {
       throw new RpcException(error.message)
     }
+  }
+
+  private async getHash (paymasterContract: any, op: any, validUntil: number, validAfter: number, sponsorId: string) {
+    return await paymasterContract.methods
+      .getHash(op, validUntil, validAfter, sponsorId)
+      .call()
+  }
+
+  private async signHash (hash: string, paymasterInfo: any) {
+    const privateKeyString = this.configService.getOrThrow(
+      `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
+    )
+    const paymasterSigner = new Wallet(privateKeyString)
+    return await paymasterSigner.signMessage(arrayify(hash))
+  }
+
+  private buildPaymasterAndData (paymasterAddress: string, validUntil: number, validAfter: number, sponsorId: string, signature: string) {
+    return hexConcat([
+      paymasterAddress,
+      defaultAbiCoder.encode(
+        ['uint48', 'uint48', 'uint256', 'bytes'],
+        [validUntil, validAfter, sponsorId, signature]
+      ),
+      signature
+    ])
   }
 
   async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {

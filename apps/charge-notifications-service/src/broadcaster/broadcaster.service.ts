@@ -23,6 +23,14 @@ export class BroadcasterService {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
   }
 
+  get lastTimeIntervalsMS () : number {
+    return this.retryTimeIntervalsMS[Object.keys(this.retryTimeIntervalsMS).length]
+  }
+
+  getRetryTimeIntervalMS (numberOfTries: number) {
+    return this.retryTimeIntervalsMS[numberOfTries] || this.lastTimeIntervalsMS
+  }
+
   async onModuleInit (): Promise<void> {
     this.start()
   }
@@ -88,7 +96,7 @@ export class BroadcasterService {
 
   private getNewRetryAfterDate (webhookEvent: any) {
     const old = webhookEvent?.retryAfter || new Date()
-    const addInterval = this.retryTimeIntervalsMS[webhookEvent.numberOfTries]
+    const addInterval = this.getRetryTimeIntervalMS(webhookEvent.numberOfTries)
     return new Date(old.getTime() + addInterval)
   }
 

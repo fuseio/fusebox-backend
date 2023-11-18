@@ -23,12 +23,12 @@ export class BroadcasterService {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
   }
 
-  get lastTimeIntervalsMS () : number {
+  get maxTimeIntervalsMS () : number {
     return this.retryTimeIntervalsMS[Object.keys(this.retryTimeIntervalsMS).length]
   }
 
   getRetryTimeIntervalMS (numberOfTries: number) {
-    return this.retryTimeIntervalsMS[numberOfTries] || this.lastTimeIntervalsMS
+    return this.retryTimeIntervalsMS[numberOfTries] || this.maxTimeIntervalsMS
   }
 
   async onModuleInit (): Promise<void> {

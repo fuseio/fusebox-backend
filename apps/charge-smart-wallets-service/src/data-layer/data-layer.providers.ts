@@ -3,8 +3,16 @@ import { databaseConnectionString } from '@app/common/constants/database.constan
 import { userOpString, walletActionString } from '@app/smart-wallets-service/data-layer/data-layer.constants'
 import { UserOpSchema } from '@app/smart-wallets-service/data-layer/schemas/user-op.schema'
 import { WalletActionSchema, WalletActionDocument } from '@app/smart-wallets-service/data-layer/schemas/wallet-action.schema'
+import { SmartWalletSchema } from '../smart-wallets/schemas/smart-wallet.schema'
+import { smartWalletString } from '../smart-wallets/smart-wallets.constants'
 
 export const dataLayerProviders = [
+  {
+    provide: smartWalletString,
+    useFactory: (connection: Connection) =>
+      connection.model('SmartWallet', SmartWalletSchema),
+    inject: [databaseConnectionString]
+  },
   {
     provide: userOpString,
     useFactory: (connection: Connection) =>

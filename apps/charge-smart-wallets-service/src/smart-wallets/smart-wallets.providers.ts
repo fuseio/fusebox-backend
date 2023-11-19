@@ -17,4 +17,5 @@ export const smartWalletsProviders = [
       connection.model('SmartWalletUpgrade', SmartWalletUpgradeSchema),
     inject: [databaseConnectionString]
   }
+
 ]

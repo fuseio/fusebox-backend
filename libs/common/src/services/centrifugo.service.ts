@@ -60,8 +60,7 @@ export default class CentrifugoAPIService {
         channel, data
       },
       { headers: { 'X-API-Key': this.centrifugoApiKey } })
-      .pipe(map(res => res.data))
-      .pipe(
+      .pipe(map(res => res.data)).pipe(
         catchError(e => {
           throw new HttpException(
             `${e?.response?.message}`,

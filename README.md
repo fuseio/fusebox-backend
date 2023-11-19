@@ -1,6 +1,16 @@
 ## Description
 
-Fuse Charge Backend API developed with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Fusebox is a comprehensive development framework designed for constructing applications on the Fuse Network. It provides a set of APIs that cater to various functionalities:
+
+1. Account Abstraction API: This API enables the creation and administration of smart wallet accounts built on the ERC4337 standard.
+2. Data API: Utilize this API to retrieve on-chain data related to your users, including information such as balances, token specifics, and transaction history.
+3. Feed API: The Feed API offers a user-friendly stream of wallet actions, making it easy to display wallets activity.
+4. Notification API: Subscribing to the Notification API allows you to receive updates on wallet events and activities pertaining to your customers.
+5. Trading API: This API facilitates trading activities and provides access to trading-related data.
+
+
+## Tech Stack
+Fusebox Backend API developed with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 

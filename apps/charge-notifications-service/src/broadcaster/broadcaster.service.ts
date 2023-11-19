@@ -23,6 +23,14 @@ export class BroadcasterService {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
   }
 
+  get maxTimeIntervalsMS () : number {
+    return this.retryTimeIntervalsMS[Object.keys(this.retryTimeIntervalsMS).length]
+  }
+
+  getRetryTimeIntervalMS (numberOfTries: number) {
+    return this.retryTimeIntervalsMS[numberOfTries] || this.maxTimeIntervalsMS
+  }
+
   async onModuleInit (): Promise<void> {
     this.start()
   }
@@ -40,6 +48,7 @@ export class BroadcasterService {
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
           this.logger.log(`Starting sending ${webhookEvent}`)
+          webhookEvent.numberOfTries++
           const response = await this.webhookSendService.sendData(webhookEvent)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
           webhookEvent.success = true
@@ -68,7 +77,6 @@ export class BroadcasterService {
           )
         } finally {
           try {
-            webhookEvent.numberOfTries++
             await webhookEvent.save()
           } catch (err) {
             this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)
@@ -88,7 +96,7 @@ export class BroadcasterService {
 
   private getNewRetryAfterDate (webhookEvent: any) {
     const old = webhookEvent?.retryAfter || new Date()
-    const addInterval = this.retryTimeIntervalsMS[webhookEvent.numberOfTries]
+    const addInterval = this.getRetryTimeIntervalMS(webhookEvent.numberOfTries)
     return new Date(old.getTime() + addInterval)
   }
 

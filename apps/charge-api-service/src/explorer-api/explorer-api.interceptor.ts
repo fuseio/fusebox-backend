@@ -13,12 +13,12 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class ExplorerApiInterceptor implements NestInterceptor {
-  constructor(
+  constructor (
     private httpService: HttpService,
     private configService: ConfigService
   ) { }
 
-  async intercept(context: ExecutionContext): Promise<any> {
+  async intercept (context: ExecutionContext): Promise<any> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(
       context
     )
@@ -49,7 +49,7 @@ export class ExplorerApiInterceptor implements NestInterceptor {
     return response
   }
 
-  private async prepareRequestConfig(context: ExecutionContext) {
+  private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
 
     const ctxClassName = context.getClass().name

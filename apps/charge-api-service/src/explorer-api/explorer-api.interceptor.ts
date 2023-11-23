@@ -16,7 +16,7 @@ export class ExplorerApiInterceptor implements NestInterceptor {
   constructor (
     private httpService: HttpService,
     private configService: ConfigService
-  ) {}
+  ) { }
 
   async intercept (context: ExecutionContext): Promise<any> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(
@@ -60,10 +60,11 @@ export class ExplorerApiInterceptor implements NestInterceptor {
     const requestConfig: AxiosRequestConfig = {
       url: `${config?.baseUrl}`,
       method: ctxHandlerName
+
     }
 
     if (!isEmpty(query)) {
-      requestConfig.params = query
+      requestConfig.params = { ...query, apiKey: config?.apiKey }
     }
 
     return requestConfig

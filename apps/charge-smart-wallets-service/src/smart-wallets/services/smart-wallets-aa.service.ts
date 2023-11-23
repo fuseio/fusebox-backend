@@ -13,7 +13,7 @@ import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.servic
 export class SmartWalletsAAService implements SmartWalletService {
   private readonly logger = new Logger(SmartWalletsAAService.name)
 
-  constructor (
+  constructor(
     private readonly jwtService: JwtService,
     private readonly notificationsService: NotificationsService,
     private configService: ConfigService,
@@ -21,7 +21,7 @@ export class SmartWalletsAAService implements SmartWalletService {
     // private readonly centrifugoAPIService: CentrifugoAPIService,
   ) { }
 
-  async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
+  async auth(smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
       const recoveredAddress = computeAddress(publicKey)
@@ -35,9 +35,8 @@ export class SmartWalletsAAService implements SmartWalletService {
             smartWalletAddress: smartWalletsAuthDto.smartWalletAddress,
             ownerAddress: recoveredAddress
           },
-          channels: ['transaction']
+          channels: ['transaction', 'walletAction', 'userOp']
         })
-
         await this.subscribeWalletToNotifications(smartWalletAddress)
 
         this.logger.debug('Returning the JWT...')
@@ -51,12 +50,10 @@ export class SmartWalletsAAService implements SmartWalletService {
     }
   }
 
-  private async subscribeWalletToNotifications (walletAddress: string) {
+  private async subscribeWalletToNotifications(walletAddress: string) {
     this.logger.debug('Subscribing wallet to notifications...')
-
     const webhookId =
       this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
-
     return this.chargeApiService.addWebhookAddress({ walletAddress, webhookId })
   }
 }

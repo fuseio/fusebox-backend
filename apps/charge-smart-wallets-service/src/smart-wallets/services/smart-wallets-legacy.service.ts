@@ -16,7 +16,7 @@ import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 export class SmartWalletsLegacyService implements SmartWalletService {
   private readonly logger = new Logger(SmartWalletsLegacyService.name)
 
-  constructor(
+  constructor (
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly relayAPIService: RelayAPIService,
@@ -25,15 +25,15 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     private smartWalletModel: Model<SmartWallet>
   ) { }
 
-  get sharedAddresses() {
+  get sharedAddresses () {
     return this.configService.get('sharedAddresses')
   }
 
-  get wsUrl() {
+  get wsUrl () {
     return this.configService.get('wsUrl')
   }
 
-  async auth(smartWalletsAuthDto: SmartWalletsAuthDto) {
+  async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
       const recoveredAddress = computeAddress(publicKey)
@@ -56,7 +56,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     }
   }
 
-  async getWallet(smartWalletUser: ISmartWalletUser) {
+  async getWallet (smartWalletUser: ISmartWalletUser) {
     const { ownerAddress } = smartWalletUser
     const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
     if (!smartWallet) {
@@ -97,7 +97,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     }
   }
 
-  async createWallet(smartWalletUser: ISmartWalletUser) {
+  async createWallet (smartWalletUser: ISmartWalletUser) {
     try {
       const { ownerAddress } = smartWalletUser
       if (await this.smartWalletModel.findOne({ ownerAddress })) {
@@ -126,7 +126,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     }
   }
 
-  async relay(relayDto: RelayDto) {
+  async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
       await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
@@ -145,7 +145,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     }
   }
 
-  async getHistoricalTxs(user: ISmartWalletUser) {
+  async getHistoricalTxs (user: ISmartWalletUser) {
     try {
       const { smartWalletAddress } = await this.smartWalletModel.findOne({ ownerAddress: user.ownerAddress })
       const result = await this.relayAPIService.getHistoricalTxs(smartWalletAddress, user.query)
@@ -159,10 +159,10 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   }
 
   // TODO
-  async getAvailableUpgrades() {
+  async getAvailableUpgrades () {
   }
 
   // TODO
-  async installUpgrade() {
+  async installUpgrade () {
   }
 }

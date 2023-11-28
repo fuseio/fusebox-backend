@@ -14,48 +14,48 @@ import { formatUnits } from 'nestjs-ethers'
 export class ChargeApiService {
   private readonly logger = new Logger(ChargeApiService.name)
 
-  constructor(
+  constructor (
     private httpService: HttpService,
     private configService: ConfigService,
     @Inject(backendWalletModelString)
     private backendWalletModel: Model<BackendWallet>
   ) { }
 
-  get getPaymentsAllowedTokens() {
+  get getPaymentsAllowedTokens () {
     return this.configService.get('paymentsAllowedTokens')
   }
 
-  get chargeBaseUrl() {
+  get chargeBaseUrl () {
     return this.configService.get('CHARGE_BASE_URL')
   }
 
-  get unmarshalBaseUrl() {
+  get unmarshalBaseUrl () {
     return this.configService.get('UNMARSHAL_BASE_URL')
   }
 
-  get unmarshalAuthKey() {
+  get unmarshalAuthKey () {
     return this.configService.get('UNMARSHAL_AUTH_KEY')
   }
 
-  get chargePublicKey() {
+  get chargePublicKey () {
     return this.configService.get('CHARGE_PUBLIC_KEY')
   }
 
-  get chargeWebhookId() {
+  get chargeWebhookId () {
     return this.configService.get('CHARGE_WEBHOOK_ID')
   }
 
-  get walletPhoneNumber() {
+  get walletPhoneNumber () {
     return this.configService.get('CHARGE_WALLET_PHONE_NUMBER')
   }
 
-  get getSleepMS() {
+  get getSleepMS () {
     return this.configService.get('JOB_SLEEP_MS')
   }
 
   sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-  async createBackendWallet(walletType: walletTypes): Promise<Record<string, any>> {
+  async createBackendWallet (walletType: walletTypes): Promise<Record<string, any>> {
     const phoneNumber = this.walletPhoneNumber
     const url = `${this.chargeBaseUrl}/api/v0/admin/wallets/create?apiKey=${this.chargePublicKey}`
 
@@ -91,7 +91,7 @@ export class ChargeApiService {
     return backendWallet
   }
 
-  async transferTokens(transferTokensDto: TransferTokensDto) {
+  async transferTokens (transferTokensDto: TransferTokensDto) {
     const url = `${this.chargeBaseUrl}/api/v0/admin/tokens/transfer?apiKey=${this.chargePublicKey}`
 
     const requestBody = {
@@ -121,7 +121,7 @@ export class ChargeApiService {
     return jobData
   }
 
-  async getWalletBalance(address: string, networkName: string = 'fuse') {
+  async getWalletBalance (address: string, networkName: string = 'fuse') {
     const tokensBalanceUrl = `${this.unmarshalBaseUrl}/v1/${networkName}/address/${address}/assets?chainId=122&token=false&auth_key=${this.unmarshalAuthKey}`
 
     const tokensBalance = await this.httpProxyGet(tokensBalanceUrl)
@@ -148,11 +148,11 @@ export class ChargeApiService {
     return extendedTokensBalance
   }
 
-  async getBackendWalletByAddress(address: string) {
+  async getBackendWalletByAddress (address: string) {
     return this.backendWalletModel.findOne({ walletAddress: address })
   }
 
-  async getUpdatedJobData(jobData: any) {
+  async getUpdatedJobData (jobData: any) {
     const jobId = jobData?._id
 
     const url = `${this.chargeBaseUrl}/api/v0/jobs/${jobId}?apiKey=${this.chargePublicKey}`
@@ -162,7 +162,7 @@ export class ChargeApiService {
     return responseData
   }
 
-  async addWebhookAddress(params: { walletAddress: string, webhookId: string }) {
+  async addWebhookAddress (params: { walletAddress: string, webhookId: string }) {
     const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${this.chargePublicKey}`
     const requestBody = {
       webhookId: params.webhookId,
@@ -172,13 +172,13 @@ export class ChargeApiService {
     await this.httpProxyPost(url, requestBody)
   }
 
-  async getPriceFromTradeApi(tokenAddress: string) {
+  async getPriceFromTradeApi (tokenAddress: string) {
     const url = `${this.chargeBaseUrl}/api/v0/trade/price/${tokenAddress}?apiKey=${this.chargePublicKey}`
     const response = await this.httpProxyGet(url)
     return response
   }
 
-  async httpProxyPost(url: string, requestBody: any) {
+  async httpProxyPost (url: string, requestBody: any) {
     const responseData = await lastValueFrom(
       this.httpService.post(url, requestBody)
         .pipe(map((response) => {
@@ -198,7 +198,7 @@ export class ChargeApiService {
     return responseData
   }
 
-  async httpProxyGet(url: string) {
+  async httpProxyGet (url: string) {
     const responseData = await lastValueFrom(
       this.httpService.get(url)
         .pipe(map((response) => {

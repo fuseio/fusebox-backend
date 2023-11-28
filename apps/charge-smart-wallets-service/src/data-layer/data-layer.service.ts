@@ -59,7 +59,6 @@ export class DataLayerService {
   async updateWalletAction(userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as any
-    console.log('sending approved wallet action');
     this.smartWalletsEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
     return updatedWalletAction
   }

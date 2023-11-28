@@ -18,7 +18,7 @@ import { SmartWalletsEventsService } from '../smart-wallets/smart-wallets-events
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
 
-  constructor(
+  constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
@@ -28,14 +28,14 @@ export class DataLayerService {
     private smartWalletsEventsService: SmartWalletsEventsService
   ) { }
 
-  async recordUserOp(baseUserOp: BaseUserOp) {
+  async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = this.userOpModel.create(userOp)
     this.createWalletActionFromUserOp(userOp)
     return response
   }
 
-  async updateUserOp(body: UserOp) {
+  async updateUserOp (body: UserOp) {
     const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
     if (isNil(existingUserOp)) {
       return 'No record found with the provided userOpHash'
@@ -46,7 +46,7 @@ export class DataLayerService {
     return updatedUserOp
   }
 
-  async createWalletActionFromUserOp(parsedUserOp: UserOp) {
+  async createWalletActionFromUserOp (parsedUserOp: UserOp) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
       this.smartWalletsEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
@@ -56,14 +56,14 @@ export class DataLayerService {
     }
   }
 
-  async updateWalletAction(userOp: any) {
+  async updateWalletAction (userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as any
     this.smartWalletsEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
     return updatedWalletAction
   }
 
-  async handleTokenTransferWebhook(
+  async handleTokenTransferWebhook (
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     const from = tokenTransferWebhookDto.from
@@ -107,7 +107,7 @@ export class DataLayerService {
     return true
   }
 
-  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       query =

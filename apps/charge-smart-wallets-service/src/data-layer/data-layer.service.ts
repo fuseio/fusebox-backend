@@ -12,7 +12,8 @@ import {
 import { isNil } from 'lodash'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
-import { SmartWalletsEventsService } from '../smart-wallets/smart-wallets-events.service'
+import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.service'
+import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
 
 @Injectable()
 export class DataLayerService {
@@ -58,7 +59,7 @@ export class DataLayerService {
 
   async updateWalletAction (userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
-    const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as any
+    const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
     this.smartWalletsEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
     return updatedWalletAction
   }

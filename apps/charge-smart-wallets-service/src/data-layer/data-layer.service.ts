@@ -31,8 +31,10 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
-    const response = this.userOpModel.create(userOp)
-    this.createWalletActionFromUserOp(userOp)
+    const response = await this.userOpModel.create(userOp) as UserOp
+    this.smartWalletsEventsService.publishUserOp(response.sender, response)
+    const walletAction = await this.createWalletActionFromUserOp(userOp)
+    this.smartWalletsEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
     return response
   }
 
@@ -50,8 +52,8 @@ export class DataLayerService {
   async createWalletActionFromUserOp (parsedUserOp: UserOp) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
-      this.smartWalletsEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
-      return this.paginatedWalletActionModel.create(walletAction)
+      this.paginatedWalletActionModel.create(walletAction)
+      return walletAction
     } catch (error) {
       console.log(error)
     }

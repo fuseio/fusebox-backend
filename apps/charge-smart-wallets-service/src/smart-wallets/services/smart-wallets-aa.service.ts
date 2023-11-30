@@ -30,14 +30,13 @@ export class SmartWalletsAAService implements SmartWalletService {
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress && smartWalletAddress) {
         this.logger.debug('Signing the JWT...')
         const jwt = this.jwtService.sign({
-          sub: recoveredAddress,
+          sub: smartWalletAddress,
           info: {
             smartWalletAddress: smartWalletsAuthDto.smartWalletAddress,
             ownerAddress: recoveredAddress
           },
-          channels: ['transaction']
+          channels: ['transaction', 'walletAction', 'userOp']
         })
-
         await this.subscribeWalletToNotifications(smartWalletAddress)
 
         this.logger.debug('Returning the JWT...')
@@ -53,10 +52,8 @@ export class SmartWalletsAAService implements SmartWalletService {
 
   private async subscribeWalletToNotifications (walletAddress: string) {
     this.logger.debug('Subscribing wallet to notifications...')
-
     const webhookId =
       this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
-
     return this.chargeApiService.addWebhookAddress({ walletAddress, webhookId })
   }
 }

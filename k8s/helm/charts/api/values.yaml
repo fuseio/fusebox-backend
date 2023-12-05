@@ -70,3 +70,5 @@ secrets:
   paymaster_production_signer_private_key_v_0_1_0: ""
   # -- Bundler - Paymaster Sandbox signer private key
   paymaster_sandbox_signer_private_key_v_0_1_0: ""
+  # -- Explorer (BlockScout) - API key
+  explorer_api_key: ""

@@ -25,6 +25,7 @@ A Helm chart for Kubernetes related api component
 | global.region | string | `""` | Google Cloud - Region |
 | resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
+| secrets.explorer_api_key | string | `""` | Explorer (BlockScout) - API key |
 | secrets.fuse_studio_admin_jwt | string | `""` | Fuse Studio admin JWT |
 | secrets.legacy_jwt_secret | string | `""` | Legacy - JWT secret |
 | secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |

@@ -178,6 +178,11 @@ spec:
                 secretKeyRef:
                   name: api
                   key: paymaster_sandbox_signer_private_key_v_0_1_0
+            - name: EXPLORER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: explorer_api_key
 
           # Ports
           ports:

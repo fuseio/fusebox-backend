@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: accounts
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: accounts
+    environment: {{ .Values.global.environment }}
 data:
   accounts_host: "0.0.0.0"
   accounts_port: "5001"

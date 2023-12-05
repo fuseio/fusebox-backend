@@ -35,6 +35,27 @@ resources:
     cpu: ""
     memory: ""
 
+# Autoscaling
+autoscaling:
+  # -- Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler)
+  min_replicas: 1
+  # -- Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler)
+  max_replicas: 5
+  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
+  cpu:
+    threshold: 80
+  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
+  memory:
+    threshold: 80
+  # -- Autoscaling - CPU & RAM maximum allow value (Vertical Pod Autoscaler)
+  max_allowed:
+    cpu: "4000m"
+    memory: "8Gi"
+  # -- Autoscaling - CPU & RAM minimum allow value (Vertical Pod Autoscaler)
+  min_allowed:
+    cpu: "500m"
+    memory: "1Gi"
+
 # ConfigMap
 configMap:
   # -- Legacy - Fuse trade API URL

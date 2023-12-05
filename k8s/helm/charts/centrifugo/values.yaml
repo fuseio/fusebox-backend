@@ -4,8 +4,6 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
   # -- Label 'environment'
   environment: ""
 
@@ -30,9 +28,34 @@ resources:
     cpu: ""
     memory: ""
 
+# Autoscaling
+autoscaling:
+  # -- Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler)
+  min_replicas: 1
+  # -- Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler)
+  max_replicas: 5
+  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
+  cpu:
+    threshold: 80
+  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
+  memory:
+    threshold: 80
+  # -- Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler)
+  rps:
+    threshold: 80
+
+# Service
+service:
+  # -- Service - Annotation `networking.gke.io/max-rate-per-endpoint` (RPS per pod)
+  max_rate_per_endpoint: 10
+
+# Logging
+logging:
+  # -- Logging - Enabled (`true` or `false`)
+  enabled: false
+  # -- Logging - Sample rate (from 0 to 500000 / 1000000)
+  sample_rate: 0
+
 # Secrets
 #
 # Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function
-# secrets:
-#   ...
-#   ...

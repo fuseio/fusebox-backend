@@ -6,6 +6,8 @@ metadata:
   labels:
     app: api
     environment: {{ .Values.global.environment }}
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: {{ .Values.service.max_rate_per_endpoint }}
 spec:
   selector:
     app: api

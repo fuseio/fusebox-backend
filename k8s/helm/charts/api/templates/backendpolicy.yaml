@@ -1,0 +1,17 @@
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: api
+    environment: {{ .Values.global.environment }}
+spec:
+  default:
+    logging:
+      enabled: {{ .Values.logging.enabled }}
+      sampleRate: {{ .Values.logging.sample_rate }}
+  targetRef:
+    group: ""
+    kind: Service
+    name: api

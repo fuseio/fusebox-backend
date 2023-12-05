@@ -8,6 +8,12 @@ A Helm chart for Kubernetes related network component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
+| autoscaling.max_allowed | object | `{"cpu":"4000m","memory":"8Gi"}` | Autoscaling - CPU & RAM maximum allow value (Vertical Pod Autoscaler) |
+| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler) |
+| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
+| autoscaling.min_allowed | object | `{"cpu":"500m","memory":"1Gi"}` | Autoscaling - CPU & RAM minimum allow value (Vertical Pod Autoscaler) |
+| autoscaling.min_replicas | int | `1` | Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler) |
 | configMap.legacy_fuse_trade_api_url | string | `""` | Legacy - Fuse trade API URL |
 | global.domain | string | `""` | DNS domain |
 | global.environment | string | `""` | Label 'environment' |

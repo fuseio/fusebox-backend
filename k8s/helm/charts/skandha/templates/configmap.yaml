@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: skandha
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: skandha
+    environment: {{ .Values.global.environment }}
 data:
   skandha_networks: {{ .Values.configMap.skandha_networks | quote }}
   skandha_fuse_sparknet_estimation_static_buffer: {{ .Values.configMap.skandha_fuse_sparknet_estimation_static_buffer | quote }}

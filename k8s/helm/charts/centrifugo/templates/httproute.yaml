@@ -3,6 +3,9 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: centrifugo
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: centrifugo
+    environment: {{ .Values.global.environment }}
 spec:
   parentRefs:
     - kind: Gateway

@@ -130,9 +130,9 @@ spec:
                   key: skandha_fuse_entrypoints
           
           # VolumeMounts
-          volumeMounts:
-            - mountPath: /opt/skandha/app
-              name: skandha
+          # volumeMounts:
+          #   - mountPath: /opt/skandha/app
+          #     name: skandha
 
           # Ports
           ports:

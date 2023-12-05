@@ -4,8 +4,6 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
   # -- Label 'environment'
   environment: ""
 
@@ -34,6 +32,20 @@ resources:
   limits:
     cpu: ""
     memory: ""
+
+
+# Autoscaling
+autoscaling:
+  # -- Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler)
+  min_replicas: 1
+  # -- Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler)
+  max_replicas: 5
+  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
+  cpu:
+    threshold: 80
+  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
+  memory:
+    threshold: 80
 
 # ConfigMap
 configMap:

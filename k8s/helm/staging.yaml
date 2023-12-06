@@ -299,15 +299,15 @@ skandha:
 
   # ConfigMap
   configMap:
-    skandha_networks: ""
-    skandha_fuse_estimation_static_buffer: ""
-    skandha_fuse_sparknet_estimation_static_buffer: ""
-    skandha_fuse_ban_slack: ""
-    skandha_fuse_sparknet_ban_slack: ""
-    skandha_fuse_throttling_slack: ""
-    skandha_fuse_sparknet_throttling_slack: ""
-    skandha_fuse_min_inclusion_denominator: ""
-    skandha_fuse_sparknet_min_inclusion_denominator: ""
+    skandha_networks: "fuse,fuseSparknet"
+    skandha_fuse_estimation_static_buffer: "500000"
+    skandha_fuse_sparknet_estimation_static_buffer: "500000"
+    skandha_fuse_ban_slack: "10"
+    skandha_fuse_sparknet_ban_slack: "10"
+    skandha_fuse_throttling_slack: "10"
+    skandha_fuse_sparknet_throttling_slack: "10"
+    skandha_fuse_min_inclusion_denominator: "10"
+    skandha_fuse_sparknet_min_inclusion_denominator: "10"
 
   # Secrets
   secrets:

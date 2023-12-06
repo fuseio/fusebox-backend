@@ -6,6 +6,10 @@ metadata:
   labels:
     app: skandha
     environment: {{ .Values.global.environment }}
+  annotations:
+    {{- range $key, $val := .Values.service.annotations }}
+      {{ $key }}: {{ $val | quote }}
+    {{- end }}
 spec:
   selector:
     app: skandha

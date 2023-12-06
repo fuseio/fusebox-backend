@@ -24,16 +24,6 @@ spec:
         app: centrifugo
         environment: {{ .Values.global.environment }}
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - centrifugo
-              topologyKey: kubernetes.io/hostname
       containers:
         - name: centrifugo
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -46,6 +36,12 @@ spec:
               name: http
           
           # Probes
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health

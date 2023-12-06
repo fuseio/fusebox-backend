@@ -23,21 +23,11 @@ spec:
         app: skandha
         environment: {{ .Values.global.environment }}
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - skandha
-              topologyKey: kubernetes.io/hostname
       containers:
         - name: skandha
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
-          command: ["node", "./packages/cli/bin/skandha", "start", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
+          command: ["node", "./packages/cli/bin/skandha", "standalone", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
 
           env:
             # ConfigMap
@@ -140,6 +130,12 @@ spec:
               name: http
           
           # Probes
+          startupProbe:
+            httpGet:
+              path: /version
+              port: 14337
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /version

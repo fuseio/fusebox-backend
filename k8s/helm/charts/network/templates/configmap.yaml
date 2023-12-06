@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: network
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: network
+    environment: {{ .Values.global.environment }}
 data:
   network_host: "0.0.0.0"
   network_port: "5005"

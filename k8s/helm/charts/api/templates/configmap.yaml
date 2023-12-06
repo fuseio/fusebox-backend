@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: api
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: api
+    environment: {{ .Values.global.environment }}
 data:
   api_host: "0.0.0.0"
   api_port: "5002"

@@ -25,16 +25,6 @@ spec:
         app: relay
         environment: {{ .Values.global.environment }}
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - relay
-              topologyKey: kubernetes.io/hostname
       containers:
         - name: relay
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/relay:{{ .Values.global.image.tag }}"
@@ -76,6 +66,12 @@ spec:
               name: tcp
           
           # Probes
+          startupProbe:
+            httpGet:
+              path: /relay/health
+              port: 5003
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /relay/health

@@ -25,16 +25,6 @@ spec:
         app: smart-wallets
         environment: {{ .Values.global.environment }}
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - smart-wallets
-              topologyKey: kubernetes.io/hostname
       containers:
         - name: smart-wallets
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/smart-wallets:{{ .Values.global.image.tag }}"
@@ -127,6 +117,12 @@ spec:
               name: tcp
           
           # Probes
+          startupProbe:
+            httpGet:
+              path: smart-wallets/v1/health
+              port: 5007
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /smart-wallets/v1/health

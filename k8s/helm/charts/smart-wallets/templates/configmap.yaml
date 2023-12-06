@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: smart-wallets
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: smart-wallets
+    environment: {{ .Values.global.environment }}
 data:
   smart_wallets_host: "0.0.0.0"
   smart_wallets_port: "5007"

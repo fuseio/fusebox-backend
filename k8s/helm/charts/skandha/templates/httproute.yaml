@@ -3,6 +3,9 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: skandha
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: skandha
+    environment: {{ .Values.global.environment }}
 spec:
   parentRefs:
     - kind: Gateway
@@ -23,26 +26,3 @@ spec:
       backendRefs:
         - name: skandha
           port: 14337
----
-apiVersion: networking.gke.io/v1
-kind: HealthCheckPolicy
-metadata:
-  name: skandha
-  namespace: {{ .Release.Namespace }}
-spec:
-  default:
-    checkIntervalSec: 30
-    timeoutSec: 5
-    healthyThreshold: 3
-    unhealthyThreshold: 5
-    config:
-      type: HTTP
-      httpHealthCheck:
-        port: 14337
-        portName: http
-        host: skandha
-        requestPath: /version
-  targetRef:
-    group: ""
-    kind: Service
-    name: skandha

@@ -1,0 +1,20 @@
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: centrifugo
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: centrifugo
+    environment: {{ .Values.global.environment }}
+spec:
+  default:
+    logging:
+    {{- range $key, $val := .Values.logging }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
+    connectionDraining:
+      drainingTimeoutSec: 60
+  targetRef:
+    group: ""
+    kind: Service
+    name: centrifugo

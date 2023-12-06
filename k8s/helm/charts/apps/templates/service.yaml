@@ -7,7 +7,9 @@ metadata:
     app: apps
     environment: {{ .Values.global.environment }}
   annotations:
-    networking.gke.io/max-rate-per-endpoint: {{ .Values.service.max_rate_per_endpoint }}
+    {{- range $key, $val := .Values.service.annotations }}
+      {{ $key }}: {{ $val | quote }}
+    {{- end }}
 spec:
   selector:
     app: apps

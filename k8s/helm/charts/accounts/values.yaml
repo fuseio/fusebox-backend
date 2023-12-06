@@ -33,7 +33,6 @@ resources:
     cpu: ""
     memory: ""
 
-
 # Autoscaling
 autoscaling:
   # -- Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler)
@@ -52,15 +51,14 @@ autoscaling:
 
 # Service
 service:
-  # -- Service - Annotation `networking.gke.io/max-rate-per-endpoint` (RPS per pod)
-  max_rate_per_endpoint: 10
+  # -- Service - Annotations
+  annotations:
+    # -- Service - Annotations - RPS per pod
+    networking.gke.io/max-rate-per-endpoint: 10
 
-# Logging
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
-  # -- Logging - Enabled (`true` or `false`)
-  enabled: true
-  # -- Logging - Sample rate (from 0 to 500000 / 1000000)
-  sample_rate: 1000000
+  enabled: false
 
 # ConfigMap
 configMap:

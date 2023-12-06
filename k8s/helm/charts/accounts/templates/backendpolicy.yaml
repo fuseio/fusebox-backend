@@ -9,8 +9,11 @@ metadata:
 spec:
   default:
     logging:
-      enabled: {{ .Values.logging.enabled }}
-      sampleRate: {{ .Values.logging.sample_rate }}
+    {{- range $key, $val := .Values.logging }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
+    connectionDraining:
+      drainingTimeoutSec: 60
   targetRef:
     group: ""
     kind: Service

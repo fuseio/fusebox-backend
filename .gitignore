@@ -42,3 +42,6 @@ lerna-debug.log*
 
 # Mongo persistence data
 /data
+
+# Centrifugo - config.json file used by Helm chart
+k8s/helm/charts/centrifugo/config.json

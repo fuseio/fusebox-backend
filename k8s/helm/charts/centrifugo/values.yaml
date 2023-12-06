@@ -46,16 +46,15 @@ autoscaling:
 
 # Service
 service:
-  # -- Service - Annotation `networking.gke.io/max-rate-per-endpoint` (RPS per pod)
-  max_rate_per_endpoint: 10
+  # -- Service - Annotations
+  annotations:
+    # -- Service - Annotations - RPS per pod
+    networking.gke.io/max-rate-per-endpoint: 10
 
-# Logging
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
-  # -- Logging - Enabled (`true` or `false`)
   enabled: false
-  # -- Logging - Sample rate (from 0 to 500000 / 1000000)
-  sample_rate: 0
 
 # Secrets
 #
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function
+# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.

@@ -40,6 +40,16 @@ accounts:
       cpu: "500m"
       memory: "1Gi"
 
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
+
   # ConfigMap
   configMap:
     auth0_issuer_url: "https://auth.staging.fuse.io/"
@@ -59,18 +69,28 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
   # ConfigMap
   configMap:
     explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "true"
-    bundler_api_prd_url: "https://bundler.fuse.io/122"
-    bundler_api_sandbox_url: "https://bundler.fuse.io/123"
+    bundler_api_prd_url: "https://bundler.staging.fuse.io/122"
+    bundler_api_sandbox_url: "https://bundler.staging.fuse.io/123"
     spark_rpc_url: "https://rpc.fusespark.io/"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
@@ -135,11 +155,11 @@ network:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:
@@ -156,6 +176,16 @@ apps:
     limits:
       cpu: "500m"
       memory: "1Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
   # ConfigMap
   configMap:
@@ -219,37 +249,53 @@ centrifugo:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
 # Secrets (through CI/CD process via environment variables)
 #
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function
-# secrets:
-#   ...
-#   ...
+# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
 
-# Note: for Staging environment we use Skandha Production endpoint
 skandha:
-  enabled: false
+  enabled: true
 
   # Image
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.0.44"
+    tag: "1.0.24-alpha"
 
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
   # ConfigMap
   configMap:

@@ -25,16 +25,6 @@ spec:
         app: api
         environment: {{ .Values.global.environment }}
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - api
-              topologyKey: kubernetes.io/hostname
       containers:
         - name: api
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/api:{{ .Values.global.image.tag }}"
@@ -187,6 +177,12 @@ spec:
               name: tcp
 
           # Probes
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: 5002
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/health

@@ -25,16 +25,6 @@ spec:
         app: notifications
         environment: {{ .Values.global.environment }}
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - notifications
-              topologyKey: kubernetes.io/hostname
       containers:
         - name: notifications
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/notifications:{{ .Values.global.image.tag }}"
@@ -117,6 +107,12 @@ spec:
               name: tcp
           
           # Probes
+          startupProbe:
+            httpGet:
+              path: /notifications/health
+              port: 5004
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /notifications/health

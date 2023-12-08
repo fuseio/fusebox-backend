@@ -8,6 +8,7 @@ A Helm chart for Kubernetes related Skandha component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{"zones":null}` | Affinity (available region zones) |
 | autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent) |
 | autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value |
 | autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent) |
@@ -27,6 +28,7 @@ A Helm chart for Kubernetes related Skandha component
 | image.repository | string | `""` | Repository ID |
 | image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
 | logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
 | secrets.skandha_fuse_beneficiary | string | `""` | Beneficiary - Fuse |

@@ -8,16 +8,17 @@ A Helm chart for Kubernetes related centrifugo component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{"zones":null}` | Affinity (available region zones) |
 | autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler) |
+| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
 | autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.min_replicas | int | `1` | Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler) |
 | autoscaling.rps | object | `{"threshold":80}` | Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler) |
 | global.domain | string | `""` | DNS domain |
 | global.environment | string | `""` | Label 'environment' |
 | image.repository | string | `""` | Repository ID |
 | image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
 | logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |

@@ -13,6 +13,7 @@ export class OperatorsService {
 
   async create (createOperatorDto: CreateOperatorDto): Promise<Operator> {
     const existingOperator = await this.findOne(
+      "smartContractAccountAddress",
       createOperatorDto.smartContractAccountAddress
     );
 
@@ -24,7 +25,7 @@ export class OperatorsService {
     return createdOperator.save()
   }
 
-  async findOne (id: string): Promise<Operator> {
-    return this.operatorModel.findOne({ _id: id }).exec()
+  async findOne (key: string, value: string): Promise<Operator> {
+    return this.operatorModel.findOne({ [key]: value }).exec()
   }
 }

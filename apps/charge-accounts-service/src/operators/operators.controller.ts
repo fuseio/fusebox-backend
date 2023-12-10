@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param } from '@nestjs/common'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-operator.dto'
 
@@ -16,5 +16,11 @@ export class OperatorsController {
   @Post('/register')
   create(@Body() createOperatorDto: CreateOperatorDto) {
     return this.operatorsService.create(createOperatorDto)
+  }
+
+  @Get('/public-data/:address')
+  async findOneByAddress(@Param('address') address: string) {
+    const operator = await this.operatorsService.findOne("externallyOwnedAccountAddress", address)
+    return operator
   }
 }

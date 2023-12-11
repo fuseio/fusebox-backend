@@ -24,6 +24,13 @@ global:
     # -- Tag; overrides the image tag whose default is the chart appVersion.
     tag: ""
 
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+
 # Resources
 resources:
   # -- Resources - Requests
@@ -37,9 +44,7 @@ resources:
 
 # Autoscaling
 autoscaling:
-  # -- Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler)
-  min_replicas: 1
-  # -- Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler)
+  # -- Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler)
   max_replicas: 5
   # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
   cpu:

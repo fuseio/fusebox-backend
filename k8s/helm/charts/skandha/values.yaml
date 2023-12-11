@@ -17,6 +17,13 @@ image:
   # -- Tag; overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+
 # Resources
 resources:
   # -- Resources - Requests

@@ -31,6 +31,14 @@ gateway-api:
 accounts:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -48,7 +56,7 @@ accounts:
   # Logging
   logging:
     enabled: true
-    sample_rate: 1000000
+    sampleRate: 1000000
 
   # ConfigMap
   configMap:
@@ -66,14 +74,22 @@ accounts:
 api:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # Service
   service:
@@ -83,15 +99,15 @@ api:
   # Logging
   logging:
     enabled: true
-    sample_rate: 1000000
+    sampleRate: 1000000
 
   # ConfigMap
   configMap:
     explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "true"
-    bundler_api_prd_url: "https://bundler.staging.fuse.io/122"
-    bundler_api_sandbox_url: "https://bundler.staging.fuse.io/123"
-    spark_rpc_url: "https://rpc.fusespark.io/"
+    bundler_api_prd_url: "https://fuse-bundler.etherspot.io/122"
+    bundler_api_sandbox_url: "https://fuse-bundler.etherspot.io/123"
+    spark_rpc_url: "https://rpc.fusespark.io"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
@@ -110,6 +126,14 @@ api:
 relay:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -126,6 +150,14 @@ relay:
 
 notifications:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -153,14 +185,22 @@ notifications:
 network:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # ConfigMap
   configMap:
@@ -168,6 +208,14 @@ network:
 
 apps:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -186,7 +234,7 @@ apps:
   # Logging
   logging:
     enabled: true
-    sample_rate: 1000000
+    sampleRate: 1000000
 
   # ConfigMap
   configMap:
@@ -210,6 +258,14 @@ apps:
 
 smart-wallets:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -241,6 +297,14 @@ smart-wallets:
 centrifugo:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Image
   image:
     repository: "centrifugo/centrifugo"
@@ -250,11 +314,11 @@ centrifugo:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # Service
   service:
@@ -264,29 +328,34 @@ centrifugo:
   # Logging
   logging:
     enabled: true
-    sample_rate: 1000000
+    sampleRate: 1000000
 
 # Secrets (through CI/CD process via environment variables)
 #
 # Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
 
 skandha:
-  enabled: true
+  enabled: false # We use the EtherSpot - hosted Skandha instance.
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Image
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.24-alpha"
+    tag: "1.0.25-alpha"
 
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # Service
   service:
@@ -295,20 +364,19 @@ skandha:
 
   # Logging
   logging:
-    enabled: true
-    sample_rate: 1000000
+    enabled: false
 
   # ConfigMap
   configMap:
-    skandha_networks: "fuse,fuseSparknet"
-    skandha_fuse_estimation_static_buffer: "500000"
-    skandha_fuse_sparknet_estimation_static_buffer: "500000"
-    skandha_fuse_ban_slack: "10"
-    skandha_fuse_sparknet_ban_slack: "10"
-    skandha_fuse_throttling_slack: "10"
-    skandha_fuse_sparknet_throttling_slack: "10"
-    skandha_fuse_min_inclusion_denominator: "10"
-    skandha_fuse_sparknet_min_inclusion_denominator: "10"
+    skandha_networks: ""
+    skandha_fuse_estimation_static_buffer: ""
+    skandha_fuse_sparknet_estimation_static_buffer: ""
+    skandha_fuse_ban_slack: ""
+    skandha_fuse_sparknet_ban_slack: ""
+    skandha_fuse_throttling_slack: ""
+    skandha_fuse_sparknet_throttling_slack: ""
+    skandha_fuse_min_inclusion_denominator: ""
+    skandha_fuse_sparknet_min_inclusion_denominator: ""
 
   # Secrets
   secrets:

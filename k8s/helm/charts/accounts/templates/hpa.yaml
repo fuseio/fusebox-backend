@@ -11,7 +11,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: accounts
-  minReplicas: {{ .Values.autoscaling.min_replicas }}
+  minReplicas: {{ .Values.replicas }}
   maxReplicas: {{ .Values.autoscaling.max_replicas }}
   metrics:
 

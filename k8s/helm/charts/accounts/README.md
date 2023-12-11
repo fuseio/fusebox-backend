@@ -8,10 +8,10 @@ A Helm chart for Kubernetes related accounts component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{"zones":null}` | Affinity (available region zones) |
 | autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value (Horizontal Pod Autoscaler) |
+| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
 | autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.min_replicas | int | `1` | Autoscaling - Minimal replicas value (Horizontal Pod Autoscaler) |
 | autoscaling.rps | object | `{"threshold":80}` | Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler) |
 | configMap.auth0_audience | string | `""` | Auth0 audience |
 | configMap.auth0_issuer_url | string | `""` | Auth0 issuer URL |
@@ -26,6 +26,7 @@ A Helm chart for Kubernetes related accounts component
 | global.project_id | string | `""` | Google Cloud - Project ID |
 | global.region | string | `""` | Google Cloud - Region |
 | logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
 | secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |

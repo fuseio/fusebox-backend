@@ -7,7 +7,7 @@ metadata:
     app: centrifugo
     environment: {{ .Values.global.environment }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -24,6 +24,17 @@ spec:
         app: centrifugo
         environment: {{ .Values.global.environment }}
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                {{- range $zone := .Values.affinity.zones }}
+                  - {{ $.Values.global.region }}-{{ $zone }}
+                {{- end }}
       containers:
         - name: centrifugo
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

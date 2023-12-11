@@ -31,6 +31,14 @@ gateway-api:
 accounts:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -39,6 +47,16 @@ accounts:
     limits:
       cpu: "500m"
       memory: "1Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sampleRate: 1000000
 
   # ConfigMap
   configMap:
@@ -56,6 +74,14 @@ accounts:
 api:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -65,13 +91,23 @@ api:
       cpu: "500m"
       memory: "1Gi"
 
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sampleRate: 1000000
+
   # ConfigMap
   configMap:
     explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "true"
-    bundler_api_prd_url: "https://bundler.fuse.io/122"
-    bundler_api_sandbox_url: "https://bundler.fuse.io/123"
-    spark_rpc_url: "https://rpc.fusespark.io/"
+    bundler_api_prd_url: "https://fuse-bundler.etherspot.io/122"
+    bundler_api_sandbox_url: "https://fuse-bundler.etherspot.io/123"
+    spark_rpc_url: "https://rpc.fusespark.io"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
@@ -85,9 +121,18 @@ api:
     smart_wallets_jwt_secret: ""
     paymaster_production_signer_private_key_v_0_1_0: ""
     paymaster_sandbox_signer_private_key_v_0_1_0: ""
+    explorer_api_key: ""
 
 relay:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -105,6 +150,14 @@ relay:
 
 notifications:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -132,6 +185,14 @@ notifications:
 network:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -148,6 +209,14 @@ network:
 apps:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Resources (requests & limits)
   resources:
     requests:
@@ -156,6 +225,16 @@ apps:
     limits:
       cpu: "500m"
       memory: "1Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sampleRate: 1000000
 
   # ConfigMap
   configMap:
@@ -179,6 +258,14 @@ apps:
 
 smart-wallets:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -210,6 +297,14 @@ smart-wallets:
 centrifugo:
   enabled: true
 
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
   # Image
   image:
     repository: "centrifugo/centrifugo"
@@ -225,22 +320,33 @@ centrifugo:
       cpu: "500m"
       memory: "1Gi"
 
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sampleRate: 1000000
+
 # Secrets (through CI/CD process via environment variables)
 #
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function
-# secrets:
-#   ...
-#   ...
+# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
 
-# Note: for Staging environment we use Skandha Production endpoint
 skandha:
-  enabled: false
+  enabled: false # We use the EtherSpot - hosted Skandha instance.
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Image
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.0.44"
+    tag: "1.0.25-alpha"
 
   # Resources (requests & limits)
   resources:
@@ -250,6 +356,15 @@ skandha:
     limits:
       cpu: "500m"
       memory: "1Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: false
 
   # ConfigMap
   configMap:

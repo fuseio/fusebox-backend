@@ -1,0 +1,25 @@
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: apps
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: apps
+    environment: {{ .Values.global.environment }}
+spec:
+  default:
+    checkIntervalSec: 30
+    timeoutSec: 5
+    healthyThreshold: 3
+    unhealthyThreshold: 5
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: 5006
+        portName: http
+        host: apps
+        requestPath: /app-store/v1/health
+  targetRef:
+    group: ""
+    kind: Service
+    name: apps

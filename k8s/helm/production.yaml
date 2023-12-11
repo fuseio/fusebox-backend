@@ -34,16 +34,26 @@ accounts:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
   # ConfigMap
   configMap:
     auth0_issuer_url: "https://auth.fuse.io/"
-    auth0_audience: "https://accounts.chargeweb3.com"
+    auth0_audience: "https://accounts.fuse.com"
     paymaster_sandbox_contract_address_v_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"
     paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
@@ -59,11 +69,21 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "2000m"
+      memory: "4Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "2000m"
+      memory: "4Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 150
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
   # ConfigMap
   configMap:
@@ -85,6 +105,7 @@ api:
     smart_wallets_jwt_secret: ""
     paymaster_production_signer_private_key_v_0_1_0: ""
     paymaster_sandbox_signer_private_key_v_0_1_0: ""
+    explorer_api_key: ""
 
 relay:
   enabled: true
@@ -109,11 +130,11 @@ notifications:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "2000m"
+      memory: "4Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "2000m"
+      memory: "4Gi"
 
   # ConfigMap
   configMap:
@@ -135,11 +156,11 @@ network:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "4000m"
+      memory: "8Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "4000m"
+      memory: "8Gi"
 
   # ConfigMap
   configMap:
@@ -157,10 +178,20 @@ apps:
       cpu: "500m"
       memory: "1Gi"
 
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
+
   # ConfigMap
   configMap:
     charge_wallet_phone_number: "+15554443322"
-    charge_base_url: "https://api.alpha.fuse.io"
+    charge_base_url: "https://api.fuse.io"
     job_sleep_ms: "6000"
     unmarshal_base_url: "https://api.unmarshal.com"
     alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
@@ -194,7 +225,7 @@ smart-wallets:
     centrifugo_uri: "wss://ws.fuse.io/connection/websocket"
     centrifugo_api_url: "https://ws.fuse.io/api"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
-    charge_base_url: "https://api.alpha.fuse.io"
+    charge_base_url: "https://api.fuse.io"
 
   # Secrets (through CI/CD process via environment variables)
   secrets:
@@ -219,11 +250,21 @@ centrifugo:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "2000m"
+      memory: "4Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "2000m"
+      memory: "4Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
 # Secrets (through CI/CD process via environment variables)
 #
@@ -239,16 +280,26 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.0.44"
+    tag: "1.0.24-alpha"
 
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # Logging
+  logging:
+    enabled: true
+    sample_rate: 1000000
 
   # ConfigMap
   configMap:

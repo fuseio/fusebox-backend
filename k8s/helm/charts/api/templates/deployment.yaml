@@ -7,7 +7,7 @@ metadata:
     app: api
     environment: {{ .Values.global.environment }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -26,15 +26,16 @@ spec:
         environment: {{ .Values.global.environment }}
     spec:
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - api
-              topologyKey: kubernetes.io/hostname
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                {{- range $zone := .Values.affinity.zones }}
+                  - {{ $.Values.global.region }}-{{ $zone }}
+                {{- end }}
       containers:
         - name: api
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/api:{{ .Values.global.image.tag }}"
@@ -178,6 +179,11 @@ spec:
                 secretKeyRef:
                   name: api
                   key: paymaster_sandbox_signer_private_key_v_0_1_0
+            - name: EXPLORER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: explorer_api_key
 
           # Ports
           ports:
@@ -187,6 +193,12 @@ spec:
               name: tcp
 
           # Probes
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: 5002
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/health

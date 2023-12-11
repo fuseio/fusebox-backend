@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: notifications
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: notifications
+    environment: {{ .Values.global.environment }}
 data:
   notifications_host: "0.0.0.0"
   notifications_port: "5004"

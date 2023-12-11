@@ -1,16 +1,16 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: centrifugo
+  name: skandha
   namespace: {{ .Release.Namespace }}
   labels:
-    app: centrifugo
+    app: skandha
     environment: {{ .Values.global.environment }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: centrifugo
+    name: skandha
   minReplicas: {{ .Values.replicas }}
   maxReplicas: {{ .Values.autoscaling.max_replicas }}
   metrics:
@@ -36,7 +36,7 @@ spec:
       object:
         describedObject:
           kind: Service
-          name: centrifugo
+          name: skandha
         metric:
           name: "autoscaling.googleapis.com|gclb-capacity-utilization"
         target:

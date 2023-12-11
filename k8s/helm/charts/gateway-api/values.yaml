@@ -2,14 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# Global
-global:
-  # -- Namespace
-  namespace: "fusebox-staging"
-
-# Name & Global address
-# -- Name
+# -- Gateway API - Name
 name: ""
 
-# -- Global address name
+# -- Gateway API - Global address
 global_address: ""

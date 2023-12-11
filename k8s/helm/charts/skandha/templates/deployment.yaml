@@ -7,9 +7,11 @@ metadata:
     app: skandha
     environment: {{ .Values.global.environment }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: skandha
@@ -24,20 +26,21 @@ spec:
         environment: {{ .Values.global.environment }}
     spec:
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - skandha
-              topologyKey: kubernetes.io/hostname
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                {{- range $zone := .Values.affinity.zones }}
+                  - {{ $.Values.global.region }}-{{ $zone }}
+                {{- end }}
       containers:
         - name: skandha
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
-          command: ["node", "./packages/cli/bin/skandha", "start", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
+          command: ["node", "./packages/cli/bin/skandha", "standalone", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
 
           env:
             # ConfigMap
@@ -128,11 +131,6 @@ spec:
                 secretKeyRef:
                   name: skandha
                   key: skandha_fuse_entrypoints
-          
-          # VolumeMounts
-          volumeMounts:
-            - mountPath: /opt/skandha/app
-              name: skandha
 
           # Ports
           ports:
@@ -140,6 +138,12 @@ spec:
               name: http
           
           # Probes
+          startupProbe:
+            httpGet:
+              path: /version
+              port: 14337
+            failureThreshold: 15
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /version
@@ -161,9 +165,3 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
-
-      # Volumes
-      volumes:
-        - name: skandha
-          persistentVolumeClaim:
-            claimName: skandha

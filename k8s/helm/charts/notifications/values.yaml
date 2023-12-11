@@ -4,8 +4,6 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
   # -- Label 'environment'
   environment: ""
 
@@ -24,6 +22,13 @@ global:
     # -- Tag; overrides the image tag whose default is the chart appVersion.
     tag: ""
 
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+
 # Resources
 resources:
   # -- Resources - Requests
@@ -34,6 +39,17 @@ resources:
   limits:
     cpu: ""
     memory: ""
+
+# Autoscaling
+autoscaling:
+  # -- Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler)
+  max_replicas: 5
+  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
+  cpu:
+    threshold: 80
+  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
+  memory:
+    threshold: 80
 
 # ConfigMap
 configMap:

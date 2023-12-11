@@ -29,14 +29,17 @@ export class PaymasterApiService {
   async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
     try {
       const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
+      console.log(web3.currentProvider)
       const [op] = body
+      console.log('INITIAL OP:')
+      console.log(op)
       const { timestamp } = await web3.eth.getBlock('latest')
+      console.log(`timestamp: ${timestamp}`)
+
       const validUntil = parseInt(timestamp.toString()) + 240
       const validAfter = 0
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
       const minVerificationGasLimit = '140000'
-      console.log('INITIAL OP:')
-      console.log(op)
 
       if (isEmpty(paymasterInfo)) {
         throw new RpcException(`Error getting paymaster for project: ${projectId} in ${env} environment`)

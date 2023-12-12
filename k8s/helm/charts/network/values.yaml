@@ -6,7 +6,7 @@
 global:
   # -- Namespace
   namespace: ""
-  # -- Label "environment"
+  # -- Label 'environment'
   environment: ""
 
   # -- Google Cloud - Project ID
@@ -68,5 +68,5 @@ configMap:
 
   # Secrets (through environment variables)
 secrets:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
+  # -- RPC URL endpoint
   rpc_url: ""

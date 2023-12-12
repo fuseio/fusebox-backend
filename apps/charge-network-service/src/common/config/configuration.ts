@@ -12,7 +12,7 @@ export default () => ({
     }
   },
   tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,
-  voltBarGraphUrl: 'https://graph-fuse-mainnet.hirenodes.io/subgraphs/name/volt/bar/graphql',
+  voltBarGraphUrl: 'https://graph-fuse-mainnet.hirenodes.io/subgraphs/name/volt/bar',
   blockGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-blocks',
   voltageGraphUrl: 'https://api.thegraph.com/subgraphs/name/voltfinance/voltage-exchange',
   nftGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-nft-v2',

@@ -206,6 +206,10 @@ network:
   configMap:
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
 
+    # Secrets (through CI/CD process via environment variables)
+  secrets:
+    rpc_url: ""
+
 apps:
   enabled: true
 

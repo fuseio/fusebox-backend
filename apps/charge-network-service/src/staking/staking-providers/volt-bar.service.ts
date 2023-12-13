@@ -22,7 +22,7 @@ export default class VoltBarService implements StakingProvider {
     private readonly graphService: GraphService,
     private readonly configService: ConfigService,
     private readonly tradeService: TradeService
-  ) {}
+  ) { }
 
   get address () {
     return this.configService.get('voltBarAddress')
@@ -101,43 +101,54 @@ export default class VoltBarService implements StakingProvider {
     const days = 31
     const latestTimestamp = getUnixTime(new Date())
     const startTimestamp = (latestTimestamp / secondsInDay) - days
-
-    const stats: any = await this.voltBarGraphClient.request(getBarStats, {
-      days,
-      startTimestamp: String(startTimestamp)
-    })
-
-    const voltBalanceHistories = stats?.voltBalanceHistories || []
-    const bars = stats?.bars || []
-
-    const totalStaked = bars?.[0]?.totalSupply
-
-    const movingAverage = voltBalanceHistories
-      .map((history: any, index: number, histories: any[]) => {
-        if (index === 0) return 0
-        return history.balance - history.totalVoltStaked - (histories[index - 1].balance - histories[index - 1].totalVoltStaked)
+    try {
+      console.log(`stakingApr query:${getBarStats}`)
+      const stats: any = await this.voltBarGraphClient.request(getBarStats, {
+        days,
+        startTimestamp: String(startTimestamp)
       })
-      .reduce((totalAverage: number, history: number) => totalAverage + history, 0) / voltBalanceHistories.length - 1
+      const voltBalanceHistories = stats?.voltBalanceHistories || []
+      const bars = stats?.bars || []
 
-    return (movingAverage * daysInYear * 100) / totalStaked
+      const totalStaked = bars?.[0]?.totalSupply
+
+      const movingAverage = voltBalanceHistories
+        .map((history: any, index: number, histories: any[]) => {
+          if (index === 0) return 0
+          return history.balance - history.totalVoltStaked - (histories[index - 1].balance - histories[index - 1].totalVoltStaked)
+        })
+        .reduce((totalAverage: number, history: number) => totalAverage + history, 0) / voltBalanceHistories.length - 1
+
+      return (movingAverage * daysInYear * 100) / totalStaked
+    } catch (error) {
+      console.log(`stakingApr error: ${error}`)
+    }
   }
 
   async tvl ({ tokenAddress }: StakingOption) {
+    console.log('tvl function call')
     const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress)
-
-    const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call()
-
-    const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
-
-    return Number(formatEther(voltBalance)) * voltPrice
+    try {
+      const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call()
+      const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+      return Number(formatEther(voltBalance)) * voltPrice
+    } catch (error) {
+      console.log(`tvl error:${error}`)
+    }
   }
 
   private async getStakingData (accountAddress: string) {
-    const data = await this.voltBarGraphClient.request(getBarUser, {
-      barId: this.address.toLowerCase(),
-      userId: accountAddress.toLowerCase()
-    })
+    try {
+      console.log(`gatStakingData query:${getBarUser}`)
 
-    return data
+      const data = await this.voltBarGraphClient.request(getBarUser, {
+        barId: this.address.toLowerCase(),
+        userId: accountAddress.toLowerCase()
+      })
+
+      return data
+    } catch (error) {
+      console.log(`getStakingData error: ${error}`)
+    }
   }
 }

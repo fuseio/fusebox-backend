@@ -61,11 +61,6 @@ spec:
                 configMapKeyRef:
                   name: network
                   key: legacy_fuse_trade_api_url
-            - name: RPC_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: network
-                  key: rpc_url
 
           # Ports
           ports:

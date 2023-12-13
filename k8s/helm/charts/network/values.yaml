@@ -6,7 +6,7 @@
 global:
   # -- Namespace
   namespace: ""
-  # -- Label 'environment'
+  # -- Label "environment"
   environment: ""
 
   # -- Google Cloud - Project ID
@@ -65,3 +65,8 @@ autoscaling:
 configMap:
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
+
+  # Secrets (through environment variables)
+secrets:
+  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
+  rpc_url: ""

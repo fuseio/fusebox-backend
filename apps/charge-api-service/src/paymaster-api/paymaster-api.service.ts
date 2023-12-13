@@ -29,7 +29,6 @@ export class PaymasterApiService {
   async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
     try {
       const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
-      console.log(web3.currentProvider)
       const [op] = body
       console.log('INITIAL OP:')
       console.log(op)

@@ -2,12 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: network
-  namespace: {{ .Release.Namespace }}
+  namespace: { { .Release.Namespace } }
   labels:
     app: network
-    environment: {{ .Values.global.environment }}
+    environment: { { .Values.global.environment } }
 data:
-  network_host: "0.0.0.0"
-  network_port: "5005"
-  network_tcp_port: "8879"
-  legacy_fuse_trade_api_url: {{ .Values.configMap.legacy_fuse_trade_api_url | quote }}
+  network_host: '0.0.0.0'
+  network_port: '5005'
+  network_tcp_port: '8879'
+  legacy_fuse_trade_api_url:
+    { { .Values.configMap.legacy_fuse_trade_api_url | quote } }
+  rpc_url: { { .Values.configMap.rpc_url | quote } }

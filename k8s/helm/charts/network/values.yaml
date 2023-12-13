@@ -5,24 +5,24 @@
 # Global
 global:
   # -- Namespace
-  namespace: ""
+  namespace: ''
   # -- Label 'environment'
-  environment: ""
+  environment: ''
 
   # -- Google Cloud - Project ID
-  project_id: ""
+  project_id: ''
   # -- Google Cloud - Region
-  region: ""
+  region: ''
 
   # -- DNS domain
-  domain: ""
+  domain: ''
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: ''
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: ''
 
 # -- Replicas
 replicas: 1
@@ -35,12 +35,12 @@ affinity:
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: ''
+    memory: ''
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: ''
+    memory: ''
 
 # Autoscaling
 autoscaling:
@@ -54,14 +54,16 @@ autoscaling:
     threshold: 80
   # -- Autoscaling - CPU & RAM maximum allow value (Vertical Pod Autoscaler)
   max_allowed:
-    cpu: "4000m"
-    memory: "8Gi"
+    cpu: '4000m'
+    memory: '8Gi'
   # -- Autoscaling - CPU & RAM minimum allow value (Vertical Pod Autoscaler)
   min_allowed:
-    cpu: "500m"
-    memory: "1Gi"
+    cpu: '500m'
+    memory: '1Gi'
 
 # ConfigMap
 configMap:
   # -- Legacy - Fuse trade API URL
-  legacy_fuse_trade_api_url: ""
+  legacy_fuse_trade_api_url: ''
+
+  rpc_url: ''

@@ -1,31 +1,22 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
-import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-operator.dto'
-import { Operator } from '@app/accounts-service/operators/interfaces/operator.interface'
-import { operatorModelString } from '@app/accounts-service/operators/operators.constants'
+import { Injectable } from '@nestjs/common'
+import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
+import { JwtService } from '@nestjs/jwt'
+import { ethers } from 'ethers'
 
 @Injectable()
 export class OperatorsService {
   constructor (
-    @Inject(operatorModelString)
-    private operatorModel: Model<Operator>
+    private readonly jwtService: JwtService
   ) { }
 
-  async create (createOperatorDto: CreateOperatorDto): Promise<Operator> {
-    const existingOperator = await this.findOne(
-      "smartContractAccountAddress",
-      createOperatorDto.smartContractAccountAddress
-    );
-
-    if (existingOperator) {
-      throw new ConflictException('Operator already exists');
-    }
-
-    const createdOperator = new this.operatorModel(createOperatorDto)
-    return createdOperator.save()
+  verifySignature (authOperatorDto: AuthOperatorDto): string {
+    const recoveredAddress = ethers.utils.verifyMessage(authOperatorDto.message, authOperatorDto.signature)
+    return recoveredAddress
   }
 
-  async findOne (key: string, value: string): Promise<Operator> {
-    return this.operatorModel.findOne({ [key]: value }).exec()
-  }
+  async createJwt(address: string): Promise<string> {
+    return this.jwtService.sign({
+      sub: address
+    });
+  }  
 }

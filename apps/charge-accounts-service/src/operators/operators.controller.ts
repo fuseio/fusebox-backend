@@ -1,26 +1,23 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common'
+import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
-import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-operator.dto'
+import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
   constructor(private readonly operatorsService: OperatorsService) { }
 
   /**
-   * Registers a new operator
-   * TODO: authenticate the user EOA by signing a message in frontend
-   * and verifying it in the backend, need to think about a new architecture,
-   * as operator is already signing additional message for Fusebox Web SDK
-   * @param createOperatorDto
+   * Authenticate operator
+   * @param authOperatorDto
  */
-  @Post('/register')
-  create(@Body() createOperatorDto: CreateOperatorDto) {
-    return this.operatorsService.create(createOperatorDto)
-  }
+  @Post('/auth')
+  authenticate (@Body() authOperatorDto: AuthOperatorDto) {    
+    const recoveredAddress = this.operatorsService.verifySignature(authOperatorDto)
 
-  @Get('/public-data/:address')
-  async findOneByAddress(@Param('address') address: string) {
-    const operator = await this.operatorsService.findOne("externallyOwnedAccountAddress", address)
-    return operator
+    if(authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
+      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN);
+    }
+    
+    return this.operatorsService.createJwt(recoveredAddress)
   }
 }

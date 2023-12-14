@@ -17,38 +17,38 @@ import { formatEther } from 'nestjs-ethers'
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {
-  constructor(
+  constructor (
     private readonly web3ProviderService: Web3ProviderService,
     private readonly graphService: GraphService,
     private readonly configService: ConfigService,
     private readonly tradeService: TradeService
   ) { }
 
-  get address() {
+  get address () {
     return this.configService.get('voltBarAddress')
   }
 
-  get stakingProviderId() {
+  get stakingProviderId () {
     return voltBarId
   }
 
-  get web3Provider() {
+  get web3Provider () {
     return this.web3ProviderService.getProvider()
   }
 
-  get voltBarGraphClient() {
+  get voltBarGraphClient () {
     return this.graphService.getVoltBarClient()
   }
 
-  get voltageClient() {
+  get voltageClient () {
     return this.graphService.getVoltageClient()
   }
 
-  get blockClient() {
+  get blockClient () {
     return this.graphService.getBlockClient()
   }
 
-  stake({ tokenAmount }: StakeDto) {
+  stake ({ tokenAmount }: StakeDto) {
     return encodeFunctionCall(
       VoltBarABI,
       this.web3Provider,
@@ -57,7 +57,7 @@ export default class VoltBarService implements StakingProvider {
     )
   }
 
-  unStake({ tokenAmount }: UnstakeDto) {
+  unStake ({ tokenAmount }: UnstakeDto) {
     return encodeFunctionCall(
       VoltBarABI,
       this.web3Provider,
@@ -66,7 +66,7 @@ export default class VoltBarService implements StakingProvider {
     )
   }
 
-  async stakedToken(
+  async stakedToken (
     accountAddress: string,
     {
       tokenAddress,
@@ -109,7 +109,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async stakingApr() {
+  async stakingApr () {
     const days = 31
     const latestTimestamp = getUnixTime(new Date())
     const startTimestamp = (latestTimestamp / secondsInDay) - days
@@ -138,7 +138,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async tvl({ tokenAddress }: StakingOption) {
+  async tvl ({ tokenAddress }: StakingOption) {
     console.debug('tvl function call')
     const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress)
     try {
@@ -151,9 +151,8 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  private async getStakingData(accountAddress: string) {
+  private async getStakingData (accountAddress: string) {
     try {
-      
       const data = await this.voltBarGraphClient.request(getBarUser, {
         barId: this.address.toLowerCase(),
         userId: accountAddress.toLowerCase()

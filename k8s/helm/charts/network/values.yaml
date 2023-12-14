@@ -65,3 +65,8 @@ autoscaling:
 configMap:
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
+
+  # Secrets (through environment variables)
+secrets:
+  # -- RPC URL endpoint
+  rpc_url: ""

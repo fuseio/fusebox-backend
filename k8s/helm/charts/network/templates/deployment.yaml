@@ -62,6 +62,13 @@ spec:
                   name: network
                   key: legacy_fuse_trade_api_url
 
+            # Secrets
+            - name: RPC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: network
+                  key: rpc_url
+
           # Ports
           ports:
             - containerPort: 5005

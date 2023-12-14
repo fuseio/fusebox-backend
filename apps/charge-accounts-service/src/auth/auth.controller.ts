@@ -30,7 +30,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('/login')
   async findOne (@User('sub') id: string) {
-    console.log(id)
     const user = await this.usersService.findOneByAuth0Id(id)
     return { id: user?.id }
   }
@@ -39,6 +38,7 @@ export class AuthController {
   /**
    * Validate operator
    * @param authOperatorDto
+   * @returns the new simple JWT
    */
   @Post('/validate')
   validate (@Body() authOperatorDto: AuthOperatorDto) {    

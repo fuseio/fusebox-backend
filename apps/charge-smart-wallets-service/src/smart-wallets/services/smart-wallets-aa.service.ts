@@ -5,8 +5,6 @@ import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-
 import { SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
 import { ConfigService } from '@nestjs/config'
 import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
-// import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-// import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 
 @Injectable()
 export class SmartWalletsAAService implements SmartWalletService {
@@ -16,7 +14,6 @@ export class SmartWalletsAAService implements SmartWalletService {
     private readonly jwtService: JwtService,
     private configService: ConfigService,
     private chargeApiService: ChargeApiService
-    // private readonly centrifugoAPIService: CentrifugoAPIService
   ) { }
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {

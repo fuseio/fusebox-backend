@@ -12,7 +12,7 @@ import {
 import { isNil } from 'lodash'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
-import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.service'
+import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
 
 @Injectable()
@@ -26,15 +26,15 @@ export class DataLayerService {
     private paginatedWalletActionModel: PaginateModel<WalletActionDocument>,
     private userOpFactory: UserOpFactory,
     private tokenService: TokenService,
-    private smartWalletsEventsService: SmartWalletsEventsService
+    private smartWalletsAAEventsService: SmartWalletsAAEventsService
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     const userOp = await this.userOpFactory.createUserOp(baseUserOp)
     const response = await this.userOpModel.create(userOp) as UserOp
-    this.smartWalletsEventsService.publishUserOp(response.sender, response)
+    this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
     const walletAction = await this.createWalletActionFromUserOp(userOp)
-    this.smartWalletsEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+    this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
     return response
   }
 
@@ -44,7 +44,7 @@ export class DataLayerService {
       return 'No record found with the provided userOpHash'
     }
     const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
-    this.smartWalletsEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
+    this.smartWalletsAAEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
     this.updateWalletAction(updatedUserOp)
     return updatedUserOp
   }
@@ -62,7 +62,7 @@ export class DataLayerService {
   async updateWalletAction (userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
-    this.smartWalletsEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
+    this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
     return updatedWalletAction
   }
 
@@ -98,7 +98,7 @@ export class DataLayerService {
     )
     if (direction === 'incoming') {
       this.logger.debug('Creating a new receive wallet action...')
-      this.smartWalletsEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+      this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       return this.paginatedWalletActionModel.create(walletAction)
     }
 

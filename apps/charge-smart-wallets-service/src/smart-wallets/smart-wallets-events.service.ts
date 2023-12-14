@@ -187,24 +187,6 @@ export class SmartWalletsEventsService {
     }
   }
 
-  async publishUserOp (sender, messageData) {
-    try {
-      this.centrifugoAPIService.publish(`userOp:#${sender}`, messageData)
-    } catch (error) {
-      this.logger.error({ error })
-      this.logger.error(`An error occurred during publish message to channel: userOp:#${sender}`)
-    }
-  }
-
-  async publishWalletAction (sender, messageData) {
-    try {
-      this.centrifugoAPIService.publish(`walletAction:#${sender}`, messageData)
-    } catch (error) {
-      this.logger.error({ error })
-      this.logger.error(`An error occurred during publish message to channel: walletAction:#${sender}`)
-    }
-  }
-
   async unsubscribe (eventData) {
     try {
       if (!has(eventData, 'transactionId')) {

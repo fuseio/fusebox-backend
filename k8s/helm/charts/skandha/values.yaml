@@ -4,18 +4,23 @@
 
 # Global
 global:
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- DNS domain
-  domain: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-# Image
-image:
-  # -- Repository ID
-  repository: ""
-  # -- Tag; overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
+
+  # Image
+  image:
+    # -- Repository ID
+    repository: "accounts"
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
 
 # -- Replicas
 replicas: 1
@@ -23,33 +28,18 @@ replicas: 1
 # -- Affinity (available region zones)
 affinity:
   zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
-
-# Autoscaling
-autoscaling:
-  # -- Autoscaling - Minimal replicas value
-  min_replicas: 1
-  # -- Autoscaling - Maximum replicas value
-  max_replicas: 5
-  # -- Autoscaling - CPU threshold (in percent)
-  cpu:
-    threshold: 80
-  # -- Autoscaling - RAM threshold (in percent)
-  memory:
-    threshold: 80
-  # -- Autoscaling - RPS threshold (in percent)
-  rps:
-    threshold: 80
+    cpu: "500m"
+    memory: "1Gi"
 
 # Service
 service:
@@ -60,9 +50,10 @@ service:
 
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
-  enabled: false
+  enabled: true
+  sampleRate: 1000000
 
-# ConfigMap
+# ConfigMap (non - sensitive information)
 configMap:
   # -- Networks. Possible values: `fuse,fuseSparknet`
   skandha_networks: ""
@@ -83,8 +74,8 @@ configMap:
   # -- Min inclusion denominator - Spark
   skandha_fuse_sparknet_min_inclusion_denominator: ""
 
-# Secrets
-secrets:
+# Secret (sensitive information, defined through environment variables)
+secret:
   # -- Relayer - Spark
   skandha_fuse_sparknet_relayer: ""
   # -- Beneficiary - Spark

@@ -20,7 +20,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: accounts
         environment: {{ .Values.global.environment }}
@@ -40,6 +40,7 @@ spec:
         - name: accounts
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/accounts:{{ .Values.global.image.tag }}"
           env:
+
             # ConfigMap
             - name: ACCOUNTS_HOST
               valueFrom:
@@ -56,36 +57,6 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: accounts_tcp_port
-            - name: AUTH0_ISSUER_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: auth0_issuer_url
-            - name: AUTH0_AUDIENCE
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: auth0_audience
-            - name: PAYMASTER_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: paymaster_sandbox_contract_address_v_0_1_0
-            - name: PAYMASTER_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: paymaster_production_contract_address_v_0_1_0
-            - name: ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: entrypoint_sandbox_contract_address_v_0_1_0
-            - name: ENTRYPOINT_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: entrypoint_production_contract_address_v_0_1_0
             - name: API_HOST
               valueFrom:
                 configMapKeyRef:
@@ -116,13 +87,23 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: apps_tcp_port
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: MONGO_URI
+            # Secret
+            {{- range $key, $val := .Values.secret }}
+            - name: {{ $key | upper }}
               valueFrom:
                 secretKeyRef:
                   name: accounts
-                  key: mongo_uri
+                  key: {{ $key }}
+            {{- end }}
+
           # Ports
           ports:
             - containerPort: 5001
@@ -131,12 +112,6 @@ spec:
               name: tcp
 
           # Probes
-          startupProbe:
-            httpGet:
-              path: /accounts/v1/health
-              port: 5001
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /accounts/v1/health
@@ -153,8 +128,10 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

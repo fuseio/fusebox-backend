@@ -8,28 +8,26 @@ A Helm chart for Kubernetes related accounts component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{"zones":null}` | Affinity (available region zones) |
-| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
-| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.rps | object | `{"threshold":80}` | Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler) |
+| affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
+| autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
+| autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
 | configMap.auth0_audience | string | `""` | Auth0 audience |
 | configMap.auth0_issuer_url | string | `""` | Auth0 issuer URL |
 | configMap.entrypoint_production_contract_address_v_0_1_0 | string | `""` | Bundler - Entrypoint Production contract address |
 | configMap.entrypoint_sandbox_contract_address_v_0_1_0 | string | `""` | Bundler - Entrypoint Sandbox contract address |
 | configMap.paymaster_production_contract_address_v_0_1_0 | string | `""` | Bundler - Paymaster Production contract address |
 | configMap.paymaster_sandbox_contract_address_v_0_1_0 | string | `""` | Bundler - Paymaster Sandbox contract address |
-| global.domain | string | `""` | DNS domain |
-| global.environment | string | `""` | Label 'environment' |
-| global.image.repository | string | `""` | Repository ID |
-| global.image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
-| global.project_id | string | `""` | Google Cloud - Project ID |
-| global.region | string | `""` | Google Cloud - Region |
-| logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
+| global.environment | string | `"development"` | Kubernetes label `environment`` |
+| global.image.repository | string | `"accounts"` | Repository ID |
+| global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
+| global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
+| logging | object | `{"enabled":true,"sampleRate":1000000}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
 | replicas | int | `1` | Replicas |
-| resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
-| resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
-| secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
+| resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
+| resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
+| secret.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

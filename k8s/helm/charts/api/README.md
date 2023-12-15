@@ -8,11 +8,9 @@ A Helm chart for Kubernetes related api component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{"zones":null}` | Affinity (available region zones) |
-| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
-| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.rps | object | `{"threshold":80}` | Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler) |
+| affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
+| autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
+| autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
 | configMap.bundler_api_prd_url | string | `""` | Bundler - API Production URL |
 | configMap.bundler_api_sandbox_url | string | `""` | Bundler - API Sandbox URL |
 | configMap.explorer_api_url | string | `""` | BlockScout API URL |
@@ -21,24 +19,25 @@ A Helm chart for Kubernetes related api component
 | configMap.legacy_fuse_wallet_api_url | string | `""` | Legacy - Fuse wallet API URL |
 | configMap.qa_mode | string | `""` | QA mode ('true' or 'false') |
 | configMap.spark_rpc_url | string | `""` | RPC URL - Spark |
-| global.domain | string | `""` | DNS domain |
-| global.environment | string | `""` | Label 'environment' |
-| global.image.repository | string | `""` | Repository ID |
-| global.image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
-| global.project_id | string | `""` | Google Cloud - Project ID |
-| global.region | string | `""` | Google Cloud - Region |
-| logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
+| global.environment | string | `"development"` | Kubernetes label `environment`` |
+| global.image.repository | string | `"api"` | Repository ID |
+| global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
+| global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
+| logging | object | `{"enabled":true,"sampleRate":1000000}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
 | replicas | int | `1` | Replicas |
-| resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
-| resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
-| secrets.explorer_api_key | string | `""` | Explorer (BlockScout) - API key |
-| secrets.fuse_studio_admin_jwt | string | `""` | Fuse Studio admin JWT |
-| secrets.legacy_jwt_secret | string | `""` | Legacy - JWT secret |
-| secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
-| secrets.paymaster_production_signer_private_key_v_0_1_0 | string | `""` | Bundler - Paymaster Production signer private key |
-| secrets.paymaster_sandbox_signer_private_key_v_0_1_0 | string | `""` | Bundler - Paymaster Sandbox signer private key |
-| secrets.rpc_url | string | `""` | RPC URL - Fuse |
-| secrets.smart_wallets_jwt_secret | string | `""` | smart-wallets - JWT secret |
+| resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
+| resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
+| secret.explorer_api_key | string | `""` | Explorer (BlockScout) - API key |
+| secret.fuse_studio_admin_jwt | string | `""` | Fuse Studio admin JWT |
+| secret.legacy_jwt_secret | string | `""` | Legacy - JWT secret |
+| secret.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
+| secret.paymaster_production_signer_private_key_v_0_1_0 | string | `""` | Bundler - Paymaster Production signer private key |
+| secret.paymaster_sandbox_signer_private_key_v_0_1_0 | string | `""` | Bundler - Paymaster Sandbox signer private key |
+| secret.rpc_url | string | `""` | RPC URL - Fuse |
+| secret.smart_wallets_jwt_secret | string | `""` | smart-wallets - JWT secret |
+| securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

@@ -4,18 +4,23 @@
 
 # Global
 global:
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- DNS domain
-  domain: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-# Image
-image:
-  # -- Repository ID
-  repository: ""
-  # -- Tag; overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
+
+  # Image
+  image:
+    # -- Repository ID
+    repository: "accounts"
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
 
 # -- Replicas
 replicas: 1
@@ -23,43 +28,23 @@ replicas: 1
 # -- Affinity (available region zones)
 affinity:
   zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
-
-# Autoscaling
-autoscaling:
-  # -- Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler)
-  max_replicas: 5
-  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
-  cpu:
-    threshold: 80
-  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
-  memory:
-    threshold: 80
-  # -- Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler)
-  rps:
-    threshold: 80
-
-# Service
-service:
-  # -- Service - Annotations
-  annotations:
-    # -- Service - Annotations - RPS per pod
-    networking.gke.io/max-rate-per-endpoint: 10
+    cpu: "500m"
+    memory: "1Gi"
 
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
-  enabled: false
+  enabled: true
+  sampleRate: 1000000
 
-# Secrets
-#
 # Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
+secret:

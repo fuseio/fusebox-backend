@@ -12,7 +12,7 @@ spec:
     kind: Deployment
     name: relay
   minReplicas: {{ .Values.replicas }}
-  maxReplicas: {{ .Values.autoscaling.max_replicas }}
+  maxReplicas: {{ .Values.autoscaling.hpa.max_replicas }}
   metrics:
 
     # CPU
@@ -21,7 +21,7 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.autoscaling.cpu.threshold }}
+          averageUtilization: 80
     
     # Memory
     - type: Resource
@@ -29,4 +29,4 @@ spec:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.autoscaling.memory.threshold }}
+          averageUtilization: 80

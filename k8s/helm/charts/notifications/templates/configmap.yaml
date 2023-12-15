@@ -7,14 +7,17 @@ metadata:
     app: notifications
     environment: {{ .Values.global.environment }}
 data:
+
+  # [Hardcoded] Host & Port
   notifications_host: "0.0.0.0"
   notifications_port: "5004"
   notifications_tcp_port: "8878"
-  network_name: {{ .Values.configMap.network_name | quote }}
-  chain_id: {{ .Values.configMap.chain_id | quote }}
-  max_blocks: {{ .Values.configMap.max_blocks | quote }}
-  timeout_interval: {{ .Values.configMap.timeout_interval | quote }}
 
-  # Host & Port ('notifications' use 'smart-wallets' hostname and TCP port)
+  # [Hardcoded] Components Host & Port ('notifications' component use 'smart-wallets' component hostname and TCP port)
   smart_wallets_host: "smart-wallets"
   smart_wallets_tcp_port: "8881"
+
+  # User - defined
+{{- range $key, $val := .Values.configMap }}
+  {{ $key }}: {{ $val | quote }}
+{{- end }}

@@ -8,12 +8,7 @@ A Helm chart for Kubernetes related Skandha component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{"zones":null}` | Affinity (available region zones) |
-| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value |
-| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent) |
-| autoscaling.min_replicas | int | `1` | Autoscaling - Minimal replicas value |
-| autoscaling.rps | object | `{"threshold":80}` | Autoscaling - RPS threshold (in percent) |
+| affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
 | configMap.skandha_fuse_ban_slack | string | `""` | Ban Slack - Fuse |
 | configMap.skandha_fuse_estimation_static_buffer | string | `""` | Estimation static buffer - Fuse |
 | configMap.skandha_fuse_min_inclusion_denominator | string | `""` | Min inclusion denominator - Fuse |
@@ -23,22 +18,24 @@ A Helm chart for Kubernetes related Skandha component
 | configMap.skandha_fuse_sparknet_throttling_slack | string | `""` | Throttling Slack - Spark |
 | configMap.skandha_fuse_throttling_slack | string | `""` | Throttling Slack - Fuse |
 | configMap.skandha_networks | string | `""` | Networks. Possible values: `fuse,fuseSparknet` |
-| global.domain | string | `""` | DNS domain |
-| global.environment | string | `""` | Label 'environment' |
-| image.repository | string | `""` | Repository ID |
-| image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
-| logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
+| global.environment | string | `"development"` | Kubernetes label `environment`` |
+| global.image.repository | string | `"accounts"` | Repository ID |
+| global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
+| global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
+| logging | object | `{"enabled":true,"sampleRate":1000000}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
 | replicas | int | `1` | Replicas |
-| resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
-| resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
-| secrets.skandha_fuse_beneficiary | string | `""` | Beneficiary - Fuse |
-| secrets.skandha_fuse_entrypoints | string | `""` | Entrypoint - Fuse |
-| secrets.skandha_fuse_relayer | string | `""` | Relayer - Fuse |
-| secrets.skandha_fuse_rpc | string | `""` | RPC endpoint - Fuse |
-| secrets.skandha_fuse_sparknet_beneficiary | string | `""` | Beneficiary - Spark |
-| secrets.skandha_fuse_sparknet_entrypoints | string | `""` | Entrypoint - Spark |
-| secrets.skandha_fuse_sparknet_relayer | string | `""` | Relayer - Spark |
-| secrets.skandha_fuse_sparknet_rpc | string | `""` | RPC endpoint - Spark |
+| resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
+| resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
+| secret.skandha_fuse_beneficiary | string | `""` | Beneficiary - Fuse |
+| secret.skandha_fuse_entrypoints | string | `""` | Entrypoint - Fuse |
+| secret.skandha_fuse_relayer | string | `""` | Relayer - Fuse |
+| secret.skandha_fuse_rpc | string | `""` | RPC endpoint - Fuse |
+| secret.skandha_fuse_sparknet_beneficiary | string | `""` | Beneficiary - Spark |
+| secret.skandha_fuse_sparknet_entrypoints | string | `""` | Entrypoint - Spark |
+| secret.skandha_fuse_sparknet_relayer | string | `""` | Relayer - Spark |
+| secret.skandha_fuse_sparknet_rpc | string | `""` | RPC endpoint - Spark |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

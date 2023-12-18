@@ -7,12 +7,13 @@ metadata:
     app: apps
     environment: {{ .Values.global.environment }}
 data:
+
+  # [Hardcoded] Host & Port
   apps_host: "0.0.0.0"
   apps_port: "5006"
   apps_tcp_port: "8880"
-  charge_wallet_phone_number: {{ .Values.configMap.charge_wallet_phone_number | quote }}
-  charge_base_url: {{ .Values.configMap.charge_base_url | quote }}
-  job_sleep_ms: {{ .Values.configMap.job_sleep_ms | quote }}
-  unmarshal_base_url: {{ .Values.configMap.unmarshal_base_url | quote }}
-  alchemy_base_url: {{ .Values.configMap.alchemy_base_url | quote }}
-  ethereum_payments_network_name: {{ .Values.configMap.ethereum_payments_network_name | quote }}
+
+  # User - defined
+{{- range $key, $val := .Values.configMap }}
+  {{ $key }}: {{ $val | quote }}
+{{- end }}

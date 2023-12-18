@@ -8,12 +8,22 @@ metadata:
     environment: {{ .Values.global.environment }}
 spec:
   default:
+
+    # Logging (HTTP access logs)
     logging:
     {{- range $key, $val := .Values.logging }}
       {{ $key }}: {{ $val }}
     {{- end }}
+
+    # Drain connection (in-flight requests)
     connectionDraining:
-      drainingTimeoutSec: 60
+      drainingTimeoutSec: 30
+
+    {{- if .Values.securityPolicy }}
+    # Security policy (Cloud Armor)
+    securityPolicy: {{ .Values.securityPolicy }}
+    {{- end }}
+
   targetRef:
     group: ""
     kind: Service

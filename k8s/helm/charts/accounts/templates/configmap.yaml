@@ -7,20 +7,21 @@ metadata:
     app: accounts
     environment: {{ .Values.global.environment }}
 data:
+  
+  # [Hardcoded] Host & Port
   accounts_host: "0.0.0.0"
   accounts_port: "5001"
   accounts_tcp_port: "8875"
-  auth0_issuer_url: {{ .Values.configMap.auth0_issuer_url | quote }}
-  auth0_audience: {{ .Values.configMap.auth0_audience | quote }}
-  paymaster_sandbox_contract_address_v_0_1_0: {{ .Values.configMap.paymaster_sandbox_contract_address_v_0_1_0 | quote }}
-  paymaster_production_contract_address_v_0_1_0: {{ .Values.configMap.paymaster_production_contract_address_v_0_1_0 | quote }}
-  entrypoint_sandbox_contract_address_v_0_1_0: {{ .Values.configMap.entrypoint_sandbox_contract_address_v_0_1_0 | quote }}
-  entrypoint_production_contract_address_v_0_1_0: {{ .Values.configMap.entrypoint_production_contract_address_v_0_1_0 | quote }}
-
-  # Host & Port ('accounts' use 'api', 'relay' and 'apps' hostname and TCP port)
+  
+  # [Hardcoded] Components Host & Port ('accounts' component use 'api', 'relay' and 'apps' components hostname & TCP port)
   api_host: "api"
   api_tcp_port: "8876"
   relay_host: "relay"
   relay_tcp_port: "8877"
   apps_host: "apps"
   apps_tcp_port: "8880"
+  
+  # User - defined
+{{- range $key, $val := .Values.configMap }}
+  {{ $key }}: {{ $val | quote }}
+{{- end }}

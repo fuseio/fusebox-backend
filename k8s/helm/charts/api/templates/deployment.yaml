@@ -20,7 +20,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: api
         environment: {{ .Values.global.environment }}
@@ -41,6 +41,7 @@ spec:
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/api:{{ .Values.global.image.tag }}"
           imagePullPolicy: Always
           env:
+
             # ConfigMap
             - name: API_HOST
               valueFrom:
@@ -57,46 +58,6 @@ spec:
                 configMapKeyRef:
                   name: api
                   key: api_tcp_port
-            - name: EXPLORER_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: explorer_api_url
-            - name: QA_MODE
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: qa_mode
-            - name: BUNDLER_API_PRD_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: bundler_api_prd_url
-            - name: BUNDLER_API_SANDBOX_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: bundler_api_sandbox_url
-            - name: SPARK_RPC_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: spark_rpc_url
-            - name: LEGACY_FUSE_ADMIN_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: legacy_fuse_admin_api_url
-            - name: LEGACY_FUSE_WALLET_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: legacy_fuse_wallet_api_url
-            - name: LEGACY_FUSE_TRADE_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: legacy_fuse_trade_api_url
             - name: ACCOUNTS_HOST
               valueFrom:
                 configMapKeyRef:
@@ -142,48 +103,22 @@ spec:
                 configMapKeyRef:
                   name: api
                   key: smart_wallets_tcp_port
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: MONGO_URI
+            # Secret
+            {{- range $key, $val := .Values.secret }}
+            - name: {{ $key | upper }}
               valueFrom:
                 secretKeyRef:
                   name: api
-                  key: mongo_uri
-            - name: RPC_URL
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: rpc_url
-            - name: FUSE_STUDIO_ADMIN_JWT
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: fuse_studio_admin_jwt
-            - name: LEGACY_JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: legacy_jwt_secret
-            - name: SMART_WALLETS_JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: smart_wallets_jwt_secret
-            - name: PAYMASTER_PRODUCTION_SIGNER_PRIVATE_KEY_V_0_1_0
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: paymaster_production_signer_private_key_v_0_1_0
-            - name: PAYMASTER_SANDBOX_SIGNER_PRIVATE_KEY_V_0_1_0
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: paymaster_sandbox_signer_private_key_v_0_1_0
-            - name: EXPLORER_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: api
-                  key: explorer_api_key
+                  key: {{ $key }}
+            {{- end }}
 
           # Ports
           ports:
@@ -193,12 +128,6 @@ spec:
               name: tcp
 
           # Probes
-          startupProbe:
-            httpGet:
-              path: /api/health
-              port: 5002
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/health
@@ -215,8 +144,10 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory:  {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory:  {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

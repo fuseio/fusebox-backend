@@ -8,35 +8,33 @@ A Helm chart for Kubernetes related apps component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{"zones":null}` | Affinity (available region zones) |
-| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
-| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.rps | object | `{"threshold":80}` | Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler) |
+| affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
+| autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
+| autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
 | configMap.alchemy_base_url | string | `""` | Alchemy - Base URL |
 | configMap.charge_base_url | string | `""` | Charge - Base URL |
 | configMap.charge_wallet_phone_number | string | `""` | Charge - Wallet phone number |
 | configMap.ethereum_payments_network_name | string | `""` | Ethereum - Payments network name |
 | configMap.job_sleep_ms | string | `""` | Job sleep (ms) |
 | configMap.unmarshal_base_url | string | `""` | Unmarshal - Base URL |
-| global.domain | string | `""` | DNS domain |
-| global.environment | string | `""` | Label 'environment' |
-| global.image.repository | string | `""` | Repository ID |
-| global.image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
-| global.project_id | string | `""` | Google Cloud - Project ID |
-| global.region | string | `""` | Google Cloud - Region |
-| logging | object | `{"enabled":false}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
+| global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
+| global.environment | string | `"development"` | Kubernetes label `environment`` |
+| global.image.repository | string | `"api"` | Repository ID |
+| global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
+| global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
+| logging | object | `{"enabled":true,"sampleRate":1000000}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |
 | replicas | int | `1` | Replicas |
-| resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
-| resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
-| secrets.alchemy_auth_key | string | `""` | Alchemy - Auth key |
-| secrets.alchemy_webhook_id | string | `""` | Alchemy - Webhook ID |
-| secrets.charge_payments_ethereum_mnemonic | string | `""` | Charge - Payments Ethereum mnemonic |
-| secrets.charge_public_key | string | `""` | Charge - Public key |
-| secrets.charge_secret_key | string | `""` | Charge - Secret key |
-| secrets.charge_webhook_id | string | `""` | Charge - Webhook ID |
-| secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
-| secrets.unmarshal_auth_key | string | `""` | Unmarshal - Auth key |
+| resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
+| resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
+| secret.alchemy_auth_key | string | `""` | Alchemy - Auth key |
+| secret.alchemy_webhook_id | string | `""` | Alchemy - Webhook ID |
+| secret.charge_payments_ethereum_mnemonic | string | `""` | Charge - Payments Ethereum mnemonic |
+| secret.charge_public_key | string | `""` | Charge - Public key |
+| secret.charge_secret_key | string | `""` | Charge - Secret key |
+| secret.charge_webhook_id | string | `""` | Charge - Webhook ID |
+| secret.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
+| secret.unmarshal_auth_key | string | `""` | Unmarshal - Auth key |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

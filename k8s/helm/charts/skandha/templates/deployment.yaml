@@ -20,7 +20,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: skandha
         environment: {{ .Values.global.environment }}
@@ -43,94 +43,24 @@ spec:
           command: ["node", "./packages/cli/bin/skandha", "standalone", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
 
           env:
+            
             # ConfigMap
-            - name: SKANDHA_NETWORKS
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
               valueFrom:
                 configMapKeyRef:
                   name: skandha
-                  key: skandha_networks
-            - name: SKANDHA_FUSE_SPARKNET_ESTIMATION_STATIC_BUFFER
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_estimation_static_buffer
-            - name: SKANDHA_FUSE_ESTIMATION_STATIC_BUFFER
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_estimation_static_buffer
-            - name: SKANDHA_FUSE_BAN_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_ban_slack
-            - name: SKANDHA_FUSE_SPARKNET_BAN_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_ban_slack
-            - name: SKANDHA_FUSE_THROTTLING_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_throttling_slack
-            - name: SKANDHA_FUSE_SPARKNET_THROTTLING_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key:  skandha_fuse_sparknet_throttling_slack
-            - name: SKANDHA_FUSE_MIN_INCLUSION_DENOMINATOR
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_min_inclusion_denominator
-            - name: SKANDHA_FUSE_SPARKNET_MIN_INCLUSION_DENOMINATOR
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_min_inclusion_denominator
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: SKANDHA_FUSE_SPARKNET_RELAYER
+            # Secret
+            {{- range $key, $val := .Values.secret }}
+            - name: {{ $key | upper }}
               valueFrom:
                 secretKeyRef:
                   name: skandha
-                  key: skandha_fuse_sparknet_relayer
-            - name: SKANDHA_FUSE_SPARKNET_BENEFICIARY
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_beneficiary
-            - name: SKANDHA_FUSE_SPARKNET_RPC
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_rpc
-            - name: SKANDHA_FUSE_SPARKNET_ENTRYPOINTS
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_entrypoints
-            - name: SKANDHA_FUSE_RELAYER
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_relayer
-            - name: SKANDHA_FUSE_BENEFICIARY
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_beneficiary
-            - name: SKANDHA_FUSE_RPC
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_rpc
-            - name: SKANDHA_FUSE_ENTRYPOINTS
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_entrypoints
+                  key: {{ $key }}
+            {{- end }}
 
           # Ports
           ports:
@@ -138,12 +68,6 @@ spec:
               name: http
           
           # Probes
-          startupProbe:
-            httpGet:
-              path: /version
-              port: 14337
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /version
@@ -160,8 +84,10 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

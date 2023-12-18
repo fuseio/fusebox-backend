@@ -40,6 +40,7 @@ spec:
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/network:{{ .Values.global.image.tag }}"
           imagePullPolicy: Always
           env:
+
             # ConfigMap
             - name: NETWORK_HOST
               valueFrom:
@@ -56,18 +57,22 @@ spec:
                 configMapKeyRef:
                   name: network
                   key: network_tcp_port
-            - name: LEGACY_FUSE_TRADE_API_URL
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
               valueFrom:
                 configMapKeyRef:
                   name: network
-                  key: legacy_fuse_trade_api_url
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: RPC_URL
+            # Secret
+            {{- range $key, $val := .Values.secret }}
+            - name: {{ $key | upper }}
               valueFrom:
                 secretKeyRef:
                   name: network
-                  key: rpc_url
+                  key: {{ $key }}
+            {{- end }}
 
           # Ports
           ports:
@@ -77,12 +82,6 @@ spec:
               name: tcp
           
           # Probes
-          startupProbe:
-            httpGet:
-              path: /network/health
-              port: 5005
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /network/health
@@ -99,8 +98,10 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

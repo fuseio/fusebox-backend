@@ -4,23 +4,23 @@
 
 # Global
 global:
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "accounts"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
 
 # -- Replicas
 replicas: 1
@@ -28,30 +28,29 @@ replicas: 1
 # -- Affinity (available region zones)
 affinity:
   zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
 # Autoscaling
 autoscaling:
-  # -- Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler)
-  max_replicas: 5
-  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
-  cpu:
-    threshold: 80
-  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
-  memory:
-    threshold: 80
+  # -- Vertical Pod Autoscaler
+  vpa:
+    # -- Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values
+    max_allowed:
+      cpu: "2000m"
+      memory: "4Gi"
 
-# ConfigMap
+# ConfigMap (non - sensitive information)
 configMap:
   # -- Network name
   network_name: ""
@@ -62,8 +61,8 @@ configMap:
   # -- Timeout interval (ms)
   timeout_interval: ""
 
-# Secrets (through environment variables)
-secrets:
+# Secret (sensitive information, defined through environment variables)
+secret:
   # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
   # -- smart-wallets - JWT secret

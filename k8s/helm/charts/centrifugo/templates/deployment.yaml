@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: centrifugo
         environment: {{ .Values.global.environment }}
@@ -47,12 +47,6 @@ spec:
               name: http
           
           # Probes
-          startupProbe:
-            httpGet:
-              path: /health
-              port: 8000
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
@@ -69,11 +63,13 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
           
           # Volume mounts (config.json)
           volumeMounts:

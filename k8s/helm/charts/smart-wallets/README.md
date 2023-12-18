@@ -8,23 +8,22 @@ A Helm chart for Kubernetes related smart-wallets component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{"zones":null}` | Affinity (available region zones) |
-| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
-| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
+| affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
+| autoscaling.vpa | object | `{"max_allowed":{"cpu":"2000m","memory":"4Gi"}}` | Vertical Pod Autoscaler |
+| autoscaling.vpa.max_allowed | object | `{"cpu":"2000m","memory":"4Gi"}` | Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values |
 | configMap.centrifugo_api_url | string | `""` | Centrifugo - API URL |
 | configMap.centrifugo_uri | string | `""` | Centrifugo - URL |
 | configMap.charge_base_url | string | `""` | Charge - Base URL |
 | configMap.legacy_fuse_wallet_api_url | string | `""` | Legacy - Fuse wallet API URL |
-| global.domain | string | `""` | DNS domain |
-| global.environment | string | `""` | Label 'environment' |
-| global.image.repository | string | `""` | Repository ID |
-| global.image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
-| global.project_id | string | `""` | Google Cloud - Project ID |
-| global.region | string | `""` | Google Cloud - Region |
+| global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
+| global.environment | string | `"development"` | Kubernetes label `environment`` |
+| global.image.repository | string | `"accounts"` | Repository ID |
+| global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
+| global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
 | replicas | int | `1` | Replicas |
-| resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
-| resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
+| resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
+| resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
 | secrets.centrifugo_api_key | string | `""` | Centrifugo - API key |
 | secrets.centrifugo_jwt | string | `""` | Centrifugo - JWT |
 | secrets.charge_public_key | string | `""` | The public key of the project. |

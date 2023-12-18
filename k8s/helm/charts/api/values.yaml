@@ -4,23 +4,23 @@
 
 # Global
 global:
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "api"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
 
 # -- Replicas
 replicas: 1
@@ -28,31 +28,25 @@ replicas: 1
 # -- Affinity (available region zones)
 affinity:
   zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
 # Autoscaling
 autoscaling:
-  # -- Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler)
-  max_replicas: 5
-  # -- Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler)
-  cpu:
-    threshold: 80
-  # -- Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler)
-  memory:
-    threshold: 80
-  # -- Autoscaling - RPS threshold (in percent, Horizontal Pod Autoscaler)
-  rps:
-    threshold: 80
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
 
 # Service
 service:
@@ -61,11 +55,15 @@ service:
     # -- Service - Annotations - RPS per pod
     networking.gke.io/max-rate-per-endpoint: 10
 
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
-  enabled: false
+  enabled: true
+  sampleRate: 1000000
 
-# ConfigMap
+# ConfigMap (non - sensitive information)
 configMap:
   # -- BlockScout API URL
   explorer_api_url: ""
@@ -84,8 +82,8 @@ configMap:
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
 
-# Secrets (through environment variables)
-secrets:
+# Secret (sensitive information, defined through environment variables)
+secret:
   # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
   # -- RPC URL - Fuse

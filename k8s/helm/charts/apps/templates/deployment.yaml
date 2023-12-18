@@ -20,7 +20,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: apps
         environment: {{ .Values.global.environment }}
@@ -41,6 +41,7 @@ spec:
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/apps:{{ .Values.global.image.tag }}"
           imagePullPolicy: Always
           env:
+
             # ConfigMap
             - name: APPS_HOST
               valueFrom:
@@ -57,78 +58,22 @@ spec:
                 configMapKeyRef:
                   name: apps
                   key: apps_tcp_port
-            - name: CHARGE_WALLET_PHONE_NUMBER
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
               valueFrom:
                 configMapKeyRef:
                   name: apps
-                  key: charge_wallet_phone_number
-            - name: CHARGE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: apps
-                  key: charge_base_url
-            - name: JOB_SLEEP_MS
-              valueFrom:
-                configMapKeyRef:
-                  name: apps
-                  key: job_sleep_ms
-            - name: UNMARSHAL_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: apps
-                  key: unmarshal_base_url
-            - name: ALCHEMY_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: apps
-                  key: alchemy_base_url
-            - name: ETHEREUM_PAYMENTS_NETWORK_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: apps
-                  key: ethereum_payments_network_name
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: MONGO_URI
+            # Secret
+            {{- range $key, $val := .Values.secret }}
+            - name: {{ $key | upper }}
               valueFrom:
                 secretKeyRef:
                   name: apps
-                  key: mongo_uri
-            - name: CHARGE_PUBLIC_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: charge_public_key
-            - name: CHARGE_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: charge_secret_key
-            - name: CHARGE_WEBHOOK_ID
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: charge_webhook_id
-            - name: UNMARSHAL_AUTH_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: unmarshal_auth_key
-            - name: CHARGE_PAYMENTS_ETHEREUM_MNEMONIC
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: charge_payments_ethereum_mnemonic
-            - name: ALCHEMY_WEBHOOK_ID
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: alchemy_webhook_id
-            - name: ALCHEMY_AUTH_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: apps
-                  key: alchemy_auth_key
+                  key: {{ $key }}
+            {{- end }}
 
           # Ports
           ports:
@@ -138,12 +83,6 @@ spec:
               name: tcp
           
           # Probes
-          startupProbe:
-            httpGet:
-              path: /app-store/v1/health
-              port: 5006
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /app-store/v1/health
@@ -160,8 +99,10 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

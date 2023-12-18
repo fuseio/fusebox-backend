@@ -12,7 +12,7 @@ spec:
     kind: Deployment
     name: api
   minReplicas: {{ .Values.replicas }}
-  maxReplicas: {{ .Values.autoscaling.max_replicas }}
+  maxReplicas: {{ .Values.autoscaling.hpa.max_replicas }}
   metrics:
 
     # CPU
@@ -21,7 +21,7 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.autoscaling.cpu.threshold }}
+          averageUtilization: 80
     
     # Memory
     - type: Resource
@@ -29,16 +29,16 @@ spec:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.autoscaling.memory.threshold }}
+          averageUtilization: 80
 
-    # RPS
+    # Requests / second
     - type: Object
       object:
         describedObject:
           kind: Service
-          name: api
+          name: accounts
         metric:
           name: "autoscaling.googleapis.com|gclb-capacity-utilization"
         target:
-          averageValue: {{ .Values.autoscaling.rps.threshold }}
+          averageValue: 80
           type: AverageValue

@@ -20,7 +20,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: smart-wallets
         environment: {{ .Values.global.environment }}
@@ -41,6 +41,7 @@ spec:
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/smart-wallets:{{ .Values.global.image.tag }}"
           imagePullPolicy: Always
           env:
+            
             # ConfigMap
             - name: SMART_WALLETS_HOST
               valueFrom:
@@ -57,68 +58,22 @@ spec:
                 configMapKeyRef:
                   name: smart-wallets
                   key: smart_wallets_tcp_port
-            - name: CENTRIFUGO_URI
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
               valueFrom:
                 configMapKeyRef:
                   name: smart-wallets
-                  key: centrifugo_uri
-            - name: CENTRIFUGO_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: smart-wallets
-                  key: centrifugo_api_url
-            - name: LEGACY_FUSE_WALLET_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: smart-wallets
-                  key: legacy_fuse_wallet_api_url
-            - name: CHARGE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: smart-wallets
-                  key: charge_base_url
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: MONGO_URI
+            # Secret
+            {{- range $key, $val := .Values.secret }}
+            - name: {{ $key | upper }}
               valueFrom:
                 secretKeyRef:
                   name: smart-wallets
-                  key: mongo_uri
-            - name: SMART_WALLETS_JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: smart_wallets_jwt_secret
-            - name: FUSE_WALLET_BACKEND_JWT
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: fuse_wallet_backend_jwt
-            - name: CENTRIFUGO_JWT
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: centrifugo_jwt
-            - name: CENTRIFUGO_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: centrifugo_api_key
-            - name: CHARGE_PUBLIC_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: charge_public_key
-            - name: CHARGE_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: charge_secret_key
-            - name: INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
-              valueFrom:
-                secretKeyRef:
-                  name: smart-wallets
-                  key: incoming_token_transfers_webhook_id
+                  key: {{ $key }}
+            {{- end }}
 
           # Ports
           ports:
@@ -128,12 +83,6 @@ spec:
               name: tcp
           
           # Probes
-          startupProbe:
-            httpGet:
-              path: smart-wallets/v1/health
-              port: 5007
-            failureThreshold: 15
-            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /smart-wallets/v1/health
@@ -150,8 +99,10 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

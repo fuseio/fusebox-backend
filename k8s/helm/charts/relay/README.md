@@ -8,19 +8,18 @@ A Helm chart for Kubernetes related relay component
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{"zones":null}` | Affinity (available region zones) |
-| autoscaling.cpu | object | `{"threshold":80}` | Autoscaling - CPU threshold (in percent, Horizontal Pod Autoscaler) |
-| autoscaling.max_replicas | int | `5` | Autoscaling - Maximum replicas value. Note: minimum replicas value equals `replicas` value (Horizontal Pod Autoscaler) |
-| autoscaling.memory | object | `{"threshold":80}` | Autoscaling - RAM threshold (in percent, Horizontal Pod Autoscaler) |
-| global.domain | string | `""` | DNS domain |
-| global.environment | string | `""` | Label 'environment' |
-| global.image.repository | string | `""` | Repository ID |
-| global.image.tag | string | `""` | Tag; overrides the image tag whose default is the chart appVersion. |
-| global.project_id | string | `""` | Google Cloud - Project ID |
-| global.region | string | `""` | Google Cloud - Region |
+| affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
+| autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
+| autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
+| global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
+| global.environment | string | `"development"` | Kubernetes label `environment`` |
+| global.image.repository | string | `"accounts"` | Repository ID |
+| global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
+| global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
 | replicas | int | `1` | Replicas |
-| resources.limits | object | `{"cpu":"","memory":""}` | Resources - Limits |
-| resources.requests | object | `{"cpu":"","memory":""}` | Resources - Requests |
+| resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
+| resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
 | secrets.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
 | secrets.relay_secret | string | `""` | Secret (could be generated manually) |
 

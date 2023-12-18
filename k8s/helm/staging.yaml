@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# - Global -
+# - Global
 global:
   # Label: environment
   environment: "staging"
@@ -20,14 +20,7 @@ global:
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
 
-# - Load balancing -
-gateway-api:
-  enabled: true
-
-  name: "fusebox-staging-lb"
-  global_address: "fusebox-staging-lb"
-
-# - Components -
+# - Components
 accounts:
   enabled: true
 
@@ -53,11 +46,6 @@ accounts:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
-
   # ConfigMap
   configMap:
     auth0_issuer_url: "https://auth.staging.fuse.io/"
@@ -67,8 +55,8 @@ accounts:
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
 
 api:
@@ -96,11 +84,6 @@ api:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
-
   # ConfigMap
   configMap:
     explorer_api_url: "https://explorer.fuse.io/api"
@@ -112,8 +95,8 @@ api:
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
     rpc_url: ""
     fuse_studio_admin_jwt: ""
@@ -122,93 +105,6 @@ api:
     paymaster_production_signer_private_key_v_0_1_0: ""
     paymaster_sandbox_signer_private_key_v_0_1_0: ""
     explorer_api_key: ""
-
-relay:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    relay_secret: ""
-
-notifications:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # ConfigMap
-  configMap:
-    network_name: "fuse"
-    chain_id: "122"
-    max_blocks: "2500"
-    timeout_interval: "10000"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    smart_wallets_jwt_secret: ""
-    rpc_url: ""
-    full_archive_rpc_url: ""
-
-network:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # ConfigMap
-  configMap:
-    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
-
-    # Secrets (through CI/CD process via environment variables)
-  secrets:
-    rpc_url: ""
 
 apps:
   enabled: true
@@ -235,11 +131,6 @@ apps:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
-
   # ConfigMap
   configMap:
     charge_wallet_phone_number: "+15554443322"
@@ -249,8 +140,8 @@ apps:
     alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
     ethereum_payments_network_name: "goerli"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
     charge_public_key: ""
     charge_secret_key: ""
@@ -259,44 +150,6 @@ apps:
     charge_payments_ethereum_mnemonic: ""
     alchemy_webhook_id: ""
     alchemy_auth_key: ""
-
-smart-wallets:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # ConfigMap
-  configMap:
-    centrifugo_uri: "wss://ws.staging.fuse.io/connection/websocket"
-    centrifugo_api_url: "https://ws.staging.fuse.io/api"
-    legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
-    charge_base_url: "https://api.staging.fuse.io"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    smart_wallets_jwt_secret: ""
-    fuse_wallet_backend_jwt: ""
-    centrifugo_jwt: ""
-    centrifugo_api_key: ""
-    charge_public_key: ""
-    charge_secret_key: ""
-    incoming_token_transfers_webhook_id: ""
 
 centrifugo:
   enabled: true
@@ -324,19 +177,98 @@ centrifugo:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+gateway-api:
+  enabled: true
 
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
+  name: "fusebox-staging-lb"
+  global_address: "fusebox-staging-lb"
 
-# Secrets (through CI/CD process via environment variables)
-#
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
+network:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # ConfigMap
+  configMap:
+    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
+    rpc_url: ""
+
+notifications:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # ConfigMap
+  configMap:
+    network_name: "fuse"
+    chain_id: "122"
+    max_blocks: "2500"
+    timeout_interval: "10000"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
+    mongo_uri: ""
+    smart_wallets_jwt_secret: ""
+    rpc_url: ""
+    full_archive_rpc_url: ""
+
+relay:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
+    mongo_uri: ""
+    relay_secret: ""
 
 skandha:
   enabled: false # We use the EtherSpot - hosted Skandha instance.
@@ -366,10 +298,6 @@ skandha:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
-  # Logging
-  logging:
-    enabled: false
-
   # ConfigMap
   configMap:
     skandha_networks: ""
@@ -382,8 +310,8 @@ skandha:
     skandha_fuse_min_inclusion_denominator: ""
     skandha_fuse_sparknet_min_inclusion_denominator: ""
 
-  # Secrets
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     skandha_fuse_sparknet_relayer: ""
     skandha_fuse_sparknet_beneficiary: ""
     skandha_fuse_sparknet_rpc: ""
@@ -392,3 +320,41 @@ skandha:
     skandha_fuse_beneficiary: ""
     skandha_fuse_rpc: ""
     skandha_fuse_entrypoints: ""
+
+smart-wallets:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # ConfigMap
+  configMap:
+    centrifugo_uri: "wss://ws.staging.fuse.io/connection/websocket"
+    centrifugo_api_url: "https://ws.staging.fuse.io/api"
+    legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
+    charge_base_url: "https://api.staging.fuse.io"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
+    mongo_uri: ""
+    smart_wallets_jwt_secret: ""
+    fuse_wallet_backend_jwt: ""
+    centrifugo_jwt: ""
+    centrifugo_api_key: ""
+    charge_public_key: ""
+    charge_secret_key: ""
+    incoming_token_transfers_webhook_id: ""

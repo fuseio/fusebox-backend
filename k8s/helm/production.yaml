@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# - Global -
+# - Global
 global:
   # Label: environment
   environment: "production"
@@ -20,14 +20,7 @@ global:
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
 
-# - Load balancing -
-gateway-api:
-  enabled: true
-
-  name: "fusebox-lb"
-  global_address: "fusebox-lb"
-
-# - Components -
+# - Components
 accounts:
   enabled: true
 
@@ -53,11 +46,6 @@ accounts:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
-
   # ConfigMap
   configMap:
     auth0_issuer_url: "https://auth.fuse.io/"
@@ -67,15 +55,15 @@ accounts:
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
 
 api:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -85,21 +73,19 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "4000m"
-      memory: "8Gi"
+      cpu: "2000m"
+      memory: "4Gi"
     limits:
-      cpu: "4000m"
-      memory: "8Gi"
+      cpu: "2000m"
+      memory: "4Gi"
 
   # Service
   service:
     annotations:
-      networking.gke.io/max-rate-per-endpoint: 100
+      networking.gke.io/max-rate-per-endpoint: 10
 
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
+  # Security policy name (Cloud Armor)
+  securityPolicy: "fusebox-api-security-policy"
 
   # ConfigMap
   configMap:
@@ -112,8 +98,8 @@ api:
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
     rpc_url: ""
     fuse_studio_admin_jwt: ""
@@ -123,7 +109,7 @@ api:
     paymaster_sandbox_signer_private_key_v_0_1_0: ""
     explorer_api_key: ""
 
-relay:
+apps:
   enabled: true
 
   # Replicas
@@ -143,10 +129,97 @@ relay:
       cpu: "500m"
       memory: "1Gi"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Service
+  service:
+    annotations:
+      networking.gke.io/max-rate-per-endpoint: 10
+
+  # ConfigMap
+  configMap:
+    charge_wallet_phone_number: "+15554443322"
+    charge_base_url: "https://api.fuse.io"
+    job_sleep_ms: "6000"
+    unmarshal_base_url: "https://api.unmarshal.com"
+    alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
+    ethereum_payments_network_name: "goerli"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
-    relay_secret: ""
+    charge_public_key: ""
+    charge_secret_key: ""
+    charge_webhook_id: ""
+    unmarshal_auth_key: ""
+    charge_payments_ethereum_mnemonic: ""
+    alchemy_webhook_id: ""
+    alchemy_auth_key: ""
+
+centrifugo:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Image
+  image:
+    repository: "centrifugo/centrifugo"
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "v5"
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+gateway-api:
+  enabled: true
+
+  name: "fusebox-lb"
+  global_address: "fusebox-lb"
+
+network:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "2000m"
+      memory: "4Gi"
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+
+  # Autoscaling
+  autoscaling:
+    vpa:
+      max_allowed:
+        cpu: "4000m"
+        memory: "8Gi"
+
+  # ConfigMap
+  configMap:
+    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
+    rpc_url: ""
 
 notifications:
   enabled: true
@@ -175,14 +248,14 @@ notifications:
     max_blocks: "2500"
     timeout_interval: "10000"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
     smart_wallets_jwt_secret: ""
     rpc_url: ""
     full_archive_rpc_url: ""
 
-network:
+relay:
   enabled: true
 
   # Replicas
@@ -196,147 +269,16 @@ network:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "8000m"
-      memory: "16Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "8000m"
-      memory: "16Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
-  # ConfigMap
-  configMap:
-    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    rpc_url: ""
-
-apps:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "1000m"
-      memory: "2Gi"
-    limits:
-      cpu: "1000m"
-      memory: "2Gi"
-
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
-
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
-
-  # ConfigMap
-  configMap:
-    charge_wallet_phone_number: "+15554443322"
-    charge_base_url: "https://api.fuse.io"
-    job_sleep_ms: "6000"
-    unmarshal_base_url: "https://api.unmarshal.com"
-    alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
-    ethereum_payments_network_name: "goerli"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     mongo_uri: ""
-    charge_public_key: ""
-    charge_secret_key: ""
-    charge_webhook_id: ""
-    unmarshal_auth_key: ""
-    charge_payments_ethereum_mnemonic: ""
-    alchemy_webhook_id: ""
-    alchemy_auth_key: ""
-
-smart-wallets:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "1000m"
-      memory: "2Gi"
-    limits:
-      cpu: "1000m"
-      memory: "2Gi"
-
-  # ConfigMap
-  configMap:
-    centrifugo_uri: "wss://ws.fuse.io/connection/websocket"
-    centrifugo_api_url: "https://ws.fuse.io/api"
-    legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
-    charge_base_url: "https://api.fuse.io"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    smart_wallets_jwt_secret: ""
-    fuse_wallet_backend_jwt: ""
-    centrifugo_jwt: ""
-    centrifugo_api_key: ""
-    charge_public_key: ""
-    charge_secret_key: ""
-    incoming_token_transfers_webhook_id: ""
-
-centrifugo:
-  enabled: true
-
-  # Replicas
-  replicas: 1
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Image
-  image:
-    repository: "centrifugo/centrifugo"
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5"
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "2000m"
-      memory: "4Gi"
-    limits:
-      cpu: "2000m"
-      memory: "4Gi"
-
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
-
-  # Logging
-  logging:
-    enabled: true
-    sampleRate: 1000000
-
-# Secrets (through CI/CD process via environment variables)
-#
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
+    relay_secret: ""
 
 skandha:
   enabled: false # We use the EtherSpot - hosted Skandha instance.
@@ -382,8 +324,8 @@ skandha:
     skandha_fuse_min_inclusion_denominator: ""
     skandha_fuse_sparknet_min_inclusion_denominator: ""
 
-  # Secrets
-  secrets:
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
     skandha_fuse_sparknet_relayer: ""
     skandha_fuse_sparknet_beneficiary: ""
     skandha_fuse_sparknet_rpc: ""
@@ -392,3 +334,48 @@ skandha:
     skandha_fuse_beneficiary: ""
     skandha_fuse_rpc: ""
     skandha_fuse_entrypoints: ""
+
+smart-wallets:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+  # Autoscaling
+  autoscaling:
+    vpa:
+      max_allowed:
+        cpu: "2000m"
+        memory: "4Gi"
+
+  # ConfigMap
+  configMap:
+    centrifugo_uri: "wss://ws.fuse.io/connection/websocket"
+    centrifugo_api_url: "https://ws.fuse.io/api"
+    legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
+    charge_base_url: "https://api.fuse.io"
+
+  # Secret (defined through CI/CD process via environment variables)
+  secret:
+    mongo_uri: ""
+    smart_wallets_jwt_secret: ""
+    fuse_wallet_backend_jwt: ""
+    centrifugo_jwt: ""
+    centrifugo_api_key: ""
+    charge_public_key: ""
+    charge_secret_key: ""
+    incoming_token_transfers_webhook_id: ""

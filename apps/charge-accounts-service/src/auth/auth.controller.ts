@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, HttpException, HttpStatus, Post, UseGuards } from '@nestjs/common'
 import { CreateUserDto } from '@app/accounts-service/users/dto/create-user.dto'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
@@ -6,7 +6,9 @@ import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
-  constructor (private readonly usersService: UsersService) {}
+  constructor (
+    private readonly usersService: UsersService,
+  ) {}
 
   /**
    * Registers a new user for the authenticated user

@@ -38,9 +38,9 @@ export class AuthController {
   /**
    * Validate operator
    * @param authOperatorDto
-   * @returns the new simple JWT
+   * @returns the new operator JWT
    */
-  @Post('/validate')
+  @Post('/operator')
   validate (@Body() authOperatorDto: AuthOperatorDto) {    
     const recoveredAddress = this.authService.verifySignature(authOperatorDto)
 

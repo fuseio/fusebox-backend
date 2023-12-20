@@ -1,1 +1,1 @@
-export const simpleJwtString = 'simple_jwt'
+export const operatorJwtString = 'operator_jwt_strategy'

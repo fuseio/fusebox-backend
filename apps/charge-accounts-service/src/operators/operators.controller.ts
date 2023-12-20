@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
@@ -18,8 +18,8 @@ export class OperatorsController {
    * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
-  @Get('/me')
-  async me (@User('sub') auth0Id: string) {
+  @Get('/:id')
+  async me (@Param('id') id: string, @User('sub') auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const projectObject = await this.projectsService.findOneByOwnerId(user._id)
     const publicKey = await this.projectsService.getPublic(projectObject._id)
@@ -38,7 +38,7 @@ export class OperatorsController {
    * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
-  @Post('/create')
+  @Post()
   async create (@Body() createOperatorDto: CreateOperatorDto, @User('sub') auth0Id: string) {
     const user = await this.usersService.create({
       name: `${createOperatorDto.firstName} ${createOperatorDto.lastName}`,

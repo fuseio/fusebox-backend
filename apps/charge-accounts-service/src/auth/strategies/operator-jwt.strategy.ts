@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { simpleJwtString } from '@app/accounts-service/auth/auth.constants';
+import { operatorJwtString } from '@app/accounts-service/auth/auth.constants';
 
 @Injectable()
-export class SimpleJwtStrategy extends PassportStrategy(Strategy, simpleJwtString) {
+export class OperatorJwtStrategy extends PassportStrategy(Strategy, operatorJwtString) {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

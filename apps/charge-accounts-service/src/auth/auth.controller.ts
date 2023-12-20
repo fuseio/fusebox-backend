@@ -3,14 +3,11 @@ import { CreateUserDto } from '@app/accounts-service/users/dto/create-user.dto'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
-import { AuthService } from '@app/accounts-service/auth/auth.service'
-import { AuthOperatorDto } from '@app/accounts-service/auth/dto/auth-operator.dto'
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
   constructor (
     private readonly usersService: UsersService,
-    private readonly authService: AuthService
   ) {}
 
   /**
@@ -32,22 +29,5 @@ export class AuthController {
   async findOne (@User('sub') id: string) {
     const user = await this.usersService.findOneByAuth0Id(id)
     return { id: user?.id }
-  }
-
-
-  /**
-   * Validate operator
-   * @param authOperatorDto
-   * @returns the new operator JWT
-   */
-  @Post('/operator')
-  validate (@Body() authOperatorDto: AuthOperatorDto) {    
-    const recoveredAddress = this.authService.verifySignature(authOperatorDto)
-
-    if(authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
-      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN);
-    }
-    
-    return this.authService.createJwt(recoveredAddress)
   }
 }

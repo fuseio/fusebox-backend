@@ -1,16 +1,35 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
 import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-operator.dto'
+import { OperatorsService } from '@app/accounts-service/operators/operators.service'
+import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
   constructor (
+    private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService
   ) {}
+
+  /**
+   * Validate operator
+   * @param authOperatorDto
+   * @returns the new operator JWT
+   */
+  @Post('/validate')
+  validate (@Body() authOperatorDto: AuthOperatorDto) {    
+    const recoveredAddress = this.operatorsService.verifySignature(authOperatorDto)
+
+    if(authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
+      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN);
+    }
+    
+    return this.operatorsService.createJwt(recoveredAddress)
+  }
 
   /**
    * Get current operator

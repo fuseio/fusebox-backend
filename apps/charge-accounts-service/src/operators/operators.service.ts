@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
-import { AuthOperatorDto } from '@app/accounts-service/auth/dto/auth-operator.dto'
+import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 
 @Injectable()
-export class AuthService {
+export class OperatorsService {
   constructor (
     private readonly jwtService: JwtService
   ) { }

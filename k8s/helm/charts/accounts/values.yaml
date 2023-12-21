@@ -79,3 +79,5 @@ configMap:
 secret:
   # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
   mongo_uri: ""
+  # -- smart-wallets - JWT secret
+  smart_wallets_jwt_secret: ""

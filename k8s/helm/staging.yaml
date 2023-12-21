@@ -58,6 +58,7 @@ accounts:
   # Secret (defined through CI/CD process via environment variables)
   secret:
     mongo_uri: ""
+    smart_wallets_jwt_secret: ""
 
 api:
   enabled: true

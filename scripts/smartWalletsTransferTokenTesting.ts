@@ -35,14 +35,15 @@ export class TransferToken {
     try {
       const credentials = new ethers.Wallet(this._privateKey);
       const publicApiKey = process.env.PUBLIC_API_KEY;
-      const fuseLegacySDK = await new FuseLegacySDK().init(publicApiKey, credentials);
+      const fuseLegacySDK = new FuseLegacySDK(publicApiKey);
+      await fuseLegacySDK.init(credentials);
 
       const value = parseEther(this._eth);
       const res = await fuseLegacySDK.relay(this._to, value);
 
       return res;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 }

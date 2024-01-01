@@ -11,7 +11,7 @@ describe('Transfer Token', () => {
   let address1: string;
   let address2: string;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     privateKey1 = process.env.PRIVATE_KEY_ACCOUNT_1;
     privateKey2 = process.env.PRIVATE_KEY_ACCOUNT_2;
 

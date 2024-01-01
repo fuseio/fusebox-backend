@@ -1,6 +1,6 @@
 import { BigNumber, Wallet, ethers } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 type WalletModuleAddresses = {
   GuardianManager: string;
@@ -23,12 +23,12 @@ type SmartWallet = {
   ownerAddress: string;
 };
 
-export const Variables = {
+const Variables = {
   FUSE_API_BASE_URL: process.env.FUSE_API_BASE_URL ?? "https://api.fuse.io",
   DEFAULT_GAS_LIMIT: process.env.DEFAULT_GAS_LIMIT ?? 700000
 }
 
-export const ABI = {
+const ABI = {
   "constant": false,
   "inputs": [
     {
@@ -60,19 +60,27 @@ export const ABI = {
 }
 
 export class FuseLegacySDK {
+  private readonly _axios: AxiosInstance;
   private _credentials: Wallet;
   private _from: string;
-  private _publicApiKey: string;
   private _smartWalletsJwt: string;
   private _wallet: SmartWallet;
 
-  constructor() { }
+  constructor(public readonly publicApiKey: string) {
+    this._axios = axios.create({
+      baseURL: `${Variables.FUSE_API_BASE_URL}/api`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        apiKey: publicApiKey,
+      },
+    });
+  }
 
   init = async (
-    publicApiKey: string,
     credentials: Wallet
   ) => {
-    this._publicApiKey = publicApiKey;
     this._credentials = credentials;
 
     try {
@@ -96,8 +104,6 @@ export class FuseLegacySDK {
         throw new Error("Couldn't retrieve smart wallet due to an invalid JWT. Please try again.");
       }
     }
-
-    return this;
   }
 
   private _signer = async (
@@ -168,7 +174,7 @@ export class FuseLegacySDK {
   }
 
   private _throwError = (message: string, error: any) => {
-    throw new Error(message);
+    throw new Error(`${message} ${JSON.stringify(error)}`);
   }
 
   private _sleep = (millisecond: number): Promise<unknown> => {
@@ -181,23 +187,11 @@ export class FuseLegacySDK {
     ownerAddress: string
   ) => {
     try {
-      const data = JSON.stringify({
+      const response = await this._axios.post('/v1/smart-wallets/auth', {
         hash,
         signature,
         ownerAddress
       });
-
-      const config = {
-        method: 'post',
-        url: `${Variables.FUSE_API_BASE_URL}/v1/smart-wallets/auth?apiKey=${this._publicApiKey}`,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data
-      };
-
-      const response = await axios.request(config);
-
       return response.data.jwt;
     } catch (error) {
       this._throwError(
@@ -209,16 +203,11 @@ export class FuseLegacySDK {
 
   createWallet = async () => {
     try {
-      const config = {
-        method: 'post',
-        url: `${Variables.FUSE_API_BASE_URL}/v1/smart-wallets/create?apiKey=${this._publicApiKey}`,
+      const response = await this._axios.post('/v1/smart-wallets/create', {}, {
         headers: {
           'Authorization': `Bearer ${this._smartWalletsJwt}`
         }
-      };
-
-      const response = await axios.request(config);
-
+      });
       return response.data;
     } catch (error) {
       this._throwError(
@@ -230,16 +219,11 @@ export class FuseLegacySDK {
 
   getWallet = async (): Promise<SmartWallet> => {
     try {
-      const config = {
-        method: 'get',
-        url: `${Variables.FUSE_API_BASE_URL}/v1/smart-wallets?apiKey=${this._publicApiKey}`,
+      const response = await this._axios.get('/v1/smart-wallets', {
         headers: {
           'Authorization': `Bearer ${this._smartWalletsJwt}`
         }
-      };
-
-      const response = await axios.request(config);
-
+      });
       return response.data;
     } catch (error) {
       this._throwError(
@@ -286,7 +270,7 @@ export class FuseLegacySDK {
         tokenAddress
       }
 
-      const body = JSON.stringify({
+      const body = {
         gasPrice: 0,
         gasLimit: 700000,
         relayBody: null,
@@ -299,21 +283,13 @@ export class FuseLegacySDK {
         methodName,
         signature: signature,
         walletModule
-      });
-
-      const config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${Variables.FUSE_API_BASE_URL}/v1/smart-wallets/relay?apiKey=${this._publicApiKey}`,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this._smartWalletsJwt}`
-        },
-        data: body
       };
 
-      const response = await axios.request(config);
-
+      const response = await this._axios.post('/v1/smart-wallets/relay', body, {
+        headers: {
+          'Authorization': `Bearer ${this._smartWalletsJwt}`
+        },
+      });
       return response.data;
     } catch (error) {
       this._throwError(

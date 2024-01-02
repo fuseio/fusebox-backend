@@ -41,7 +41,7 @@ export class TransferToken {
       const value = parseEther(this._eth);
       const res = await fuseLegacySDK.relay(this._to, value);
 
-      return res;
+      return await res.wait();
     } catch (error) {
       throw new Error(error.message);
     }

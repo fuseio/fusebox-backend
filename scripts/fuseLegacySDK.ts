@@ -1,6 +1,11 @@
 import { BigNumber, Wallet, ethers } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
+import { Centrifuge } from 'centrifuge';
+import EventEmitter from 'events';
+import WebSocket from 'ws';
+import { jwtDecode } from "jwt-decode";
+import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants';
 
 type WalletModuleAddresses = {
   GuardianManager: string;
@@ -25,7 +30,8 @@ type SmartWallet = {
 
 const Variables = {
   FUSE_API_BASE_URL: process.env.FUSE_API_BASE_URL ?? "https://api.fuse.io",
-  DEFAULT_GAS_LIMIT: process.env.DEFAULT_GAS_LIMIT ?? 700000
+  DEFAULT_GAS_LIMIT: process.env.DEFAULT_GAS_LIMIT ?? 700000,
+  SOCKET_SERVER_URL: process.env.SOCKET_SERVER_URL ?? "wss://ws.fuse.io/connection/websocket"
 }
 
 const ABI = {
@@ -59,12 +65,16 @@ const ABI = {
   "type": "function"
 }
 
+class LegacyEventEmitter extends EventEmitter { }
+
 export class FuseLegacySDK {
   private readonly _axios: AxiosInstance;
   private _credentials: Wallet;
   private _from: string;
   private _smartWalletsJwt: string;
   private _wallet: SmartWallet;
+  private _socketClient = new Centrifuge(Variables.SOCKET_SERVER_URL);
+  public events = new LegacyEventEmitter();
 
   constructor(public readonly publicApiKey: string) {
     this._axios = axios.create({
@@ -87,6 +97,7 @@ export class FuseLegacySDK {
       this._from = await credentials.getAddress();
       const { hash, signature } = await this._signer(this._credentials, this._from);
       this._smartWalletsJwt = await this.authenticate(hash, signature, this._from);
+      await this._initWebsocket();
     } catch (error) {
       throw new Error(error);
     }
@@ -94,15 +105,31 @@ export class FuseLegacySDK {
     try {
       this._wallet = await this.getWallet();
     } catch (error) {
-      await this.createWallet();
-
-      const oneMinuteInMilliseconds = 60000;
-      await this._sleep(oneMinuteInMilliseconds);
+      const createWallet = await this.createWallet();
+      await createWallet.wait();
 
       this._wallet = await this.getWallet();
       if (!this._wallet.smartWalletAddress) {
         throw new Error("Couldn't retrieve smart wallet due to an invalid JWT. Please try again.");
       }
+    }
+  }
+
+  private _initWebsocket = async (): Promise<void> => {
+    try {
+      const decodedJwt: any = jwtDecode(this._smartWalletsJwt);
+      this._socketClient = new Centrifuge(
+        Variables.SOCKET_SERVER_URL,
+        {
+          websocket: WebSocket,
+          token: this._smartWalletsJwt,
+          name: decodedJwt.sub
+        }
+      );
+      this._socketClient.connect();
+      await this._socketClient.ready()
+    } catch (error) {
+      this._throwError("Unable to establish legacy websocket connection with Centrifuge", error);
     }
   }
 
@@ -153,7 +180,6 @@ export class FuseLegacySDK {
     return signature;
   }
 
-
   private _getNonce = async (): Promise<string> => {
     const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
@@ -173,12 +199,19 @@ export class FuseLegacySDK {
     return iface.encodeFunctionData(methodName, values)
   }
 
-  private _throwError = (message: string, error: any) => {
-    throw new Error(`${message} ${JSON.stringify(error)}`);
-  }
+  private _throwError = (message: string, error: Error | AxiosError) => {
+    let err: string | unknown = error.message;
+    if (axios.isAxiosError(error))  {
+      if (error.response) {
+        err = error.response.data;
+      } else if (error.request) {
+        err = error.request;
+      }
+    }
 
-  private _sleep = (millisecond: number): Promise<unknown> => {
-    return new Promise(resolve => setTimeout(resolve, millisecond));
+    this._socketClient.disconnect();
+
+    throw new Error(`${message} ${JSON.stringify(err)}`);
   }
 
   authenticate = async (
@@ -208,7 +241,23 @@ export class FuseLegacySDK {
           'Authorization': `Bearer ${this._smartWalletsJwt}`
         }
       });
-      return response.data;
+
+      const subscription = this._socketClient.newSubscription(`transaction:#${response.data.transactionId}`)
+      subscription.on('publication', ctx => {
+        this.events.emit(ctx.data.eventName, ctx.data.eventData)
+      })
+
+      return {
+        data:response.data,
+        wait: () => {
+          return new Promise((resolve) => {
+            this.events.once(websocketEvents.WALLET_CREATION_SUCCEEDED, (data) => {
+              subscription.off('publication', () => {});
+              resolve(data);
+            });
+          });
+        }
+      }
     } catch (error) {
       this._throwError(
         "Couldn't create a legacy smart wallet. Please try again.",
@@ -261,7 +310,7 @@ export class FuseLegacySDK {
         status: "pending",
         from: this._wallet.smartWalletAddress,
         to,
-        value: amount,
+        value: amount.toString(),
         type: "SEND",
         asset: "FUSE",
         tokenName: "FuseToken",
@@ -290,7 +339,30 @@ export class FuseLegacySDK {
           'Authorization': `Bearer ${this._smartWalletsJwt}`
         },
       });
-      return response.data;
+
+      const subscription = this._socketClient.newSubscription(`transaction:#${response.data.transactionId}`)
+      subscription.on('publication', ctx => {
+        this.events.emit(ctx.data.eventName, ctx.data.eventData)
+      })
+
+      return {
+        data: response.data,
+        wait: () => {
+          return new Promise((resolve, reject) => {
+            this.events.once(websocketEvents.TRANSACTION_SUCCEEDED, (data) => {
+              subscription.off('publication', () => {});
+              this._socketClient.disconnect();
+              resolve(data);
+            });
+
+            this.events.once(websocketEvents.TRANSACTION_FAILED, (data) => {
+              subscription.off('publication', () => {});
+              this._socketClient.disconnect();
+              reject(new Error(`Couldn't process the legacy relay transaction. Please try again. ${JSON.stringify(data)}`));
+            });
+          });
+        }
+      }
     } catch (error) {
       this._throwError(
         "Unable to relay legacy transaction. Please try again.",

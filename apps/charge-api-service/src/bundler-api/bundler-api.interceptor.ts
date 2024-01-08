@@ -60,9 +60,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
         if (isNil(userOp.userOpHash)) {
           throw new HttpException('UserOp should contain userOpHash', HttpStatus.BAD_REQUEST)
         }
-        callMSFunction(this.dataLayerClient, 'record-user-op', userOp)
+        callMSFunction(this.dataLayerClient, 'record-user-op', userOp).catch(e => {
+          console.error(e)
+        })
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
 

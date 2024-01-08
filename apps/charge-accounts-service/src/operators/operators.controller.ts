@@ -21,13 +21,13 @@ export class OperatorsController {
    * @returns the new operator JWT
    */
   @Post('/validate')
-  validate (@Body() authOperatorDto: AuthOperatorDto) {    
+  validate (@Body() authOperatorDto: AuthOperatorDto) {
     const recoveredAddress = this.operatorsService.verifySignature(authOperatorDto)
 
-    if(authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
-      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN);
+    if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
+      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN)
     }
-    
+
     return this.operatorsService.createJwt(recoveredAddress)
   }
 

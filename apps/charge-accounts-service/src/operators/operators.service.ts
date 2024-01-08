@@ -14,9 +14,9 @@ export class OperatorsService {
     return recoveredAddress
   }
 
-  async createJwt(address: string): Promise<string> {
+  async createJwt (address: string): Promise<string> {
     return this.jwtService.sign({
       sub: address
-    });
-  }  
+    })
+  }
 }

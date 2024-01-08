@@ -34,7 +34,9 @@ export class DataLayerService {
     const response = await this.userOpModel.create(userOp) as UserOp
     this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
     const walletAction = await this.createWalletActionFromUserOp(userOp)
-    this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+    if (walletAction) {
+      this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+    }
     return response
   }
 
@@ -62,7 +64,9 @@ export class DataLayerService {
   async updateWalletAction (userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
-    this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
+    if (updatedWalletAction) {
+      this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
+    }
     return updatedWalletAction
   }
 

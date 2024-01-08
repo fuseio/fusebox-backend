@@ -8,7 +8,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { Model } from 'mongoose'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { ObjectId } from "mongodb"
+import { ObjectId } from 'mongodb'
 
 @Injectable()
 export class ProjectsService {

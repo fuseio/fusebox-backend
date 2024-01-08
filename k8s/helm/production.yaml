@@ -158,11 +158,12 @@ centrifugo:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
     zones:
+      - a
       - b
 
   # Image

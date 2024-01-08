@@ -32,7 +32,8 @@ export default () => ({
       tokenName: 'Fuse',
       tokenLogoURI: 'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE/logo.png',
       unStakeTokenAddress: '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871',
-      stakingProviderId: 'fuse-liquid-staking'
+      stakingProviderId: 'fuse-liquid-staking',
+      expired: false
     }
   ]
 })

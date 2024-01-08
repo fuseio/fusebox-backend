@@ -23,7 +23,8 @@ export default () => ({
       tokenName: 'VoltToken',
       tokenLogoURI: 'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4/logo.png',
       unStakeTokenAddress: '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1',
-      stakingProviderId: 'volt-bar'
+      stakingProviderId: 'volt-bar',
+      expired: true
     },
     {
       tokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',

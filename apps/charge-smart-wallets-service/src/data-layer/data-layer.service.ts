@@ -14,12 +14,13 @@ import { TokenService } from '@app/smart-wallets-service/common/services/token.s
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
+import { RpcException } from '@nestjs/microservices'
 
 @Injectable()
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
 
-  constructor (
+  constructor(
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
@@ -29,39 +30,44 @@ export class DataLayerService {
     private smartWalletsAAEventsService: SmartWalletsAAEventsService
   ) { }
 
-  async recordUserOp (baseUserOp: BaseUserOp) {
-    const userOp = await this.userOpFactory.createUserOp(baseUserOp)
-    const response = await this.userOpModel.create(userOp) as UserOp
-    this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
-    const walletAction = await this.createWalletActionFromUserOp(userOp)
-    if (walletAction) {
-      this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
-    }
-    return response
-  }
-
-  async updateUserOp (body: UserOp) {
-    const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
-    if (isNil(existingUserOp)) {
-      return 'No record found with the provided userOpHash'
-    }
-    const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
-    this.smartWalletsAAEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
-    this.updateWalletAction(updatedUserOp)
-    return updatedUserOp
-  }
-
-  async createWalletActionFromUserOp (parsedUserOp: UserOp) {
+  async recordUserOp(baseUserOp: BaseUserOp) {
     try {
-      const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
-      this.paginatedWalletActionModel.create(walletAction)
-      return walletAction
+      const userOp = await this.userOpFactory.createUserOp(baseUserOp)
+      const response = await this.userOpModel.create(userOp) as UserOp
+      this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
+      const walletAction = await this.createWalletActionFromUserOp(userOp)
+      if (walletAction) {
+        this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+      }
+      return response
     } catch (error) {
-      console.log(error)
+      throw new Error(error)
+    }
+
+  }
+
+  async updateUserOp(body: UserOp) {
+    try {
+      const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
+      if (isNil(existingUserOp)) {
+        return 'No record found with the provided userOpHash'
+      }
+      const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
+      this.smartWalletsAAEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
+      this.updateWalletAction(updatedUserOp)
+      return updatedUserOp
+    } catch (error) {
+      throw new Error(error)
     }
   }
 
-  async updateWalletAction (userOp: any) {
+  async createWalletActionFromUserOp(parsedUserOp: UserOp) {
+    const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
+    this.paginatedWalletActionModel.create(walletAction)
+    return walletAction
+  }
+
+  async updateWalletAction(userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
     if (updatedWalletAction) {
@@ -70,7 +76,7 @@ export class DataLayerService {
     return updatedWalletAction
   }
 
-  async handleTokenTransferWebhook (
+  async handleTokenTransferWebhook(
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     const from = tokenTransferWebhookDto.from
@@ -81,7 +87,6 @@ export class DataLayerService {
     const direction = tokenTransferWebhookDto.direction
     const address = tokenTransferWebhookDto.tokenAddress
     const name = tokenTransferWebhookDto.tokenName
-
     const symbol = tokenTransferWebhookDto.tokenSymbol
     const decimals = tokenTransferWebhookDto.tokenDecimals
     const blockNumber = tokenTransferWebhookDto.blockNumber
@@ -114,7 +119,7 @@ export class DataLayerService {
     return true
   }
 
-  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       query =

@@ -14,7 +14,6 @@ import { TokenService } from '@app/smart-wallets-service/common/services/token.s
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
-import { RpcException } from '@nestjs/microservices'
 
 @Injectable()
 export class DataLayerService {

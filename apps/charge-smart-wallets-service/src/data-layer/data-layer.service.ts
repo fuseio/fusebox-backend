@@ -20,7 +20,7 @@ import { RpcException } from '@nestjs/microservices'
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
 
-  constructor(
+  constructor (
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
@@ -30,7 +30,7 @@ export class DataLayerService {
     private smartWalletsAAEventsService: SmartWalletsAAEventsService
   ) { }
 
-  async recordUserOp(baseUserOp: BaseUserOp) {
+  async recordUserOp (baseUserOp: BaseUserOp) {
     try {
       const userOp = await this.userOpFactory.createUserOp(baseUserOp)
       const response = await this.userOpModel.create(userOp) as UserOp
@@ -43,10 +43,9 @@ export class DataLayerService {
     } catch (error) {
       throw new Error(error)
     }
-
   }
 
-  async updateUserOp(body: UserOp) {
+  async updateUserOp (body: UserOp) {
     try {
       const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
       if (isNil(existingUserOp)) {
@@ -61,13 +60,13 @@ export class DataLayerService {
     }
   }
 
-  async createWalletActionFromUserOp(parsedUserOp: UserOp) {
+  async createWalletActionFromUserOp (parsedUserOp: UserOp) {
     const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
     this.paginatedWalletActionModel.create(walletAction)
     return walletAction
   }
 
-  async updateWalletAction(userOp: any) {
+  async updateWalletAction (userOp: any) {
     const walletAction = confirmedUserOpToWalletAction(userOp)
     const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
     if (updatedWalletAction) {
@@ -76,7 +75,7 @@ export class DataLayerService {
     return updatedWalletAction
   }
 
-  async handleTokenTransferWebhook(
+  async handleTokenTransferWebhook (
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     const from = tokenTransferWebhookDto.from
@@ -119,7 +118,7 @@ export class DataLayerService {
     return true
   }
 
-  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       query =

@@ -30,40 +30,52 @@ export class DataLayerService {
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
-    const userOp = await this.userOpFactory.createUserOp(baseUserOp)
-    const response = await this.userOpModel.create(userOp) as UserOp
-    this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
-    const walletAction = await this.createWalletActionFromUserOp(userOp)
-    this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
-    return response
+    try {
+      const userOp = await this.userOpFactory.createUserOp(baseUserOp)
+      const response = await this.userOpModel.create(userOp) as UserOp
+      this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
+      const walletAction = await this.createWalletActionFromUserOp(userOp)
+      if (walletAction) {
+        this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+      }
+      return response
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   async updateUserOp (body: UserOp) {
-    const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
-    if (isNil(existingUserOp)) {
-      return 'No record found with the provided userOpHash'
+    try {
+      const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
+      if (isNil(existingUserOp)) {
+        return 'No record found with the provided userOpHash'
+      }
+      const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
+      this.smartWalletsAAEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
+      this.updateWalletAction(updatedUserOp)
+      return updatedUserOp
+    } catch (error) {
+      throw new Error(error)
     }
-    const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
-    this.smartWalletsAAEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
-    this.updateWalletAction(updatedUserOp)
-    return updatedUserOp
   }
 
   async createWalletActionFromUserOp (parsedUserOp: UserOp) {
-    try {
-      const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
-      this.paginatedWalletActionModel.create(walletAction)
-      return walletAction
-    } catch (error) {
-      console.log(error)
-    }
+    const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
+    this.paginatedWalletActionModel.create(walletAction)
+    return walletAction
   }
 
   async updateWalletAction (userOp: any) {
-    const walletAction = confirmedUserOpToWalletAction(userOp)
-    const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
-    this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
-    return updatedWalletAction
+    try {
+      const walletAction = confirmedUserOpToWalletAction(userOp)
+      const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
+      if (updatedWalletAction) {
+        this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
+      }
+      return updatedWalletAction
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   async handleTokenTransferWebhook (
@@ -77,7 +89,6 @@ export class DataLayerService {
     const direction = tokenTransferWebhookDto.direction
     const address = tokenTransferWebhookDto.tokenAddress
     const name = tokenTransferWebhookDto.tokenName
-
     const symbol = tokenTransferWebhookDto.tokenSymbol
     const decimals = tokenTransferWebhookDto.tokenDecimals
     const blockNumber = tokenTransferWebhookDto.blockNumber

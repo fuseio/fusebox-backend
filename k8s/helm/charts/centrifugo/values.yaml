@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -45,6 +48,3 @@ resources:
 logging:
   enabled: true
   sampleRate: 1000000
-
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function.
-secret:

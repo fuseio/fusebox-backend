@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -61,13 +64,9 @@ configMap:
   # -- Timeout interval (ms)
   timeout_interval: ""
 
-# Secret (sensitive information, defined through environment variables)
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- smart-wallets - JWT secret
-  smart_wallets_jwt_secret: ""
-  # -- RPC URL - Standard - Fuse
-  rpc_url: ""
-  # -- RPC URL - Archive - Fuse
-  full_archive_rpc_url: ""
+  - mongo_uri
+  - smart_wallets_jwt_secret
+  - rpc_url
+  - full_archive_rpc_url

@@ -1,0 +1,16 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: centrifugo-prometheus-scraper
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: centrifugo
+    environment: {{ .Values.global.environment }}
+spec:
+  selector:
+    matchLabels:
+      app: centrifugo
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s

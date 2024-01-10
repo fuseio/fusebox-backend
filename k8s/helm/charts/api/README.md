@@ -19,6 +19,7 @@ A Helm chart for Kubernetes related api component
 | configMap.legacy_fuse_wallet_api_url | string | `""` | Legacy - Fuse wallet API URL |
 | configMap.qa_mode | string | `""` | QA mode ('true' or 'false') |
 | configMap.spark_rpc_url | string | `""` | RPC URL - Spark |
+| global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |
 | global.image.repository | string | `"api"` | Repository ID |
@@ -29,14 +30,7 @@ A Helm chart for Kubernetes related api component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret.explorer_api_key | string | `""` | Explorer (BlockScout) - API key |
-| secret.fuse_studio_admin_jwt | string | `""` | Fuse Studio admin JWT |
-| secret.legacy_jwt_secret | string | `""` | Legacy - JWT secret |
-| secret.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
-| secret.paymaster_production_signer_private_key_v_0_1_0 | string | `""` | Bundler - Paymaster Production signer private key |
-| secret.paymaster_sandbox_signer_private_key_v_0_1_0 | string | `""` | Bundler - Paymaster Sandbox signer private key |
-| secret.rpc_url | string | `""` | RPC URL - Fuse |
-| secret.smart_wallets_jwt_secret | string | `""` | smart-wallets - JWT secret |
+| secret | list | `["mongo_uri","rpc_url","fuse_studio_admin_jwt","legacy_jwt_secret","smart_wallets_jwt_secret","paymaster_production_signer_private_key_v_0_1_0","paymaster_sandbox_signer_private_key_v_0_1_0","explorer_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
 | securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |

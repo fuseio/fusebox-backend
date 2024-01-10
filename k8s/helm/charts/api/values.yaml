@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -82,21 +85,13 @@ configMap:
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
 
-# Secret (sensitive information, defined through environment variables)
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- RPC URL - Fuse
-  rpc_url: ""
-  # -- Fuse Studio admin JWT
-  fuse_studio_admin_jwt: ""
-  # -- Legacy - JWT secret
-  legacy_jwt_secret: ""
-  # -- smart-wallets - JWT secret
-  smart_wallets_jwt_secret: ""
-  # -- Bundler - Paymaster Production signer private key
-  paymaster_production_signer_private_key_v_0_1_0: ""
-  # -- Bundler - Paymaster Sandbox signer private key
-  paymaster_sandbox_signer_private_key_v_0_1_0: ""
-  # -- Explorer (BlockScout) - API key
-  explorer_api_key: ""
+  - mongo_uri
+  - rpc_url
+  - fuse_studio_admin_jwt
+  - legacy_jwt_secret
+  - smart_wallets_jwt_secret
+  - paymaster_production_signer_private_key_v_0_1_0
+  - paymaster_sandbox_signer_private_key_v_0_1_0
+  - explorer_api_key

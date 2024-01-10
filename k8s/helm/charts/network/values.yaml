@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -55,7 +58,6 @@ configMap:
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
 
-# Secret (sensitive information, defined through environment variables)
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
-  # -- RPC URL endpoint
-  rpc_url: ""
+  - rpc_url

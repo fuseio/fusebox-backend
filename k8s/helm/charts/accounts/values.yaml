@@ -80,10 +80,4 @@ configMap:
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
-<<<<<<< Updated upstream
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-=======
   - mongo_uri
-  - smart_wallets_jwt_secret
->>>>>>> Stashed changes

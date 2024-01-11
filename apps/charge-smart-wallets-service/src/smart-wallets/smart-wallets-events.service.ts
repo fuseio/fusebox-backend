@@ -73,38 +73,43 @@ export class SmartWalletsEventsService {
   }
 
   async onCreateSmartWalletStarted (eventData: any) {
-    const {
-      smartWalletAddress,
-      smartWalletUser,
-      salt,
-      walletModules
-    } = eventData
-    const {
-      ownerAddress
-    } = smartWalletUser
-
-    if (!await this.smartWalletModel.findOne({ ownerAddress })) {
-      this.smartWalletModel.create({
-        salt,
-        ownerAddress,
-        walletModules,
+    this.logger.log(`onCreateSmartWalletStarted: ${JSON.stringify(eventData)}`)
+    try {
+      const {
         smartWalletAddress,
-        walletOwnerOriginalAddress: ownerAddress,
-        walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
-        walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
-        walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
-        walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
-        walletModulesOriginal: walletModules,
-        networks: ['fuse'],
-        version: this.walletVersion,
-        versionType: get(eventData, 'versionType', versionType.V2),
-        paddedVersion: this.walletPaddedVersion
-      })
+        smartWalletUser,
+        salt,
+        walletModules
+      } = eventData
+      const {
+        ownerAddress
+      } = smartWalletUser
 
-      await this.publishMessage(eventData, {
-        eventName: websocketEvents.WALLET_CREATION_STARTED,
-        eventData: {}
-      })
+      if (!await this.smartWalletModel.findOne({ ownerAddress })) {
+        this.smartWalletModel.create({
+          salt,
+          ownerAddress,
+          walletModules,
+          smartWalletAddress,
+          walletOwnerOriginalAddress: ownerAddress,
+          walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
+          walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
+          walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
+          walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
+          walletModulesOriginal: walletModules,
+          networks: ['fuse'],
+          version: this.walletVersion,
+          versionType: get(eventData, 'versionType', versionType.V2),
+          paddedVersion: this.walletPaddedVersion
+        })
+
+        await this.publishMessage(eventData, {
+          eventName: websocketEvents.WALLET_CREATION_STARTED,
+          eventData: {}
+        })
+      }
+    } catch (error) {
+      this.logger.error(`An error occurred during create smart wallet. ${error}`)
     }
   }
 
@@ -116,32 +121,37 @@ export class SmartWalletsEventsService {
   }
 
   async onCreateSmartWalletSuccess (eventData: any) {
-    const {
-      ownerAddress,
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
-    } =
-      await this.smartWalletModel.findOneAndUpdate(
-        { smartWalletAddress: eventData.smartWalletAddress },
-        { isContractDeployed: true },
-        { new: true }
-      )
-    const data = {
-      ownerAddress,
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
+    this.logger.log(`onCreateSmartWalletSuccess: ${JSON.stringify(eventData)}`)
+    try {
+      const {
+        ownerAddress,
+        smartWalletAddress,
+        walletModules,
+        networks,
+        version,
+        paddedVersion
+      } =
+        await this.smartWalletModel.findOneAndUpdate(
+          { smartWalletAddress: eventData.smartWalletAddress },
+          { isContractDeployed: true },
+          { new: true }
+        )
+      const data = {
+        ownerAddress,
+        smartWalletAddress,
+        walletModules,
+        networks,
+        version,
+        paddedVersion
+      }
+      await this.publishMessage(eventData, {
+        eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
+        eventData: data
+      })
+      this.unsubscribe(eventData)
+    } catch (error) {
+      this.logger.error(`An error occurred during find and update smart wallet. ${error}`)
     }
-    await this.publishMessage(eventData, {
-      eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
-      eventData: data
-    })
-    this.unsubscribe(eventData)
   }
 
   async onCreateSmartWalletFailed (eventData: any) {

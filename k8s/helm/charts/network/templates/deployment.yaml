@@ -66,12 +66,12 @@ spec:
             {{- end }}
 
             # Secret
-            {{- range $key, $val := .Values.secret }}
-            - name: {{ $key | upper }}
+            {{- range .Values.secret }}
+            - name: {{ . | upper }}
               valueFrom:
                 secretKeyRef:
                   name: network
-                  key: {{ $key }}
+                  key: {{ . }}
             {{- end }}
 
           # Ports

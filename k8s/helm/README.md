@@ -1,23 +1,23 @@
 # Helm Chart
 
-* How to install manually [fusebox-backend](https://github.com/fuseio/fusebox-management-devops/blob/main/docs/Installation.md) application.
+ Here provided the sample commands how to install this Helm chart.
 
 
 ## Installing the Chart
 
-To install the chart with the release name `my-release`:
+ To install the chart with the release name `my-release`:
 
-```console
-helm install --namespace [namespace] --values [values_file] my-release .
-```
+ ```bash
+ helm install --namespace [namespace] --values [values_file] my-release .
+ ```
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `my-release` deployment:
+ To uninstall/delete the `my-release` deployment:
 
-```console
-helm delete my-release
-```
+ ```bash
+ helm delete my-release
+ ```
 
 
 ## Configuration

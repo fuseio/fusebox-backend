@@ -17,6 +17,7 @@ A Helm chart for Kubernetes related apps component
 | configMap.ethereum_payments_network_name | string | `""` | Ethereum - Payments network name |
 | configMap.job_sleep_ms | string | `""` | Job sleep (ms) |
 | configMap.unmarshal_base_url | string | `""` | Unmarshal - Base URL |
+| global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |
 | global.image.repository | string | `"api"` | Repository ID |
@@ -27,14 +28,7 @@ A Helm chart for Kubernetes related apps component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret.alchemy_auth_key | string | `""` | Alchemy - Auth key |
-| secret.alchemy_webhook_id | string | `""` | Alchemy - Webhook ID |
-| secret.charge_payments_ethereum_mnemonic | string | `""` | Charge - Payments Ethereum mnemonic |
-| secret.charge_public_key | string | `""` | Charge - Public key |
-| secret.charge_secret_key | string | `""` | Charge - Secret key |
-| secret.charge_webhook_id | string | `""` | Charge - Webhook ID |
-| secret.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
-| secret.unmarshal_auth_key | string | `""` | Unmarshal - Auth key |
+| secret | list | `["mongo_uri","charge_public_key","charge_secret_key","charge_webhook_id","unmarshal_auth_key","charge_payments_ethereum_mnemonic","alchemy_webhook_id","alchemy_auth_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

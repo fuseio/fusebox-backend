@@ -18,8 +18,6 @@ spec:
       environment: {{ .Values.global.environment }}
   template:
     metadata:
-      annotations:
-        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: centrifugo
         environment: {{ .Values.global.environment }}

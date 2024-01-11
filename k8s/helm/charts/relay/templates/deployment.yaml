@@ -20,7 +20,6 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: relay
         environment: {{ .Values.global.environment }}
@@ -59,12 +58,12 @@ spec:
                   key: relay_tcp_port
 
             # Secret
-            {{- range $key, $val := .Values.secret }}
-            - name: {{ $key | upper }}
+            {{- range .Values.secret }}
+            - name: {{ . | upper }}
               valueFrom:
                 secretKeyRef:
                   name: relay
-                  key: {{ $key }}
+                  key: {{ . }}
             {{- end }}
 
           # Ports

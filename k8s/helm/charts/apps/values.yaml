@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -75,21 +78,13 @@ configMap:
   # -- Ethereum - Payments network name
   ethereum_payments_network_name: ""
 
-# Secret (sensitive information, defined through environment variables)
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- Charge - Public key
-  charge_public_key: ""
-  # -- Charge - Secret key
-  charge_secret_key: ""
-  # -- Charge - Webhook ID
-  charge_webhook_id: ""
-  # -- Unmarshal - Auth key
-  unmarshal_auth_key: ""
-  # -- Charge - Payments Ethereum mnemonic
-  charge_payments_ethereum_mnemonic: ""
-  # -- Alchemy - Webhook ID
-  alchemy_webhook_id: ""
-  # -- Alchemy - Auth key
-  alchemy_auth_key: ""
+  - mongo_uri
+  - charge_public_key
+  - charge_secret_key
+  - charge_webhook_id
+  - unmarshal_auth_key
+  - charge_payments_ethereum_mnemonic
+  - alchemy_webhook_id
+  - alchemy_auth_key

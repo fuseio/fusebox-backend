@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -75,7 +78,6 @@ configMap:
   # -- Bundler - Entrypoint Production contract address
   entrypoint_production_contract_address_v_0_1_0: ""
 
-# Secret (sensitive information, defined through environment variables)
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
+  - mongo_uri

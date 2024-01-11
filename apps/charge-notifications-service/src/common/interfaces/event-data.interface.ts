@@ -21,7 +21,7 @@ export interface TokenEventData extends EventData {
 }
 export interface UserOpEventData extends EventData {
   userOpHash: string;
-  nonce: number;
+  nonce: string;
   paymasterAndData?: string;
   success: boolean;
   actualGasCost: string;

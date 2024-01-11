@@ -2,7 +2,7 @@ import { Document } from 'mongoose'
 
 export interface BaseUserOp {
   sender: string; // Address is a string of hexadecimal characters
-  nonce: number; // Nonce is a number that increases with each operation
+  nonce: string; // Nonce is a string representation of a number that increases with each operation
   initCode: string; // InitCode is a buffer of bytes that contains the code to create new wallets
   callData: string; // CallData is a buffer of bytes that contains the data to execute the action
   callGasLimit: number; // CallGasLimit is a number that specifies the maximum gas to use for the action

@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 export const UserOpSchema = new mongoose.Schema(
   {
     sender: { type: String, required: true }, // Address is a string of hexadecimal characters
-    nonce: { type: Number, required: true }, // Nonce is a number that increases with each operation
+    nonce: { type: String, required: true }, // Nonce is a string representation of a number that increases with each operation
     initCode: { type: String, required: true }, // InitCode is a buffer of bytes that contains the code to create new wallets
     callData: { type: String, required: true }, // CallData is a buffer of bytes that contains the data to execute the action
     callGasLimit: { type: Number, required: true }, // CallGasLimit is a number that specifies the maximum gas to use for the action

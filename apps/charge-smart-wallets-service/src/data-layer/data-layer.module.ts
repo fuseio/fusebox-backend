@@ -2,7 +2,7 @@ import { DataLayerController } from '@app/smart-wallets-service/data-layer/data-
 import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
 import { dataLayerProviders } from '@app/smart-wallets-service/data-layer/data-layer.providers'
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import web3Config from 'apps/charge-smart-wallets-service/src/common/config/web3Config'
 import { DatabaseModule } from '@app/common'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'

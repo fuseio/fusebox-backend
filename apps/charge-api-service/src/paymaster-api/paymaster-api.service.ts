@@ -3,7 +3,8 @@ import { ClientProxy, RpcException } from '@nestjs/microservices'
 import {
   Injectable,
   Inject,
-  InternalServerErrorException
+  InternalServerErrorException,
+  Logger
 } from '@nestjs/common'
 import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
 import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
@@ -19,6 +20,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class PaymasterApiService {
+  private readonly logger = new Logger(PaymasterApiService.name)
   constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
@@ -30,10 +32,8 @@ export class PaymasterApiService {
     try {
       const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
       const [op] = body
-      console.log('INITIAL OP:')
-      console.log(op)
+      this.logger.log(`INITIAL OP: ${JSON.stringify(op)}`)
       const { timestamp } = await web3.eth.getBlock('latest')
-      console.log(`timestamp: ${timestamp}`)
 
       const validUntil = parseInt(timestamp.toString()) + 240
       const validAfter = 0
@@ -55,30 +55,16 @@ export class PaymasterApiService {
       const signatureForEstimateUserOpGasCall = await this.signHash(hashForEstimateUserOpGasCall, paymasterInfo)
       const paymasterAndDataForEstimateUserOpGasCall = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
 
-      console.log({
-        hashForEstimateUserOpGasCall,
-        signatureForEstimateUserOpGasCall,
-        paymasterAndDataForEstimateUserOpGasCall
-      })
-
       op.paymasterAndData = paymasterAndDataForEstimateUserOpGasCall
 
-      const {
-        preVerificationGas,
-        verificationGasLimit,
-        callGasLimit
-      } = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
+      const gases = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
+      this.logger.log(`estimateUserOpGas gases: ${JSON.stringify(gases)}`)
 
-      console.log({
-        executedPreVerificationGas: preVerificationGas,
-        executedVerificationGasLimit: verificationGasLimit,
-        executedCallGasLimit: callGasLimit
-      })
-      const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
+      const actualVerificationGasLimit = Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
-      op.callGasLimit = callGasLimit
+      op.callGasLimit = gases?.callGasLimit ?? op.callGasLimit
       op.verificationGasLimit = actualVerificationGasLimit
-      op.preVerificationGas = preVerificationGas
+      op.preVerificationGas = gases?.preVerificationGas
 
       const hash = await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
       const signature = await this.signHash(hash, paymasterInfo)
@@ -91,8 +77,8 @@ export class PaymasterApiService {
         callGasLimit: op.callGasLimit
       }
     } catch (error) {
-      console.log(error)
-      throw new RpcException(`Paymaster pm_sponsorUserOperation error${error}`)
+      this.logger.error(error)
+      throw new RpcException(`Paymaster pm_sponsorUserOperation error ${error}`)
     }
   }
 

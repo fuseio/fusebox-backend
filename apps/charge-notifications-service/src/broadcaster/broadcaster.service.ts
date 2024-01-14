@@ -23,7 +23,7 @@ export class BroadcasterService {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
   }
 
-  get maxTimeIntervalsMS () : number {
+  get maxTimeIntervalsMS (): number {
     return this.retryTimeIntervalsMS[Object.keys(this.retryTimeIntervalsMS).length]
   }
 
@@ -54,18 +54,27 @@ export class BroadcasterService {
           webhookEvent.success = true
         } catch (err) {
           let errorStatus: number, errorResponse: string
-
-          this.logger.error(
-            `Webhook ${webhookEvent._id} returned error. `,
-            `Error message: ${err} \nStack: ${err?.stack}`
-          )
-
           if (err instanceof HttpException) {
             errorStatus = err.getStatus()
             errorResponse = err.getResponse().toString()
+            if (isNaN(errorStatus)) {
+              this.logger.warn(`Webhook ${webhookEvent._id} unable to send an webhook event to its URL:${webhookEvent.webhook.webhookUrl}`
+              )
+            } else {
+              this.logger.error(
+                `Webhook ${webhookEvent._id} returned error. `,
+                `Error message: ${errorResponse}`,
+                `Error status: ${errorStatus}`
+              )
+            }
           } else {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR
             errorResponse = JSON.stringify(err)
+            this.logger.error(
+              `Webhook ${webhookEvent._id} returned error. `,
+              `Error message: ${errorResponse}`,
+              `Error status: ${errorStatus}`
+            )
           }
 
           webhookEvent.responses.push(

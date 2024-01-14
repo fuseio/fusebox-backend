@@ -68,7 +68,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
       userOpHash: parsedLog.args[0],
       from: parsedLog.args[1],
       paymasterAndData: parsedLog.args[2],
-      nonce: parsedLog.args[3].toNumber(),
+      nonce: parsedLog.args[3].toString(),
       success: parsedLog.args[4],
       actualGasCost: parsedLog.args[5].toNumber(),
       actualGasUsed: parsedLog.args[6].toNumber()

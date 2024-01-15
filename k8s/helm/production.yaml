@@ -285,7 +285,7 @@ relay:
     - relay_secret
 
 skandha:
-  enabled: false # We use the EtherSpot - hosted Skandha instance.
+  enabled: true # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
 
   # Affinity (zones)
   affinity:
@@ -296,7 +296,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.25-alpha"
+    tag: "1.0.30-alpha"
 
   # Resources (requests & limits)
   resources:
@@ -315,29 +315,6 @@ skandha:
   # Logging
   logging:
     enabled: false
-
-  # ConfigMap
-  configMap:
-    skandha_networks: ""
-    skandha_fuse_estimation_static_buffer: ""
-    skandha_fuse_sparknet_estimation_static_buffer: ""
-    skandha_fuse_ban_slack: ""
-    skandha_fuse_sparknet_ban_slack: ""
-    skandha_fuse_throttling_slack: ""
-    skandha_fuse_sparknet_throttling_slack: ""
-    skandha_fuse_min_inclusion_denominator: ""
-    skandha_fuse_sparknet_min_inclusion_denominator: ""
-
-  # Secret (defined through CI/CD process via environment variables)
-  secret:
-    skandha_fuse_sparknet_relayer: ""
-    skandha_fuse_sparknet_beneficiary: ""
-    skandha_fuse_sparknet_rpc: ""
-    skandha_fuse_sparknet_entrypoints: ""
-    skandha_fuse_relayer: ""
-    skandha_fuse_beneficiary: ""
-    skandha_fuse_rpc: ""
-    skandha_fuse_entrypoints: ""
 
 smart-wallets:
   enabled: true

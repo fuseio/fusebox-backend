@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -52,43 +55,3 @@ service:
 logging:
   enabled: true
   sampleRate: 1000000
-
-# ConfigMap (non - sensitive information)
-configMap:
-  # -- Networks. Possible values: `fuse,fuseSparknet`
-  skandha_networks: ""
-  # -- Estimation static buffer - Fuse
-  skandha_fuse_estimation_static_buffer: ""
-  # -- Estimation static buffer - Spark
-  skandha_fuse_sparknet_estimation_static_buffer: ""
-  # -- Ban Slack - Fuse
-  skandha_fuse_ban_slack: ""
-  # -- Ban Slack - Spark
-  skandha_fuse_sparknet_ban_slack: ""
-  # -- Throttling Slack - Fuse
-  skandha_fuse_throttling_slack: ""
-  # -- Throttling Slack - Spark
-  skandha_fuse_sparknet_throttling_slack: ""
-  # -- Min inclusion denominator - Fuse
-  skandha_fuse_min_inclusion_denominator: ""
-  # -- Min inclusion denominator - Spark
-  skandha_fuse_sparknet_min_inclusion_denominator: ""
-
-# Secret (sensitive information, defined through environment variables)
-secret:
-  # -- Relayer - Spark
-  skandha_fuse_sparknet_relayer: ""
-  # -- Beneficiary - Spark
-  skandha_fuse_sparknet_beneficiary: ""
-  # -- RPC endpoint - Spark
-  skandha_fuse_sparknet_rpc: ""
-  # -- Entrypoint - Spark
-  skandha_fuse_sparknet_entrypoints: ""
-  # -- Relayer - Fuse
-  skandha_fuse_relayer: ""
-  # -- Beneficiary - Fuse
-  skandha_fuse_beneficiary: ""
-  # -- RPC endpoint - Fuse
-  skandha_fuse_rpc: ""
-  # -- Entrypoint - Fuse
-  skandha_fuse_entrypoints: ""

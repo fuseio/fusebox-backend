@@ -18,9 +18,6 @@ spec:
       environment: {{ .Values.global.environment }}
   template:
     metadata:
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: skandha
         environment: {{ .Values.global.environment }}
@@ -41,26 +38,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
           command: ["node", "./packages/cli/bin/skandha", "standalone", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
-
-          env:
-            
-            # ConfigMap
-            {{- range $key, $value := .Values.configMap }}
-            - name: {{ $key | upper }}
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: {{ $key }}
-            {{- end }}
-
-            # Secret
-            {{- range $key, $val := .Values.secret }}
-            - name: {{ $key | upper }}
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: {{ $key }}
-            {{- end }}
 
           # Ports
           ports:
@@ -91,3 +68,16 @@ spec:
             {{- range $key, $val := .Values.resources.limits }}
               {{ $key }}: {{ $val | quote }}
             {{- end }}
+
+          # Volume mounts (config.json)
+          volumeMounts:
+            - name: skandha
+              mountPath: /usr/app/config.json
+              subPath: config.json
+              readOnly: true
+      
+      # Volume (config.json)
+      volumes:
+        - name: skandha
+          secret:
+            secretName: skandha

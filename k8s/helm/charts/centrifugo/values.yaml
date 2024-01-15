@@ -21,7 +21,7 @@ global:
   # Image
   image:
     # -- Repository ID
-    repository: "accounts"
+    repository: "centrifugo/centrifugo"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
     tag: "latest"
 

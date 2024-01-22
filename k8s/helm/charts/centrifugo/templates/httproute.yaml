@@ -16,7 +16,9 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            value: /api/
+        - path:
+            value: /connection/websocket
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

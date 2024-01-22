@@ -16,7 +16,9 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            value: /122/
+        - path:
+            value: /122/
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

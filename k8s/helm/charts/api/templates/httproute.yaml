@@ -16,7 +16,7 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            value: /api/
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

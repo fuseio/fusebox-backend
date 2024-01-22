@@ -42,11 +42,15 @@ export class OperatorsController {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const projectObject = await this.projectsService.findOneByOwnerId(user._id)
     const publicKey = await this.projectsService.getPublic(projectObject._id)
+    const { secretPrefix, secretLastFourChars } = await this.projectsService.getApiKeysInfo(projectObject._id)
     const project = {
+      id: projectObject._id,
       ownerId: projectObject.ownerId,
       name: projectObject.name,
       description: projectObject.description,
-      publicKey: publicKey.publicKey
+      publicKey: publicKey.publicKey,
+      secretPrefix,
+      secretLastFourChars
     }
     return { user, project }
   }
@@ -70,11 +74,14 @@ export class OperatorsController {
       description: auth0Id
     })
     const publicKey = await this.projectsService.getPublic(projectObject._id)
+    const { secretKey } = await this.projectsService.createSecret(projectObject._id)
     const project = {
+      id: projectObject._id,
       ownerId: projectObject.ownerId,
       name: projectObject.name,
       description: projectObject.description,
-      publicKey: publicKey.publicKey
+      publicKey: publicKey.publicKey,
+      secretKey
     }
     return { user, project }
   }

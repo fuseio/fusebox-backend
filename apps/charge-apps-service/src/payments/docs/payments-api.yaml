@@ -3,7 +3,7 @@ info:
   title: Payments API
   version: 1.0.0
 servers:
-  - url: https://api.chargeweb3.com/app-store/v1
+  - url: https://api.fuse.io/app-store/v1
 tags:
   - name: Payments
 paths:

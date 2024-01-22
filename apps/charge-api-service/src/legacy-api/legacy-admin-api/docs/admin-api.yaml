@@ -7,7 +7,7 @@ info:
     tokens for your economies/communities.
   version: 1.0.0
 servers:
-  - url: https://api.chargeweb3.com/api/v0
+  - url: https://api.fuse.io/api/v0
 tags:
   - name: Wallets
     description: With Admin Wallet API, you can create new wallets for your users.

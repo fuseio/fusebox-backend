@@ -3,7 +3,7 @@ info:
   title: Smart Wallets API
   version: 1.0.0
 servers:
-  - url: https://api.chargeweb3.com
+  - url: https://api.fuse.io
 components:
   securitySchemes:
     bearerAuth:

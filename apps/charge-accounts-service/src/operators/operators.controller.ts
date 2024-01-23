@@ -46,7 +46,7 @@ export class OperatorsController {
     const publicKey = await this.projectsService.getPublic(projectObject._id)
     const { secretPrefix, secretLastFourChars } = await this.projectsService.getApiKeysInfo(projectObject._id)
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
-    const { sponsorId } = paymasters[0]
+    const sponsorId = paymasters?.[0]?.sponsorId
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,

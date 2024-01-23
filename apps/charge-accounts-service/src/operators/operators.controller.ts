@@ -10,7 +10,7 @@ import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.serv
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
-  constructor(
+  constructor (
     private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
@@ -23,7 +23,7 @@ export class OperatorsController {
    * @returns the new operator JWT
    */
   @Post('/validate')
-  validate(@Body() authOperatorDto: AuthOperatorDto) {
+  validate (@Body() authOperatorDto: AuthOperatorDto) {
     const recoveredAddress = this.operatorsService.verifySignature(authOperatorDto)
 
     if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
@@ -40,7 +40,7 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
-  async me(@Param('id') id: string, @User('sub') auth0Id: string) {
+  async me (@Param('id') id: string, @User('sub') auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const projectObject = await this.projectsService.findOneByOwnerId(user._id)
     const publicKey = await this.projectsService.getPublic(projectObject._id)
@@ -67,7 +67,7 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createOperatorDto: CreateOperatorDto, @User('sub') auth0Id: string) {
+  async create (@Body() createOperatorDto: CreateOperatorDto, @User('sub') auth0Id: string) {
     const user = await this.usersService.create({
       name: `${createOperatorDto.firstName} ${createOperatorDto.lastName}`,
       email: createOperatorDto.email,

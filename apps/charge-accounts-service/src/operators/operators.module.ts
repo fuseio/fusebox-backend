@@ -5,12 +5,14 @@ import { OperatorsController } from '@app/accounts-service/operators/operators.c
 import { OperatorJwtStrategy } from '@app/accounts-service/operators/operator-jwt.strategy'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthModule } from '@app/accounts-service/auth/auth.module'
+import { PaymasterModule } from '../paymaster/paymaster.module'
 
 @Module({
   imports: [
     UsersModule,
     ProjectsModule,
-    AuthModule
+    AuthModule,
+    PaymasterModule
   ],
   controllers: [OperatorsController],
   providers: [OperatorJwtStrategy, OperatorsService],

@@ -6,14 +6,16 @@ import { ProjectsService } from '@app/accounts-service/projects/projects.service
 import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-operator.dto'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
+import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
   constructor (
     private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,
-    private readonly projectsService: ProjectsService
-  ) {}
+    private readonly projectsService: ProjectsService,
+    private readonly paymasterService: PaymasterService
+  ) { }
 
   /**
    * Validate operator
@@ -43,6 +45,8 @@ export class OperatorsController {
     const projectObject = await this.projectsService.findOneByOwnerId(user._id)
     const publicKey = await this.projectsService.getPublic(projectObject._id)
     const { secretPrefix, secretLastFourChars } = await this.projectsService.getApiKeysInfo(projectObject._id)
+    const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
+    const { sponsorId } = paymasters[0]
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -50,7 +54,8 @@ export class OperatorsController {
       description: projectObject.description,
       publicKey: publicKey.publicKey,
       secretPrefix,
-      secretLastFourChars
+      secretLastFourChars,
+      sponsorId
     }
     return { user, project }
   }
@@ -75,13 +80,16 @@ export class OperatorsController {
     })
     const publicKey = await this.projectsService.getPublic(projectObject._id)
     const { secretKey } = await this.projectsService.createSecret(projectObject._id)
+    const paymasters = await this.paymasterService.create(projectObject._id, '0_1_0')
+    const { sponsorId } = paymasters[0]
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
       name: projectObject.name,
       description: projectObject.description,
       publicKey: publicKey.publicKey,
-      secretKey
+      secretKey,
+      sponsorId
     }
     return { user, project }
   }

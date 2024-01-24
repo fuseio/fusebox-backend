@@ -14,6 +14,7 @@ import { TokenService } from '@app/smart-wallets-service/common/services/token.s
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
+import { decodePaymasterAndData } from '@app/smart-wallets-service/common/utils/helper-functions'
 
 @Injectable()
 export class DataLayerService {
@@ -31,6 +32,11 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     try {
+      if (baseUserOp.paymasterAndData !== '0x') {
+        const paymasterAddressAndSponsorId = decodePaymasterAndData(baseUserOp.paymasterAndData)
+        baseUserOp.paymaster = paymasterAddressAndSponsorId.paymasterAddress
+        baseUserOp.sponsorId = paymasterAddressAndSponsorId.sponsorId
+      }
       const userOp = await this.userOpFactory.createUserOp(baseUserOp)
       const response = await this.userOpModel.create(userOp) as UserOp
       this.smartWalletsAAEventsService.publishUserOp(response.sender, response)

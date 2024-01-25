@@ -55,7 +55,8 @@ export class BundlerApiInterceptor implements NestInterceptor {
     )
 
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
-      const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result }
+      const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result, apiKey: context.switchToHttp().getRequest().query.apiKey }
+
       try {
         if (isNil(userOp.userOpHash)) {
           throw new HttpException('UserOp should contain userOpHash', HttpStatus.BAD_REQUEST)

@@ -16,7 +16,17 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            type: Exact
+            value: /api/health
+        - path:
+            type: PathPrefix
+            value: /api/v0
+        - path:
+            type: PathPrefix
+            value: /api/v1
+        - path:
+            type: PathPrefix
+            value: /api/v2
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

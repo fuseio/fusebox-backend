@@ -49,6 +49,9 @@ accounts:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
+  # Security policy name (Cloud Armor)
+  securityPolicy: "fusebox-staging-accounts-security-policy"
+
   # ConfigMap
   configMap:
     auth0_issuer_url: "https://auth.staging.fuse.io/"
@@ -87,6 +90,9 @@ api:
   service:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
+
+  # Security policy name (Cloud Armor)
+  securityPolicy: "fusebox-staging-api-security-policy"
 
   # ConfigMap
   configMap:
@@ -135,6 +141,9 @@ apps:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
+  # Security policy name (Cloud Armor)
+  securityPolicy: "fusebox-staging-apps-security-policy"
+
   # ConfigMap
   configMap:
     charge_wallet_phone_number: "+15554443322"
@@ -166,11 +175,14 @@ centrifugo:
     zones:
       - b
 
+  # Security policy name (Cloud Armor)
+  securityPolicy: null
+
   # Image
   image:
     repository: "centrifugo/centrifugo"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5"
+    tag: "v5.2.2"
 
   # Resources (requests & limits)
   resources:
@@ -302,28 +314,12 @@ skandha:
     annotations:
       networking.gke.io/max-rate-per-endpoint: 10
 
-  # ConfigMap
-  configMap:
-    skandha_networks: ""
-    skandha_fuse_estimation_static_buffer: ""
-    skandha_fuse_sparknet_estimation_static_buffer: ""
-    skandha_fuse_ban_slack: ""
-    skandha_fuse_sparknet_ban_slack: ""
-    skandha_fuse_throttling_slack: ""
-    skandha_fuse_sparknet_throttling_slack: ""
-    skandha_fuse_min_inclusion_denominator: ""
-    skandha_fuse_sparknet_min_inclusion_denominator: ""
+  # Security policy name (Cloud Armor)
+  securityPolicy: null
 
-  # Secret (defined through CI/CD process via environment variables)
-  secret:
-    skandha_fuse_sparknet_relayer: ""
-    skandha_fuse_sparknet_beneficiary: ""
-    skandha_fuse_sparknet_rpc: ""
-    skandha_fuse_sparknet_entrypoints: ""
-    skandha_fuse_relayer: ""
-    skandha_fuse_beneficiary: ""
-    skandha_fuse_rpc: ""
-    skandha_fuse_entrypoints: ""
+  # Logging
+  logging:
+    enabled: false
 
 smart-wallets:
   enabled: true

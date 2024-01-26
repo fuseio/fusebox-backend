@@ -16,7 +16,11 @@ spec:
   rules:
     - matches:
         - path:
-            value: /app-store/
+            type: Exact
+            value: /app-store/v1/health
+        - path:
+            type: PathPrefix
+            value: /app-store/v1
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

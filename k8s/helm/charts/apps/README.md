@@ -29,6 +29,7 @@ A Helm chart for Kubernetes related apps component
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
 | secret | list | `["mongo_uri","charge_public_key","charge_secret_key","charge_webhook_id","unmarshal_auth_key","charge_payments_ethereum_mnemonic","alchemy_webhook_id","alchemy_auth_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
+| securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

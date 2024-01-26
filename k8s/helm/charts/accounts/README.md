@@ -28,11 +28,8 @@ A Helm chart for Kubernetes related accounts component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-<<<<<<< Updated upstream
-| secret.mongo_uri | string | `""` | MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params) |
-=======
-| secret | list | `["mongo_uri","smart_wallets_jwt_secret"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
->>>>>>> Stashed changes
+| secret | list | `["mongo_uri"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
+| securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

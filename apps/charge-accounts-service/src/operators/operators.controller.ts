@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
@@ -7,6 +7,8 @@ import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-op
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
+import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
+import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/production-or-sandbox-key.interface'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
@@ -92,5 +94,21 @@ export class OperatorsController {
       sponsorId
     }
     return { user, project }
+  }
+
+  /**
+   * Fund paymaster
+   */
+  @UseGuards(JwtAuthGuard, IsPrdOrSbxKeyGuard)
+  @Post('/fund-paymaster')
+  async paymaster (@User('sub') auth0Id: string, @Req() request: PrdOrSbxKeyRequest) {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    const projectObject = await this.projectsService.findOneByOwnerId(user._id)
+    const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
+    const sponsorId = paymasters?.[0]?.sponsorId
+    if (!sponsorId) {
+      throw new HttpException('Sponsor ID does not exist', HttpStatus.NOT_FOUND)
+    }
+    return await this.operatorsService.fundPaymaster(sponsorId, '1', '0_1_0', request)
   }
 }

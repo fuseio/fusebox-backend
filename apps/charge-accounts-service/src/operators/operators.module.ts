@@ -5,14 +5,19 @@ import { OperatorsController } from '@app/accounts-service/operators/operators.c
 import { OperatorJwtStrategy } from '@app/accounts-service/operators/operator-jwt.strategy'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthModule } from '@app/accounts-service/auth/auth.module'
-import { PaymasterModule } from '../paymaster/paymaster.module'
+import { PaymasterModule } from '@app/accounts-service/paymaster/paymaster.module'
+import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
+import configuration from '@app/accounts-service/operators/config/configuration'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
   imports: [
     UsersModule,
     ProjectsModule,
     AuthModule,
-    PaymasterModule
+    PaymasterModule,
+    ApiKeyModule,
+    ConfigModule.forFeature(configuration)
   ],
   controllers: [OperatorsController],
   providers: [OperatorJwtStrategy, OperatorsService],

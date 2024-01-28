@@ -16,7 +16,8 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            value: /accounts/v1
+            type: PathPrefix
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

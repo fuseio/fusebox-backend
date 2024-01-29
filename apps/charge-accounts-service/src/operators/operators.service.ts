@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/production-or-sandbox-key.interface'
 import paymasterAbi from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
+import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/EtherspotWalletFactory.abi.json'
 import { ConfigService } from '@nestjs/config'
 
 @Injectable()
@@ -39,6 +40,20 @@ export class OperatorsService {
       return await tx.wait()
     } catch (error) {
       throw new InternalServerErrorException(`depositFor fund paymaster error: ${error}`)
+    }
+  }
+
+  async getSmartWalletsAA (owner: string, index: number, ver: string, request: PrdOrSbxKeyRequest): Promise<string> {
+    const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
+    const contractAddress = paymasterEnvs[request.environment].etherspotWalletFactoryContractAddress
+
+    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[request.environment].url)
+    const contract = new ethers.Contract(contractAddress, etherspotWalletFactoryAbi, provider)
+
+    try {
+      return await contract.getAddress(owner, index)
+    } catch (error) {
+      throw new InternalServerErrorException(`getAddress smart wallets AA error: ${error}`)
     }
   }
 }

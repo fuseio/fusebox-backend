@@ -1,8 +1,9 @@
 import { Connection } from 'mongoose'
 import { databaseConnectionString } from '@app/common/constants/database.constants'
-import { smartWalletString, smartWalletUpgradeString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
+import { smartWalletAAString, smartWalletString, smartWalletUpgradeString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
 import { SmartWalletSchema } from '@app/smart-wallets-service/smart-wallets/schemas/smart-wallet.schema'
 import { SmartWalletUpgradeSchema } from '@app/smart-wallets-service/smart-wallets/schemas/smart-wallet-upgrade.schema'
+import { SmartWalletAASchema } from '@app/smart-wallets-service/smart-wallets/schemas/smart-wallet-aa.schema'
 
 export const smartWalletsProviders = [
   {
@@ -16,6 +17,11 @@ export const smartWalletsProviders = [
     useFactory: (connection: Connection) =>
       connection.model('SmartWalletUpgrade', SmartWalletUpgradeSchema),
     inject: [databaseConnectionString]
+  },
+  {
+    provide: smartWalletAAString,
+    useFactory: (connection: Connection) =>
+      connection.model('SmartWalletAA', SmartWalletAASchema),
+    inject: [databaseConnectionString]
   }
-
 ]

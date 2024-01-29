@@ -9,6 +9,8 @@ import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operat
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/production-or-sandbox-key.interface'
+import { SmartWalletsAAService } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-aa.service'
+import { CreateSmartWalletsAADto } from '@app/smart-wallets-service/smart-wallets/dto/create-smart-wallets-aa.dto'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
@@ -16,7 +18,8 @@ export class OperatorsController {
     private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
-    private readonly paymasterService: PaymasterService
+    private readonly paymasterService: PaymasterService,
+    private readonly smartWalletsAAService: SmartWalletsAAService
   ) { }
 
   /**
@@ -110,5 +113,18 @@ export class OperatorsController {
       throw new HttpException('Sponsor ID does not exist', HttpStatus.NOT_FOUND)
     }
     return await this.operatorsService.fundPaymaster(sponsorId, '1', '0_1_0', request)
+  }
+
+  /**
+   * Store smart wallet account abstraction address
+   */
+  @UseGuards(JwtAuthGuard, IsPrdOrSbxKeyGuard)
+  @Post('/smart-wallets-aa')
+  async storeSmartWalletsAA (@User('sub') auth0Id: string, @Req() request: PrdOrSbxKeyRequest) {
+    const smartWalletsAA = await this.operatorsService.getSmartWalletsAA(auth0Id, 0, '0_1_0', request)
+    const createsmartWalletsAADto = new CreateSmartWalletsAADto()
+    createsmartWalletsAADto.ownerId = auth0Id
+    createsmartWalletsAADto.smartWalletAddress = smartWalletsAA
+    return this.smartWalletsAAService.store(createsmartWalletsAADto)
   }
 }

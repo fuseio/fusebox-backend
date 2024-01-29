@@ -56,6 +56,7 @@ import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
     SmartWalletsAAService,
     ...smartWalletsProviders
   ],
-  controllers: [SmartWalletsController]
+  controllers: [SmartWalletsController],
+  exports: [SmartWalletsAAService]
 })
 export class SmartWalletsModule { }

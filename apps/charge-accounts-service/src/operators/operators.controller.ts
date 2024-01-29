@@ -122,8 +122,9 @@ export class OperatorsController {
   @Post('/smart-wallets-aa')
   async storeSmartWalletsAA (@User('sub') auth0Id: string, @Req() request: PrdOrSbxKeyRequest) {
     const smartWalletsAA = await this.operatorsService.getSmartWalletsAA(auth0Id, 0, '0_1_0', request)
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const createsmartWalletsAADto = new CreateSmartWalletsAADto()
-    createsmartWalletsAADto.ownerId = auth0Id
+    createsmartWalletsAADto.ownerId = user._id
     createsmartWalletsAADto.smartWalletAddress = smartWalletsAA
     return this.smartWalletsAAService.store(createsmartWalletsAADto)
   }

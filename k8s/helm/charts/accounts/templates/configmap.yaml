@@ -13,13 +13,15 @@ data:
   accounts_port: "5001"
   accounts_tcp_port: "8875"
   
-  # [Hardcoded] Components Host & Port ('accounts' component use 'api', 'relay' and 'apps' components hostname & TCP port)
+  # [Hardcoded] Components Host & Port ('accounts' component connected to 'api' component via hostname & TCP port)
   api_host: "api"
   api_tcp_port: "8876"
-  relay_host: "relay"
-  relay_tcp_port: "8877"
-  apps_host: "apps"
-  apps_tcp_port: "8880"
+
+  # Note: those components was deprecated, 'accounts' doesn't use them anymore
+  # relay_host: "relay"
+  # relay_tcp_port: "8877"
+  # apps_host: "apps"
+  # apps_tcp_port: "8880"
   
   # User - defined
 {{- range $key, $val := .Values.configMap }}

@@ -73,7 +73,7 @@ spec:
                   name: accounts
                   key: {{ $key }}
             {{- end }}
-            
+
             # Note: those components was deprecated, 'accounts' doesn't use them anymore
 
             # - name: RELAY_HOST

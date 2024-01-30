@@ -23,11 +23,11 @@ export class OperatorsController {
 
   /**
    * Check if operator exist
-   * @param id
+   * @param eoaAddress
    */
-  @Head('/:id')
-  async check (@Param('id') id: string, @Res() response: Response) {
-    const user = await this.usersService.findOne(id)
+  @Head('/:eoaAddress')
+  async check (@Param('eoaAddress') eoaAddress: string, @Res() response: Response) {
+    const user = await this.usersService.findOneByAuth0Id(eoaAddress)
     if(!user) {
       response.status(404).send()
     }

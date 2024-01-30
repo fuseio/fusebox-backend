@@ -66,6 +66,26 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: api_tcp_port
+            - name: RELAY_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: relay_host
+            - name: RELAY_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: relay_tcp_port
+            - name: APPS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: apps_host
+            - name: APPS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: apps_tcp_port
             {{- range $key, $value := .Values.configMap }}
             - name: {{ $key | upper }}
               valueFrom:
@@ -73,29 +93,6 @@ spec:
                   name: accounts
                   key: {{ $key }}
             {{- end }}
-
-            # Note: those components was deprecated, 'accounts' doesn't use them anymore
-
-            # - name: RELAY_HOST
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: accounts
-            #       key: relay_host
-            # - name: RELAY_TCP_PORT
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: accounts
-            #       key: relay_tcp_port
-            # - name: APPS_HOST
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: accounts
-            #       key: apps_host
-            # - name: APPS_TCP_PORT
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: accounts
-            #       key: apps_tcp_port
 
             # Secret
             {{- range .Values.secret }}

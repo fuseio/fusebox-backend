@@ -113,7 +113,7 @@ api:
     - explorer_api_key
 
 apps:
-  enabled: false # Deprecated component
+  enabled: true # Deprecated component
 
   # Replicas
   replicas: 1
@@ -259,7 +259,7 @@ notifications:
     - full_archive_rpc_url
 
 relay:
-  enabled: false # Deprecated component
+  enabled: true # Deprecated component
 
   # Replicas
   replicas: 1

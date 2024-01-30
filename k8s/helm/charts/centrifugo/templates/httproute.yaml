@@ -22,14 +22,11 @@ spec:
             value: /favicon.png
             type: Exact
         - path:
-            value: /favicon.png
-            type: Exact
-        - path:
             value: /health
             type: Exact
         - path:
             value: /api
-            type: Exact
+            type: PathPrefix
         - path:
             value: /static
             type: PathPrefix

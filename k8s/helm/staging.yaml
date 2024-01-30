@@ -136,7 +136,7 @@ apps:
   maxRatePerEndpoint: 10
 
   # Security - CloudArmor
-  securityPolicy: "fusebox-staging-apps-security-policy"
+  securityPolicy: null
 
   # ConfigMap
   configMap:

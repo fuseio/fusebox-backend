@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Head, HttpException, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
@@ -11,6 +11,7 @@ import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-producti
 import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/production-or-sandbox-key.interface'
 import { SmartWalletsAAService } from '@app/smart-wallets-service/smart-wallets/services/smart-wallets-aa.service'
 import { CreateSmartWalletsAADto } from '@app/smart-wallets-service/smart-wallets/dto/create-smart-wallets-aa.dto'
+import { Response } from 'express'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
@@ -21,6 +22,19 @@ export class OperatorsController {
     private readonly paymasterService: PaymasterService,
     private readonly smartWalletsAAService: SmartWalletsAAService
   ) { }
+
+  /**
+   * Check if operator exist
+   * @param id
+   */
+  @Head('/:id')
+  async check (@Param('id') id: string, @Res() response: Response) {
+    const user = await this.usersService.findOne(id)
+    if(!user) {
+      response.status(404).send()
+    }
+    response.status(200).send()
+  }
 
   /**
    * Validate operator

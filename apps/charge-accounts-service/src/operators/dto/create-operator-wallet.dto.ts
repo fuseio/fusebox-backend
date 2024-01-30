@@ -1,6 +1,6 @@
 import { IsString, IsEthereumAddress, IsBoolean, IsOptional } from 'class-validator'
 
-export class CreateSmartWalletsAADto {
+export class CreateOperatorWalletDto {
   @IsString()
     ownerId: string
 
@@ -9,5 +9,5 @@ export class CreateSmartWalletsAADto {
 
   @IsOptional()
   @IsBoolean()
-    isPaymasterFunded: boolean
+    isActivated: boolean
 }

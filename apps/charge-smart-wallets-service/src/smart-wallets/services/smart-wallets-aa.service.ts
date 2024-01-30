@@ -1,14 +1,10 @@
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
-import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-ethers'
 import { SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
 import { ConfigService } from '@nestjs/config'
 import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
-import { Model } from 'mongoose'
-import { SmartWalletsAA } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets-aa.interface'
-import { smartWalletAAString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
-import { CreateSmartWalletsAADto } from '@app/smart-wallets-service/smart-wallets/dto/create-smart-wallets-aa.dto'
 
 @Injectable()
 export class SmartWalletsAAService implements SmartWalletService {
@@ -17,9 +13,7 @@ export class SmartWalletsAAService implements SmartWalletService {
   constructor (
     private readonly jwtService: JwtService,
     private configService: ConfigService,
-    private chargeApiService: ChargeApiService,
-    @Inject(smartWalletAAString)
-    private smartWalletsAAModel: Model<SmartWalletsAA>
+    private chargeApiService: ChargeApiService
   ) { }
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
@@ -56,10 +50,5 @@ export class SmartWalletsAAService implements SmartWalletService {
     const webhookId =
       this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
     return this.chargeApiService.addWebhookAddress({ walletAddress, webhookId })
-  }
-
-  async store (createSmartWalletsAADto: CreateSmartWalletsAADto) {
-    const createdSmartWalletsAA = new this.smartWalletsAAModel(createSmartWalletsAADto)
-    return createdSmartWalletsAA.save()
   }
 }

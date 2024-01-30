@@ -9,7 +9,8 @@ import { PaymasterModule } from '@app/accounts-service/paymaster/paymaster.modul
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import configuration from '@app/accounts-service/paymaster/config/configuration'
 import { ConfigModule } from '@nestjs/config'
-import { SmartWalletsModule } from '@app/smart-wallets-service/smart-wallets/smart-wallets.module'
+import { DatabaseModule } from '@app/common'
+import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 
 @Module({
   imports: [
@@ -19,10 +20,10 @@ import { SmartWalletsModule } from '@app/smart-wallets-service/smart-wallets/sma
     PaymasterModule,
     ApiKeyModule,
     ConfigModule.forFeature(configuration),
-    SmartWalletsModule
+    DatabaseModule
   ],
   controllers: [OperatorsController],
-  providers: [OperatorJwtStrategy, OperatorsService],
+  providers: [OperatorJwtStrategy, OperatorsService, ...operatorsProviders],
   exports: [OperatorsService]
 })
 export class OperatorsModule {}

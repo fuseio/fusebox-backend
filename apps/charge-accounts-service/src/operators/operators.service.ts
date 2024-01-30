@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
@@ -6,12 +6,18 @@ import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/p
 import paymasterAbi from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
 import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/EtherspotWalletFactory.abi.json'
 import { ConfigService } from '@nestjs/config'
+import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
+import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
+import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
+import { Model } from 'mongoose'
 
 @Injectable()
 export class OperatorsService {
   constructor (
     private readonly jwtService: JwtService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    @Inject(operatorWalletModelString)
+    private operatorWalletModel: Model<OperatorWallet>
   ) { }
 
   verifySignature (authOperatorDto: AuthOperatorDto): string {
@@ -55,5 +61,10 @@ export class OperatorsService {
     } catch (error) {
       throw new InternalServerErrorException(`getAddress smart wallets AA error: ${error}`)
     }
+  }
+
+  async createWallet (createOperatorWalletDto: CreateOperatorWalletDto) {
+    const createdOperatorWallet = new this.operatorWalletModel(createOperatorWalletDto)
+    return createdOperatorWallet.save()
   }
 }

@@ -1,0 +1,32 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: network
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: network
+    environment: {{ .Values.global.environment }}
+spec:
+  scaleTargetRef:
+    apiVersion: network/v1
+    kind: Deployment
+    name: network
+  minReplicas: {{ .Values.replicas }}
+  maxReplicas: {{ .Values.autoscaling.hpa.max_replicas }}
+  metrics:
+
+    # CPU
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+    
+    # Memory
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

@@ -66,7 +66,7 @@ api:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -76,11 +76,11 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "2000m"
-      memory: "4Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "2000m"
-      memory: "4Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # Service
   service:
@@ -166,23 +166,22 @@ centrifugo:
   # Affinity (zones)
   affinity:
     zones:
-      - a
       - b
 
   # Image
   image:
     repository: "centrifugo/centrifugo"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5"
+    tag: "v5.2.2"
 
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
 gateway-api:
   enabled: true
@@ -194,7 +193,7 @@ network:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -204,18 +203,11 @@ network:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "2000m"
-      memory: "4Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "2000m"
-      memory: "4Gi"
-
-  # Autoscaling
-  autoscaling:
-    vpa:
-      max_allowed:
-        cpu: "4000m"
-        memory: "8Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:
@@ -287,6 +279,9 @@ relay:
 skandha:
   enabled: true # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
 
+  # Replicas
+  replicas: 2
+
   # Affinity (zones)
   affinity:
     zones:
@@ -320,7 +315,7 @@ smart-wallets:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -335,13 +330,6 @@ smart-wallets:
     limits:
       cpu: "1000m"
       memory: "2Gi"
-
-  # Autoscaling
-  autoscaling:
-    vpa:
-      max_allowed:
-        cpu: "2000m"
-        memory: "4Gi"
 
   # ConfigMap
   configMap:

@@ -31,7 +31,7 @@ export class OperatorsController {
   @Head('/:eoaAddress')
   async check (@Param('eoaAddress') eoaAddress: string, @Res() response: Response) {
     const user = await this.usersService.findOneByAuth0Id(eoaAddress)
-    if(!user) {
+    if (!user) {
       response.status(404).send()
     }
     response.status(200).send()
@@ -67,6 +67,7 @@ export class OperatorsController {
     const { secretPrefix, secretLastFourChars } = await this.projectsService.getApiKeysInfo(projectObject._id)
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
     const sponsorId = paymasters?.[0]?.sponsorId
+    const wallet = await this.operatorsService.findWallet('ownerId', user._id)
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -75,7 +76,8 @@ export class OperatorsController {
       publicKey: publicKey.publicKey,
       secretPrefix,
       secretLastFourChars,
-      sponsorId
+      sponsorId,
+      isActivated: wallet?.isActivated
     }
     return { user, project }
   }
@@ -131,17 +133,17 @@ export class OperatorsController {
    */
   @Post('/fund-paymaster')
   async paymaster (@Body() webhookEvent: WebhookEvent) {
-    const {address, valueEth} = await this.operatorsService.handleWebhook(webhookEvent)
+    const { address, valueEth } = await this.operatorsService.handleWebhook(webhookEvent)
     const DEPOSIT = 10
-    if(parseFloat(valueEth) < DEPOSIT) {
+    if (parseFloat(valueEth) < DEPOSIT) {
       // Check if operator wallet already contains sufficient balance through multiple small transfers
       const balance = await this.operatorsService.getBalance(address, '0_1_0', 'production')
-      if(parseFloat(balance) < DEPOSIT) {
+      if (parseFloat(balance) < DEPOSIT) {
         return
       }
     }
-    const wallet = await this.operatorsService.findOneBySmartWalletAddress(address)
-    if(wallet.isActivated) {
+    const wallet = await this.operatorsService.findWallet('smartWalletAddress', address)
+    if (wallet.isActivated) {
       return
     }
     const projectObject = await this.projectsService.findOneByOwnerId(wallet.ownerId)

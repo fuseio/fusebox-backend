@@ -8,10 +8,10 @@ import { AuthModule } from '@app/accounts-service/auth/auth.module'
 import { PaymasterModule } from '@app/accounts-service/paymaster/paymaster.module'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import configuration from '@app/accounts-service/paymaster/config/configuration'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
-import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
   imports: [
@@ -22,7 +22,16 @@ import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
     ApiKeyModule,
     ConfigModule.forFeature(configuration),
     DatabaseModule,
-    ChargeApiModule
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        headers: {
+          'Content-Type': 'application/json',
+          'API-SECRET': `${configService.get('PAYMASTER_FUNDER_API_SECRET_KEY')}`
+        }
+      }),
+      inject: [ConfigService]
+    })
   ],
   controllers: [OperatorsController],
   providers: [OperatorJwtStrategy, OperatorsService, ...operatorsProviders],

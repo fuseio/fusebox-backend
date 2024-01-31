@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
+import { HttpException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
@@ -10,6 +10,8 @@ import { OperatorWallet } from '@app/accounts-service/operators/interfaces/opera
 import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
+import { catchError, lastValueFrom, map } from 'rxjs'
+import { HttpService } from '@nestjs/axios'
 
 @Injectable()
 export class OperatorsService {
@@ -17,7 +19,8 @@ export class OperatorsService {
     private readonly jwtService: JwtService,
     private configService: ConfigService,
     @Inject(operatorWalletModelString)
-    private operatorWalletModel: Model<OperatorWallet>
+    private operatorWalletModel: Model<OperatorWallet>,
+    private httpService: HttpService
   ) { }
 
   verifySignature (authOperatorDto: AuthOperatorDto): string {
@@ -99,5 +102,36 @@ export class OperatorsService {
       address: webhookEvent.to,
       valueEth: webhookEvent.valueEth
     }
+  }
+
+  async addWebhookAddress (params: { walletAddress: string, webhookId: string, apiKey: string }) {
+    const apiBaseUrl = this.configService.get('CHARGE_BASE_URL')
+    const url = `${apiBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${params.apiKey}`
+    const requestBody = {
+      webhookId: params.webhookId,
+      addresses: [params.walletAddress]
+    }
+    await this.httpProxyPost(url, requestBody)
+  }
+
+  async httpProxyPost (url: string, requestBody: any) {
+    const responseData = await lastValueFrom(
+      this.httpService.post(url, requestBody)
+        .pipe(map((response) => {
+          return response.data
+        })
+        )
+        .pipe(
+          catchError(e => {
+            console.log(e)
+            throw new HttpException(
+              `${e?.response?.statusText}: ${e?.response?.data?.error}`,
+              e?.response?.status
+            )
+          })
+        )
+    )
+
+    return responseData
   }
 }

@@ -10,7 +10,6 @@ import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.serv
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 import { Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
-import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
 import { ConfigService } from '@nestjs/config'
 
 @Controller({ path: 'operators', version: '1' })
@@ -20,7 +19,6 @@ export class OperatorsController {
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
     private readonly paymasterService: PaymasterService,
-    private readonly chargeApiService: ChargeApiService,
     private readonly configService: ConfigService
   ) { }
 
@@ -113,7 +111,7 @@ export class OperatorsController {
 
     const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
-    await this.chargeApiService.addWebhookAddress({ walletAddress: predictedWallet, webhookId, apiKey })
+    await this.operatorsService.addWebhookAddress({ walletAddress: predictedWallet, webhookId, apiKey })
 
     const project = {
       id: projectObject._id,

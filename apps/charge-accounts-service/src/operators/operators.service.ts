@@ -49,21 +49,21 @@ export class OperatorsService {
     }
   }
 
-  async getSmartWalletsAA (owner: string, index: number, ver: string, request: PrdOrSbxKeyRequest): Promise<string> {
+  async predictWallet (owner: string, index: number, ver: string, environment: string): Promise<string> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
-    const contractAddress = paymasterEnvs[request.environment].etherspotWalletFactoryContractAddress
+    const contractAddress = paymasterEnvs[environment].etherspotWalletFactoryContractAddress
 
-    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[request.environment].url)
+    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
     const contract = new ethers.Contract(contractAddress, etherspotWalletFactoryAbi, provider)
 
     try {
       return await contract.getAddress(owner, index)
     } catch (error) {
-      throw new InternalServerErrorException(`getAddress smart wallets AA error: ${error}`)
+      throw new InternalServerErrorException(`getAddress predictWallet error: ${error}`)
     }
   }
 
-  async createWallet (createOperatorWalletDto: CreateOperatorWalletDto) {
+  async createWallet (createOperatorWalletDto: CreateOperatorWalletDto): Promise<OperatorWallet> {
     const createdOperatorWallet = new this.operatorWalletModel(createOperatorWalletDto)
     return createdOperatorWallet.save()
   }

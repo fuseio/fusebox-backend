@@ -99,6 +99,13 @@ export class OperatorsController {
     const { secretKey } = await this.projectsService.createSecret(projectObject._id)
     const paymasters = await this.paymasterService.create(projectObject._id, '0_1_0')
     const { sponsorId } = paymasters[0]
+
+    const predictedWallet = await this.operatorsService.predictWallet(auth0Id, 0, '0_1_0', 'production')
+    const createOperatorWalletDto = new CreateOperatorWalletDto()
+    createOperatorWalletDto.ownerId = user._id
+    createOperatorWalletDto.smartWalletAddress = predictedWallet
+    await this.operatorsService.createWallet(createOperatorWalletDto)
+
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -108,6 +115,7 @@ export class OperatorsController {
       secretKey,
       sponsorId
     }
+
     return { user, project }
   }
 
@@ -125,19 +133,5 @@ export class OperatorsController {
       throw new HttpException('Sponsor ID does not exist', HttpStatus.NOT_FOUND)
     }
     return await this.operatorsService.fundPaymaster(sponsorId, '1', '0_1_0', request)
-  }
-
-  /**
-   * Create operator wallet
-   */
-  @UseGuards(JwtAuthGuard, IsPrdOrSbxKeyGuard)
-  @Post('/wallet')
-  async wallet (@User('sub') auth0Id: string, @Req() request: PrdOrSbxKeyRequest) {
-    const smartWalletsAA = await this.operatorsService.getSmartWalletsAA(auth0Id, 0, '0_1_0', request)
-    const user = await this.usersService.findOneByAuth0Id(auth0Id)
-    const createOperatorWalletDto = new CreateOperatorWalletDto()
-    createOperatorWalletDto.ownerId = user._id
-    createOperatorWalletDto.smartWalletAddress = smartWalletsAA
-    return this.operatorsService.createWallet(createOperatorWalletDto)
   }
 }

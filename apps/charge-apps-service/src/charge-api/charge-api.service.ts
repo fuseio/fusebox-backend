@@ -162,8 +162,8 @@ export class ChargeApiService {
     return responseData
   }
 
-  async addWebhookAddress (params: { walletAddress: string, webhookId: string }) {
-    const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${this.chargePublicKey}`
+  async addWebhookAddress (params: { walletAddress: string, webhookId: string, apiKey?: string }) {
+    const url = `${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${params?.apiKey ?? this.chargePublicKey}`
     const requestBody = {
       webhookId: params.webhookId,
       addresses: [params.walletAddress]

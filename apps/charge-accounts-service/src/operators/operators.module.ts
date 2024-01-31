@@ -11,6 +11,7 @@ import configuration from '@app/accounts-service/paymaster/config/configuration'
 import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
+import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { operatorsProviders } from '@app/accounts-service/operators/operators.pr
     PaymasterModule,
     ApiKeyModule,
     ConfigModule.forFeature(configuration),
-    DatabaseModule
+    DatabaseModule,
+    ChargeApiModule
   ],
   controllers: [OperatorsController],
   providers: [OperatorJwtStrategy, OperatorsService, ...operatorsProviders],

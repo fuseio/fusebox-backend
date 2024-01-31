@@ -2,14 +2,14 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
-import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/production-or-sandbox-key.interface'
 import paymasterAbi from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
 import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/EtherspotWalletFactory.abi.json'
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
 import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
-import { Model } from 'mongoose'
+import { Model, ObjectId } from 'mongoose'
+import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 
 @Injectable()
 export class OperatorsService {
@@ -31,12 +31,12 @@ export class OperatorsService {
     })
   }
 
-  async fundPaymaster (sponsorId: string, amount: string, ver: string, request: PrdOrSbxKeyRequest): Promise<any> {
+  async fundPaymaster (sponsorId: string, amount: string, ver: string, environment: string): Promise<any> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
-    const contractAddress = paymasterEnvs[request.environment].paymasterContractAddress
+    const contractAddress = paymasterEnvs[environment].paymasterContractAddress
     const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
 
-    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[request.environment].url)
+    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
     const wallet = new ethers.Wallet(privateKey, provider)
     const contract = new ethers.Contract(contractAddress, paymasterAbi, wallet)
     const ether = ethers.utils.parseEther(amount)
@@ -66,5 +66,38 @@ export class OperatorsService {
   async createWallet (createOperatorWalletDto: CreateOperatorWalletDto): Promise<OperatorWallet> {
     const createdOperatorWallet = new this.operatorWalletModel(createOperatorWalletDto)
     return createdOperatorWallet.save()
+  }
+
+  async findOneBySmartWalletAddress (smartWalletAddress: string): Promise<OperatorWallet> {
+    return this.operatorWalletModel.findOne({ smartWalletAddress })
+  }
+
+  async updateIsActivated (_id: ObjectId, isActivated): Promise<any> {
+    return this.operatorWalletModel.updateOne({_id}, {isActivated})
+  }
+
+  async getBalance (address: string, ver: string, environment: string): Promise<string> {
+    const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
+    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    try {
+      const balance = await provider.getBalance(address)
+      return ethers.utils.formatEther(balance)
+    } catch (error) {
+      throw new InternalServerErrorException(`getBalance error: ${error}`)
+    }
+  }
+
+  async handleWebhook (webhookEvent: WebhookEvent): Promise<{address: string, valueEth: string} | undefined> {
+    if (
+      webhookEvent.direction !== 'incoming' ||
+      webhookEvent.tokenType !== 'FUSE'
+    ) {
+      return
+    }
+
+    return {
+      address: webhookEvent.to,
+      valueEth: webhookEvent.valueEth
+    }
   }
 }

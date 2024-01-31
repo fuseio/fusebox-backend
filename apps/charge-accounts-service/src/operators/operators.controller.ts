@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Head, HttpException, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Head, HttpException, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
@@ -7,10 +7,11 @@ import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-op
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
-import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
-import { PrdOrSbxKeyRequest } from '@app/accounts-service/operators/interfaces/production-or-sandbox-key.interface'
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 import { Response } from 'express'
+import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
+import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
+import { ConfigService } from '@nestjs/config'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
@@ -18,7 +19,9 @@ export class OperatorsController {
     private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
-    private readonly paymasterService: PaymasterService
+    private readonly paymasterService: PaymasterService,
+    private readonly chargeApiService: ChargeApiService,
+    private readonly configService: ConfigService
   ) { }
 
   /**
@@ -106,6 +109,10 @@ export class OperatorsController {
     createOperatorWalletDto.smartWalletAddress = predictedWallet
     await this.operatorsService.createWallet(createOperatorWalletDto)
 
+    const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
+    const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
+    await this.chargeApiService.addWebhookAddress({ walletAddress: predictedWallet, webhookId, apiKey })
+
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -120,18 +127,30 @@ export class OperatorsController {
   }
 
   /**
-   * Fund paymaster
+   * Fund paymaster webhook
    */
-  @UseGuards(JwtAuthGuard, IsPrdOrSbxKeyGuard)
   @Post('/fund-paymaster')
-  async paymaster (@User('sub') auth0Id: string, @Req() request: PrdOrSbxKeyRequest) {
-    const user = await this.usersService.findOneByAuth0Id(auth0Id)
-    const projectObject = await this.projectsService.findOneByOwnerId(user._id)
+  async paymaster (@Body() webhookEvent: WebhookEvent) {
+    const {address, valueEth} = await this.operatorsService.handleWebhook(webhookEvent)
+    const DEPOSIT = 10
+    if(parseFloat(valueEth) < DEPOSIT) {
+      // Check if operator wallet already contains sufficient balance through multiple small transfers
+      const balance = await this.operatorsService.getBalance(address, '0_1_0', 'production')
+      if(parseFloat(balance) < DEPOSIT) {
+        return
+      }
+    }
+    const wallet = await this.operatorsService.findOneBySmartWalletAddress(address)
+    if(wallet.isActivated) {
+      return
+    }
+    const projectObject = await this.projectsService.findOneByOwnerId(wallet.ownerId)
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
     const sponsorId = paymasters?.[0]?.sponsorId
     if (!sponsorId) {
-      throw new HttpException('Sponsor ID does not exist', HttpStatus.NOT_FOUND)
+      return
     }
-    return await this.operatorsService.fundPaymaster(sponsorId, '1', '0_1_0', request)
+    await this.operatorsService.updateIsActivated(wallet._id, true)
+    return await this.operatorsService.fundPaymaster(sponsorId, '1', '0_1_0', 'production')
   }
 }

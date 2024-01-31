@@ -21,9 +21,9 @@ global:
   # Image
   image:
     # -- Repository ID
-    repository: "accounts"
+    repository: "centrifugo/centrifugo"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    tag: "v5.2.2"
 
 # -- Replicas
 replicas: 1
@@ -43,6 +43,12 @@ resources:
   limits:
     cpu: "500m"
     memory: "1Gi"
+
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
 
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:

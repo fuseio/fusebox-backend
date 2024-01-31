@@ -3,13 +3,11 @@ kind: Service
 metadata:
   name: apps
   namespace: {{ .Release.Namespace }}
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: {{ .Values.maxRatePerEndpoint | quote }}
   labels:
     app: apps
     environment: {{ .Values.global.environment }}
-  annotations:
-    {{- range $key, $val := .Values.service.annotations }}
-      {{ $key }}: {{ $val | quote }}
-    {{- end }}
 spec:
   selector:
     app: apps

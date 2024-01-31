@@ -44,10 +44,11 @@ accounts:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: "fusebox-staging-accounts-security-policy"
 
   # ConfigMap
   configMap:
@@ -83,10 +84,11 @@ api:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: "fusebox-staging-api-security-policy"
 
   # ConfigMap
   configMap:
@@ -130,10 +132,11 @@ apps:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: null
 
   # ConfigMap
   configMap:
@@ -170,7 +173,13 @@ centrifugo:
   image:
     repository: "centrifugo/centrifugo"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5"
+    tag: "v5.2.2"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: null
 
   # Resources (requests & limits)
   resources:
@@ -275,7 +284,7 @@ relay:
     - relay_secret
 
 skandha:
-  enabled: false # We use the EtherSpot - hosted Skandha instance.
+  enabled: false # Only Production environment has self - hosted Skandha instance for a DR; Ethrespot - hosted endpoint used by both environments.
 
   # Affinity (zones)
   affinity:
@@ -286,7 +295,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.25-alpha"
+    tag: "1.0.32-alpha"
 
   # Resources (requests & limits)
   resources:
@@ -297,33 +306,11 @@ skandha:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
 
-  # ConfigMap
-  configMap:
-    skandha_networks: ""
-    skandha_fuse_estimation_static_buffer: ""
-    skandha_fuse_sparknet_estimation_static_buffer: ""
-    skandha_fuse_ban_slack: ""
-    skandha_fuse_sparknet_ban_slack: ""
-    skandha_fuse_throttling_slack: ""
-    skandha_fuse_sparknet_throttling_slack: ""
-    skandha_fuse_min_inclusion_denominator: ""
-    skandha_fuse_sparknet_min_inclusion_denominator: ""
-
-  # Secret (defined through CI/CD process via environment variables)
-  secret:
-    skandha_fuse_sparknet_relayer: ""
-    skandha_fuse_sparknet_beneficiary: ""
-    skandha_fuse_sparknet_rpc: ""
-    skandha_fuse_sparknet_entrypoints: ""
-    skandha_fuse_relayer: ""
-    skandha_fuse_beneficiary: ""
-    skandha_fuse_rpc: ""
-    skandha_fuse_entrypoints: ""
+  # Security - CloudArmor
+  securityPolicy: null
 
 smart-wallets:
   enabled: true

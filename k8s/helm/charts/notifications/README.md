@@ -9,8 +9,8 @@ A Helm chart for Kubernetes related notifications component
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
-| autoscaling.vpa | object | `{"max_allowed":{"cpu":"2000m","memory":"4Gi"}}` | Vertical Pod Autoscaler |
-| autoscaling.vpa.max_allowed | object | `{"cpu":"2000m","memory":"4Gi"}` | Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values |
+| autoscaling.vpa | object | `{"max_allowed":{"cpu":"4000m","memory":"8Gi"}}` | Vertical Pod Autoscaler |
+| autoscaling.vpa.max_allowed | object | `{"cpu":"4000m","memory":"8Gi"}` | Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values |
 | configMap.chain_id | string | `""` | Chain ID |
 | configMap.max_blocks | string | `""` | Max blocks |
 | configMap.network_name | string | `""` | Network name |

@@ -9,15 +9,9 @@ A Helm chart for Kubernetes related Skandha component
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
-| configMap.skandha_fuse_ban_slack | string | `""` | Ban Slack - Fuse |
-| configMap.skandha_fuse_estimation_static_buffer | string | `""` | Estimation static buffer - Fuse |
-| configMap.skandha_fuse_min_inclusion_denominator | string | `""` | Min inclusion denominator - Fuse |
-| configMap.skandha_fuse_sparknet_ban_slack | string | `""` | Ban Slack - Spark |
-| configMap.skandha_fuse_sparknet_estimation_static_buffer | string | `""` | Estimation static buffer - Spark |
-| configMap.skandha_fuse_sparknet_min_inclusion_denominator | string | `""` | Min inclusion denominator - Spark |
-| configMap.skandha_fuse_sparknet_throttling_slack | string | `""` | Throttling Slack - Spark |
-| configMap.skandha_fuse_throttling_slack | string | `""` | Throttling Slack - Fuse |
-| configMap.skandha_networks | string | `""` | Networks. Possible values: `fuse,fuseSparknet` |
+| autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
+| autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
+| global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |
 | global.image.repository | string | `"accounts"` | Repository ID |
@@ -28,14 +22,6 @@ A Helm chart for Kubernetes related Skandha component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret.skandha_fuse_beneficiary | string | `""` | Beneficiary - Fuse |
-| secret.skandha_fuse_entrypoints | string | `""` | Entrypoint - Fuse |
-| secret.skandha_fuse_relayer | string | `""` | Relayer - Fuse |
-| secret.skandha_fuse_rpc | string | `""` | RPC endpoint - Fuse |
-| secret.skandha_fuse_sparknet_beneficiary | string | `""` | Beneficiary - Spark |
-| secret.skandha_fuse_sparknet_entrypoints | string | `""` | Entrypoint - Spark |
-| secret.skandha_fuse_sparknet_relayer | string | `""` | Relayer - Spark |
-| secret.skandha_fuse_sparknet_rpc | string | `""` | RPC endpoint - Spark |
 | service.annotations | object | `{"networking.gke.io/max-rate-per-endpoint":10}` | Service - Annotations |
 | service.annotations."networking.gke.io/max-rate-per-endpoint" | int | `10` | Service - Annotations - RPS per pod |
 

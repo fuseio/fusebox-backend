@@ -9,8 +9,8 @@ A Helm chart for Kubernetes related network component
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
-| autoscaling.vpa | object | `{"max_allowed":{"cpu":"2000m","memory":"4Gi"}}` | Vertical Pod Autoscaler |
-| autoscaling.vpa.max_allowed | object | `{"cpu":"2000m","memory":"4Gi"}` | Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values |
+| autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
+| autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
 | configMap.legacy_fuse_trade_api_url | string | `""` | Legacy - Fuse trade API URL |
 | global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |

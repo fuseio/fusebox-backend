@@ -12,7 +12,7 @@ A Helm chart for Kubernetes related centrifugo component
 | global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |
-| global.image.repository | string | `"accounts"` | Repository ID |
+| global.image.repository | string | `"centrifugo/centrifugo"` | Repository ID |
 | global.image.tag | string | `"latest"` | Tag; overrides the image tag whose default is the chart appVersion. |
 | global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
 | global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |

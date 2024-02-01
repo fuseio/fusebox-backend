@@ -46,12 +46,10 @@ resources:
 
 # Autoscaling
 autoscaling:
-  # -- Vertical Pod Autoscaler
-  vpa:
-    # -- Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values
-    max_allowed:
-      cpu: "2000m"
-      memory: "4Gi"
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
 
 # ConfigMap (non - sensitive information)
 configMap:

@@ -144,8 +144,8 @@ export class PaymasterApiService {
           })
         )
     )
-    console.log('Values from estimateUserOpGas func')
-    console.log(response)
+    this.logger.log('Values from estimateUserOpGas func')
+    this.logger.log(response)
     const { result } = response
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer

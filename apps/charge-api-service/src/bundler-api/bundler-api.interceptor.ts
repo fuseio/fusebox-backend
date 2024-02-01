@@ -7,7 +7,8 @@ import {
   CallHandler,
   InternalServerErrorException,
   Inject,
-  HttpStatus
+  HttpStatus,
+  Logger
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, Observable } from 'rxjs'
@@ -20,6 +21,7 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(BundlerApiInterceptor.name)
   constructor (
     @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy,
     private httpService: HttpService,
@@ -36,6 +38,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
         .request(requestConfig)
         .pipe(
           map((axiosResponse: AxiosResponse) => {
+            this.logger.log(`BundlerApiInterceptor succeeded: ${JSON.stringify(axiosResponse.data)}`)
             return axiosResponse.data
           })
         )
@@ -45,7 +48,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
               e?.response?.data?.error ||
               e?.response?.data?.errors?.message ||
               ''
-
+            this.logger.log(`BundlerApiInterceptor error: ${JSON.stringify(e)}`)
             throw new HttpException(
               `${e?.response?.statusText}: ${errorReason}`,
               e?.response?.status
@@ -56,16 +59,18 @@ export class BundlerApiInterceptor implements NestInterceptor {
 
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
       const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result, apiKey: context.switchToHttp().getRequest().query.apiKey }
-
+      this.logger.log(`eth_sendUserOperation: ${JSON.stringify(userOp)}`)
       try {
         if (isNil(userOp.userOpHash)) {
+          this.logger.log(`No userOpHash found in: ${JSON.stringify(userOp)}`)
           throw new HttpException('UserOp should contain userOpHash', HttpStatus.BAD_REQUEST)
         }
         callMSFunction(this.dataLayerClient, 'record-user-op', userOp).catch(e => {
-          console.error(e)
+          this.logger.log(`record-user-op failed: ${JSON.stringify(userOp)}`)
+          this.logger.log(e)
         })
       } catch (error) {
-        console.error(error)
+        this.logger.log(error)
       }
     }
 

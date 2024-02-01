@@ -11,6 +11,7 @@ import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/cre
 import { Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ConfigService } from '@nestjs/config'
+import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
@@ -19,7 +20,8 @@ export class OperatorsController {
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
     private readonly paymasterService: PaymasterService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly dataLayerService: DataLayerService
   ) { }
 
   /**
@@ -66,6 +68,7 @@ export class OperatorsController {
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
     const sponsorId = paymasters?.[0]?.sponsorId
     const wallet = await this.operatorsService.findWallet('ownerId', user._id)
+    const sponsoredTransactions = await this.dataLayerService.findSponsoredTransactionsCount(sponsorId)
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -75,7 +78,8 @@ export class OperatorsController {
       secretPrefix,
       secretLastFourChars,
       sponsorId,
-      isActivated: wallet?.isActivated
+      isActivated: wallet?.isActivated,
+      sponsoredTransactions
     }
     return { user, project }
   }

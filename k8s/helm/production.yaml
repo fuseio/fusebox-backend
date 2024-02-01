@@ -315,7 +315,7 @@ smart-wallets:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:

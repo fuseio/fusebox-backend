@@ -78,8 +78,8 @@ export class PaymasterApiService {
         callGasLimit: op.callGasLimit
       }
     } catch (error) {
-      this.logger.error(error)
-      throw new RpcException(`Paymaster pm_sponsorUserOperation error ${error}`)
+      this.logger.error(`Paymaster pm_sponsorUserOperation error ${JSON.stringify(error)}`)
+      throw new RpcException(error)
     }
   }
 
@@ -144,9 +144,12 @@ export class PaymasterApiService {
           })
         )
     )
-    this.logger.log('Values from estimateUserOpGas func')
-    this.logger.log(response)
     const { result } = response
+
+    if (result?.error) {
+      this.logger.error(`RpcException  ${JSON.stringify(result)}`)
+      throw new RpcException(result)
+    }
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 

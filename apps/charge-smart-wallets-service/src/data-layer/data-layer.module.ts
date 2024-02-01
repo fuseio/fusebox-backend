@@ -26,7 +26,8 @@ import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wa
     SmartWalletsAAEventsService,
     CentrifugoAPIService,
     CentrifugeProvider
-  ]
+  ],
+  exports: [DataLayerService]
 })
 
 export class DataLayerModule { }

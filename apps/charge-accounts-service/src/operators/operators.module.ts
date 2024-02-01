@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 import { HttpModule } from '@nestjs/axios'
+import { DataLayerModule } from '@app/smart-wallets-service/data-layer/data-layer.module'
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HttpModule } from '@nestjs/axios'
     AuthModule,
     PaymasterModule,
     ApiKeyModule,
+    DataLayerModule,
     ConfigModule.forFeature(configuration),
     DatabaseModule,
     HttpModule.registerAsync({

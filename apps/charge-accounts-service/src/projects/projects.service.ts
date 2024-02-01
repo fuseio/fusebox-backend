@@ -33,7 +33,7 @@ export class ProjectsService {
     return this.projectModel.findById(id)
   }
 
-  async findOneByOwnerId (ownerId: ObjectId): Promise<Project> {
+  async findOneByOwnerId (ownerId: ObjectId | string): Promise<Project> {
     return this.projectModel.findOne({ ownerId })
   }
 

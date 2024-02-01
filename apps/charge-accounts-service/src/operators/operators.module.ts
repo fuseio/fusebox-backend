@@ -5,17 +5,36 @@ import { OperatorsController } from '@app/accounts-service/operators/operators.c
 import { OperatorJwtStrategy } from '@app/accounts-service/operators/operator-jwt.strategy'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthModule } from '@app/accounts-service/auth/auth.module'
-import { PaymasterModule } from '../paymaster/paymaster.module'
+import { PaymasterModule } from '@app/accounts-service/paymaster/paymaster.module'
+import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
+import configuration from '@app/accounts-service/paymaster/config/configuration'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { DatabaseModule } from '@app/common'
+import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
   imports: [
     UsersModule,
     ProjectsModule,
     AuthModule,
-    PaymasterModule
+    PaymasterModule,
+    ApiKeyModule,
+    ConfigModule.forFeature(configuration),
+    DatabaseModule,
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        headers: {
+          'Content-Type': 'application/json',
+          'API-SECRET': `${configService.get('PAYMASTER_FUNDER_API_SECRET_KEY')}`
+        }
+      }),
+      inject: [ConfigService]
+    })
   ],
   controllers: [OperatorsController],
-  providers: [OperatorJwtStrategy, OperatorsService],
+  providers: [OperatorJwtStrategy, OperatorsService, ...operatorsProviders],
   exports: [OperatorsService]
 })
 export class OperatorsModule {}

@@ -167,6 +167,6 @@ export class DataLayerService {
   }
 
   async findSponsoredTransactionsCount (sponsorId: string): Promise<number> {
-    return this.userOpModel.countDocuments({ sponsorId: {$eq: sponsorId} })
+    return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
   }
 }

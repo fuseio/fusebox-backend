@@ -17,6 +17,7 @@ import { capitalize, isEmpty } from 'lodash'
 import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { recoverPublicKey } from 'nestjs-ethers';
 
 @Injectable()
 export class PaymasterApiService {
@@ -58,7 +59,6 @@ export class PaymasterApiService {
       op.paymasterAndData = paymasterAndDataForEstimateUserOpGasCall
 
       const gases = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
-      this.logger.log(`estimateUserOpGas gases: ${JSON.stringify(gases)}`)
 
       const actualVerificationGasLimit = Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
@@ -70,13 +70,15 @@ export class PaymasterApiService {
       const signature = await this.signHash(hash, paymasterInfo)
       const paymasterAndData = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signature)
       op.paymasterAndData = paymasterAndData
-
-      return {
+      
+      const response = {
         paymasterAndData,
         preVerificationGas: op.preVerificationGas,
         verificationGasLimit: op.verificationGasLimit,
         callGasLimit: op.callGasLimit
       }
+      this.logger.log(`Paymaster pm_sponsorUserOperation response ${JSON.stringify(response)}`)
+      return response
     } catch (error) {
       this.logger.error(`Paymaster pm_sponsorUserOperation error ${JSON.stringify(error)}`)
       throw new RpcException(error)
@@ -151,7 +153,9 @@ export class PaymasterApiService {
       throw new RpcException(result)
     }
 
-    const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+    this.logger.log(`estimateUserOpGas gases from paymaster: ${JSON.stringify(result)}`)
+
+    const callGasLimit = result.callGasLimit && BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 
     return {
       ...response.result,

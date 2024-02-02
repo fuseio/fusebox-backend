@@ -69,7 +69,7 @@ export class PaymasterApiService {
       const signature = await this.signHash(hash, paymasterInfo)
       const paymasterAndData = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signature)
       op.paymasterAndData = paymasterAndData
-      
+
       const response = {
         paymasterAndData,
         preVerificationGas: op.preVerificationGas,

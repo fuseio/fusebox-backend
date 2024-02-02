@@ -17,7 +17,6 @@ import { capitalize, isEmpty } from 'lodash'
 import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { recoverPublicKey } from 'nestjs-ethers';
 
 @Injectable()
 export class PaymasterApiService {

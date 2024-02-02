@@ -13,7 +13,7 @@ import { BigNumber, Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { capitalize, isEmpty } from 'lodash'
+import { capitalize, isEmpty, has, get } from 'lodash'
 import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
@@ -137,28 +137,40 @@ export class PaymasterApiService {
         .pipe(
           catchError((e) => {
             const errorReason =
-              e?.response?.data?.error ||
-              e?.response?.data?.errors?.message ||
+              e?.result?.error ||
+              e?.result?.error?.message ||
               ''
 
+            this.logger.error(`RpcException catchError: ${errorReason} ${JSON.stringify(e)}`)
             throw new RpcException(errorReason)
           })
         )
     )
-    const { result } = response
 
-    if (result?.error) {
-      this.logger.error(`RpcException  ${JSON.stringify(result)}`)
-      throw new RpcException(result)
-    }
+    if (has(response, 'result')) {
+      const result = get(response, 'result')
+      if (has(result, 'error')) {
+        this.logger.error(`Error getting gas estimation from paymaster: ${JSON.stringify(result)}`)
+        this.logger.error(`RpcException ${JSON.stringify(result)}`)
 
-    this.logger.log(`estimateUserOpGas gases from paymaster: ${JSON.stringify(result)}`)
+        throw new RpcException(result)
+      } else if (has(result, 'callGasLimit')) {
+        this.logger.log(`estimateUserOpGas gases from paymaster: ${JSON.stringify(result)}`)
+        const callGasLimit = BigNumber.from(get(result, 'callGasLimit')).mul(115).div(100).toHexString() // 15% buffer
 
-    const callGasLimit = result.callGasLimit && BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+        return {
+          ...response.result,
+          callGasLimit
+        }
+      } else {
+        this.logger.error(`Error getting gas estimation from paymaster: ${JSON.stringify(result)}`)
 
-    return {
-      ...response.result,
-      callGasLimit
+        throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+      }
+    } else {
+      this.logger.error(`estimateUserOpGas response doesn't have result: ${JSON.stringify(response)}`)
+
+      throw new InternalServerErrorException('Error getting gas estimation from paymaster')
     }
   }
 

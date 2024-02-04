@@ -69,8 +69,8 @@ export class UserOpEventsScannerService extends EventsScannerService {
       from: parsedLog.args[1],
       nonce: parsedLog.args[3].toString(),
       success: parsedLog.args[4],
-      actualGasCost: parsedLog.args[5].toNumber(),
-      actualGasUsed: parsedLog.args[6].toNumber()
+      actualGasCost: parsedLog.args[5].toString(),
+      actualGasUsed: parsedLog.args[6].toString()
     }
     try {
       callMSFunction(this.dataLayerClient, 'update-user-op', eventData)

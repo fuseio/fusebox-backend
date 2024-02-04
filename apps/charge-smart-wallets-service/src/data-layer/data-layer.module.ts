@@ -13,6 +13,7 @@ import CentrifugoAPIService from '@app/common/services/centrifugo.service'
 import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
 import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
+
 @Module({
   imports: [DatabaseModule,
     ConfigModule.forFeature(web3Config),
@@ -20,9 +21,13 @@ import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wa
 
   ],
   controllers: [DataLayerController],
-  providers: [DataLayerService,
-    ...dataLayerProviders, UserOpFactory,
-    UserOpParser, TokenService, Web3ProviderService,
+  providers: [
+    DataLayerService,
+    ...dataLayerProviders,
+    UserOpFactory,
+    UserOpParser,
+    TokenService,
+    Web3ProviderService,
     SmartWalletsAAEventsService,
     CentrifugoAPIService,
     CentrifugeProvider

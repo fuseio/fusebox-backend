@@ -71,9 +71,11 @@ export class OperatorsController {
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
     const sponsorId = paymasters?.[0]?.sponsorId
     const wallet = await this.operatorsService.findWalletOwner(user._id)
-    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId).catch(e => {
-      this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
-    })
+    const sponsoredTransactions = sponsorId
+      ? await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId).catch(e => {
+        this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
+      })
+      : 0
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -141,25 +143,31 @@ export class OperatorsController {
   @Post('/fund-paymaster')
   async paymaster (@Body() webhookEvent: WebhookEvent) {
     const { address, valueEth } = await this.operatorsService.handleWebhook(webhookEvent)
-    const DEPOSIT = 10
-    if (parseFloat(valueEth) < DEPOSIT) {
-      // Check if operator wallet already contains sufficient balance through multiple small transfers
+    const DEPOSIT_REQUIRED = 10
+    let isBalanceSufficient = parseFloat(valueEth) >= DEPOSIT_REQUIRED
+
+    // Check if operator wallet already contains sufficient balance through multiple small transfers
+    if (!isBalanceSufficient) {
       const balance = await this.operatorsService.getBalance(address, '0_1_0', 'production')
-      if (parseFloat(balance) < DEPOSIT) {
-        return
-      }
+      isBalanceSufficient = parseFloat(balance) >= DEPOSIT_REQUIRED
     }
+
+    if (!isBalanceSufficient) {
+      return
+    }
+
     const wallet = await this.operatorsService.findOperatorBySmartWallet(address)
     if (wallet.isActivated) {
       return
     }
-    const projectObject = await this.projectsService.findOneByOwnerId(wallet.ownerId)
-    const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
-    const sponsorId = paymasters?.[0]?.sponsorId
-    if (!sponsorId) {
+
+    const project = await this.projectsService.findOneByOwnerId(wallet.ownerId)
+    const [paymaster] = await this.paymasterService.findActivePaymasters(project._id)
+    if (!paymaster?.sponsorId) {
       return
     }
+
     await this.operatorsService.updateIsActivated(wallet._id, true)
-    return await this.operatorsService.fundPaymaster(sponsorId, '1', '0_1_0', 'production')
+    await this.operatorsService.fundPaymaster(paymaster.sponsorId, '1', '0_1_0', 'production')
   }
 }

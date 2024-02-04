@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Head, HttpException, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Head, HttpException, HttpStatus, Inject, Logger, Param, Post, Res, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
@@ -11,17 +11,20 @@ import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/cre
 import { Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ConfigService } from '@nestjs/config'
-import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
+import { ClientProxy } from '@nestjs/microservices'
+import { callMSFunction } from '@app/common/utils/client-proxy'
+import { smartWalletsService } from '@app/common/constants/microservices.constants'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
+  logger = new Logger(OperatorsController.name)
   constructor (
     private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
     private readonly paymasterService: PaymasterService,
     private readonly configService: ConfigService,
-    private readonly dataLayerService: DataLayerService
+    @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy
   ) { }
 
   /**
@@ -68,7 +71,9 @@ export class OperatorsController {
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
     const sponsorId = paymasters?.[0]?.sponsorId
     const wallet = await this.operatorsService.findWallet('ownerId', user._id)
-    const sponsoredTransactions = await this.dataLayerService.findSponsoredTransactionsCount(sponsorId)
+    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId).catch(e => {
+      this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
+    })
     const project = {
       id: projectObject._id,
       ownerId: projectObject.ownerId,
@@ -79,7 +84,7 @@ export class OperatorsController {
       secretLastFourChars,
       sponsorId,
       isActivated: wallet?.isActivated,
-      sponsoredTransactions
+      sponsoredTransactions: sponsoredTransactions || 0
     }
     return { user, project }
   }

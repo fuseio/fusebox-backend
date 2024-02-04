@@ -12,7 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 import { HttpModule } from '@nestjs/axios'
-import { DataLayerModule } from '@app/smart-wallets-service/data-layer/data-layer.module'
+import { ClientsModule, Transport } from '@nestjs/microservices'
+import { smartWalletsService } from '@app/common/constants/microservices.constants'
 
 @Module({
   imports: [
@@ -21,7 +22,16 @@ import { DataLayerModule } from '@app/smart-wallets-service/data-layer/data-laye
     AuthModule,
     PaymasterModule,
     ApiKeyModule,
-    DataLayerModule,
+    ClientsModule.register([
+      {
+        name: smartWalletsService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.SMART_WALLETS_HOST,
+          port: parseInt(process.env.SMART_WALLETS_TCP_PORT)
+        }
+      }
+    ]),
     ConfigModule.forFeature(configuration),
     DatabaseModule,
     HttpModule.registerAsync({

@@ -22,8 +22,8 @@ export const UserOpSchema = new mongoose.Schema(
     paymaster: { type: String, required: true, default: '0x' },
     sponsorId: { type: String, required: true, default: '0', index: true },
     success: { type: Boolean, required: true, default: false },
-    actualGasCost: { type: Number, required: true, default: 0 },
-    actualGasUsed: { type: Number, required: true, default: 0 }
+    actualGasCost: { type: String, required: true, default: 0 },
+    actualGasUsed: { type: String, required: true, default: 0 }
   },
   {
     timestamps: true

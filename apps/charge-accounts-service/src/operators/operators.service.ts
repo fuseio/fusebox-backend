@@ -67,10 +67,7 @@ export class OperatorsService {
   }
 
   async createWallet (createOperatorWalletDto: CreateOperatorWalletDto): Promise<OperatorWallet> {
-    const createdOperatorWallet = new this.operatorWalletModel({
-      ...createOperatorWalletDto,
-      smartWalletAddress: createOperatorWalletDto.smartWalletAddress.toLowerCase()
-    })
+    const createdOperatorWallet = new this.operatorWalletModel(createOperatorWalletDto)
     return createdOperatorWallet.save()
   }
 

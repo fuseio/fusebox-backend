@@ -115,7 +115,7 @@ export class OperatorsController {
     const predictedWallet = await this.operatorsService.predictWallet(auth0Id, 0, '0_1_0', 'production')
     const createOperatorWalletDto = new CreateOperatorWalletDto()
     createOperatorWalletDto.ownerId = user._id
-    createOperatorWalletDto.smartWalletAddress = predictedWallet
+    createOperatorWalletDto.smartWalletAddress = predictedWallet.toLowerCase()
     await this.operatorsService.createWallet(createOperatorWalletDto)
 
     const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')

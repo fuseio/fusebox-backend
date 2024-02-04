@@ -15,10 +15,10 @@ import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 
 @Module({
-  imports: [DatabaseModule,
+  imports: [
+    DatabaseModule,
     ConfigModule.forFeature(web3Config),
     HttpModule
-
   ],
   controllers: [DataLayerController],
   providers: [
@@ -31,8 +31,7 @@ import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wa
     SmartWalletsAAEventsService,
     CentrifugoAPIService,
     CentrifugeProvider
-  ],
-  exports: [DataLayerService]
+  ]
 })
 
 export class DataLayerModule { }

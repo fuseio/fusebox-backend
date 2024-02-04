@@ -29,6 +29,8 @@ services:
       - PAYMASTER_FUNDER_API_KEY
       - PAYMASTER_FUNDER_API_SECRET_KEY
       - PAYMASTER_FUNDER_WEBHOOK_ID
+      - SMART_WALLETS_HOST
+      - SMART_WALLETS_TCP_PORT
     depends_on:
       - charge-api-service
       - charge-apps-service

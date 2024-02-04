@@ -86,6 +86,16 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: apps_tcp_port
+            - name: SMART_WALLETS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: smart_wallets_host
+            - name: SMART_WALLETS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: smart_wallets_tcp_port
             {{- range $key, $value := .Values.configMap }}
             - name: {{ $key | upper }}
               valueFrom:

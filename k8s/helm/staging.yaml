@@ -179,7 +179,7 @@ centrifugo:
   image:
     repository: "centrifugo/centrifugo"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5.2.2"
+    tag: "v5"
 
   # Service - RPS per Pod
   maxRatePerEndpoint: 10

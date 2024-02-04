@@ -72,7 +72,7 @@ export class OperatorsService {
   }
 
   async findWalletOwner (value: string): Promise<OperatorWallet> {
-    return this.operatorWalletModel.findOne({ ownerId: value.toLowerCase() })
+    return this.operatorWalletModel.findOne({ ownerId: value })
   }
 
   async findOperatorBySmartWallet (value: string): Promise<OperatorWallet> {

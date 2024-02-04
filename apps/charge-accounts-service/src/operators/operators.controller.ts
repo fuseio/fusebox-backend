@@ -70,7 +70,7 @@ export class OperatorsController {
     const { secretPrefix, secretLastFourChars } = await this.projectsService.getApiKeysInfo(projectObject._id)
     const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
     const sponsorId = paymasters?.[0]?.sponsorId
-    const wallet = await this.operatorsService.findWallet('ownerId', user._id)
+    const wallet = await this.operatorsService.findWalletOwner(user._id)
     const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId).catch(e => {
       this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
     })
@@ -149,7 +149,7 @@ export class OperatorsController {
         return
       }
     }
-    const wallet = await this.operatorsService.findWallet('smartWalletAddress', address)
+    const wallet = await this.operatorsService.findOperatorBySmartWallet(address)
     if (wallet.isActivated) {
       return
     }

@@ -17,7 +17,7 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
-  logger = new Logger(OperatorsController.name)
+  private readonly logger = new Logger(OperatorsController.name)
   constructor (
     private readonly operatorsService: OperatorsService,
     private readonly usersService: UsersService,

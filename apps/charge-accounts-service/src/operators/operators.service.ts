@@ -67,12 +67,15 @@ export class OperatorsService {
   }
 
   async createWallet (createOperatorWalletDto: CreateOperatorWalletDto): Promise<OperatorWallet> {
-    const createdOperatorWallet = new this.operatorWalletModel(createOperatorWalletDto)
+    const createdOperatorWallet = new this.operatorWalletModel({
+      ...createOperatorWalletDto,
+      smartWalletAddress: createOperatorWalletDto.smartWalletAddress.toLowerCase()
+    })
     return createdOperatorWallet.save()
   }
 
   async findWallet (key: string, value: string): Promise<OperatorWallet> {
-    return this.operatorWalletModel.findOne({ [key]: value })
+    return this.operatorWalletModel.findOne({ [key]: value.toLowerCase() })
   }
 
   async updateIsActivated (_id: ObjectId, isActivated: boolean): Promise<any> {

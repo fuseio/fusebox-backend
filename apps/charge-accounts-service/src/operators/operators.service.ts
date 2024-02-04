@@ -123,6 +123,12 @@ export class OperatorsService {
     await this.httpProxyPost(url, requestBody)
   }
 
+  async getWebhookAddresses (params: { webhookId: string, apiKey: string }): Promise<any> {
+    const apiBaseUrl = this.configService.get('CHARGE_BASE_URL')
+    const url = `${apiBaseUrl}/api/v0/notifications/webhook/addresses/${params.webhookId}?apiKey=${params.apiKey}`
+    await this.httpProxyGet(url)
+  }
+
   async httpProxyPost (url: string, requestBody: any) {
     const responseData = await lastValueFrom(
       this.httpService.post(url, requestBody)
@@ -133,6 +139,26 @@ export class OperatorsService {
         .pipe(
           catchError(e => {
             console.log(e)
+            throw new HttpException(
+              `${e?.response?.statusText}: ${e?.response?.data?.error}`,
+              e?.response?.status
+            )
+          })
+        )
+    )
+
+    return responseData
+  }
+
+  async httpProxyGet (url: string) {
+    const responseData = await lastValueFrom(
+      this.httpService.get(url)
+        .pipe(map((response) => {
+          return response.data
+        })
+        )
+        .pipe(
+          catchError(e => {
             throw new HttpException(
               `${e?.response?.statusText}: ${e?.response?.data?.error}`,
               e?.response?.status

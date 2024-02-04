@@ -71,8 +71,12 @@ export class OperatorsService {
     return createdOperatorWallet.save()
   }
 
-  async findWallet (key: string, value: string): Promise<OperatorWallet> {
-    return this.operatorWalletModel.findOne({ [key]: value })
+  async findWalletOwner (value: string): Promise<OperatorWallet> {
+    return this.operatorWalletModel.findOne({ ownerId: value })
+  }
+
+  async findOperatorBySmartWallet (value: string): Promise<OperatorWallet> {
+    return this.operatorWalletModel.findOne({ smartWalletAddress: value.toLowerCase() })
   }
 
   async updateIsActivated (_id: ObjectId, isActivated: boolean): Promise<any> {

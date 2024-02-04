@@ -147,30 +147,38 @@ export class PaymasterApiService {
         )
     )
 
-    if (has(response, 'result')) {
-      const result = get(response, 'result')
-      if (has(result, 'error')) {
-        this.logger.error(`Error getting gas estimation from paymaster: ${JSON.stringify(result)}`)
-        this.logger.error(`RpcException ${JSON.stringify(result)}`)
+    if (has(response, 'error')) {
+      const error = get(response, 'error')
+      this.logger.error('Error getting gas estimation', error)
+      throw new RpcException(error)
+    }
 
-        throw new RpcException(result)
-      } else if (has(result, 'callGasLimit')) {
-        this.logger.log(`estimateUserOpGas gases from paymaster: ${JSON.stringify(result)}`)
-        const callGasLimit = BigNumber.from(get(result, 'callGasLimit')).mul(115).div(100).toHexString() // 15% buffer
-
-        return {
-          ...response.result,
-          callGasLimit
-        }
-      } else {
-        this.logger.error(`Error getting gas estimation from paymaster: ${JSON.stringify(result)}`)
-
-        throw new InternalServerErrorException('Error getting gas estimation from paymaster')
-      }
-    } else {
-      this.logger.error(`estimateUserOpGas response doesn't have result: ${JSON.stringify(response)}`)
-
+    if (!has(response, 'result')) {
+      this.logger.error('Response does not contain result', JSON.stringify(response))
       throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+    }
+
+    if (has(response, 'result.error')) {
+      const result = get(response, 'result')
+      const error = get(response, 'result.error')
+      this.logger.error('Error in result of gas estimation', result)
+      throw new RpcException(error)
+    }
+
+    if (!has(response, 'result.callGasLimit')) {
+      const result = get(response, 'result')
+      this.logger.error('Result does not contain callGasLimit', result)
+      throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+    }
+
+    const result = get(response, 'result')
+    this.logger.log(`Gas estimation received: ${JSON.stringify(result)}`)
+
+    const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+
+    return {
+      ...result,
+      callGasLimit
     }
   }
 

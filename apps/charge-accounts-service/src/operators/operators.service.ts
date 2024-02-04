@@ -1,4 +1,4 @@
-import { HttpException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
+import { HttpException, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
@@ -15,6 +15,7 @@ import { HttpService } from '@nestjs/axios'
 
 @Injectable()
 export class OperatorsService {
+  private readonly logger = new Logger(OperatorsService.name)
   constructor (
     private readonly jwtService: JwtService,
     private configService: ConfigService,
@@ -46,8 +47,11 @@ export class OperatorsService {
 
     try {
       const tx = await contract.depositFor(sponsorId, { value: ether })
-      return await tx.wait()
+      const receipt = await tx.wait()
+      this.logger.log(`depositFor fund paymaster receipt: ${JSON.stringify(receipt)}`)
+      return receipt
     } catch (error) {
+      this.logger.error(`depositFor fund paymaster failed: ${sponsorId} value: ${amount} etherAmount: ${ether} error: ${error}`)
       throw new InternalServerErrorException(`depositFor fund paymaster error: ${error}`)
     }
   }

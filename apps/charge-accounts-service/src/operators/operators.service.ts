@@ -99,6 +99,7 @@ export class OperatorsService {
   }
 
   async handleWebhook (webhookEvent: WebhookEvent): Promise<{address: string, valueEth: string} | undefined> {
+    this.logger.log(`handleWebhook: ${JSON.stringify(webhookEvent)}`)
     if (
       webhookEvent.direction !== 'incoming' ||
       webhookEvent.tokenType !== 'FUSE'

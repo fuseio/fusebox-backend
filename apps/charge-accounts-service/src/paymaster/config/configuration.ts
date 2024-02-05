@@ -1,4 +1,5 @@
 export default () => ({
+  CHARGE_BASE_URL: process.env.CHARGE_BASE_URL,
   paymaster: {
     '0_1_0': {
       production: {
@@ -19,4 +20,5 @@ export default () => ({
       }
     }
   }
+
 })

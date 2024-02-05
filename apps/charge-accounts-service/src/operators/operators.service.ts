@@ -126,7 +126,7 @@ export class OperatorsService {
   async getWebhookAddresses (params: { webhookId: string, apiKey: string }): Promise<any> {
     const apiBaseUrl = this.configService.get('CHARGE_BASE_URL')
     const url = `${apiBaseUrl}/api/v0/notifications/webhook/addresses/${params.webhookId}?apiKey=${params.apiKey}`
-    await this.httpProxyGet(url)
+    return await this.httpProxyGet(url)
   }
 
   async httpProxyPost (url: string, requestBody: any) {

@@ -95,7 +95,7 @@ export class OperatorsController {
     const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
     const webhookAddresses = await this.operatorsService.getWebhookAddresses({ webhookId, apiKey })
-    const foundWebhookAddress = webhookAddresses.find((webhookAddress) =>
+    const foundWebhookAddress = webhookAddresses?.find((webhookAddress) =>
       webhookAddress.lowercaseAddress === smartWalletAddress.toLowerCase()
     )
     if (isEmpty(foundWebhookAddress)) {

@@ -32,11 +32,11 @@ export class OperatorsController {
    * Check if operator exist
    * @param eoaAddress
    */
-  @Head('/:eoaAddress')
+  @Head('/eoaAddress/:eoaAddress')
   async check (@Param('eoaAddress') eoaAddress: string, @Res() response: Response) {
     const user = await this.usersService.findOneByAuth0Id(eoaAddress)
     if (!user) {
-      response.status(404).send()
+      response.status(405).send()
     }
     response.status(200).send()
   }
@@ -63,7 +63,7 @@ export class OperatorsController {
    * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
-  @Get('/:id')
+  @Get('/me/:id')
   async me (@Param('id') id: string, @User('sub') auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const projectObject = await this.projectsService.findOneByOwnerId(user._id)
@@ -201,9 +201,11 @@ export class OperatorsController {
    * @returns OK if operator wallet is activated, not found otherwise
    */
   @UseGuards(JwtAuthGuard)
-  @Head('/is-activated')
+  @Get('/is-activated')
   async isActivated (@User('sub') auth0Id: string, @Res() response: Response) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    console.log(user)
+
     const wallet = await this.operatorsService.findWalletOwner(user._id)
     if (!wallet?.isActivated) {
       response.status(404).send()

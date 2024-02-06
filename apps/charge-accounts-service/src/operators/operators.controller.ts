@@ -204,8 +204,6 @@ export class OperatorsController {
   @Get('/is-activated')
   async isActivated (@User('sub') auth0Id: string, @Res() response: Response) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
-    console.log(user)
-
     const wallet = await this.operatorsService.findWalletOwner(user._id)
     if (!wallet?.isActivated) {
       response.status(404).send()

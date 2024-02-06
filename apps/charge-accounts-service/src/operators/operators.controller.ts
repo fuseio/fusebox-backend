@@ -36,7 +36,7 @@ export class OperatorsController {
   async check (@Param('eoaAddress') eoaAddress: string, @Res() response: Response) {
     const user = await this.usersService.findOneByAuth0Id(eoaAddress)
     if (!user) {
-      response.status(405).send()
+      response.status(404).send()
     }
     response.status(200).send()
   }

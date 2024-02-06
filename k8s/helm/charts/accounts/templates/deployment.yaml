@@ -41,11 +41,6 @@ spec:
           env:
 
             # ConfigMap
-            - name: CHARGE_BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: charge_base_url
             - name: ACCOUNTS_HOST
               valueFrom:
                 configMapKeyRef:

@@ -1,5 +1,7 @@
 import { CreateProjectDto } from '@app/accounts-service/projects/dto/create-project.dto'
 import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-project.dto'
+import { CreateSecretDto } from '@app/api-service/api-keys/dto/secret-key.dto'
+
 import { Project } from '@app/accounts-service/projects/interfaces/project.interface'
 import { projectModelString } from '@app/accounts-service/projects/projects.constants'
 import { UsersService } from '@app/accounts-service/users/users.service'
@@ -51,8 +53,8 @@ export class ProjectsService {
     })
   }
 
-  async createSecret (projectId: string) {
-    const secret = await callMSFunction(this.apiClient, 'create_secret', projectId)
+  async createSecret (createSecretDto: CreateSecretDto) {
+    const secret = await callMSFunction(this.apiClient, 'create_secret', createSecretDto)
     // if (secret) {
     //   callMSFunction(this.relayClient, 'create_account', projectId)
     // }

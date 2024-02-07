@@ -56,7 +56,7 @@ export class ApiKeysService {
     return this.apiKeyModel.findOne(query)
   }
 
-  async createSecretKey (projectId: string) {
+  async createSecretKey (projectId: string, createLegacyAccount: boolean) {
     const apiKeys = await this.apiKeyModel.findOne({ projectId })
 
     if (apiKeys && apiKeys?.secretHash) {
@@ -67,26 +67,40 @@ export class ApiKeysService {
     const saltRounds = await bcrypt.genSalt()
     const secretHash = await bcrypt.hash(secretKey, saltRounds)
 
-    const { encryptedLegacyJwt, legacyBackendAccount } = await this.studioLegacyJwtService.createLegacyJwt(`chargeApp_${projectId}`)
-
-    const result = await this.apiKeyModel.findOneAndUpdate(
-      { projectId },
-      {
-        secretHash,
-        secretPrefix,
-        secretLastFourChars,
-        encryptedLegacyJwt,
-        legacyBackendAccount
-      },
-      { upsert: true, new: true }
-    )
-
-    if (result) {
-      return {
-        secretKey
+    if (createLegacyAccount) {
+      const { encryptedLegacyJwt, legacyBackendAccount } = await this.studioLegacyJwtService.createLegacyJwt(`chargeApp_${projectId}`)
+      const result = await this.apiKeyModel.findOneAndUpdate(
+        { projectId },
+        {
+          secretHash,
+          secretPrefix,
+          secretLastFourChars,
+          encryptedLegacyJwt,
+          legacyBackendAccount
+        },
+        { upsert: true, new: true }
+      )
+      if (result) {
+        return {
+          secretKey
+        }
+      }
+    } else {
+      const result = await this.apiKeyModel.findOneAndUpdate(
+        { projectId },
+        {
+          secretHash,
+          secretPrefix,
+          secretLastFourChars
+        },
+        { upsert: true, new: true }
+      )
+      if (result) {
+        return {
+          secretKey
+        }
       }
     }
-
     throw new RpcException('Internal Server Error')
   }
 

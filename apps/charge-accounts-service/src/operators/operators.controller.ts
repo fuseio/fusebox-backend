@@ -71,7 +71,7 @@ export class OperatorsController {
 
     let apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
     if (!apiKeyInfo?.secretPrefix || !apiKeyInfo?.secretLastFourChars) {
-      await this.projectsService.createSecret(projectObject._id)
+      await this.projectsService.createSecret({ projectId: projectObject._id, createLegacyAccount: false })
       apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
     }
 
@@ -134,7 +134,7 @@ export class OperatorsController {
       description: auth0Id
     })
     const publicKey = await this.projectsService.getPublic(projectObject._id)
-    const { secretKey } = await this.projectsService.createSecret(projectObject._id)
+    const { secretKey } = await this.projectsService.createSecret({ projectId: projectObject._id, createLegacyAccount: false })
     const paymasters = await this.paymasterService.create(projectObject._id, '0_1_0')
     const { sponsorId } = paymasters[0]
 

@@ -10,8 +10,8 @@ import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-even
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
   private readonly logger = new Logger(OperatorsController.name)
-  constructor(
-    private readonly operatorsService: OperatorsService,
+  constructor (
+    private readonly operatorsService: OperatorsService
   ) { }
 
   /**
@@ -19,9 +19,9 @@ export class OperatorsController {
    * @param Address
    */
   @Head('/eoaAddress/:address')
-  async checkOperatorExistence(@Param('address') address: string, @Res() response: Response) {
-    const statusCode = await this.operatorsService.checkOperatorExistenceByEoaAddress(address);
-    response.status(statusCode).send();
+  async checkOperatorExistence (@Param('address') address: string, @Res() response: Response) {
+    const statusCode = await this.operatorsService.checkOperatorExistenceByEoaAddress(address)
+    response.status(statusCode).send()
   }
 
   /**
@@ -30,7 +30,7 @@ export class OperatorsController {
    * @returns the new operator JWT
    */
   @Post('/validate')
-  validate(@Body() authOperatorDto: AuthOperatorDto) {
+  validate (@Body() authOperatorDto: AuthOperatorDto) {
     return this.operatorsService.validate(authOperatorDto)
   }
 
@@ -41,7 +41,7 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('/account')
-  async getOperatorsUserAndProject(@User('sub') auth0Id: string) {
+  async getOperatorsUserAndProject (@User('sub') auth0Id: string) {
     return this.operatorsService.getOperatorUserAndProject(auth0Id)
   }
 
@@ -52,7 +52,7 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Post('/account')
-  async createOperatorUserAndProjectAndWallet(@Body() createOperatorUserDto: CreateOperatorUserDto, @User('sub') auth0Id: string) {
+  async createOperatorUserAndProjectAndWallet (@Body() createOperatorUserDto: CreateOperatorUserDto, @User('sub') auth0Id: string) {
     return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
   }
 
@@ -60,7 +60,7 @@ export class OperatorsController {
    * Handle Webhook Receive And Fund Paymaster
    */
   @Post('/webhook/fund')
-  async handleWebhookReceiveAndFundPaymaster(@Body() webhookEvent: WebhookEvent) {
+  async handleWebhookReceiveAndFundPaymaster (@Body() webhookEvent: WebhookEvent) {
     return await this.operatorsService.handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook(webhookEvent)
   }
 
@@ -70,12 +70,12 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('/is-activated')
-  async checkWalletActivationStatus(@User('sub') auth0Id: string, @Res() response: Response) {
-    const isActivated = await this.operatorsService.checkWalletActivationStatus(auth0Id);
+  async checkWalletActivationStatus (@User('sub') auth0Id: string, @Res() response: Response) {
+    const isActivated = await this.operatorsService.checkWalletActivationStatus(auth0Id)
     if (!isActivated) {
-      return response.status(404).send({ message: 'Wallet not activated' });
+      return response.status(404).send({ message: 'Wallet not activated' })
     }
-    return response.status(200).send({ message: 'Wallet is activated' });
+    return response.status(200).send({ message: 'Wallet is activated' })
   }
 
   /**
@@ -85,7 +85,7 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('/sponsored-transaction')
-  async getSponsoredTransactionsCount(@User('sub') auth0Id: string) {
+  async getSponsoredTransactionsCount (@User('sub') auth0Id: string) {
     return this.operatorsService.getSponsoredTransactionsCount(auth0Id)
   }
 }

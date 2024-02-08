@@ -2,11 +2,11 @@ import { IsEmail, IsString } from 'class-validator'
 
 export class CreateOperatorUserDto {
   @IsString()
-  firstName: string
+    firstName: string
 
   @IsString()
-  lastName: string
+    lastName: string
 
   @IsEmail()
-  email: string
+    email: string
 }

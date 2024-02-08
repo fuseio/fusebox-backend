@@ -302,7 +302,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.32-alpha"
+    tag: "1.0.35-alpha"
 
   # Resources (requests & limits)
   resources:

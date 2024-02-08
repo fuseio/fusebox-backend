@@ -90,7 +90,7 @@ api:
       memory: "2Gi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 100
 
   # Security policy name (Cloud Armor)
   securityPolicy: "fusebox-api-security-policy"

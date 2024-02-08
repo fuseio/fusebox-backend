@@ -1,16 +1,16 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: apps
+  name: network
   namespace: {{ .Release.Namespace }}
   labels:
-    app: apps
+    app: network
     environment: {{ .Values.global.environment }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: apps
+    name: network
   minReplicas: {{ .Values.replicas }}
   maxReplicas: {{ .Values.autoscaling.hpa.max_replicas }}
   metrics:
@@ -30,15 +30,3 @@ spec:
         target:
           type: Utilization
           averageUtilization: 80
-
-    # Requests / second
-    - type: Object
-      object:
-        describedObject:
-          kind: Service
-          name: apps
-        metric:
-          name: "autoscaling.googleapis.com|gclb-capacity-utilization"
-        target:
-          averageValue: 80
-          type: AverageValue

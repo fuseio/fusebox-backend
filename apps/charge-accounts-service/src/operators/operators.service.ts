@@ -1,7 +1,6 @@
 import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
-import { User } from '@app/accounts-service/users/user.decorator'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'

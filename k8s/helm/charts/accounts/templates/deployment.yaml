@@ -38,6 +38,7 @@ spec:
       containers:
         - name: accounts
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/accounts:{{ .Values.global.image.tag }}"
+          imagePullPolicy: Always
           env:
 
             # ConfigMap

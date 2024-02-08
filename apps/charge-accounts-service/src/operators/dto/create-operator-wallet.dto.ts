@@ -2,12 +2,16 @@ import { IsString, IsEthereumAddress, IsBoolean, IsOptional } from 'class-valida
 
 export class CreateOperatorWalletDto {
   @IsString()
-    ownerId: string
+  ownerId: string
 
   @IsEthereumAddress()
-    smartWalletAddress: string
+  smartWalletAddress: string
 
   @IsOptional()
   @IsBoolean()
-    isActivated: boolean
+  isActivated: boolean
+  constructor(ownerId: string, smartWalletAddress: string) {
+    this.ownerId = ownerId;
+    this.smartWalletAddress = smartWalletAddress;
+  }
 }

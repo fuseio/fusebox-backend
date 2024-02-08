@@ -1,44 +1,27 @@
-import { Body, Controller, Get, Head, HttpException, HttpStatus, Inject, Logger, Param, Post, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Head, Logger, Param, Post, Res, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
-import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
-import { ProjectsService } from '@app/accounts-service/projects/projects.service'
-import { CreateOperatorDto } from '@app/accounts-service/operators/dto/create-operator.dto'
+import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
-import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
-import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 import { Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
-import { ConfigService } from '@nestjs/config'
-import { ClientProxy } from '@nestjs/microservices'
-import { callMSFunction } from '@app/common/utils/client-proxy'
-import { smartWalletsService } from '@app/common/constants/microservices.constants'
-import { isEmpty } from 'lodash'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
   private readonly logger = new Logger(OperatorsController.name)
-  constructor (
+  constructor(
     private readonly operatorsService: OperatorsService,
-    private readonly usersService: UsersService,
-    private readonly projectsService: ProjectsService,
-    private readonly paymasterService: PaymasterService,
-    private readonly configService: ConfigService,
-    @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy
   ) { }
 
   /**
    * Check if operator exist
-   * @param eoaAddress
+   * @param Address
    */
-  @Head('/eoaAddress/:eoaAddress')
-  async check (@Param('eoaAddress') eoaAddress: string, @Res() response: Response) {
-    const user = await this.usersService.findOneByAuth0Id(eoaAddress)
-    if (!user) {
-      response.status(404).send()
-    }
-    response.status(200).send()
+  @Head('/eoaAddress/:address')
+  async checkOperatorExistence(@Param('address') address: string, @Res() response: Response) {
+    const statusCode = await this.operatorsService.checkOperatorExistenceByEoaAddress(address);
+    response.status(statusCode).send();
   }
 
   /**
@@ -47,14 +30,8 @@ export class OperatorsController {
    * @returns the new operator JWT
    */
   @Post('/validate')
-  validate (@Body() authOperatorDto: AuthOperatorDto) {
-    const recoveredAddress = this.operatorsService.verifySignature(authOperatorDto)
-
-    if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
-      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN)
-    }
-
-    return this.operatorsService.createJwt(recoveredAddress)
+  validate(@Body() authOperatorDto: AuthOperatorDto) {
+    return this.operatorsService.validate(authOperatorDto)
   }
 
   /**
@@ -63,173 +40,52 @@ export class OperatorsController {
    * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
-  @Get('/me/:id')
-  async me (@Param('id') id: string, @User('sub') auth0Id: string) {
-    const user = await this.usersService.findOneByAuth0Id(auth0Id)
-    const projectObject = await this.projectsService.findOneByOwnerId(user._id)
-    const publicKey = await this.projectsService.getPublic(projectObject._id)
-
-    let apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
-    if (!apiKeyInfo?.secretPrefix || !apiKeyInfo?.secretLastFourChars) {
-      await this.projectsService.createSecret({ projectId: projectObject._id, createLegacyAccount: false })
-      apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
-    }
-
-    const paymasters = await this.paymasterService.findActivePaymasters(projectObject._id)
-    let sponsorId = paymasters?.[0]?.sponsorId
-    if (!sponsorId) {
-      const createdPaymasters = await this.paymasterService.create(projectObject._id, '0_1_0')
-      sponsorId = createdPaymasters[0].sponsorId
-    }
-
-    const wallet = await this.operatorsService.findWalletOwner(user._id)
-    let smartWalletAddress = wallet?.smartWalletAddress
-    if (!smartWalletAddress) {
-      smartWalletAddress = await this.operatorsService.predictWallet(auth0Id, 0, '0_1_0', 'production')
-      const createOperatorWalletDto = new CreateOperatorWalletDto()
-      createOperatorWalletDto.ownerId = user._id
-      createOperatorWalletDto.smartWalletAddress = smartWalletAddress.toLowerCase()
-      await this.operatorsService.createWallet(createOperatorWalletDto)
-    }
-
-    const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
-    const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
-    const webhookAddresses = await this.operatorsService.getWebhookAddresses({ webhookId, apiKey })
-    const foundWebhookAddress = webhookAddresses?.find((webhookAddress) =>
-      webhookAddress.lowercaseAddress === smartWalletAddress.toLowerCase()
-    )
-    if (isEmpty(foundWebhookAddress)) {
-      await this.operatorsService.addWebhookAddress({ walletAddress: smartWalletAddress, webhookId, apiKey })
-    }
-
-    const project = {
-      id: projectObject._id,
-      ownerId: projectObject.ownerId,
-      name: projectObject.name,
-      description: projectObject.description,
-      publicKey: publicKey.publicKey,
-      secretPrefix: apiKeyInfo.secretPrefix,
-      secretLastFourChars: apiKeyInfo.secretLastFourChars,
-      sponsorId
-    }
-    return { user, project }
+  @Get('/account')
+  async getOperatorsUserAndProject(@User('sub') auth0Id: string) {
+    return this.operatorsService.getOperatorUserAndProject(auth0Id)
   }
 
   /**
-   * Create user and project for an operator
+   * Create user, project and AA wallet for an operator
    * @param authOperatorDto
-   * @returns the user and project with public key
+   * @returns the user, project and AA wallet with public key
    */
   @UseGuards(JwtAuthGuard)
-  @Post()
-  async create (@Body() createOperatorDto: CreateOperatorDto, @User('sub') auth0Id: string) {
-    const user = await this.usersService.create({
-      name: `${createOperatorDto.firstName} ${createOperatorDto.lastName}`,
-      email: createOperatorDto.email,
-      auth0Id
-    })
-    const projectObject = await this.projectsService.create({
-      ownerId: user._id,
-      name: auth0Id,
-      description: auth0Id
-    })
-    const publicKey = await this.projectsService.getPublic(projectObject._id)
-    const { secretKey } = await this.projectsService.createSecret({ projectId: projectObject._id, createLegacyAccount: false })
-    const paymasters = await this.paymasterService.create(projectObject._id, '0_1_0')
-    const { sponsorId } = paymasters[0]
-
-    const predictedWallet = await this.operatorsService.predictWallet(auth0Id, 0, '0_1_0', 'production')
-    const createOperatorWalletDto = new CreateOperatorWalletDto()
-    createOperatorWalletDto.ownerId = user._id
-    createOperatorWalletDto.smartWalletAddress = predictedWallet.toLowerCase()
-    await this.operatorsService.createWallet(createOperatorWalletDto)
-
-    const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
-    const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
-    await this.operatorsService.addWebhookAddress({ walletAddress: predictedWallet, webhookId, apiKey })
-
-    const project = {
-      id: projectObject._id,
-      ownerId: projectObject.ownerId,
-      name: projectObject.name,
-      description: projectObject.description,
-      publicKey: publicKey.publicKey,
-      secretKey,
-      sponsorId
-    }
-
-    return { user, project }
+  @Post('/account')
+  async createOperatorUserAndProjectAndWallet(@Body() createOperatorUserDto: CreateOperatorUserDto, @User('sub') auth0Id: string) {
+    return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
   }
 
   /**
-   * Fund paymaster webhook
+   * Handle Webhook Receive And Fund Paymaster
    */
-  @Post('/fund-paymaster')
-  async paymaster (@Body() webhookEvent: WebhookEvent) {
-    const { address, valueEth } = await this.operatorsService.handleWebhook(webhookEvent)
-    const DEPOSIT_REQUIRED = 10
-    let isBalanceSufficient = parseFloat(valueEth) >= DEPOSIT_REQUIRED
-
-    // Check if operator wallet already contains sufficient balance through multiple small transfers
-    if (!isBalanceSufficient) {
-      const balance = await this.operatorsService.getBalance(address, '0_1_0', 'production')
-      isBalanceSufficient = parseFloat(balance) >= DEPOSIT_REQUIRED
-    }
-
-    if (!isBalanceSufficient) {
-      return
-    }
-
-    const wallet = await this.operatorsService.findOperatorBySmartWallet(address)
-    if (wallet.isActivated) {
-      return
-    }
-
-    const project = await this.projectsService.findOneByOwnerId(wallet.ownerId)
-    const [paymaster] = await this.paymasterService.findActivePaymasters(project._id)
-    if (!paymaster?.sponsorId) {
-      return
-    }
-
-    await this.operatorsService.updateIsActivated(wallet._id, true)
-    await this.operatorsService.fundPaymaster(paymaster.sponsorId, '1', '0_1_0', 'production')
+  @Post('/webhook/fund')
+  async handleWebhookReceiveAndFundPaymaster(@Body() webhookEvent: WebhookEvent) {
+    return await this.operatorsService.handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook(webhookEvent)
   }
 
   /**
    * Check if operator wallet is activated
-   * @param authOperatorDto
    * @returns OK if operator wallet is activated, not found otherwise
    */
   @UseGuards(JwtAuthGuard)
   @Get('/is-activated')
-  async isActivated (@User('sub') auth0Id: string, @Res() response: Response) {
-    const user = await this.usersService.findOneByAuth0Id(auth0Id)
-    const wallet = await this.operatorsService.findWalletOwner(user._id)
-    if (!wallet?.isActivated) {
-      response.status(404).send()
+  async checkWalletActivationStatus(@User('sub') auth0Id: string, @Res() response: Response) {
+    const isActivated = await this.operatorsService.checkWalletActivationStatus(auth0Id);
+    if (!isActivated) {
+      return response.status(404).send({ message: 'Wallet not activated' });
     }
-    response.status(200).send()
+    return response.status(200).send({ message: 'Wallet is activated' });
   }
 
   /**
-   * Get sponsored transaction count
+   * Get sponsored transactions count
    * @param authOperatorDto
-   * @returns sponsored transaction count
+   * @returns sponsored transactions count
    */
   @UseGuards(JwtAuthGuard)
   @Get('/sponsored-transaction')
-  async sponsoredTransaction (@User('sub') auth0Id: string) {
-    const user = await this.usersService.findOneByAuth0Id(auth0Id)
-    const project = await this.projectsService.findOneByOwnerId(user._id)
-    const paymasters = await this.paymasterService.findActivePaymasters(project._id)
-    const sponsorId = paymasters?.[0]?.sponsorId
-    let sponsoredTransactions = 0
-    if (sponsorId) {
-      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId)
-        .catch(e => {
-          this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
-        })
-    }
-    return { sponsoredTransactions }
+  async getSponsoredTransactionsCount(@User('sub') auth0Id: string) {
+    return this.operatorsService.getSponsoredTransactionsCount(auth0Id)
   }
 }

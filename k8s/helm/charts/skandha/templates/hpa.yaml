@@ -1,16 +1,16 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: apps
+  name: skandha
   namespace: {{ .Release.Namespace }}
   labels:
-    app: apps
+    app: skandha
     environment: {{ .Values.global.environment }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: apps
+    name: skandha
   minReplicas: {{ .Values.replicas }}
   maxReplicas: {{ .Values.autoscaling.hpa.max_replicas }}
   metrics:
@@ -36,7 +36,7 @@ spec:
       object:
         describedObject:
           kind: Service
-          name: apps
+          name: skandha
         metric:
           name: "autoscaling.googleapis.com|gclb-capacity-utilization"
         target:

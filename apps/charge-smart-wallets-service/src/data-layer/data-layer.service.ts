@@ -72,12 +72,16 @@ export class DataLayerService {
   }
 
   async updateWalletAction (userOp: any) {
-    const walletAction = confirmedUserOpToWalletAction(userOp)
-    const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
-    if (updatedWalletAction) {
-      this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
+    try {
+      const walletAction = confirmedUserOpToWalletAction(userOp)
+      const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
+      if (updatedWalletAction) {
+        this.smartWalletsAAEventsService.publishWalletAction(updatedWalletAction.walletAddress, updatedWalletAction)
+      }
+      return updatedWalletAction
+    } catch (error) {
+      throw new Error(error)
     }
-    return updatedWalletAction
   }
 
   async handleTokenTransferWebhook (

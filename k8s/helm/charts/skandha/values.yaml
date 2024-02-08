@@ -12,6 +12,9 @@ global:
   # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
   region: "us-central1"
 
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
   # -- DNS domain (used for `HTTPRoute` resource)
   domain: "example.com"
 
@@ -20,7 +23,7 @@ global:
     # -- Repository ID
     repository: "etherspot/skandha"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.32-alpha"
+    tag: "1.0.35-alpha"
 
 # -- Replicas
 replicas: 1

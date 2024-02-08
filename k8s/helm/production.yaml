@@ -73,7 +73,7 @@ api:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -83,16 +83,16 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "2000m"
-      memory: "4Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "2000m"
-      memory: "4Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # Service - RPS per Pod
   maxRatePerEndpoint: 10
 
-  # Security - CloudArmor
+  # Security policy name (Cloud Armor)
   securityPolicy: "fusebox-api-security-policy"
 
   # ConfigMap
@@ -205,7 +205,7 @@ network:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -215,18 +215,11 @@ network:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "2000m"
-      memory: "4Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "2000m"
-      memory: "4Gi"
-
-  # Autoscaling
-  autoscaling:
-    vpa:
-      max_allowed:
-        cpu: "4000m"
-        memory: "8Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:
@@ -296,7 +289,10 @@ relay:
     - relay_secret
 
 skandha:
-  enabled: false # We use the EtherSpot - hosted Skandha instance.
+  enabled: true # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
+
+  # Replicas
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -307,7 +303,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.25-alpha"
+    tag: "1.0.30-alpha"
 
   # Resources (requests & limits)
   resources:

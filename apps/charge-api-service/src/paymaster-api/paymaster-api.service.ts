@@ -35,7 +35,7 @@ export class PaymasterApiService {
       this.logger.log(`INITIAL OP: ${JSON.stringify(op)}`)
       const { timestamp } = await web3.eth.getBlock('latest')
 
-      const validUntil = parseInt(timestamp.toString()) + 240
+      const validUntil = parseInt(timestamp.toString()) + 900
       const validAfter = 0
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
       const minVerificationGasLimit = '140000'

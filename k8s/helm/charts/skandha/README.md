@@ -12,7 +12,7 @@ A Helm chart for Kubernetes related Skandha component
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |
 | global.image.repository | string | `"etherspot/skandha"` | Repository ID |
-| global.image.tag | string | `"1.0.32-alpha"` | Tag; overrides the image tag whose default is the chart appVersion. |
+| global.image.tag | string | `"1.0.35-alpha"` | Tag; overrides the image tag whose default is the chart appVersion. |
 | global.project_id | string | `"example-12345"` | Google Cloud - Project ID (used for `Deployment` resource, `container.image` section) |
 | global.region | string | `"us-central1"` | Google Cloud - Region (used for `Deployment` resource, `container.image` section) |
 | logging | object | `{"enabled":true,"sampleRate":1000000}` | Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000) |

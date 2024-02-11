@@ -5,7 +5,7 @@ import { UsersModule } from '@app/accounts-service/users/users.module'
 import { DatabaseModule } from '@app/common'
 import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
 import { Module } from '@nestjs/common'
-import configuration from '@app/accounts-service/paymaster/config/configuration'
+import configuration from '@app/accounts-service/common/config/configuration'
 import { ConfigModule } from '@nestjs/config'
 
 @Module({

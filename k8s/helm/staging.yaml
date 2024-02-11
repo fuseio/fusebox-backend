@@ -52,7 +52,6 @@ accounts:
 
   # ConfigMap
   configMap:
-    charge_base_url: "https://api.staging.fuse.io"
     auth0_issuer_url: "https://auth.staging.fuse.io/"
     auth0_audience: "https://accounts.staging.fuse.io"
     paymaster_sandbox_contract_address_v_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"

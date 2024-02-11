@@ -1,6 +1,7 @@
 import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
+import { notificationsService, smartWalletsService } from '@app/common/constants/microservices.constants'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
@@ -13,12 +14,10 @@ import { OperatorWallet } from '@app/accounts-service/operators/interfaces/opera
 import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
-import { catchError, lastValueFrom, map } from 'rxjs'
-import { HttpService } from '@nestjs/axios'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
-import { smartWalletsService } from '@app/common/constants/microservices.constants'
+import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 
 @Injectable()
 export class OperatorsService {
@@ -31,9 +30,10 @@ export class OperatorsService {
     private operatorWalletModel: Model<OperatorWallet>,
     private readonly paymasterService: PaymasterService,
     private readonly projectsService: ProjectsService,
-    private httpService: HttpService,
     @Inject(smartWalletsService)
-    private readonly dataLayerClient: ClientProxy
+    private readonly dataLayerClient: ClientProxy,
+    @Inject(notificationsService)
+    private readonly notificationsClient: ClientProxy
 
   ) { }
 
@@ -334,75 +334,20 @@ export class OperatorsService {
   }
 
   async addAddressToOperatorsWebhook (walletAddress: string) {
-    const apiBaseUrl = this.configService.get('CHARGE_BASE_URL')
-    const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
-    const url = `${apiBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey=${apiKey}`
-    const requestBody = {
+    const requestBody: CreateWebhookAddressesDto = {
       webhookId,
       addresses: [walletAddress]
     }
-    try {
-      return await this.httpProxyPost(url, requestBody)
-    } catch (error) {
-      throw new HttpException('Failed to add address to operators webhook', HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    return callMSFunction(this.notificationsClient, 'create_addresses', requestBody)
   }
 
   async deleteAddressFromOperatorsWebhook (walletAddress: string) {
-    const apiBaseUrl = this.configService.get('CHARGE_BASE_URL')
-    const apiKey = this.configService.get('PAYMASTER_FUNDER_API_KEY')
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
-    const url = `${apiBaseUrl}/api/v0/notifications/webhook/delete-addresses?apiKey=${apiKey}`
-    const requestBody = {
+    const requestBody: CreateWebhookAddressesDto = {
       webhookId,
       addresses: [walletAddress]
     }
-    try {
-      return await this.httpProxyPost(url, requestBody)
-    } catch (error) {
-      throw new HttpException('Failed to add delete to operators webhook', HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-  }
-
-  async httpProxyPost (url: string, requestBody: any) {
-    const responseData = await lastValueFrom(
-      this.httpService.post(url, requestBody)
-        .pipe(map((response) => {
-          return response.data
-        })
-        )
-        .pipe(
-          catchError(e => {
-            console.log(e)
-            throw new HttpException(
-              `${e?.response?.statusText}: ${e?.response?.data?.error}`,
-              e?.response?.status
-            )
-          })
-        )
-    )
-
-    return responseData
-  }
-
-  async httpProxyGet (url: string) {
-    const responseData = await lastValueFrom(
-      this.httpService.get(url)
-        .pipe(map((response) => {
-          return response.data
-        })
-        )
-        .pipe(
-          catchError(e => {
-            throw new HttpException(
-              `${e?.response?.statusText}: ${e?.response?.data?.error}`,
-              e?.response?.status
-            )
-          })
-        )
-    )
-
-    return responseData
+    return callMSFunction(this.notificationsClient, 'delete_addresses', requestBody)
   }
 }

@@ -1,6 +1,6 @@
 import { IsEmail, IsString } from 'class-validator'
 
-export class CreateOperatorDto {
+export class CreateOperatorUserDto {
   @IsString()
     firstName: string
 

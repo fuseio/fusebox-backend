@@ -64,8 +64,6 @@ logging:
 
 # ConfigMap (non - sensitive information)
 configMap:
-  # -- Fusebox Accounts URL
-  charge_base_url: ""
   # -- Auth0 issuer URL
   auth0_issuer_url: ""
   # -- Auth0 audience

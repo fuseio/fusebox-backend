@@ -50,8 +50,8 @@ autoscaling:
   vpa:
     # -- Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values
     max_allowed:
-      cpu: "4000m"
-      memory: "8Gi"
+      cpu: "2000m"
+      memory: "4Gi"
 
 # ConfigMap (non - sensitive information)
 configMap:

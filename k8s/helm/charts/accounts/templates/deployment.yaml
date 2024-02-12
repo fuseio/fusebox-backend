@@ -38,6 +38,7 @@ spec:
       containers:
         - name: accounts
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/accounts:{{ .Values.global.image.tag }}"
+          imagePullPolicy: Always
           env:
 
             # ConfigMap
@@ -86,6 +87,26 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: apps_tcp_port
+            - name: SMART_WALLETS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: smart_wallets_host
+            - name: SMART_WALLETS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: smart_wallets_tcp_port
+            - name: NOTIFICATIONS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: notifications_host
+            - name: NOTIFICATIONS_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: notifications_tcp_port
             {{- range $key, $value := .Values.configMap }}
             - name: {{ $key | upper }}
               valueFrom:

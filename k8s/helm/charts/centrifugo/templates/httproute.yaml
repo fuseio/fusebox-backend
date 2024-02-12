@@ -17,6 +17,25 @@ spec:
     - matches:
         - path:
             value: /
+            type: Exact
+        - path:
+            value: /favicon.png
+            type: Exact
+        - path:
+            value: /health
+            type: Exact
+        - path:
+            value: /api
+            type: PathPrefix
+        - path:
+            value: /static
+            type: PathPrefix
+        - path:
+            value: /connection
+            type: PathPrefix
+        - path:
+            value: /admin
+            type: PathPrefix
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

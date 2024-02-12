@@ -16,7 +16,8 @@ spec:
   rules:
     - matches:
         - path:
-            value: /app-store/
+            value: /app-store/v1
+            type: PathPrefix
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

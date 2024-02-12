@@ -19,6 +19,11 @@ spec:
     connectionDraining:
       drainingTimeoutSec: 30
 
+    {{- if .Values.securityPolicy }}
+    # Security policy (Cloud Armor)
+    securityPolicy: {{ .Values.securityPolicy }}
+    {{- end }}
+
   targetRef:
     group: ""
     kind: Service

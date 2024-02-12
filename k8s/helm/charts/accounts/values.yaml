@@ -51,12 +51,11 @@ autoscaling:
     # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
     max_replicas: 5
 
-# Service
-service:
-  # -- Service - Annotations
-  annotations:
-    # -- Service - Annotations - RPS per pod
-    networking.gke.io/max-rate-per-endpoint: 10
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
 
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
@@ -77,7 +76,18 @@ configMap:
   entrypoint_sandbox_contract_address_v_0_1_0: ""
   # -- Bundler - Entrypoint Production contract address
   entrypoint_production_contract_address_v_0_1_0: ""
+  # -- Etherspot Wallet Factory Sandbox contract address
+  etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: ""
+  # -- Etherspot Wallet Factory Production contract address
+  etherspot_wallet_factory_production_contract_address_v_0_1_0: ""
+  # -- Paymaster Funder API key
+  paymaster_funder_api_key: ""
+  # -- Paymaster Funder Webhook ID
+  paymaster_funder_webhook_id: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
   - mongo_uri
+  - smart_wallets_jwt_secret
+  - paymaster_funder_private_key
+  - paymaster_funder_api_secret_key

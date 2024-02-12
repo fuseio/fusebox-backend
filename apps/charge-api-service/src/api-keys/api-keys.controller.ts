@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service'
+import { CreateSecretDto } from '@app/api-service/api-keys/dto/secret-key.dto'
 
 @Controller()
 export class ApiKeysController {
@@ -12,8 +13,8 @@ export class ApiKeysController {
    * @returns the generated API key secret or error if secret already exists
    */
   @MessagePattern('create_secret')
-  createSecret (projectId: string) {
-    return this.apiKeysService.createSecretKey(projectId)
+  createSecret (createSecretDto: CreateSecretDto) {
+    return this.apiKeysService.createSecretKey(createSecretDto.projectId, createSecretDto.createLegacyAccount)
   }
 
   /**

@@ -76,7 +76,7 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/secret/:projectId')
   createSecret (@Param('projectId') projectId: string) {
-    return this.projectsService.createSecret(projectId)
+    return this.projectsService.createSecret({ projectId, createLegacyAccount: true })
   }
 
   /**

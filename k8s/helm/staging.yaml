@@ -44,10 +44,11 @@ accounts:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: "fusebox-staging-accounts-security-policy"
 
   # ConfigMap
   configMap:
@@ -57,11 +58,17 @@ accounts:
     paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+    etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    paymaster_funder_api_key: "pk_u_RbFw7NQBB7ZQIFJtziLE_S"
+    paymaster_funder_webhook_id: "65bbbc63fc2f925de8e1a561"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
     - mongo_uri
     - smart_wallets_jwt_secret
+    - paymaster_funder_private_key
+    - paymaster_funder_api_secret_key
 
 api:
   enabled: true
@@ -83,10 +90,11 @@ api:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: "fusebox-staging-api-security-policy"
 
   # ConfigMap
   configMap:
@@ -96,7 +104,7 @@ api:
     bundler_api_sandbox_url: "https://fusetestnet-bundler.etherspot.io"
     spark_rpc_url: "https://rpc.fusespark.io"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
-    legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
+    legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
@@ -130,10 +138,11 @@ apps:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: null
 
   # ConfigMap
   configMap:
@@ -170,7 +179,13 @@ centrifugo:
   image:
     repository: "centrifugo/centrifugo"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5"
+    tag: "v5.2.2"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: null
 
   # Resources (requests & limits)
   resources:
@@ -275,7 +290,7 @@ relay:
     - relay_secret
 
 skandha:
-  enabled: false # We use the EtherSpot - hosted Skandha instance.
+  enabled: false # Only Production environment has self - hosted Skandha instance for a DR; Ethrespot - hosted endpoint used by both environments.
 
   # Affinity (zones)
   affinity:
@@ -286,7 +301,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.25-alpha"
+    tag: "1.0.35-alpha"
 
   # Resources (requests & limits)
   resources:
@@ -297,33 +312,11 @@ skandha:
       cpu: "500m"
       memory: "1Gi"
 
-  # Service
-  service:
-    annotations:
-      networking.gke.io/max-rate-per-endpoint: 10
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
 
-  # ConfigMap
-  configMap:
-    skandha_networks: ""
-    skandha_fuse_estimation_static_buffer: ""
-    skandha_fuse_sparknet_estimation_static_buffer: ""
-    skandha_fuse_ban_slack: ""
-    skandha_fuse_sparknet_ban_slack: ""
-    skandha_fuse_throttling_slack: ""
-    skandha_fuse_sparknet_throttling_slack: ""
-    skandha_fuse_min_inclusion_denominator: ""
-    skandha_fuse_sparknet_min_inclusion_denominator: ""
-
-  # Secret (defined through CI/CD process via environment variables)
-  secret:
-    skandha_fuse_sparknet_relayer: ""
-    skandha_fuse_sparknet_beneficiary: ""
-    skandha_fuse_sparknet_rpc: ""
-    skandha_fuse_sparknet_entrypoints: ""
-    skandha_fuse_relayer: ""
-    skandha_fuse_beneficiary: ""
-    skandha_fuse_rpc: ""
-    skandha_fuse_entrypoints: ""
+  # Security - CloudArmor
+  securityPolicy: null
 
 smart-wallets:
   enabled: true

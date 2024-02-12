@@ -80,6 +80,7 @@ export class OperatorsService {
         name: projectObject.name,
         description: projectObject.description,
         publicKey: apiKeyInfo.publicKey,
+        sandboxKey: apiKeyInfo.sandboxKey,
         secretPrefix: apiKeyInfo.secretPrefix,
         secretLastFourChars: apiKeyInfo.secretLastFourChars,
         sponsorId: paymasters[0].sponsorId

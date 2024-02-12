@@ -58,8 +58,10 @@ accounts:
     paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-    paymaster_funder_api_key: "pk_u_RbFw7NQBB7ZQIFJtziLE_S"
-    paymaster_funder_webhook_id: "65bbbc63fc2f925de8e1a561"
+    etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    paymaster_funder_api_key: "pk_yWkBe0hnObJmMkYjq4Ggce1g"
+    paymaster_funder_webhook_id: "65c4ba66394c8d9c3e4801ff"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

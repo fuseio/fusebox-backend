@@ -9,8 +9,8 @@ A Helm chart for Kubernetes related smart-wallets component
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
-| autoscaling.vpa | object | `{"max_allowed":{"cpu":"4000m","memory":"8Gi"}}` | Vertical Pod Autoscaler |
-| autoscaling.vpa.max_allowed | object | `{"cpu":"4000m","memory":"8Gi"}` | Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values |
+| autoscaling.vpa | object | `{"max_allowed":{"cpu":"2000m","memory":"4Gi"}}` | Vertical Pod Autoscaler |
+| autoscaling.vpa.max_allowed | object | `{"cpu":"2000m","memory":"4Gi"}` | Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values |
 | configMap.centrifugo_api_url | string | `""` | Centrifugo - API URL |
 | configMap.centrifugo_uri | string | `""` | Centrifugo - URL |
 | configMap.charge_base_url | string | `""` | Charge - Base URL |

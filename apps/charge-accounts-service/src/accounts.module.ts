@@ -6,6 +6,7 @@ import { PaymasterModule } from '@app/accounts-service/paymaster/paymaster.modul
 import { AccountsController } from '@app/accounts-service/accounts.controller'
 import { ConfigModule } from '@nestjs/config'
 import { AppStoreModule } from '@app/accounts-service/app-store/app-store.module'
+import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { AppStoreModule } from '@app/accounts-service/app-store/app-store.module
     ProjectsModule,
     ConfigModule.forRoot({ isGlobal: true }),
     AppStoreModule,
-    PaymasterModule
+    PaymasterModule,
+    OperatorsModule
   ],
   controllers: [AccountsController],
   providers: []

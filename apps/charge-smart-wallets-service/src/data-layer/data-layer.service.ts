@@ -169,4 +169,8 @@ export class DataLayerService {
       throw error
     }
   }
+
+  async findSponsoredTransactionsCount (sponsorId: string): Promise<number> {
+    return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
+  }
 }

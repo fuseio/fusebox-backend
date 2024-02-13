@@ -29,4 +29,11 @@ export class DataLayerController {
       tokenTransferWebhookDto
     )
   }
+
+  @MessagePattern('sponsored-transactions-count')
+  sponsoredTransactionsCount (sponsorId: string) {
+    return this.dataLayerService.findSponsoredTransactionsCount(
+      sponsorId
+    )
+  }
 }

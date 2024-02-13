@@ -6,7 +6,9 @@ import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
-  constructor (private readonly usersService: UsersService) {}
+  constructor (
+    private readonly usersService: UsersService
+  ) {}
 
   /**
    * Registers a new user for the authenticated user

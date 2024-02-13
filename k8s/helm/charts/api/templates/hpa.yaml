@@ -36,7 +36,7 @@ spec:
       object:
         describedObject:
           kind: Service
-          name: accounts
+          name: api
         metric:
           name: "autoscaling.googleapis.com|gclb-capacity-utilization"
         target:

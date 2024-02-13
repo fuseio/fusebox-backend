@@ -16,7 +16,11 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            value: /122
+            type: Exact
+        - path:
+            value: /123
+            type: Exact
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

@@ -9,6 +9,8 @@ metadata:
 data:
   
   # [Hardcoded] Host & Port
+  accounts_host: "accounts"
+  accounts_tcp_port: "8875"
   smart_wallets_host: "0.0.0.0"
   smart_wallets_port: "5007"
   smart_wallets_tcp_port: "8881"

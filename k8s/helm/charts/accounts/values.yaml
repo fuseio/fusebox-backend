@@ -91,3 +91,5 @@ secret:
   - smart_wallets_jwt_secret
   - paymaster_funder_private_key
   - paymaster_funder_api_secret_key
+  - amplitude_api_key
+  - incoming_token_transfers_webhook_id

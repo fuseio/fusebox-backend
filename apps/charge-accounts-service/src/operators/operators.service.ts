@@ -18,6 +18,7 @@ import { ProjectsService } from '@app/accounts-service/projects/projects.service
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
+import { AnalyticsService } from '@app/accounts-service/analytics/analytics.service'
 
 @Injectable()
 export class OperatorsService {
@@ -25,6 +26,7 @@ export class OperatorsService {
   constructor (
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
+    private readonly analyticsService: AnalyticsService,
     private configService: ConfigService,
     @Inject(operatorWalletModelString)
     private operatorWalletModel: Model<OperatorWallet>,
@@ -63,6 +65,7 @@ export class OperatorsService {
       if (!projectObject) {
         throw new HttpException('Project not found', HttpStatus.NOT_FOUND)
       }
+      // await this.analyticsService.operatorAccountActivationEvent({ id: user._id, projectId: projectObject._id })
 
       const apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
       if (!apiKeyInfo) {
@@ -105,7 +108,7 @@ export class OperatorsService {
       const predictedWallet = await this.predictWallet(auth0Id, 0, '0_1_0', 'production')
       await this.createOperatorWallet(user, predictedWallet)
       await this.addAddressToOperatorsWebhook(predictedWallet)
-
+      await this.addAddressToTokenReceiveWebhook(predictedWallet)
       return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
     } catch (error) {
       this.errorHandler(error)
@@ -250,6 +253,7 @@ export class OperatorsService {
       // and the webhook call will respond negatively. In such cases, a retry mechanism from the
       // notification service will be utilized.
       await this.updateIsActivated(wallet._id, true)
+      this.analyticsService.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
       await this.deleteAddressFromOperatorsWebhook(address)
     } catch (error) {
       if (error instanceof HttpException) {
@@ -336,6 +340,15 @@ export class OperatorsService {
 
   async addAddressToOperatorsWebhook (walletAddress: string) {
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
+    const requestBody: CreateWebhookAddressesDto = {
+      webhookId,
+      addresses: [walletAddress]
+    }
+    return callMSFunction(this.notificationsClient, 'create_addresses', requestBody)
+  }
+
+  async addAddressToTokenReceiveWebhook (walletAddress: string) {
+    const webhookId = this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
     const requestBody: CreateWebhookAddressesDto = {
       webhookId,
       addresses: [walletAddress]

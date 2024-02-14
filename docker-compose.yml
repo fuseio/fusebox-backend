@@ -31,6 +31,8 @@ services:
       - SMART_WALLETS_TCP_PORT
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_TCP_PORT
+      - AMPLITUDE_API_KEY
+      - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
     depends_on:
       - charge-api-service
       - charge-apps-service
@@ -194,6 +196,8 @@ services:
       - CENTRIFUGO_API_KEY
       - NODE_ENV
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+      - ACCOUNTS_HOST
+      - ACCOUNTS_TCP_PORT
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

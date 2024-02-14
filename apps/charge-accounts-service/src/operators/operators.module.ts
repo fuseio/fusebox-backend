@@ -13,6 +13,7 @@ import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
+import { AnalyticsModule } from '@app/accounts-service/analytics/analytics.module'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { smartWalletsService, notificationsService } from '@app/common/constants
     AuthModule,
     PaymasterModule,
     ApiKeyModule,
+    AnalyticsModule,
     ClientsModule.register([
       {
         name: smartWalletsService,

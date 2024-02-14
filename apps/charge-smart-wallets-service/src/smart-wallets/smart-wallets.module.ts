@@ -16,12 +16,24 @@ import { getEnvPath } from '@app/common/utils/env.helper'
 import path from 'path'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
 import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
+import { ClientsModule, Transport } from '@nestjs/microservices'
+import { accountsService } from '@app/common/constants/microservices.constants'
 
 @Module({
   imports: [
     DatabaseModule,
     ChargeApiModule,
     NotificationsModule,
+    ClientsModule.register([
+      {
+        name: accountsService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.ACCOUNTS_HOST,
+          port: parseInt(process.env.ACCOUNTS_TCP_PORT)
+        }
+      }
+    ]),
     ConfigModule.forRoot({
       envFilePath: getEnvPath(path.join(__dirname, 'common/config')),
       load: [configuration]

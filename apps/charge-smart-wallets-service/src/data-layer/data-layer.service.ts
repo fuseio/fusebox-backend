@@ -15,6 +15,9 @@ import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallet
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
 import { decodePaymasterAndData } from '@app/smart-wallets-service/common/utils/helper-functions'
+import { accountsService } from '@app/common/constants/microservices.constants'
+import { ClientProxy } from '@nestjs/microservices'
+import { callMSFunction } from '@app/common/utils/client-proxy'
 
 @Injectable()
 export class DataLayerService {
@@ -27,7 +30,9 @@ export class DataLayerService {
     private paginatedWalletActionModel: PaginateModel<WalletActionDocument>,
     private userOpFactory: UserOpFactory,
     private tokenService: TokenService,
-    private smartWalletsAAEventsService: SmartWalletsAAEventsService
+    private smartWalletsAAEventsService: SmartWalletsAAEventsService,
+    @Inject(accountsService)
+    private readonly accountClient: ClientProxy
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
@@ -41,6 +46,7 @@ export class DataLayerService {
       const response = await this.userOpModel.create(userOp) as UserOp
       this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
       const walletAction = await this.createWalletActionFromUserOp(userOp)
+      await callMSFunction(this.accountClient, 'handle-userOp-and-walletAction', { userOp, walletAction })
       if (walletAction) {
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       }
@@ -68,6 +74,7 @@ export class DataLayerService {
   async createWalletActionFromUserOp (parsedUserOp: UserOp) {
     const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
     this.paginatedWalletActionModel.create(walletAction)
+
     return walletAction
   }
 

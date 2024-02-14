@@ -7,24 +7,27 @@ import { apiService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import * as amplitude from '@amplitude/analytics-node'
+import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
+import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
+import { Model } from 'mongoose'
 
 @Injectable()
 export class AnalyticsService {
   constructor (
         private readonly usersService: UsersService,
         private readonly projectsService: ProjectsService,
-        @Inject(apiService) private readonly apiClient: ClientProxy
+        @Inject(apiService) private readonly apiClient: ClientProxy,
+        @Inject(operatorWalletModelString)
+        private operatorWalletModel: Model<OperatorWallet>
 
   ) {
-    init(process.env.AMPLITUDE_API_KEY, {
-      logLevel: amplitude.Types.LogLevel.Debug
-    })
+    init(process.env.AMPLITUDE_API_KEY)
   }
 
   async operatorAccountActivationEvent ({ id, projectId }) {
     try {
       const user = await this.usersService.findOne(id)
-      const publicKey = await this.projectsService.getPublic(projectId)
+      const publicKey = (await this.projectsService.getPublic(projectId)).publicKey
       const eventData = {
         email: user.email,
         apiKey: publicKey
@@ -49,29 +52,36 @@ export class AnalyticsService {
         }
         this.transferEvent(event)
       }
+      return 'Transfer event processed'
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 
-      if (body.walletAction.name === 'tokenReceive') {
-        console.log('tokenReceive')
-        const user = await this.usersService.findOneByAuth0Id(body.walletAddress)
-        console.log(user)
-
-        const project = await this.projectsService.findOneByOwnerId(user._id)
-        const apiKey = await this.projectsService.getPublic(project._id)
-        const email = await this.getEmail(body.userOp.apiKey)
+  async handleReceiveWalletAction (walletAction) {
+    if (walletAction.name === 'tokenReceive') {
+      try {
+        const operator = await this.findOperatorBySmartWallet(walletAction.walletAddress)
+        if (!operator) {
+          return 'Operator doesnt exist'
+        }
+        const operatorId = operator.ownerId.toString()
+        const user = await this.usersService.findOne(operatorId)
+        const projectId = (await this.projectsService.findOneByOwnerId(operatorId))._id.toString()
+        const apiKey = (await this.projectsService.getPublic(projectId)).publicKey
         const event = {
-          amount: formatUnits(body.walletAction.sent.value, body.walletAction.sent.decimals),
+          amount: formatUnits(walletAction.sent[0].value, walletAction.sent[0].decimals),
           amountUsd: 'amount',
-          token: body.walletAction.sent[0].symbol,
+          token: walletAction.sent[0].symbol,
           apiKey,
           email: user.email
         }
         this.depositEvent(event)
+        return 'Receive event processed'
+      } catch (error) {
+        throw new Error(error)
       }
-    } catch (error) {
-      console.error(error)
     }
-
-    return 'handleUserOpAndWalletAction'
   }
 
   async depositEvent (event) {
@@ -99,5 +109,9 @@ export class AnalyticsService {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  async findOperatorBySmartWallet (value: string): Promise<OperatorWallet> {
+    return this.operatorWalletModel.findOne({ smartWalletAddress: value.toLowerCase() })
   }
 }

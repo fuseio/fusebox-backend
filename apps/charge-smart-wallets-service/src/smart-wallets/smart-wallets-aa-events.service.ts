@@ -24,11 +24,17 @@ export class SmartWalletsAAEventsService {
   }
 
   async publishWalletAction (sender, messageData) {
-    console.log(messageData.name)
-    if (messageData.name === 'tokenReceive') {
-      callMSFunction(this.accountClient, 'handle-userOp-and-walletAction', messageData)
-    }
     try {
+      // Attempt to call the microservice function
+      try {
+        if (messageData.name === 'tokenReceive') {
+          callMSFunction(this.accountClient, 'handle-receive-walletAction', messageData)
+        }
+      } catch (error) {
+        // Log the error and continue with the flow
+        console.error(error)
+      }
+      // Continue with the original flow of the function
       this.centrifugoAPIService.publish(`walletAction:#${sender}`, messageData)
     } catch (error) {
       this.logger.error({ error })

@@ -5,7 +5,8 @@ import { UsersModule } from '@app/accounts-service/users/users.module'
 import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { apiService } from '@app/common/constants/microservices.constants'
-import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
+import { analyticsProviders } from '@app/accounts-service/analytics/analytics.providers'
+import { DatabaseModule } from '@app/common'
 
 @Module({
   imports: [UsersModule, ProjectsModule,
@@ -18,10 +19,12 @@ import { OperatorsModule } from '@app/accounts-service/operators/operators.modul
           port: parseInt(process.env.API_TCP_PORT)
         }
       }
-    ])
+    ]),
+    DatabaseModule
   ],
+
   controllers: [AnalyticsController],
-  providers: [AnalyticsService],
+  providers: [AnalyticsService, ...analyticsProviders],
   exports: [AnalyticsService]
 })
 export class AnalyticsModule { }

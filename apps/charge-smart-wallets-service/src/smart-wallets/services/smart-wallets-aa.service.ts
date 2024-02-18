@@ -73,7 +73,7 @@ export class SmartWalletsAAService implements SmartWalletService {
       await this.smartContractWalletModel.create({
         smartWalletAddress: smartWalletsAuthDto.smartWalletAddress,
         ownerAddress: smartWalletsAuthDto.ownerAddress,
-        apiKey: smartWalletsAuthDto.apiKey
+        projectId: smartWalletsAuthDto.projectId
       })
     }
   }

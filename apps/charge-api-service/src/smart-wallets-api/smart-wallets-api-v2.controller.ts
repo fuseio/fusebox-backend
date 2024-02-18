@@ -7,6 +7,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
+import { Project } from '@app/common/decorators/project.decorator'
 
 @Controller({ path: 'smart-wallets', version: '2' })
 export class SmartWalletsAPIV2Controller {
@@ -16,8 +17,8 @@ export class SmartWalletsAPIV2Controller {
 
   @UseGuards(IsPrdOrSbxKeyGuard)
   @Post('auth')
-  auth (@Req() request: Request, @Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
-    smartWalletsAuthDto.apiKey = request.query.apiKey as string
+  auth (@Project() projectId: string, @Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
+    smartWalletsAuthDto.projectId = projectId
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 

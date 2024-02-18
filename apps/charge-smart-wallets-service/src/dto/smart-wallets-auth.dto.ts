@@ -16,5 +16,5 @@ export class SmartWalletsAuthDto {
 
   @IsOptional()
   @IsString()
-    apiKey: string
+    projectId: string
 }

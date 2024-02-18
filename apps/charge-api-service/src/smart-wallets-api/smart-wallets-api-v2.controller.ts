@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Query, Get, Logger, Headers, Req } from '@nestjs/common'
+import { Controller, Post, Body, UseGuards, Query, Get, Logger, Req } from '@nestjs/common'
 import { Request } from 'express'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
@@ -7,6 +7,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.decorator'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
+import { Project } from '@app/common/decorators/project.decorator'
 
 @Controller({ path: 'smart-wallets', version: '2' })
 export class SmartWalletsAPIV2Controller {
@@ -14,8 +15,10 @@ export class SmartWalletsAPIV2Controller {
 
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
+  @UseGuards(IsPrdOrSbxKeyGuard)
   @Post('auth')
-  auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
+  auth (@Project() projectId: string, @Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
+    smartWalletsAuthDto.projectId = projectId
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
@@ -32,7 +35,6 @@ export class SmartWalletsAPIV2Controller {
 
   @Post('token-transfers')
   async handleTokenTransferWebhook (
-    @Headers() headers: Headers,
     @Req() request: Request,
     @Body() tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {

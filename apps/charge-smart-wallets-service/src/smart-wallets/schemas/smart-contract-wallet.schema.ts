@@ -3,7 +3,11 @@ const { String } = mongoose.Schema.Types
 
 export const SmartContractWalletSchema = new mongoose.Schema(
   {
-    apiKey: { type: String, required: true, index: true },
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+      required: true
+    },
     ownerAddress: { type: String, required: true, index: true },
     smartWalletAddress: { type: String, required: true, index: true }
   },

@@ -23,7 +23,7 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
-        app: aamplitude
+        app: amplitude
         environment: {{ .Values.global.environment }}
     spec:
       affinity:
@@ -38,7 +38,8 @@ spec:
                   - {{ $.Values.global.region }}-{{ $zone }}
                 {{- end }}
       containers:
-        - name: nginx:1.25.4-alpine
+        - name: amplitude
+          image: nginx:1.25.4-alpine
           imagePullPolicy: Always
 
           # Ports
@@ -75,13 +76,13 @@ spec:
 
           # Volume mounts (config.json)
           volumeMounts:
-            - mountPath: /etc/nginx
-              name: nginx
+            - name: nginx
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
               readOnly: true
       
       # Volume (config.json)
       volumes:
         - name: nginx
           configMap:
-            - key: nginx.conf
-              path: nginx.conf
+            name: amplitude

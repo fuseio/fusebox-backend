@@ -13,4 +13,8 @@ export class SmartWalletsAuthDto {
   @IsOptional()
   @IsEthereumAddress()
     smartWalletAddress: string
+
+  @IsOptional()
+  @IsString()
+    projectId: string
 }

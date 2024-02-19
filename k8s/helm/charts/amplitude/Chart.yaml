@@ -1,6 +1,6 @@
 apiVersion: v2
-name: fusebox-backend
-description: A Helm chart for Kubernetes related fusebox-backend application
+name: amplitude
+description: A Helm chart for Kubernetes related amplitude (proxy) component
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -22,26 +22,3 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "0.1.0"
-
-# Dependencies - Sub - charts to deploy depending on `enabled` value
-dependencies:
-  - name: accounts
-    condition: accounts.enabled
-  - name: amplitude
-    condition: amplitude.enabled
-  - name: api
-    condition: api.enabled
-  - name: relay
-    condition: relay.enabled
-  - name: notifications
-    condition: notifications.enabled
-  - name: network
-    condition: network.enabled
-  - name: apps
-    condition: apps.enabled
-  - name: centrifugo
-    condition: centrifugo.enabled
-  - name: gateway-api
-    condition: gateway-api.enabled
-  - name: skandha
-    condition: skandha.enabled

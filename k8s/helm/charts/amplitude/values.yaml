@@ -1,0 +1,53 @@
+# Default values for api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global
+global:
+  # -- Kubernetes label `environment``
+  environment: "development"
+
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
+
+  # Image
+  image:
+    # -- Repository ID
+    repository: "api"
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
+
+# Resources
+resources:
+  # -- Resources - Requests
+  requests:
+    cpu: "500m"
+    memory: "1Gi"
+  # -- Resources - Limits
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
+logging:
+  enabled: false
+  sampleRate: 1000000

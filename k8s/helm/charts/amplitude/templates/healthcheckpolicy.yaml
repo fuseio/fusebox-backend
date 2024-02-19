@@ -1,0 +1,25 @@
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: amplitude
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: amplitude
+    environment: {{ .Values.global.environment }}
+spec:
+  default:
+    checkIntervalSec: 30
+    timeoutSec: 5
+    healthyThreshold: 3
+    unhealthyThreshold: 5
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: 8888
+        portName: http
+        host: amplitude
+        requestPath: /health
+  targetRef:
+    group: ""
+    kind: Service
+    name: amplitude

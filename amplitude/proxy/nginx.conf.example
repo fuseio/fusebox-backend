@@ -1,0 +1,24 @@
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+
+http {
+    include mime.types;
+    default_type application/octet-stream;
+
+    sendfile on;
+
+    keepalive_timeout 65;
+
+    server {
+        listen 8888;
+        server_name localhost;
+
+        location /amplitude {
+            proxy_pass https://api2.amplitude.com/;
+        }
+    }
+}

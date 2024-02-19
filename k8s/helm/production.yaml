@@ -70,6 +70,29 @@ accounts:
     - paymaster_funder_private_key
     - paymaster_funder_api_secret_key
 
+amplitude:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
 api:
   enabled: true
 

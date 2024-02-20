@@ -123,7 +123,7 @@ export class OperatorsService {
     return await this.projectsService.create({
       ownerId: user._id,
       name: createOperatorUserDto.name || user.name,
-      description: createOperatorUserDto.description || ''
+      description: createOperatorUserDto.description || 'Empty description'
     })
   }
 

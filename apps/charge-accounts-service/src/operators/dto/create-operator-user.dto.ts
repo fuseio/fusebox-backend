@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from 'class-validator'
+import { IsEmail, IsString, IsOptional } from 'class-validator'
 
 export class CreateOperatorUserDto {
   @IsString()
@@ -9,4 +9,12 @@ export class CreateOperatorUserDto {
 
   @IsEmail()
     email: string
+
+  @IsOptional()
+  @IsString()
+    name: string
+
+  @IsOptional()
+  @IsString()
+    description: string
 }

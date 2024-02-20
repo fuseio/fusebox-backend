@@ -97,7 +97,7 @@ export class OperatorsService {
 
     try {
       const user = await this.createUser(createOperatorUserDto, auth0Id)
-      const projectObject = await this.createProject(user, auth0Id)
+      const projectObject = await this.createProject(user, createOperatorUserDto)
       const publicKey = await this.projectsService.getPublic(projectObject._id)
       const secretKey = await this.createProjectSecret(projectObject)
       const sponsorId = await this.createPaymasters(projectObject)
@@ -120,11 +120,11 @@ export class OperatorsService {
     })
   }
 
-  private async createProject (user: any, auth0Id: string) {
+  private async createProject (user: any, createOperatorUserDto: CreateOperatorUserDto) {
     return await this.projectsService.create({
       ownerId: user._id,
-      name: auth0Id,
-      description: auth0Id
+      name: createOperatorUserDto.name || user.name,
+      description: createOperatorUserDto.description || ''
     })
   }
 

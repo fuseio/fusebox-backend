@@ -196,8 +196,7 @@ services:
       - CENTRIFUGO_API_KEY
       - NODE_ENV
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
-      - ACCOUNTS_HOST
-      - ACCOUNTS_TCP_PORT
+      - AMPLITUDE_API_KEY
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

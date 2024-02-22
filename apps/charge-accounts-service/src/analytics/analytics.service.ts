@@ -6,13 +6,14 @@ import { formatUnits } from 'nestjs-ethers'
 import { apiService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import * as amplitude from '@amplitude/analytics-node'
+// import * as amplitude from '@amplitude/analytics-node'
 import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
 import { Model } from 'mongoose'
+// import { AnalyticsService } from '@app/common/services/analytics.service'
 
 @Injectable()
-export class AnalyticsService {
+export class TrackerService {
   constructor (
     private readonly usersService: UsersService,
     private readonly projectsService: ProjectsService,
@@ -42,7 +43,6 @@ export class AnalyticsService {
     try {
       const user = await this.getUserByApiKey(body.userOp.apiKey)
       if (body.walletAction.name === 'tokenTransfer') {
-        console.log('tokenTransfer')
         const event = {
           amount: formatUnits(body.walletAction.sent[0].value, body.walletAction.sent[0].decimals),
           amountUsd: 'amount',
@@ -67,7 +67,7 @@ export class AnalyticsService {
       try {
         const operator = await this.findOperatorBySmartWallet(walletAction.walletAddress)
         if (!operator) {
-          return 'Operator doesnt exist'
+          return 'Operator doesn\'t exist'
         }
         const operatorId = operator.ownerId.toString()
         const user = await this.usersService.findOne(operatorId)

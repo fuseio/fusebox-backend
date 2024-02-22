@@ -13,7 +13,7 @@ import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
-import { AnalyticsModule } from '@app/accounts-service/analytics/analytics.module'
+import { AnalyticsService } from '@app/common/services/analytics.service'
 
 @Module({
   imports: [
@@ -22,7 +22,6 @@ import { AnalyticsModule } from '@app/accounts-service/analytics/analytics.modul
     AuthModule,
     PaymasterModule,
     ApiKeyModule,
-    AnalyticsModule,
     ClientsModule.register([
       {
         name: smartWalletsService,
@@ -44,7 +43,12 @@ import { AnalyticsModule } from '@app/accounts-service/analytics/analytics.modul
     DatabaseModule
   ],
   controllers: [OperatorsController],
-  providers: [OperatorJwtStrategy, OperatorsService, ...operatorsProviders],
+  providers: [
+    OperatorJwtStrategy,
+    AnalyticsService,
+    OperatorsService,
+    ...operatorsProviders
+  ],
   exports: [OperatorsService]
 })
 export class OperatorsModule { }

@@ -3,7 +3,7 @@ import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-lay
 import { dataLayerProviders } from '@app/smart-wallets-service/data-layer/data-layer.providers'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import web3Config from 'apps/charge-smart-wallets-service/src/common/config/web3Config'
+import config from 'apps/charge-smart-wallets-service/src/data-layer/config/config'
 import { DatabaseModule } from '@app/common'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
@@ -19,7 +19,7 @@ import { accountsService } from '@app/common/constants/microservices.constants'
 @Module({
   imports: [
     DatabaseModule,
-    ConfigModule.forFeature(web3Config),
+    ConfigModule.forFeature(config),
     HttpModule,
     ClientsModule.register([
       {

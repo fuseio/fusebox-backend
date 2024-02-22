@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { AnalyticsService } from '@app/accounts-service/analytics/analytics.service'
+import { TrackerService } from '@app/accounts-service/analytics/analytics.service'
 import { AnalyticsController } from '@app/accounts-service/analytics/analytics.controller'
 import { UsersModule } from '@app/accounts-service/users/users.module'
 import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
@@ -7,9 +7,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { apiService } from '@app/common/constants/microservices.constants'
 import { analyticsProviders } from '@app/accounts-service/analytics/analytics.providers'
 import { DatabaseModule } from '@app/common'
+import { AnalyticsService } from '@app/common/services/analytics.service'
 
 @Module({
-  imports: [UsersModule, ProjectsModule,
+  imports: [
+    UsersModule,
+    ProjectsModule,
     ClientsModule.register([
       {
         name: apiService,
@@ -22,9 +25,8 @@ import { DatabaseModule } from '@app/common'
     ]),
     DatabaseModule
   ],
-
   controllers: [AnalyticsController],
-  providers: [AnalyticsService, ...analyticsProviders],
-  exports: [AnalyticsService]
+  providers: [TrackerService, AnalyticsService, ...analyticsProviders],
+  exports: [TrackerService]
 })
 export class AnalyticsModule { }

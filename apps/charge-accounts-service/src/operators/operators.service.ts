@@ -18,7 +18,7 @@ import { ProjectsService } from '@app/accounts-service/projects/projects.service
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
-import { AnalyticsService } from '@app/accounts-service/analytics/analytics.service'
+import { AnalyticsService } from '@app/common/services/analytics.service'
 
 @Injectable()
 export class OperatorsService {
@@ -26,7 +26,6 @@ export class OperatorsService {
   constructor (
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
-    private readonly analyticsService: AnalyticsService,
     private configService: ConfigService,
     @Inject(operatorWalletModelString)
     private operatorWalletModel: Model<OperatorWallet>,
@@ -35,8 +34,8 @@ export class OperatorsService {
     @Inject(smartWalletsService)
     private readonly dataLayerClient: ClientProxy,
     @Inject(notificationsService)
-    private readonly notificationsClient: ClientProxy
-
+    private readonly notificationsClient: ClientProxy,
+    private readonly analyticsService: AnalyticsService
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -253,11 +252,13 @@ export class OperatorsService {
       // and the webhook call will respond negatively. In such cases, a retry mechanism from the
       // notification service will be utilized.
       await this.updateIsActivated(wallet._id, true)
-      try {
-        this.analyticsService.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
-      } catch (error) {
-        console.error(`Error on sending activation event to Amplitude: ${error}`)
-      }
+      // TODO: Add analytics event
+      // this.analyticsService.trackEvent('operatorAccountActivation', { id: wallet.ownerId, projectId: project._id })
+      // try {
+      //   this.analyticsService.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
+      // } catch (error) {
+      //   console.error(`Error on sending activation event to Amplitude: ${error}`)
+      // }
       await this.deleteAddressFromOperatorsWebhook(address)
     } catch (error) {
       if (error instanceof HttpException) {

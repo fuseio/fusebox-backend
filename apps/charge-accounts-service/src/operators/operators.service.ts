@@ -253,7 +253,11 @@ export class OperatorsService {
       // and the webhook call will respond negatively. In such cases, a retry mechanism from the
       // notification service will be utilized.
       await this.updateIsActivated(wallet._id, true)
-      this.analyticsService.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
+      try {
+        this.analyticsService.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
+      } catch (error) {
+        console.error(`Error on sending activation event to Amplitude: ${error}`)
+      }
       await this.deleteAddressFromOperatorsWebhook(address)
     } catch (error) {
       if (error instanceof HttpException) {

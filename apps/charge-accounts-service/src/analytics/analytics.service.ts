@@ -14,14 +14,14 @@ import { Model } from 'mongoose'
 @Injectable()
 export class AnalyticsService {
   constructor (
-        private readonly usersService: UsersService,
-        private readonly projectsService: ProjectsService,
-        @Inject(apiService) private readonly apiClient: ClientProxy,
-        @Inject(operatorWalletModelString)
-        private operatorWalletModel: Model<OperatorWallet>
+    private readonly usersService: UsersService,
+    private readonly projectsService: ProjectsService,
+    @Inject(apiService) private readonly apiClient: ClientProxy,
+    @Inject(operatorWalletModelString)
+    private operatorWalletModel: Model<OperatorWallet>
 
   ) {
-    init(process.env.AMPLITUDE_API_KEY)
+    init(process.env.AMPLITUDE_API_KEY, { logLevel: amplitude.Types.LogLevel.Debug })
   }
 
   async operatorAccountActivationEvent ({ id, projectId }) {
@@ -32,7 +32,7 @@ export class AnalyticsService {
         email: user.email,
         apiKey: publicKey
       }
-      track('Operator Account Activated', { ...eventData }, { user_id: eventData.email })
+      track('Operator Account Activated', { ...eventData }, { user_id: user?.auth0Id })
     } catch (error) {
       console.error(error)
     }
@@ -40,7 +40,7 @@ export class AnalyticsService {
 
   async handleUserOpAndWalletAction (body) {
     try {
-      const email = await this.getEmail(body.userOp.apiKey)
+      const user = await this.getUserByApiKey(body.userOp.apiKey)
       if (body.walletAction.name === 'tokenTransfer') {
         console.log('tokenTransfer')
         const event = {
@@ -48,9 +48,13 @@ export class AnalyticsService {
           amountUsd: 'amount',
           token: body.walletAction.sent[0].symbol,
           apiKey: body.userOp.apiKey,
-          email
+          email: user.email
         }
-        this.transferEvent(event)
+        try {
+          track('Transaction (UserOp)', { ...event }, { user_id: user?.auth0Id })
+        } catch (error) {
+          console.error(error)
+        }
       }
       return 'Transfer event processed'
     } catch (error) {
@@ -76,7 +80,11 @@ export class AnalyticsService {
           apiKey,
           email: user.email
         }
-        this.depositEvent(event)
+        try {
+          track('Account Balance Deposited', { ...event }, { user_id: user?.auth0Id })
+        } catch (error) {
+          console.error(error)
+        }
         return 'Receive event processed'
       } catch (error) {
         throw new Error(error)
@@ -84,28 +92,12 @@ export class AnalyticsService {
     }
   }
 
-  async depositEvent (event) {
-    try {
-      track('Account Balance Deposited', { ...event }, { user_id: event.email })
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  async transferEvent (event) {
-    try {
-      track('Transaction (UserOp)', { ...event }, { user_id: event.email })
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  async getEmail (apiKey) {
+  async getUserByApiKey (apiKey) {
     try {
       const projectId = await callMSFunction(this.apiClient, 'get_project_id_by_public_key', apiKey)
       const project = await this.projectsService.findOne(projectId)
       const user = await this.usersService.findOne(project.ownerId.toString())
-      return user.email
+      return user
     } catch (error) {
       console.error(error)
     }

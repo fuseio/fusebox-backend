@@ -21,7 +21,7 @@ export class AnalyticsService {
     private operatorWalletModel: Model<OperatorWallet>
 
   ) {
-    init(process.env.AMPLITUDE_API_KEY, { logLevel: amplitude.Types.LogLevel.Debug })
+    init(process.env.AMPLITUDE_API_KEY)
   }
 
   async operatorAccountActivationEvent ({ id, projectId }) {

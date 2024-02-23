@@ -8,7 +8,6 @@ import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operat
 import paymasterAbi from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
 import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/EtherspotWalletFactory.abi.json'
 import { ConfigService } from '@nestjs/config'
-import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
 import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
@@ -97,7 +96,7 @@ export class OperatorsService {
 
     try {
       const user = await this.createUser(createOperatorUserDto, auth0Id)
-      const projectObject = await this.createProject(user, auth0Id)
+      const projectObject = await this.createProject(user, createOperatorUserDto)
       const publicKey = await this.projectsService.getPublic(projectObject._id)
       const secretKey = await this.createProjectSecret(projectObject)
       const sponsorId = await this.createPaymasters(projectObject)
@@ -120,11 +119,11 @@ export class OperatorsService {
     })
   }
 
-  private async createProject (user: any, auth0Id: string) {
+  private async createProject (user: any, createOperatorUserDto: CreateOperatorUserDto) {
     return await this.projectsService.create({
       ownerId: user._id,
-      name: auth0Id,
-      description: auth0Id
+      name: createOperatorUserDto.name || user.name,
+      description: createOperatorUserDto.description || 'Empty description'
     })
   }
 
@@ -145,7 +144,10 @@ export class OperatorsService {
   }
 
   private async createOperatorWallet (user: any, predictedWallet: string) {
-    const operatorWalletCreationResult = await this.operatorWalletModel.create(new CreateOperatorWalletDto(user._id, predictedWallet.toLowerCase()))
+    const operatorWalletCreationResult = await this.operatorWalletModel.create({
+      ownerId: user._id,
+      smartWalletAddress: predictedWallet.toLowerCase()
+    })
     if (!operatorWalletCreationResult) {
       throw new HttpException('Failed to create operator wallet', HttpStatus.INTERNAL_SERVER_ERROR)
     }

@@ -15,6 +15,7 @@ import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-proj
 import { IsCreatorOwnerGuard } from '@app/accounts-service/projects/guards/is-creator-owner.guard'
 import { IsProjectOwnerGuard } from '@app/accounts-service/projects/guards/is-project-owner.guard'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
+import { MessagePattern } from '@nestjs/microservices'
 
 @Controller({ path: 'projects', version: '1' })
 export class ProjectsController {
@@ -143,5 +144,20 @@ export class ProjectsController {
   @Get('/sandbox/:projectId')
   getSandboxKey (@Param('projectId') projectId: string) {
     return this.projectsService.getSandboxKey(projectId)
+  }
+
+  @MessagePattern('find-one-project')
+  findOneInternal (id: string) {
+    return this.projectsService.findOne(id)
+  }
+
+  @MessagePattern('find-one-project-by-owner-id')
+  findOneByIdInternal (id: string) {
+    return this.projectsService.findOneByOwnerId(id)
+  }
+
+  @MessagePattern('get-public')
+  getPublicInternal (projectId: string) {
+    return this.projectsService.getPublic(projectId)
   }
 }

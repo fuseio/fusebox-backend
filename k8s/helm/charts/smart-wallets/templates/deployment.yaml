@@ -57,6 +57,16 @@ spec:
                 configMapKeyRef:
                   name: smart-wallets
                   key: smart_wallets_tcp_port
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: api_host
+            - name: API_TCP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: smart-wallets
+                  key: api_tcp_port
             - name: ACCOUNTS_HOST
               valueFrom:
                 configMapKeyRef:

@@ -1,4 +1,5 @@
 export default () => ({
+  amplitudeApiKey: process.env.AMPLITUDE_API_KEY,
   paymaster: {
     '0_1_0': {
       production: {

@@ -1,17 +1,21 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
-
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
-import { accountsService } from '@app/common/constants/microservices.constants'
+
+import { formatUnits } from 'nestjs-ethers'
+import { AnalyticsService } from '@app/common/services/analytics.service'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
+import { accountsService } from '@app/common/constants/microservices.constants'
+
 @Injectable()
 export class SmartWalletsAAEventsService {
   private readonly logger = new Logger(SmartWalletsAAEventsService.name)
 
   constructor (
     private readonly centrifugoAPIService: CentrifugoAPIService,
-    @Inject(accountsService)
-    private readonly accountClient: ClientProxy
+    private analyticsService: AnalyticsService,
+    @Inject(accountsService) private readonly accountsClient: ClientProxy
+
   ) { }
 
   async publishUserOp (sender, messageData) {
@@ -24,21 +28,38 @@ export class SmartWalletsAAEventsService {
   }
 
   async publishWalletAction (sender, messageData) {
+    if (messageData.name === 'tokenReceive') {
+      this.handleReceiveWalletAction(messageData)
+    }
     try {
-      // Attempt to call the microservice function
-      try {
-        if (messageData.name === 'tokenReceive') {
-          callMSFunction(this.accountClient, 'handle-receive-walletAction', messageData)
-        }
-      } catch (error) {
-        // Log the error and continue with the flow
-        console.error(error)
-      }
-      // Continue with the original flow of the function
       this.centrifugoAPIService.publish(`walletAction:#${sender}`, messageData)
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: walletAction:#${sender}`)
+    }
+  }
+
+  async handleReceiveWalletAction (walletAction) {
+    try {
+      const operator = await callMSFunction(this.accountsClient, 'find-operator-by-smart-wallet', walletAction.walletAddress)
+      if (!operator) {
+        return 'Operator doesnt exist'
+      }
+      const operatorId = operator.ownerId.toString()
+      const user = await callMSFunction(this.accountsClient, 'find-one-user', operatorId)
+      const projectId = (await callMSFunction(this.accountsClient, 'find-one-project-by-owner-id', operatorId))?._id.toString()
+      const apiKey = (await callMSFunction(this.accountsClient, 'get-public', projectId)).publicKey
+      const event = {
+        amount: formatUnits(walletAction.sent[0].value, walletAction.sent[0].decimals),
+        amountUsd: 'amount',
+        token: walletAction.sent[0].symbol,
+        apiKey,
+        email: user.email
+      }
+      this.analyticsService.trackEvent('Account Balance Deposited', { ...event }, { user_id: user?.auth0Id })
+      return 'Receive event processed'
+    } catch (error) {
+      throw new Error(error)
     }
   }
 }

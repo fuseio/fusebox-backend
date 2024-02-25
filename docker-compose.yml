@@ -10,8 +10,8 @@ services:
     command: npm run start:dev charge-accounts-service
     environment:
       - API_TCP_PORT
-      - ACCOUNTS_HOST
       - API_HOST
+      - ACCOUNTS_HOST
       - RELAY_HOST
       - ACCOUNTS_PORT
       - MONGO_URI=${ACCOUNTS_MONGO_URI}
@@ -179,6 +179,9 @@ services:
     depends_on:
       - centrifugo
     environment:
+      - API_TCP_PORT
+      - API_HOST
+      - AMPLITUDE_API_KEY
       - SMART_WALLETS_HOST
       - SMART_WALLETS_PORT
       - SMART_WALLETS_TCP_PORT
@@ -196,7 +199,8 @@ services:
       - CENTRIFUGO_API_KEY
       - NODE_ENV
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
-      - AMPLITUDE_API_KEY
+      - ACCOUNTS_HOST
+      - ACCOUNTS_TCP_PORT
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

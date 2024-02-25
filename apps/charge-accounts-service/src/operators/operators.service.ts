@@ -252,13 +252,11 @@ export class OperatorsService {
       // and the webhook call will respond negatively. In such cases, a retry mechanism from the
       // notification service will be utilized.
       await this.updateIsActivated(wallet._id, true)
-      // TODO: Add analytics event
-      // this.analyticsService.trackEvent('operatorAccountActivation', { id: wallet.ownerId, projectId: project._id })
-      // try {
-      //   this.analyticsService.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
-      // } catch (error) {
-      //   console.error(`Error on sending activation event to Amplitude: ${error}`)
-      // }
+      try {
+        this.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
+      } catch (error) {
+        console.error(`Error on sending activation event to Amplitude: ${error}`)
+      }
       await this.deleteAddressFromOperatorsWebhook(address)
     } catch (error) {
       if (error instanceof HttpException) {
@@ -368,5 +366,19 @@ export class OperatorsService {
       addresses: [walletAddress]
     }
     return callMSFunction(this.notificationsClient, 'delete_addresses', requestBody)
+  }
+
+  async operatorAccountActivationEvent ({ id, projectId }) {
+    try {
+      const user = await this.usersService.findOne(id)
+      const publicKey = (await this.projectsService.getPublic(projectId)).publicKey
+      const eventData = {
+        email: user.email,
+        apiKey: publicKey
+      }
+      this.analyticsService.trackEvent('Operator Account Activated', { ...eventData }, { user_id: user?.auth0Id })
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

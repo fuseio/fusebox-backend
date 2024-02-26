@@ -66,6 +66,9 @@ configMap:
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
+  - fuse_sdk_private_key
+  - fuse_sdk_api_key
+  - amplitude_api_key
   - mongo_uri
   - smart_wallets_jwt_secret
   - fuse_wallet_backend_jwt

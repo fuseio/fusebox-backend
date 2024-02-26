@@ -28,4 +28,5 @@ export const dataLayerProviders = [
       >('walletaction', WalletActionSchema, 'walletaction'),
     inject: [databaseConnectionString]
   }
+
 ]

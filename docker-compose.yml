@@ -201,6 +201,8 @@ services:
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
       - ACCOUNTS_HOST
       - ACCOUNTS_TCP_PORT
+      - FUSE_SDK_API_KEY
+      - FUSE_SDK_PRIVATE_KEY
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

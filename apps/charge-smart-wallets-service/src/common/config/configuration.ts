@@ -1,5 +1,7 @@
 export default () => ({
   amplitudeApiKey: process.env.AMPLITUDE_API_KEY,
+  fuseSdkApiKey: process.env.FUSE_SDK_API_KEY,
+  fuseSdkPrivateKey: process.env.FUSE_SDK_PRIVATE_KEY,
   webhookId: process.env.INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID,
   chargeBaseURL: process.env.CHARGE_BASE_URL,
   sharedAddresses: {

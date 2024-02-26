@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@compodoc/compodoc": "^1.1.19",
-    "@fuseio/fusebox-web-sdk": "^0.2.7",
+    "@fuseio/fusebox-web-sdk": "^0.2.8",
     "@liaoliaots/nestjs-redis": "^8.2.2",
     "@nestjs/axios": "0.0.8",
     "@nestjs/common": "^8.0.0",

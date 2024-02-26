@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: accounts
   namespace: {{ .Release.Namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: accounts
     environment: {{ .Values.global.environment }}
@@ -67,26 +69,6 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: api_tcp_port
-            - name: RELAY_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: relay_host
-            - name: RELAY_TCP_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: relay_tcp_port
-            - name: APPS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: apps_host
-            - name: APPS_TCP_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: apps_tcp_port
             - name: SMART_WALLETS_HOST
               valueFrom:
                 configMapKeyRef:

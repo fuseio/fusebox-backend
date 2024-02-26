@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: smart-wallets
   namespace: {{ .Release.Namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: smart-wallets
     environment: {{ .Values.global.environment }}

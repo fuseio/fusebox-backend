@@ -17,10 +17,10 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start $npm_config_service --debug 0.0.0.0:$npm_config_port --watch",
     "start:prod": "node dist/apps/$npm_config_service/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,tests,scripts}/**/*.ts\" --fix",
     "run-auth-testing-debug": "npx ts-node -e 'require(\"./scripts/smartWalletsAuthTesting.ts\").getHashAndSig(\"PRIVATE_KEY\")'",
     "run-validate-signature": "npx ts-node -e 'require(\"./scripts/smartWalletsAuthTesting.ts\").isValidSignature(\"SIGNING_ADDRESS\", \"MESSAGE\", \"SIGNATURE\")'",
-    "test": "jest --config ./jest.config.json",
+    "test": "jest --config ./jest.config.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -65,6 +65,7 @@
     "ioredis": "^5.2.0",
     "json-rpc-2.0": "^1.6.0",
     "jwks-rsa": "^2.1.0",
+    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.10.2",
     "mongoose-paginate-v2": "^1.7.31",
@@ -133,7 +134,8 @@
     "testEnvironment": "node",
     "roots": [
       "<rootDir>/apps/",
-      "<rootDir>/libs/"
+      "<rootDir>/libs/",
+      "<rootDir>/scripts/"
     ],
     "moduleNameMapper": {
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"

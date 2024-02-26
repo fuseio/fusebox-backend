@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: api
   namespace: {{ .Release.Namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: api
     environment: {{ .Values.global.environment }}

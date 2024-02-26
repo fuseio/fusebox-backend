@@ -72,6 +72,29 @@ accounts:
     - amplitude_api_key
     - incoming_token_transfers_webhook_id
 
+amplitude:
+  enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
 api:
   enabled: true
 
@@ -121,7 +144,7 @@ api:
     - explorer_api_key
 
 apps:
-  enabled: true
+  enabled: false # [DEPRECATED]
 
   # Replicas
   replicas: 1
@@ -267,7 +290,7 @@ notifications:
     - full_archive_rpc_url
 
 relay:
-  enabled: true
+  enabled: false # [DEPRECATED]
 
   # Replicas
   replicas: 1
@@ -306,7 +329,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.30-alpha"
+    tag: "1.0.36-alpha"
 
   # Resources (requests & limits)
   resources:

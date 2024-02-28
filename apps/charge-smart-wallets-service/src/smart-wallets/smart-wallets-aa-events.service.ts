@@ -29,11 +29,11 @@ export class SmartWalletsAAEventsService {
   }
 
   async publishWalletAction (sender, messageData) {
-    if (messageData.name === 'tokenReceive') {
-      this.handleReceiveWalletAction(messageData)
-    }
     try {
       this.centrifugoAPIService.publish(`walletAction:#${sender}`, messageData)
+      if (messageData.name === 'tokenReceive') {
+        this.handleReceiveWalletAction(messageData)
+      }
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: walletAction:#${sender}`)
@@ -49,9 +49,9 @@ export class SmartWalletsAAEventsService {
       const operatorId = operator.ownerId.toString()
       const user = await callMSFunction(this.accountsClient, 'find-one-user', operatorId)
       const projectId = (await callMSFunction(this.accountsClient, 'find-one-project-by-owner-id', operatorId))?._id.toString()
-      const apiKey = (await callMSFunction(this.accountsClient, 'get-public', projectId)).publicKey
-      const tokenPriceInUsd = await this.fuseSdkService.getPriceForTokenAddress(walletAction.walletAction.sent[0].address)
-      const amount = formatUnits(walletAction.walletAction.sent[0].value, walletAction.walletAction.sent[0].decimals)
+      const apiKey = (await callMSFunction(this.accountsClient, 'get-public', projectId))?.publicKey
+      const tokenPriceInUsd = await this.fuseSdkService.getPriceForTokenAddress(walletAction?.sent[0]?.address)
+      const amount = formatUnits(walletAction?.sent[0]?.value, walletAction?.sent[0]?.decimals)
       const amountUsd = Number(tokenPriceInUsd) * Number(amount)
       const event = {
         amount,

@@ -12,4 +12,8 @@ export class GraphqlAPIService {
   async getCollectiblesByOwner (address: string): Promise<any> {
     return callMSFunction(this.networkClient, 'get_collectibles_by_owner', address)
   }
+
+  async getUserOpsBySender (address: string): Promise<any> {
+    return callMSFunction(this.networkClient, 'get_userops_by_sender', address)
+  }
 }

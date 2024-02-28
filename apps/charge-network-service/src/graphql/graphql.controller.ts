@@ -3,7 +3,7 @@ import { Controller } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { MessagePattern } from '@nestjs/microservices'
 import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
-import { getUserOpsBySender } from '../common/constants/graph-queries/aa'
+import { getUserOpsBySender } from '@app/network-service/common/constants/graph-queries/aa'
 
 @Controller('graphql')
 export class GraphqlController {

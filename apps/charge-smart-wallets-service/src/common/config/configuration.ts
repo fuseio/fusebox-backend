@@ -4,6 +4,7 @@ export default () => ({
   fuseSdkPrivateKey: process.env.FUSE_SDK_PRIVATE_KEY,
   webhookId: process.env.INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID,
   chargeBaseURL: process.env.CHARGE_BASE_URL,
+  tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,
   sharedAddresses: {
     WalletFactory: process.env.WALLET_FACTORY,
     WalletImplementation: process.env.WALLET_IMPLEMENTATION,

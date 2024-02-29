@@ -369,6 +369,8 @@ smart-wallets:
     centrifugo_api_url: "https://ws.staging.fuse.io/api"
     legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
     charge_base_url: "https://api.staging.fuse.io"
+    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

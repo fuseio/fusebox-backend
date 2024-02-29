@@ -7,7 +7,7 @@ export class AnalyticsService {
   constructor (
     private configService: ConfigService
   ) {
-    init(this.configService.getOrThrow('amplitudeApiKey'))
+    init(this.configService.getOrThrow('amplitudeApiKey'), { serverUrl: 'https://analytics.fuse.io/amplitude' })
   }
 
   async trackEvent (eventInput: string | Types.BaseEvent, eventProperties?: Record<string, any>, eventOptions?: Types.EventOptions) {

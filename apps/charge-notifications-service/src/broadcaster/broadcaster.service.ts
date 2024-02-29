@@ -16,7 +16,6 @@ export class BroadcasterService {
     private webhookEventModel: Model<WebhookEvent>,
     private readonly configService: ConfigService,
     private readonly webhookSendService: WebhookSendService
-
   ) { }
 
   get retryTimeIntervalsMS () {

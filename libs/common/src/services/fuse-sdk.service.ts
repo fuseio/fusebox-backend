@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 
 @Injectable()
 export default class FuseSdkService implements OnModuleInit {
-  private fuseSdk: FuseSDK | null = null
+  private fuseSdk: FuseSDK
 
   constructor (private readonly configService: ConfigService) { }
 
@@ -14,11 +14,16 @@ export default class FuseSdkService implements OnModuleInit {
   }
 
   private async init (): Promise<void> {
-    if (!this.fuseSdk) {
+    try {
+      const apiKey = this.configService.getOrThrow('fuseSdkApiKey')
+      const privateKey = this.configService.getOrThrow('fuseSdkPrivateKey')
       this.fuseSdk = await FuseSDK.init(
-        this.configService.get('fuseSdkApiKey'),
-        new ethers.Wallet(this.configService.get('fuseSdkPrivateKey'))
+        apiKey,
+        new ethers.Wallet(privateKey)
       )
+    } catch (error) {
+      console.error('Failed to initialize FuseSDK:', error)
+      throw error
     }
   }
 
@@ -29,7 +34,12 @@ export default class FuseSdkService implements OnModuleInit {
     return this.fuseSdk
   }
 
-  async getPriceForTokenAddress (tokenAddress: string) {
-    return await this.fuseSdk.tradeModule.price(tokenAddress)
+  async getPriceForTokenAddress (tokenAddress: string): Promise<any> {
+    try {
+      return await this.fuseSdk.tradeModule.price(tokenAddress)
+    } catch (error) {
+      console.error('Failed to get price for token address:', error)
+      throw error // Or handle it more gracefully
+    }
   }
 }

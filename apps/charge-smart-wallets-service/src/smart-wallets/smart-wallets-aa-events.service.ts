@@ -5,7 +5,7 @@ import { AnalyticsService } from '@app/common/services/analytics.service'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { accountsService } from '@app/common/constants/microservices.constants'
-import FuseSdkService from '@app/common/services/fuse-sdk.service'
+import TradeService from '@app/common/services/trade.service'
 
 @Injectable()
 export class SmartWalletsAAEventsService {
@@ -14,7 +14,7 @@ export class SmartWalletsAAEventsService {
   constructor (
     private readonly centrifugoAPIService: CentrifugoAPIService,
     private analyticsService: AnalyticsService,
-    private fuseSdkService: FuseSdkService,
+    private tradeService: TradeService,
     @Inject(accountsService) private readonly accountsClient: ClientProxy
 
   ) { }
@@ -50,7 +50,7 @@ export class SmartWalletsAAEventsService {
       const user = await callMSFunction(this.accountsClient, 'find-one-user', operatorId)
       const projectId = (await callMSFunction(this.accountsClient, 'find-one-project-by-owner-id', operatorId))?._id.toString()
       const apiKey = (await callMSFunction(this.accountsClient, 'get-public', projectId))?.publicKey
-      const tokenPriceInUsd = await this.fuseSdkService.getPriceForTokenAddress(walletAction?.sent[0]?.address)
+      const tokenPriceInUsd = await this.tradeService.getTokenPrice(walletAction?.sent[0]?.address)
       const amount = formatUnits(walletAction?.sent[0]?.value, walletAction?.sent[0]?.decimals)
       const amountUsd = Number(tokenPriceInUsd) * Number(amount)
       const event = {

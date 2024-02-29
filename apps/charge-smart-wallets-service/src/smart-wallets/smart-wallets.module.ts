@@ -22,7 +22,7 @@ import { AnalyticsService } from '@app/common/services/analytics.service'
 import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { accountsService } from '@app/common/constants/microservices.constants'
-import FuseSdkService from '@app/common/services/fuse-sdk.service'
+import TradeService from '@app/common/services/trade.service'
 @Module({
   imports: [
     DatabaseModule,
@@ -74,7 +74,8 @@ import FuseSdkService from '@app/common/services/fuse-sdk.service'
     AnalyticsService,
     SmartWalletsLegacyService,
     SmartWalletsAAService,
-    FuseSdkService,
+    TradeService,
+
     ...smartWalletsProviders
   ],
   controllers: [SmartWalletsController]

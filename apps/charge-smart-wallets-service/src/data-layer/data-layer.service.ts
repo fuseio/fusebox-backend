@@ -20,7 +20,7 @@ import { formatUnits } from 'nestjs-ethers'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import FuseSdkService from '@app/common/services/fuse-sdk.service'
+import TradeService from '@app/common/services/trade.service'
 
 @Injectable()
 export class DataLayerService {
@@ -37,7 +37,7 @@ export class DataLayerService {
     private tokenService: TokenService,
     private smartWalletsAAEventsService: SmartWalletsAAEventsService,
     private analyticsService: AnalyticsService,
-    private fuseSdkService: FuseSdkService
+    private tradeService: TradeService
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
@@ -189,7 +189,7 @@ export class DataLayerService {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
       if (body.walletAction.name === 'tokenTransfer') {
-        const tokenPriceInUsd = await this.fuseSdkService.getPriceForTokenAddress(body.walletAction.sent[0].address)
+        const tokenPriceInUsd = await this.tradeService.getTokenPrice(body.walletAction.sent[0].address)
         const amount = formatUnits(body.walletAction.sent[0].value, body.walletAction.sent[0].decimals)
         const amountUsd = Number(tokenPriceInUsd) * Number(amount)
         const event = {

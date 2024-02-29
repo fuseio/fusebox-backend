@@ -187,7 +187,7 @@ export class DataLayerService {
 
   async handleUserOpAndWalletAction (body) {
     try {
-      const user = await this.getUserByApiKey(body.userOp.apiKey)
+      const user = await this.getOperatorByApiKey(body.userOp.apiKey)
       if (body.walletAction.name === 'tokenTransfer') {
         const tokenPriceInUsd = await this.fuseSdkService.getPriceForTokenAddress(body.walletAction.sent[0].address)
         const amount = formatUnits(body.walletAction.sent[0].value, body.walletAction.sent[0].decimals)
@@ -211,11 +211,15 @@ export class DataLayerService {
     }
   }
 
-  async getUserByApiKey (apiKey) {
+  async getOperatorByApiKey (apiKey) {
     try {
       const projectId = await callMSFunction(this.apiClient, 'get_project_id_by_public_key', apiKey)
       const project = await callMSFunction(this.accountsClient, 'find-one-project', projectId)
       const user = await callMSFunction(this.accountsClient, 'find-one-user', project.ownerId.toString())
+      const operator = await callMSFunction(this.accountsClient, 'find-operator-by-owner-id', user._id)
+      if (!operator) {
+        return 'Operator didnt exists'
+      }
       return user
     } catch (error) {
       console.error(error)

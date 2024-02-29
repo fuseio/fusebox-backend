@@ -95,4 +95,9 @@ export class OperatorsController {
   async findOperatorBySmartWallet (walletAddress: string) {
     return this.operatorsService.findOperatorBySmartWallet(walletAddress)
   }
+
+  @MessagePattern('find-operator-by-owner-id')
+  async findOperatorByOwnerId (walletAddress: string) {
+    return this.operatorsService.findWalletOwner(walletAddress)
+  }
 }

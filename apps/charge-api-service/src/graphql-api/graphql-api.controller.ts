@@ -13,4 +13,9 @@ export class GraphqlAPIController {
   getCollectiblesByOwner (@Param('address') address: string) {
     return this.graphqlAPIService.getCollectiblesByOwner(address)
   }
+
+  @Get('userops/:address')
+  getUserOpsBySender (@Param('address') address: string) {
+    return this.graphqlAPIService.getUserOpsBySender(address)
+  }
 }

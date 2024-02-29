@@ -32,8 +32,9 @@
     "docker:full-debug": "docker-compose -f docker-compose.yml -f docker-compose.full-dev.yml -f docker-compose.debug.yml up"
   },
   "dependencies": {
+    "@amplitude/analytics-node": "^1.3.5",
     "@compodoc/compodoc": "^1.1.19",
-    "@fuseio/fusebox-web-sdk": "^0.2.7",
+    "@fuseio/fusebox-web-sdk": "^0.2.9",
     "@liaoliaots/nestjs-redis": "^8.2.2",
     "@nestjs/axios": "0.0.8",
     "@nestjs/common": "^8.0.0",

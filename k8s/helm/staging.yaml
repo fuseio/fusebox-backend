@@ -69,6 +69,8 @@ accounts:
     - smart_wallets_jwt_secret
     - paymaster_funder_private_key
     - paymaster_funder_api_secret_key
+    - amplitude_api_key
+    - incoming_token_transfers_webhook_id
 
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.
@@ -370,6 +372,9 @@ smart-wallets:
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
+    - fuse_sdk_api_key
+    - fuse_sdk_private_key
+    - amplitude_api_key
     - mongo_uri
     - smart_wallets_jwt_secret
     - fuse_wallet_backend_jwt

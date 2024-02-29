@@ -16,7 +16,7 @@ import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wa
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import FuseSdkService from '@app/common/services/fuse-sdk.service'
+import TradeService from '@app/common/services/trade.service'
 
 @Module({
   imports: [
@@ -56,7 +56,7 @@ import FuseSdkService from '@app/common/services/fuse-sdk.service'
     CentrifugoAPIService,
     CentrifugeProvider,
     AnalyticsService,
-    FuseSdkService
+    TradeService
   ]
 })
 

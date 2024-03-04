@@ -4,10 +4,8 @@ import { Injectable, NestInterceptor, ExecutionContext, HttpException } from '@n
 import { ConfigService } from '@nestjs/config'
 import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
-import { get, isEmpty, includes } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import FormData from 'form-data'
-import multer from 'multer'
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
@@ -76,8 +74,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
 
     if (config.addCommunityAddressForPostRequests &&
       ctxHandlerName === 'post' &&
-      isEmpty(body?.communityAddress) &&
-      !includes(params[0], 'images')) {
+      isEmpty(body?.communityAddress)) {
       const projectId = await this.apiKeysService.getProjectIdByPublicKey(query?.apiKey)
       body.communityAddress = projectId
     }
@@ -109,12 +106,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
       }
     }
 
-    const fileRequestConfig = await this.addFileToRequestIfExists(context, request)
-
-    if (!isEmpty(fileRequestConfig)) {
-      requestConfig.data = fileRequestConfig.data
-      requestConfig.headers = fileRequestConfig.headers
-    } else if (!isEmpty(body)) {
+    if (!isEmpty(body)) {
       requestConfig.data = body
     }
 
@@ -122,26 +114,5 @@ export class LegacyApiInterceptor implements NestInterceptor {
       requestConfig.params = query
     }
     return requestConfig
-  }
-
-  private async addFileToRequestIfExists (context: ExecutionContext, request: any) {
-    const mu = multer(Object.assign(Object.assign({}, {}), {}))
-    const ctx = context.switchToHttp()
-    await mu.single('image')(request, ctx.getResponse(), (err) => {
-      if (err) {
-        console.log({ ...err })
-      }
-    })
-    if (!isEmpty(request.file)) {
-      const data = new FormData()
-      const file = request.file
-      data.append(file.fieldname, file.buffer, file.originalname)
-      return {
-        data,
-        headers: data.getHeaders()
-      }
-    } else {
-      return null
-    }
   }
 }

@@ -7,6 +7,7 @@ import { LegacyJobsApiController } from '@app/api-service/legacy-api/legacy-jobs
 import { ConfigModule } from '@nestjs/config'
 import configuration from '@app/api-service/legacy-api/config/configuration'
 import { LegacyTradeApiController } from '@app/api-service/legacy-api/legacy-trade-api/legacy-trade-api.controller'
+import { TradeApiController } from '@app/api-service/legacy-api/legacy-trade-api/legacy-trade-api-v2.controller'
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { LegacyTradeApiController } from '@app/api-service/legacy-api/legacy-tra
     LegacyWalletApiController,
     LegacyAdminApiController,
     LegacyJobsApiController,
-    LegacyTradeApiController
+    LegacyTradeApiController,
+    TradeApiController
   ]
 })
 export class LegacyApiModule { }

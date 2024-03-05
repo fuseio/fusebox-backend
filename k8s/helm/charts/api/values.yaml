@@ -80,6 +80,8 @@ configMap:
   legacy_fuse_wallet_api_url: ""
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
+  # -- Voltage router API URL
+  voltage_router_api_url: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:

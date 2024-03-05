@@ -131,6 +131,7 @@ api:
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    voltage_router_api_url: "https://router.voltage.finance"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

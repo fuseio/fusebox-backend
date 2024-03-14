@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Query, Get, Logger, Req } from '@nestjs/common'
+import { Controller, Post, Body, UseGuards, Query, Get, Logger } from '@nestjs/common'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart-wallets-api.service'

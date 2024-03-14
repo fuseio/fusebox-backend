@@ -63,9 +63,12 @@ configMap:
   legacy_fuse_wallet_api_url: ""
   # -- Charge - Base URL
   charge_base_url: ""
+# -- Legacy - Fuse trade API URL
+  legacy_fuse_trade_api_url: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
+  - amplitude_api_key
   - mongo_uri
   - smart_wallets_jwt_secret
   - fuse_wallet_backend_jwt

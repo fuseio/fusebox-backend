@@ -13,12 +13,15 @@ import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
+import { AnalyticsService } from '@app/common/services/analytics.service'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
   imports: [
     UsersModule,
     ProjectsModule,
     AuthModule,
+    HttpModule,
     PaymasterModule,
     ApiKeyModule,
     ClientsModule.register([
@@ -42,7 +45,12 @@ import { smartWalletsService, notificationsService } from '@app/common/constants
     DatabaseModule
   ],
   controllers: [OperatorsController],
-  providers: [OperatorJwtStrategy, OperatorsService, ...operatorsProviders],
+  providers: [
+    OperatorJwtStrategy,
+    AnalyticsService,
+    OperatorsService,
+    ...operatorsProviders
+  ],
   exports: [OperatorsService]
 })
 export class OperatorsModule { }

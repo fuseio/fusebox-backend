@@ -15,6 +15,12 @@ import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallet
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
 import { decodePaymasterAndData } from '@app/smart-wallets-service/common/utils/helper-functions'
+import { AnalyticsService } from '@app/common/services/analytics.service'
+import { formatUnits } from 'nestjs-ethers'
+import { accountsService, apiService } from '@app/common/constants/microservices.constants'
+import { ClientProxy } from '@nestjs/microservices'
+import { callMSFunction } from '@app/common/utils/client-proxy'
+import TradeService from '@app/common/services/trade.service'
 
 @Injectable()
 export class DataLayerService {
@@ -25,9 +31,13 @@ export class DataLayerService {
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
     private paginatedWalletActionModel: PaginateModel<WalletActionDocument>,
+    @Inject(apiService) private readonly apiClient: ClientProxy,
+    @Inject(accountsService) private readonly accountsClient: ClientProxy,
     private userOpFactory: UserOpFactory,
     private tokenService: TokenService,
-    private smartWalletsAAEventsService: SmartWalletsAAEventsService
+    private smartWalletsAAEventsService: SmartWalletsAAEventsService,
+    private analyticsService: AnalyticsService,
+    private tradeService: TradeService
   ) { }
 
   async recordUserOp (baseUserOp: BaseUserOp) {
@@ -41,6 +51,7 @@ export class DataLayerService {
       const response = await this.userOpModel.create(userOp) as UserOp
       this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
       const walletAction = await this.createWalletActionFromUserOp(userOp)
+      this.handleUserOpAndWalletAction({ userOp, walletAction })
       if (walletAction) {
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       }
@@ -172,5 +183,46 @@ export class DataLayerService {
 
   async findSponsoredTransactionsCount (sponsorId: string): Promise<number> {
     return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
+  }
+
+  async handleUserOpAndWalletAction (body) {
+    try {
+      const user = await this.getOperatorByApiKey(body.userOp.apiKey)
+      if (body.walletAction.name === 'tokenTransfer') {
+        const tokenPriceInUsd = await this.tradeService.getTokenPrice(body.walletAction.sent[0].address)
+        const amount = formatUnits(body.walletAction.sent[0].value, body.walletAction.sent[0].decimals)
+        const amountUsd = Number(tokenPriceInUsd) * Number(amount)
+        const event = {
+          amount,
+          amountUsd,
+          token: body.walletAction.sent[0].symbol,
+          apiKey: body.userOp.apiKey,
+          email: user.email
+        }
+        try {
+          this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user?.auth0Id })
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      return 'Transfer event processed'
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async getOperatorByApiKey (apiKey) {
+    try {
+      const projectId = await callMSFunction(this.apiClient, 'get_project_id_by_public_key', apiKey)
+      const project = await callMSFunction(this.accountsClient, 'find-one-project', projectId)
+      const user = await callMSFunction(this.accountsClient, 'find-one-user', project.ownerId.toString())
+      const operator = await callMSFunction(this.accountsClient, 'find-operator-by-owner-id', user._id)
+      if (!operator) {
+        return 'Operator didnt exists'
+      }
+      return user
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

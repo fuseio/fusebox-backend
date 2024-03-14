@@ -16,12 +16,31 @@ import { getEnvPath } from '@app/common/utils/env.helper'
 import path from 'path'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
 import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
-
+import { UsersModule } from '@app/accounts-service/users/users.module'
+import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
+import { AnalyticsService } from '@app/common/services/analytics.service'
+import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
+import { ClientsModule, Transport } from '@nestjs/microservices'
+import { accountsService } from '@app/common/constants/microservices.constants'
+import TradeService from '@app/common/services/trade.service'
 @Module({
   imports: [
     DatabaseModule,
     ChargeApiModule,
     NotificationsModule,
+    UsersModule,
+    ProjectsModule,
+    OperatorsModule,
+    ClientsModule.register([
+      {
+        name: accountsService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.ACCOUNTS_HOST,
+          port: parseInt(process.env.ACCOUNTS_TCP_PORT)
+        }
+      }
+    ]),
     ConfigModule.forRoot({
       envFilePath: getEnvPath(path.join(__dirname, 'common/config')),
       load: [configuration]
@@ -52,8 +71,11 @@ import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
     CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,
+    AnalyticsService,
     SmartWalletsLegacyService,
     SmartWalletsAAService,
+    TradeService,
+
     ...smartWalletsProviders
   ],
   controllers: [SmartWalletsController]

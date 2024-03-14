@@ -16,5 +16,9 @@ export default () => ({
     baseUrl: `${process.env.LEGACY_FUSE_TRADE_API_URL}/api/v1`,
     replaceHeaders: false
   },
-  LegacyV1ApiUrl: `${process.env.LEGACY_FUSE_ADMIN_API_URL}/api/v1`
+  LegacyV1ApiUrl: `${process.env.LEGACY_FUSE_ADMIN_API_URL}/api/v1`,
+  TradeApiController: {
+    baseUrl: `${process.env.VOLTAGE_ROUTER_API_URL}/swap/v1`,
+    replaceHeaders: false
+  }
 })

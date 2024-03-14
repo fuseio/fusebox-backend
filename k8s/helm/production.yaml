@@ -69,6 +69,11 @@ accounts:
     - smart_wallets_jwt_secret
     - paymaster_funder_private_key
     - paymaster_funder_api_secret_key
+    - amplitude_api_key
+    - incoming_token_transfers_webhook_id
+    - hubspot_portal_id
+    - hubspot_operator_creation_form_id
+    - hubspot_private_app_access_key
 
 amplitude:
   enabled: true
@@ -129,6 +134,7 @@ api:
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    voltage_router_api_url: "https://router.voltage.finance"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -327,7 +333,7 @@ skandha:
   image:
     repository: "etherspot/skandha"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "1.0.36-alpha"
+    tag: "1.0.41-alpha"
 
   # Resources (requests & limits)
   resources:
@@ -370,9 +376,11 @@ smart-wallets:
     centrifugo_api_url: "https://ws.fuse.io/api"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     charge_base_url: "https://api.fuse.io"
+    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
+    - amplitude_api_key
     - mongo_uri
     - smart_wallets_jwt_secret
     - fuse_wallet_backend_jwt

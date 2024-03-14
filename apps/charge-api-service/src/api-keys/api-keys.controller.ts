@@ -28,6 +28,16 @@ export class ApiKeysController {
   }
 
   /**
+   * Gets the project id for the given public api key
+   * @param publicApiKey
+   * @returns an object consisting unsensitive fields of the api_keys of the project
+   */
+  @MessagePattern('get_project_id_by_public_key')
+  getProjectIdByPublicKey (apiKey: string) {
+    return this.apiKeysService.getProjectIdByPublicKey(apiKey)
+  }
+
+  /**
    * Revokes the old API key secret and generates a new one for the given project
    * @param projectId
    * @returns the new API key secret

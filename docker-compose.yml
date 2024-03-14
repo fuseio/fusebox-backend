@@ -10,8 +10,8 @@ services:
     command: npm run start:dev charge-accounts-service
     environment:
       - API_TCP_PORT
-      - ACCOUNTS_HOST
       - API_HOST
+      - ACCOUNTS_HOST
       - RELAY_HOST
       - ACCOUNTS_PORT
       - MONGO_URI=${ACCOUNTS_MONGO_URI}
@@ -31,6 +31,11 @@ services:
       - SMART_WALLETS_TCP_PORT
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_TCP_PORT
+      - AMPLITUDE_API_KEY
+      - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+      - HUBSPOT_PORTAL_ID
+      - HUBSPOT_OPERATOR_CREATION_FORM_ID
+      - HUBSPOT_PRIVATE_APP_ACCESS_KEY
     depends_on:
       - charge-api-service
       - charge-apps-service
@@ -63,6 +68,7 @@ services:
       - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
       - LEGACY_FUSE_TRADE_API_URL
+      - VOLTAGE_ROUTER_API_URL
       - SMART_WALLETS_HOST
       - SMART_WALLETS_TCP_PORT
       - SMART_WALLETS_JWT_SECRET
@@ -177,6 +183,9 @@ services:
     depends_on:
       - centrifugo
     environment:
+      - API_TCP_PORT
+      - API_HOST
+      - AMPLITUDE_API_KEY
       - SMART_WALLETS_HOST
       - SMART_WALLETS_PORT
       - SMART_WALLETS_TCP_PORT
@@ -194,6 +203,9 @@ services:
       - CENTRIFUGO_API_KEY
       - NODE_ENV
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+      - ACCOUNTS_HOST
+      - ACCOUNTS_TCP_PORT
+      - LEGACY_FUSE_TRADE_API_URL
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

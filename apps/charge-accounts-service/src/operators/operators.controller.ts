@@ -6,6 +6,7 @@ import { OperatorsService } from '@app/accounts-service/operators/operators.serv
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 import { Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
+import { MessagePattern } from '@nestjs/microservices'
 
 @Controller({ path: 'operators', version: '1' })
 export class OperatorsController {
@@ -87,5 +88,16 @@ export class OperatorsController {
   @Get('/sponsored-transaction')
   async getSponsoredTransactionsCount (@User('sub') auth0Id: string) {
     return this.operatorsService.getSponsoredTransactionsCount(auth0Id)
+  }
+
+  // Endpoint for microservice interaction
+  @MessagePattern('find-operator-by-smart-wallet')
+  async findOperatorBySmartWallet (walletAddress: string) {
+    return this.operatorsService.findOperatorBySmartWallet(walletAddress)
+  }
+
+  @MessagePattern('find-operator-by-owner-id')
+  async findOperatorByOwnerId (walletAddress: string) {
+    return this.operatorsService.findWalletOwner(walletAddress)
   }
 }

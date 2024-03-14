@@ -140,15 +140,18 @@ export class DataLayerService {
 
         this.logger.debug('Creating a new receive wallet action...')
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
-        await this.paginatedWalletActionModel.create(walletAction)
-      } else {
-        this.logger.debug(
-          'Not creating a new receive wallet action ' +
-          'since the direction is not incoming...'
-        )
+        return this.paginatedWalletActionModel.create(walletAction)
       }
+
+      this.logger.debug(
+        'Not creating a new receive wallet action ' +
+        'since the direction is not incoming...'
+      )
+
+      return true
     } catch (error) {
       this.logger.error('Error handling token transfer webhook:', error)
+      throw error
     }
   }
 

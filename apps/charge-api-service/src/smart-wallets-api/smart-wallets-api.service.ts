@@ -1,7 +1,7 @@
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
@@ -9,6 +9,8 @@ import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallet
 
 @Injectable()
 export class SmartWalletsAPIService {
+  private readonly logger = new Logger(SmartWalletsAPIService.name)
+
   constructor (
     @Inject(smartWalletsService) private readonly smartWalletsClient: ClientProxy
   ) { }
@@ -46,6 +48,8 @@ export class SmartWalletsAPIService {
   }
 
   async handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
-    return callMSFunction(this.smartWalletsClient, 'handle-token-transfer-webhook', tokenTransferWebhookDto)
+    return callMSFunction(this.smartWalletsClient, 'handle-token-transfer-webhook', tokenTransferWebhookDto).catch((error) => {
+      this.logger.log('Error handling token transfer webhook:', error)
+    })
   }
 }

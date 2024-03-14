@@ -18,6 +18,8 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
+import { HttpService } from '@nestjs/axios'
+import { catchError, lastValueFrom, map } from 'rxjs'
 
 @Injectable()
 export class OperatorsService {
@@ -34,7 +36,8 @@ export class OperatorsService {
     private readonly dataLayerClient: ClientProxy,
     @Inject(notificationsService)
     private readonly notificationsClient: ClientProxy,
-    private readonly analyticsService: AnalyticsService
+    private readonly analyticsService: AnalyticsService,
+    private httpService: HttpService
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -102,11 +105,11 @@ export class OperatorsService {
       const publicKey = await this.projectsService.getPublic(projectObject._id)
       const secretKey = await this.createProjectSecret(projectObject)
       const sponsorId = await this.createPaymasters(projectObject)
-
       const predictedWallet = await this.predictWallet(auth0Id, 0, '0_1_0', 'production')
       await this.createOperatorWallet(user, predictedWallet)
       await this.addAddressToOperatorsWebhook(predictedWallet)
       await this.addAddressToTokenReceiveWebhook(predictedWallet)
+      this.hubspotFormSubmit(createOperatorUserDto)
       return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
     } catch (error) {
       this.errorHandler(error)
@@ -381,6 +384,62 @@ export class OperatorsService {
       this.analyticsService.trackEvent('Operator Account Activated', { ...eventData }, { user_id: user?.auth0Id })
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  async hubspotFormSubmit (createOperatorUserDto: CreateOperatorUserDto) {
+    const hubspotPortalId = this.configService.getOrThrow('hubspotPortalId')
+    const hubspotOperatorCreationFormId = this.configService.getOrThrow('hubspotOperatorCreationFormId')
+    const hubspotPrivateAppAccessKey = this.configService.getOrThrow('hubspotPrivateAppAccessKey')
+    const url = `https://api.hsforms.com/submissions/v3/integration/secure/submit/${hubspotPortalId}/${hubspotOperatorCreationFormId}`
+
+    const data = {
+      submittedAt: Date.now(),
+      fields: [
+        {
+          name: 'email',
+          value: `${createOperatorUserDto.email}`
+        },
+        {
+          name: 'firstname',
+          value: `${createOperatorUserDto.firstName}`
+        },
+        {
+          name: 'lastname',
+          value: `${createOperatorUserDto.lastName}`
+        },
+        {
+          name: 'company_domain',
+          value: `${createOperatorUserDto.name}`
+        }
+      ],
+      context: {
+        pageUri: 'https://console.fuse.io/dashboard',
+        pageName: 'Operator contact details'
+      }
+    }
+
+    try {
+      const response = await lastValueFrom(
+        this.httpService.post(url, data, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${hubspotPrivateAppAccessKey}`
+          }
+        }).pipe(
+          map(response => response.data),
+          catchError(e => {
+            throw new HttpException(
+              `Error sending data to HubSpot: ${e.response?.statusText || 'Unknown Error'}: ${e.response?.data?.error || ''}`,
+              e.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
+            )
+          })
+        )
+      )
+
+      console.log('Submission successful', response)
+    } catch (error) {
+      console.error('Submission failed:', error.response ? error.response.data : error.message)
     }
   }
 }

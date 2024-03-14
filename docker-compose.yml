@@ -33,6 +33,9 @@ services:
       - NOTIFICATIONS_TCP_PORT
       - AMPLITUDE_API_KEY
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+      - HUBSPOT_PORTAL_ID
+      - HUBSPOT_OPERATOR_CREATION_FORM_ID
+      - HUBSPOT_PRIVATE_APP_ACCESS_KEY
     depends_on:
       - charge-api-service
       - charge-apps-service

@@ -98,44 +98,58 @@ export class DataLayerService {
   async handleTokenTransferWebhook (
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
-    const from = tokenTransferWebhookDto.from
-    const to = tokenTransferWebhookDto.to
-    const txHash = tokenTransferWebhookDto.txHash
-    const value = tokenTransferWebhookDto.value
-    const tokenType = tokenTransferWebhookDto.tokenType
-    const direction = tokenTransferWebhookDto.direction
-    const address = tokenTransferWebhookDto.tokenAddress
-    const name = tokenTransferWebhookDto.tokenName
-    const symbol = tokenTransferWebhookDto.tokenSymbol
-    const decimals = tokenTransferWebhookDto.tokenDecimals
-    const blockNumber = tokenTransferWebhookDto.blockNumber
-    const tokenId = tokenTransferWebhookDto.tokenId
+    try {
+      const {
+        direction
+      } = tokenTransferWebhookDto
 
-    this.logger.debug('Handling token transfer webhook...')
-    this.logger.debug(`TX hash: ${txHash}, direction: ${direction}`)
+      if (direction === 'incoming') {
+        this.logger.debug('Handling token transfer webhook...')
+        const {
+          from,
+          to,
+          txHash,
+          value,
+          tokenType,
+          tokenAddress,
+          tokenName,
+          tokenSymbol,
+          tokenDecimals,
+          blockNumber,
+          tokenId
+        } = tokenTransferWebhookDto
+        this.logger.debug(`TX hash: ${txHash}, direction: ${direction}`)
 
-    const walletAction = tokenReceiveToWalletAction(
-      from,
-      to.toLowerCase(),
-      txHash,
-      value,
-      tokenType,
-      { name, symbol, address, decimals },
-      blockNumber,
-      tokenId
-    )
-    if (direction === 'incoming') {
-      this.logger.debug('Creating a new receive wallet action...')
-      this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
-      return this.paginatedWalletActionModel.create(walletAction)
+        const tokenDetails = {
+          name: tokenName,
+          symbol: tokenSymbol,
+          address: tokenAddress,
+          decimals: tokenDecimals
+        }
+
+        const walletAction = tokenReceiveToWalletAction(
+          from,
+          to.toLowerCase(),
+          txHash,
+          value,
+          tokenType,
+          tokenDetails,
+          blockNumber,
+          tokenId
+        )
+
+        this.logger.debug('Creating a new receive wallet action...')
+        this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+        await this.paginatedWalletActionModel.create(walletAction)
+      } else {
+        this.logger.debug(
+          'Not creating a new receive wallet action ' +
+          'since the direction is not incoming...'
+        )
+      }
+    } catch (error) {
+      this.logger.error('Error handling token transfer webhook:', error)
     }
-
-    this.logger.debug(
-      'Not creating a new receive wallet action ' +
-      'since the direction is not incoming...'
-    )
-
-    return true
   }
 
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {

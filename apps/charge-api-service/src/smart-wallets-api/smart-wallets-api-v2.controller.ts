@@ -40,13 +40,10 @@ export class SmartWalletsAPIV2Controller {
   ) {
     this.logger.debug(
       'A request has been made to token-transfers:',
-      JSON.stringify(tokenTransferWebhookDto),
-      `request.connection.remoteAddress: ${request.connection.remoteAddress}`,
-      `request.hostname: ${request.hostname}`,
-      `rawHeaders: ${request.rawHeaders}`
+      JSON.stringify(tokenTransferWebhookDto)
     )
 
-    await this.smartWalletsAPIService.handleTokenTransferWebhook(
+    this.smartWalletsAPIService.handleTokenTransferWebhook(
       tokenTransferWebhookDto
     )
 

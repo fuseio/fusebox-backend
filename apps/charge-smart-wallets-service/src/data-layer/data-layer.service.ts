@@ -51,8 +51,8 @@ export class DataLayerService {
       const response = await this.userOpModel.create(userOp) as UserOp
       this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
       const walletAction = await this.createWalletActionFromUserOp(userOp)
-      this.handleUserOpAndWalletAction({ userOp, walletAction })
       if (walletAction) {
+        this.handleUserOpAndWalletAction({ userOp, walletAction })
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       }
       return response
@@ -82,7 +82,8 @@ export class DataLayerService {
       await this.paginatedWalletActionModel.create(walletAction)
       return walletAction
     } catch (error) {
-      throw new Error(`Failed to create wallet action from user operation: ${error.message}`)
+      this.logger.error(`Failed to create wallet action from user operation: ${error.message}`)
+      return null
     }
   }
 

@@ -79,7 +79,7 @@ export class DataLayerService {
   async createWalletActionFromUserOp (parsedUserOp: UserOp) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
-      await this.paginatedWalletActionModel.create(walletAction) // Ensure this is awaited
+      await this.paginatedWalletActionModel.create(walletAction)
       return walletAction
     } catch (error) {
       throw new Error(`Failed to create wallet action from user operation: ${error.message}`)

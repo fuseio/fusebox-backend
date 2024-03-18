@@ -9,7 +9,7 @@ import {
   tokenReceiveToWalletAction,
   parsedUserOpToWalletAction
 } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
-import { isNil } from 'lodash'
+import { get, has, isNil } from 'lodash'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
@@ -57,7 +57,7 @@ export class DataLayerService {
       }
       return response
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error recording user op:', error)
     }
   }
 
@@ -72,7 +72,7 @@ export class DataLayerService {
       this.updateWalletAction(updatedUserOp)
       return updatedUserOp
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error updating user op:', error)
     }
   }
 
@@ -91,7 +91,7 @@ export class DataLayerService {
       }
       return updatedWalletAction
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error updating wallet action:', error)
     }
   }
 
@@ -193,7 +193,7 @@ export class DataLayerService {
       const result = await this.paginatedWalletActionModel.paginate(query, options)
       return result
     } catch (error) {
-      console.error('Error fetching paginated wallet actions:', error)
+      this.logger.error('Error fetching paginated wallet actions:', error)
       throw error
     }
   }
@@ -205,31 +205,32 @@ export class DataLayerService {
   async handleUserOpAndWalletAction (body) {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
-      if (body.walletAction.name === 'tokenTransfer') {
-        const tokenPriceInUsd = await this.tradeService.getTokenPrice(body?.walletAction?.sent[0]?.address)
-        const amount = formatUnits(body?.walletAction.sent[0].value, body?.walletAction?.sent[0]?.decimals)
-        const amountUsd = Number(tokenPriceInUsd) * Number(amount)
-        if (!user?.auth0Id) {
-          console.error('Missing auth0Id for user')
-          return 'Missing user identification'
-        }
-        const event = {
-          amount,
-          amountUsd,
-          token: body?.walletAction.sent[0].symbol,
-          apiKey: body?.userOp?.apiKey,
-          email: user?.email ? user.email : 'empty email'
-        }
-        try {
-          this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user.auth0Id })
-        } catch (error) {
-          console.error('Error tracking event:', error)
-          // Handle the error or log it, but allow the function to continue.
+      if (!user?.auth0Id) {
+        this.logger.error('Missing auth0Id for user')
+      }
+      if (get(body, 'walletAction.name') === 'tokenTransfer') {
+        const [sent] = get(body, 'walletAction.sent', [])
+        if (has(sent, 'address') && has(sent, 'value') && has(sent, 'decimals')) {
+          const { address, value, decimals } = sent
+          const tokenPriceInUsd = await this.tradeService.getTokenPrice(address)
+          const amount = formatUnits(value, decimals)
+          const amountUsd = Number(tokenPriceInUsd) * Number(amount)
+          const event = {
+            amount,
+            amountUsd,
+            token: body?.walletAction.sent[0].symbol,
+            apiKey: body?.userOp?.apiKey,
+            email: user?.email ? user.email : 'empty email'
+          }
+          try {
+            this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user.auth0Id })
+          } catch (error) {
+            this.logger.error('Error tracking event:', error)
+          }
         }
       }
-      return 'Transfer event processed'
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error handling user op and wallet action:', error)
     }
   }
 
@@ -244,7 +245,7 @@ export class DataLayerService {
       }
       return user
     } catch (error) {
-      console.error(error)
+      this.logger.error(error)
     }
   }
 }

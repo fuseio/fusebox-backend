@@ -260,7 +260,7 @@ export class OperatorsService {
       try {
         this.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
       } catch (error) {
-        console.error(`Error on sending activation event to Amplitude: ${error}`)
+        this.logger.error(`Error on sending activation event to Amplitude: ${error}`)
       }
       await this.deleteAddressFromOperatorsWebhook(address)
     } catch (error) {
@@ -383,7 +383,7 @@ export class OperatorsService {
       }
       this.analyticsService.trackEvent('Operator Account Activated', { ...eventData }, { user_id: user?.auth0Id })
     } catch (error) {
-      console.error(error)
+      this.logger.error('Error tracking event:', error)
     }
   }
 
@@ -437,9 +437,9 @@ export class OperatorsService {
         )
       )
 
-      console.log('Submission successful', response)
+      this.logger.log('Submission successful', response)
     } catch (error) {
-      console.error('Submission failed:', error.response ? error.response.data : error.message)
+      this.logger.error('Submission failed:', error.response ? error.response.data : error.message)
     }
   }
 }

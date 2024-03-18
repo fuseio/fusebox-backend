@@ -206,20 +206,25 @@ export class DataLayerService {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
       if (body.walletAction.name === 'tokenTransfer') {
-        const tokenPriceInUsd = await this.tradeService.getTokenPrice(body.walletAction.sent[0].address)
-        const amount = formatUnits(body.walletAction.sent[0].value, body.walletAction.sent[0].decimals)
+        const tokenPriceInUsd = await this.tradeService.getTokenPrice(body?.walletAction?.sent[0]?.address)
+        const amount = formatUnits(body?.walletAction.sent[0].value, body?.walletAction?.sent[0]?.decimals)
         const amountUsd = Number(tokenPriceInUsd) * Number(amount)
+        if (!user?.auth0Id) {
+          console.error('Missing auth0Id for user')
+          return 'Missing user identification'
+        }
         const event = {
           amount,
           amountUsd,
-          token: body.walletAction.sent[0].symbol,
-          apiKey: body.userOp.apiKey,
-          email: user.email
+          token: body?.walletAction.sent[0].symbol,
+          apiKey: body?.userOp?.apiKey,
+          email: user?.email ? user.email : 'empty email'
         }
         try {
-          this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user?.auth0Id })
+          this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user.auth0Id })
         } catch (error) {
-          console.error(error)
+          console.error('Error tracking event:', error)
+          // Handle the error or log it, but allow the function to continue.
         }
       }
       return 'Transfer event processed'

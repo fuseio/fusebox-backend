@@ -57,21 +57,41 @@ export class WebhooksService {
   }
 
   async createAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
-    const docs = this.buildDocs(createWebhookAddressesDto)
+    // Normalize addresses to lower case to ensure uniqueness in the input
+    const normalizedAddresses = createWebhookAddressesDto.addresses.map(address => address.toLowerCase())
+    const uniqueNormalizedAddresses = Array.from(new Set(normalizedAddresses))
 
-    try {
-      const result = await this.webhookAddressModel.insertMany(docs, { ordered: false })
-      return result
-    } catch (err) {
-      // We are ignoring duplicate (webhookId, address) pairs that already exist in the DB
-      // For such cases Mongoose throws a MongoBulkWrite error with code 11000
-      // The error includes successfully "insertedDocs", so we only return this array
-      // If we get an error with code different than 11000, we throw the error
-      if (err.code === 11000) {
-        return err?.insertedDocs
-      } else {
-        throw err
+    // Filter out addresses that already exist in the database, ignoring case
+    const existingAddresses = await this.webhookAddressModel.find({
+      address: { $in: uniqueNormalizedAddresses.map(address => new RegExp('^' + address + '$', 'i')) },
+      webhookId: createWebhookAddressesDto.webhookId
+    }).exec()
+
+    const existingAddressesLowercased = existingAddresses.map(doc => doc.address.toLowerCase())
+    const newAddresses = uniqueNormalizedAddresses.filter(address => !existingAddressesLowercased.includes(address))
+
+    // Proceed only with addresses that do not exist in the database
+    if (newAddresses.length > 0) {
+      const updatedDto = {
+        ...createWebhookAddressesDto,
+        addresses: newAddresses
       }
+
+      const docs = this.buildDocs(updatedDto)
+
+      try {
+        const result = await this.webhookAddressModel.insertMany(docs, { ordered: false })
+        return result
+      } catch (err) {
+        if (err.code === 11000) {
+          return err?.insertedDocs
+        } else {
+          throw err
+        }
+      }
+    } else {
+      // Return some meaningful response or throw an error if no new addresses to add
+      return { message: 'No new addresses to add.' }
     }
   }
 

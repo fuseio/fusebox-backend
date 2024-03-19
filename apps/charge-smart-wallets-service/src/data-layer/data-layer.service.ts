@@ -51,7 +51,7 @@ export class DataLayerService {
       const response = await this.userOpModel.create(userOp) as UserOp
       this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
       const walletAction = await this.createWalletActionFromUserOp(userOp)
-      this.handleUserOpAndWalletAction({ userOp, walletAction })
+      this.handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent({ userOp, walletAction })
       if (walletAction) {
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       }
@@ -202,9 +202,13 @@ export class DataLayerService {
     return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
   }
 
-  async handleUserOpAndWalletAction (body) {
+  async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
+      if (!user) {
+        this.logger.error(`User with ${body.userOp.apiKey} isnt operator`)
+        return
+      }
       if (!user?.auth0Id) {
         this.logger.error('Missing auth0Id for user')
       }
@@ -230,7 +234,7 @@ export class DataLayerService {
         }
       }
     } catch (error) {
-      this.logger.error('Error handling user op and wallet action:', error)
+      this.logger.error('Error handling user op and wallet action for operators analytics event:', error)
     }
   }
 
@@ -241,7 +245,8 @@ export class DataLayerService {
       const user = await callMSFunction(this.accountsClient, 'find-one-user', project.ownerId.toString())
       const operator = await callMSFunction(this.accountsClient, 'find-operator-by-owner-id', user._id)
       if (!operator) {
-        return 'Operator didnt exists'
+        this.logger.log('Operator didnt exists')
+        return false
       }
       return user
     } catch (error) {

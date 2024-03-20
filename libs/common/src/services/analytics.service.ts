@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { init, track, Types } from '@amplitude/analytics-node'
 import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class AnalyticsService {
+  private readonly logger = new Logger(AnalyticsService.name)
+
   constructor (
     private configService: ConfigService
   ) {
@@ -14,7 +16,7 @@ export class AnalyticsService {
     try {
       track(eventInput, eventProperties, eventOptions)
     } catch (error) {
-      console.error(error)
+      this.logger.error(error)
     }
   }
 }

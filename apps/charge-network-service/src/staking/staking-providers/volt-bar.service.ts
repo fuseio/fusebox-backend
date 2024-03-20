@@ -4,7 +4,7 @@ import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { encodeFunctionCall } from '@app/network-service/common/utils/helper-functions'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
 import GraphService from '@app/network-service/staking/graph.service'
 import { ConfigService } from '@nestjs/config'
@@ -17,6 +17,8 @@ import { formatEther } from 'nestjs-ethers'
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {
+  private readonly logger = new Logger(VoltBarService.name)
+
   constructor (
     private readonly web3ProviderService: Web3ProviderService,
     private readonly graphService: GraphService,
@@ -76,21 +78,15 @@ export default class VoltBarService implements StakingProvider {
       unStakeTokenAddress
     }: StakingOption) {
     try {
-      console.debug('Getting staking data for account:', accountAddress)
       const stakingData: any = await this.getStakingData(accountAddress)
-      console.debug('Staking data retrieved:', stakingData)
 
-      console.debug('Getting token price for address:', tokenAddress)
       const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
-      console.info('Token price retrieved:', voltPrice)
 
       const stakedAmount = Number(stakingData?.user?.xVolt ?? 0) * Number(stakingData?.bar?.ratio ?? 0)
       const stakedAmountUSD = stakedAmount * voltPrice
       const earnedAmountUSD = 0
 
-      console.debug('Calculating staking APR')
       const stakingApr = await this.stakingApr()
-      console.info('Staking APR calculated:', stakingApr)
 
       return {
         tokenAddress,
@@ -105,7 +101,7 @@ export default class VoltBarService implements StakingProvider {
       }
     } catch (error) {
       // Add additional error handling or rethrow the error as needed
-      console.error('Error in staking data retrieval:', error)
+      this.logger.error('Error in staking data retrieval:', error)
     }
   }
 
@@ -132,22 +128,21 @@ export default class VoltBarService implements StakingProvider {
 
       return (movingAverage * daysInYear * 100) / totalStaked
     } catch (error) {
-      console.error(`stakingApr error: ${error}`)
-      console.error(`stakingApr query:${getBarStats}`)
-      console.error(`arguments: ${startTimestamp}`)
+      this.logger.error(`stakingApr error: ${error}`)
+      this.logger.error(`stakingApr query:${getBarStats}`)
+      this.logger.error(`arguments: ${startTimestamp}`)
     }
   }
 
   async tvl ({ tokenAddress }: StakingOption) {
-    console.debug('tvl function call')
     const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress)
     try {
       const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call()
       const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
       return Number(formatEther(voltBalance)) * voltPrice
     } catch (error) {
-      console.error(`tvl error: ${error}`)
-      console.error(`params: ${tokenAddress}`)
+      this.logger.error(`tvl error: ${error}`)
+      this.logger.error(`params: ${tokenAddress}`)
     }
   }
 
@@ -160,9 +155,9 @@ export default class VoltBarService implements StakingProvider {
 
       return data
     } catch (error) {
-      console.error(`getStakingData error: ${error}`)
-      console.error(`gatStakingData error query: ${getBarUser}`)
-      console.error({
+      this.logger.error(`getStakingData error: ${error}`)
+      this.logger.error(`gatStakingData error query: ${getBarUser}`)
+      this.logger.error({
         barId: this.address,
         userId: accountAddress
       })

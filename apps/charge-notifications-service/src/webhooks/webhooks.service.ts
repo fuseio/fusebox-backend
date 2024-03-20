@@ -57,41 +57,31 @@ export class WebhooksService {
   }
 
   async createAddresses (createWebhookAddressesDto: CreateWebhookAddressesDto): Promise<any> {
-    // Normalize addresses to lower case to ensure uniqueness in the input
-    const normalizedAddresses = createWebhookAddressesDto.addresses.map(address => address.toLowerCase())
-    const uniqueNormalizedAddresses = Array.from(new Set(normalizedAddresses))
+    const docs = this.buildDocs(createWebhookAddressesDto)
 
-    // Filter out addresses that already exist in the database, ignoring case
-    const existingAddresses = await this.webhookAddressModel.find({
-      address: { $in: uniqueNormalizedAddresses.map(address => new RegExp('^' + address + '$', 'i')) },
-      webhookId: createWebhookAddressesDto.webhookId
-    }).exec()
+    try {
+      const result = await this.webhookAddressModel.insertMany(docs, { ordered: false })
+      return result
+    } catch (err) {
+      if (err.code === 11000) {
+        // Handling duplicate key error
+        const duplicateKeys = err.writeErrors?.map(error => ({
+          index: error.index,
+          errmsg: error.errmsg,
+          op: error.op
+        })) || []
 
-    const existingAddressesLowercased = existingAddresses.map(doc => doc.address.toLowerCase())
-    const newAddresses = uniqueNormalizedAddresses.filter(address => !existingAddressesLowercased.includes(address))
-
-    // Proceed only with addresses that do not exist in the database
-    if (newAddresses.length > 0) {
-      const updatedDto = {
-        ...createWebhookAddressesDto,
-        addresses: newAddresses
-      }
-
-      const docs = this.buildDocs(updatedDto)
-
-      try {
-        const result = await this.webhookAddressModel.insertMany(docs, { ordered: false })
-        return result
-      } catch (err) {
-        if (err.code === 11000) {
-          return err?.insertedDocs
-        } else {
-          throw err
+        this.logger.warn(`Some entries were duplicates and not inserted for webhookId: ${createWebhookAddressesDto.webhookId}`)
+        // Return a response indicating which entries were duplicates
+        return {
+          message: 'Some entries were duplicates and not inserted.',
+          duplicateEntries: duplicateKeys
         }
+      } else {
+        // If the error code is not 11000, rethrow the error
+        this.logger.error(err)
+        return err
       }
-    } else {
-      // Return some meaningful response or throw an error if no new addresses to add
-      return { message: 'No new addresses to add.' }
     }
   }
 

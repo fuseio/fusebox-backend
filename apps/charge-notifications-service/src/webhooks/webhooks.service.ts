@@ -147,7 +147,7 @@ export class WebhooksService {
             continue
           }
 
-          console.log(
+          this.logger.log(
             `Creating a new webhook event for the tx ${eventData.txHash}`
           )
 
@@ -155,7 +155,7 @@ export class WebhooksService {
             webhook: webhookId, projectId, webhookUrl, eventData, direction, addressType
           })
 
-          console.log(
+          this.logger.log(
             `Created a new webhook event for the tx ${eventData.txHash}`
           )
         } catch (err) {

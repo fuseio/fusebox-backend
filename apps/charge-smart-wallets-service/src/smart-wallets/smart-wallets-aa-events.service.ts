@@ -44,7 +44,7 @@ export class SmartWalletsAAEventsService {
     try {
       const operator = await callMSFunction(this.accountsClient, 'find-operator-by-smart-wallet', walletAction.walletAddress)
       if (!operator) {
-        return 'Operator doesnt exist'
+        return
       }
       const operatorId = operator.ownerId.toString()
       const user = await callMSFunction(this.accountsClient, 'find-one-user', operatorId)
@@ -61,9 +61,8 @@ export class SmartWalletsAAEventsService {
         email: user.email
       }
       this.analyticsService.trackEvent('Account Balance Deposited', { ...event }, { user_id: user?.auth0Id })
-      return 'Receive event processed'
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error tracking Account Balance Deposited:', error)
     }
   }
 }

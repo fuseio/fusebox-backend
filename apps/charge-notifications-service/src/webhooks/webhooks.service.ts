@@ -80,7 +80,7 @@ export class WebhooksService {
       } else {
         // If the error code is not 11000, rethrow the error
         this.logger.error(err)
-        return err
+        throw err
       }
     }
   }
@@ -144,25 +144,17 @@ export class WebhooksService {
         !isEmpty(eventType) &&
         this.isRelevantEvent(eventData.tokenType, eventType)) {
         try {
-          const webhookEvent = await this.webhookEventModel.findOne({
-            webhook: webhookId,
-            'eventData.txHash': eventData.txHash
-          })
-
-          if (webhookEvent) {
-            this.logger.debug(
-              `Webhook event for tx ${eventData.txHash} already exists.`,
-              'Not creating another webhook event for this tx.'
-            )
-            continue
-          }
-
           console.log(
             `Creating a new webhook event for the tx ${eventData.txHash}`
           )
 
           await this.webhookEventModel.create({
-            webhook: webhookId, projectId, webhookUrl, eventData, direction, addressType
+            webhook: webhookId,
+            projectId,
+            webhookUrl,
+            eventData,
+            direction,
+            addressType
           })
 
           console.log(

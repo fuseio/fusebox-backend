@@ -63,13 +63,23 @@ export class WebhooksService {
       const result = await this.webhookAddressModel.insertMany(docs, { ordered: false })
       return result
     } catch (err) {
-      // We are ignoring duplicate (webhookId, address) pairs that already exist in the DB
-      // For such cases Mongoose throws a MongoBulkWrite error with code 11000
-      // The error includes successfully "insertedDocs", so we only return this array
-      // If we get an error with code different than 11000, we throw the error
       if (err.code === 11000) {
-        return err?.insertedDocs
+        // Handling duplicate key error
+        const duplicateKeys = err.writeErrors?.map(error => ({
+          index: error.index,
+          errmsg: error.errmsg,
+          op: error.op
+        })) || []
+
+        this.logger.warn(`Some entries were duplicates and not inserted for webhookId: ${createWebhookAddressesDto.webhookId}`)
+        // Return a response indicating which entries were duplicates
+        return {
+          message: 'Some entries were duplicates and not inserted.',
+          duplicateEntries: duplicateKeys
+        }
       } else {
+        // If the error code is not 11000, rethrow the error
+        this.logger.error(err)
         throw err
       }
     }
@@ -134,28 +144,20 @@ export class WebhooksService {
         !isEmpty(eventType) &&
         this.isRelevantEvent(eventData.tokenType, eventType)) {
         try {
-          const webhookEvent = await this.webhookEventModel.findOne({
-            webhook: webhookId,
-            'eventData.txHash': eventData.txHash
-          })
-
-          if (webhookEvent) {
-            this.logger.debug(
-              `Webhook event for tx ${eventData.txHash} already exists.`,
-              'Not creating another webhook event for this tx.'
-            )
-            continue
-          }
-
-          console.log(
+          this.logger.log(
             `Creating a new webhook event for the tx ${eventData.txHash}`
           )
 
           await this.webhookEventModel.create({
-            webhook: webhookId, projectId, webhookUrl, eventData, direction, addressType
+            webhook: webhookId,
+            projectId,
+            webhookUrl,
+            eventData,
+            direction,
+            addressType
           })
 
-          console.log(
+          this.logger.log(
             `Created a new webhook event for the tx ${eventData.txHash}`
           )
         } catch (err) {

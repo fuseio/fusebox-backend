@@ -9,7 +9,7 @@ import {
   tokenReceiveToWalletAction,
   parsedUserOpToWalletAction
 } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
-import { isNil } from 'lodash'
+import { get, has, isNil } from 'lodash'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
@@ -51,13 +51,13 @@ export class DataLayerService {
       const response = await this.userOpModel.create(userOp) as UserOp
       this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
       const walletAction = await this.createWalletActionFromUserOp(userOp)
-      this.handleUserOpAndWalletAction({ userOp, walletAction })
+      this.handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent({ userOp, walletAction })
       if (walletAction) {
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       }
       return response
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error recording user op:', error)
     }
   }
 
@@ -72,14 +72,18 @@ export class DataLayerService {
       this.updateWalletAction(updatedUserOp)
       return updatedUserOp
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error updating user op:', error)
     }
   }
 
   async createWalletActionFromUserOp (parsedUserOp: UserOp) {
-    const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
-    this.paginatedWalletActionModel.create(walletAction)
-    return walletAction
+    try {
+      const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
+      await this.paginatedWalletActionModel.create(walletAction)
+      return walletAction
+    } catch (error) {
+      throw new Error(`Failed to create wallet action from user operation: ${error.message}`)
+    }
   }
 
   async updateWalletAction (userOp: any) {
@@ -91,51 +95,68 @@ export class DataLayerService {
       }
       return updatedWalletAction
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error updating wallet action:', error)
     }
   }
 
   async handleTokenTransferWebhook (
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
-    const from = tokenTransferWebhookDto.from
-    const to = tokenTransferWebhookDto.to
-    const txHash = tokenTransferWebhookDto.txHash
-    const value = tokenTransferWebhookDto.value
-    const tokenType = tokenTransferWebhookDto.tokenType
-    const direction = tokenTransferWebhookDto.direction
-    const address = tokenTransferWebhookDto.tokenAddress
-    const name = tokenTransferWebhookDto.tokenName
-    const symbol = tokenTransferWebhookDto.tokenSymbol
-    const decimals = tokenTransferWebhookDto.tokenDecimals
-    const blockNumber = tokenTransferWebhookDto.blockNumber
-    const tokenId = tokenTransferWebhookDto.tokenId
+    try {
+      const {
+        direction
+      } = tokenTransferWebhookDto
 
-    this.logger.debug('Handling token transfer webhook...')
-    this.logger.debug(`TX hash: ${txHash}, direction: ${direction}`)
+      if (direction === 'incoming') {
+        this.logger.debug('Handling token transfer webhook...')
+        const {
+          from,
+          to,
+          txHash,
+          value,
+          tokenType,
+          tokenAddress,
+          tokenName,
+          tokenSymbol,
+          tokenDecimals,
+          blockNumber,
+          tokenId
+        } = tokenTransferWebhookDto
+        this.logger.debug(`TX hash: ${txHash}, direction: ${direction}`)
 
-    const walletAction = tokenReceiveToWalletAction(
-      from,
-      to.toLowerCase(),
-      txHash,
-      value,
-      tokenType,
-      { name, symbol, address, decimals },
-      blockNumber,
-      tokenId
-    )
-    if (direction === 'incoming') {
-      this.logger.debug('Creating a new receive wallet action...')
-      this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
-      return this.paginatedWalletActionModel.create(walletAction)
+        const tokenDetails = {
+          name: tokenName,
+          symbol: tokenSymbol,
+          address: tokenAddress,
+          decimals: tokenDecimals
+        }
+
+        const walletAction = tokenReceiveToWalletAction(
+          from,
+          to.toLowerCase(),
+          txHash,
+          value,
+          tokenType,
+          tokenDetails,
+          blockNumber,
+          tokenId
+        )
+
+        this.logger.debug('Creating a new receive wallet action...')
+        this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
+        return this.paginatedWalletActionModel.create(walletAction)
+      }
+
+      this.logger.debug(
+        'Not creating a new receive wallet action ' +
+        'since the direction is not incoming...'
+      )
+
+      return true
+    } catch (error) {
+      this.logger.error('Error handling token transfer webhook:', error)
+      throw error
     }
-
-    this.logger.debug(
-      'Not creating a new receive wallet action ' +
-      'since the direction is not incoming...'
-    )
-
-    return true
   }
 
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
@@ -176,7 +197,7 @@ export class DataLayerService {
       const result = await this.paginatedWalletActionModel.paginate(query, options)
       return result
     } catch (error) {
-      console.error('Error fetching paginated wallet actions:', error)
+      this.logger.error('Error fetching paginated wallet actions:', error)
       throw error
     }
   }
@@ -185,29 +206,39 @@ export class DataLayerService {
     return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
   }
 
-  async handleUserOpAndWalletAction (body) {
+  async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
-      if (body.walletAction.name === 'tokenTransfer') {
-        const tokenPriceInUsd = await this.tradeService.getTokenPrice(body.walletAction.sent[0].address)
-        const amount = formatUnits(body.walletAction.sent[0].value, body.walletAction.sent[0].decimals)
-        const amountUsd = Number(tokenPriceInUsd) * Number(amount)
-        const event = {
-          amount,
-          amountUsd,
-          token: body.walletAction.sent[0].symbol,
-          apiKey: body.userOp.apiKey,
-          email: user.email
-        }
-        try {
-          this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user?.auth0Id })
-        } catch (error) {
-          console.error(error)
+      if (!user) {
+        this.logger.error(`User with ${body.userOp.apiKey} isnt operator`)
+        return
+      }
+      if (!user?.auth0Id) {
+        this.logger.error('Missing auth0Id for user')
+      }
+      if (get(body, 'walletAction.name') === 'tokenTransfer') {
+        const [sent] = get(body, 'walletAction.sent', [])
+        if (has(sent, 'address') && has(sent, 'value') && has(sent, 'decimals')) {
+          const { address, value, decimals } = sent
+          const tokenPriceInUsd = await this.tradeService.getTokenPrice(address)
+          const amount = formatUnits(value, decimals)
+          const amountUsd = Number(tokenPriceInUsd) * Number(amount)
+          const event = {
+            amount,
+            amountUsd,
+            token: body?.walletAction.sent[0].symbol,
+            apiKey: body?.userOp?.apiKey,
+            email: user?.email ? user.email : 'empty email'
+          }
+          try {
+            this.analyticsService.trackEvent('Transaction (UserOp)', { ...event }, { user_id: user.auth0Id })
+          } catch (error) {
+            this.logger.error('Error tracking event:', error)
+          }
         }
       }
-      return 'Transfer event processed'
     } catch (error) {
-      throw new Error(error)
+      this.logger.error('Error handling user op and wallet action for operators analytics event:', error)
     }
   }
 
@@ -218,11 +249,12 @@ export class DataLayerService {
       const user = await callMSFunction(this.accountsClient, 'find-one-user', project.ownerId.toString())
       const operator = await callMSFunction(this.accountsClient, 'find-operator-by-owner-id', user._id)
       if (!operator) {
-        return 'Operator didnt exists'
+        this.logger.log('Operator didnt exists')
+        return false
       }
       return user
     } catch (error) {
-      console.error(error)
+      this.logger.error(error)
     }
   }
 }

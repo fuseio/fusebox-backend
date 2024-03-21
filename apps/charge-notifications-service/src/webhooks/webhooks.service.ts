@@ -63,13 +63,23 @@ export class WebhooksService {
       const result = await this.webhookAddressModel.insertMany(docs, { ordered: false })
       return result
     } catch (err) {
-      // We are ignoring duplicate (webhookId, address) pairs that already exist in the DB
-      // For such cases Mongoose throws a MongoBulkWrite error with code 11000
-      // The error includes successfully "insertedDocs", so we only return this array
-      // If we get an error with code different than 11000, we throw the error
       if (err.code === 11000) {
-        return err?.insertedDocs
+        // Handling duplicate key error
+        const duplicateKeys = err.writeErrors?.map(error => ({
+          index: error.index,
+          errmsg: error.errmsg,
+          op: error.op
+        })) || []
+
+        this.logger.warn(`Some entries were duplicates and not inserted for webhookId: ${createWebhookAddressesDto.webhookId}`)
+        // Return a response indicating which entries were duplicates
+        return {
+          message: 'Some entries were duplicates and not inserted.',
+          duplicateEntries: duplicateKeys
+        }
       } else {
+        // If the error code is not 11000, rethrow the error
+        this.logger.error(err)
         throw err
       }
     }

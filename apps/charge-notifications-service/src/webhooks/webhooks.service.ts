@@ -80,7 +80,7 @@ export class WebhooksService {
       } else {
         // If the error code is not 11000, rethrow the error
         this.logger.error(err)
-        return err
+        throw err
       }
     }
   }

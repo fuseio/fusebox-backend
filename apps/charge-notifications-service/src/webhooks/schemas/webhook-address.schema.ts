@@ -9,7 +9,7 @@ export const WebhookAddressSchema = new mongoose.Schema(
       immutable: true
     },
     address: { type: String, required: true },
-    lowercaseAddress: { type: String, index: true }
+    lowercaseAddress: { type: String }
   },
   {
     timestamps: true

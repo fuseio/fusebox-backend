@@ -49,5 +49,5 @@ securityPolicy: null
 
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
-  enabled: false
+  enabled: true
   sampleRate: 1000000

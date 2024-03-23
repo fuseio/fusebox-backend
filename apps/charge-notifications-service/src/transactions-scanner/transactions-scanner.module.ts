@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
 import { webhookEventProviders } from '@app/notifications-service/common/providers/webhook-event.provider'
 import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.module'
+import { GasValuesService } from '@app/common/services/gas_fetcher.service'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
     BroadcasterModule
   ],
   providers: [
+    GasValuesService,
     TransactionsScannerService,
     Web3ProviderService,
     ...transactionsScannerProviders,

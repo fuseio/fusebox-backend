@@ -7,18 +7,16 @@ import { ConfigService } from '@nestjs/config'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
+import { TokenInfo } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
-import { has } from 'lodash'
 import { EventsScannerService } from './events-scanner.service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { GasService } from '@app/common/services/gas.service'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
 
 @Injectable()
 export class ERC20EventsScannerService extends EventsScannerService {
-  // TODO: Create a Base class for events scanner and transaction scanner services
-  private tokenInfoCache: TokenInfoCache = {}
-
   constructor (
     configService: ConfigService,
     @Inject(ERC20ScannerStatusServiceString)
@@ -30,7 +28,8 @@ export class ERC20EventsScannerService extends EventsScannerService {
     @InjectContractProvider('regular-node')
     private readonly ethersContract: EthersContract,
     private webhooksService: WebhooksService,
-    private gasService: GasService
+    private gasService: GasService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(ERC20EventsScannerService.name))
   }
@@ -115,9 +114,9 @@ export class ERC20EventsScannerService extends EventsScannerService {
 
   @logPerformance('ERC20EventsScannerService::GetTokenInfo')
   private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
-    if (has(this.tokenInfoCache, tokenAddress)) {
+    const token = await this.cacheManager.get(tokenAddress) as TokenInfo
+    if (token) {
       this.logger.log(`Token info for ${tokenAddress} was found in cache...`)
-      const token = this.tokenInfoCache[tokenAddress]
       return [token.name, token.symbol, token.decimals]
     }
 
@@ -135,7 +134,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
     }
     const name = await contract.name()
     const symbol = await contract.symbol()
-    this.tokenInfoCache[tokenAddress] = { name, symbol, decimals } as TokenInfo
+    await this.cacheManager.set(tokenAddress, { name, symbol, decimals } as TokenInfo)
 
     return [name, symbol, decimals]
   }

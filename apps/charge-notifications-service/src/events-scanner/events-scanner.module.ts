@@ -13,9 +13,11 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { GasService } from '@app/common/services/gas.service'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
+    CacheModule.register(),
     EthersModule.forRootAsync({
       imports: [ConfigModule.forFeature(rpcConfig)],
       inject: [ConfigService],
@@ -55,5 +57,3 @@ import { GasService } from '@app/common/services/gas.service'
   ]
 })
 export class EventsScannerModule { }
-
-// TODO: webhookEventProviders verify that not needed here

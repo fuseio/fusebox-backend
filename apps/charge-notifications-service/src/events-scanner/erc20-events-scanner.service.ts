@@ -86,7 +86,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
       tokenName: name,
       tokenSymbol: symbol,
       value: null,
-      tokenDecimals: null,
+      tokenDecimals: decimals,
       tokenId: null,
       valueEth: null,
       isInternalTransaction: false

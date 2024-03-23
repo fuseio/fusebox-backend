@@ -12,7 +12,7 @@ import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/
 import { has } from 'lodash'
 import { EventsScannerService } from './events-scanner.service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
-import { GasValuesService } from '@app/common/services/gas_fetcher.service'
+import { GasService } from '@app/common/services/gas.service'
 
 @Injectable()
 export class ERC20EventsScannerService extends EventsScannerService {
@@ -30,7 +30,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
     @InjectContractProvider('regular-node')
     private readonly ethersContract: EthersContract,
     private webhooksService: WebhooksService,
-    private gasValuesService: GasValuesService
+    private gasService: GasService
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(ERC20EventsScannerService.name))
   }
@@ -77,7 +77,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
       this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
-    const gasValues = await this.gasValuesService.getTxGasValues(
+    const gasValues = await this.gasService.fetchTransactionGasCosts(
       parsedLog.transactionHash,
       this.rpcProvider
     )

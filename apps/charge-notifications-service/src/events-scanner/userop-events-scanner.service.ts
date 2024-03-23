@@ -12,7 +12,7 @@ import ENTRY_POINT_ABI from '@app/notifications-service/common/constants/abi/ent
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { GasValuesService } from '@app/common/services/gas_fetcher.service'
+import { GasService } from '@app/common/services/gas.service'
 
 @Injectable()
 export class UserOpEventsScannerService extends EventsScannerService {
@@ -26,7 +26,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
     private readonly dataLayerClient: ClientProxy,
     @InjectEthersProvider('regular-node')
     rpcProvider: BaseProvider,
-    private gasValuesService: GasValuesService
+    private gasService: GasService
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(UserOpEventsScannerService.name))
   }
@@ -55,7 +55,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
     this.logger.log(`Processing UserOp event from block: ${log.blockNumber} & txHash:  ${log.transactionHash}`)
 
     const parsedLog = parseLog(log, ENTRY_POINT_ABI)
-    const gasValues = await this.gasValuesService.getTxGasValues(
+    const gasValues = await this.gasService.fetchTransactionGasCosts(
       parsedLog.transactionHash,
       this.rpcProvider
     )

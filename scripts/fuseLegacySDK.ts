@@ -77,7 +77,6 @@ export class FuseLegacySDK {
   public events = new LegacyEventEmitter()
 
   constructor (public readonly publicApiKey: string) {
-    console.log({ publicApiKey })
     this._axios = axios.create({
       baseURL: `${Variables.FUSE_API_BASE_URL}/api`,
       headers: {

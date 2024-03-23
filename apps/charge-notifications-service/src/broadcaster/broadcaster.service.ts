@@ -46,7 +46,7 @@ export class BroadcasterService {
 
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
-          this.logger.log(`Starting sending ${webhookEvent}`)
+          this.logger.log(`Starting sending to ${webhookEvent.webhook.webhookUrl}. TxHash: ${webhookEvent.eventData.txHash}`)
           webhookEvent.numberOfTries++
           const response = await this.webhookSendService.sendData(webhookEvent)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))

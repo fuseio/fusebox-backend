@@ -1,4 +1,4 @@
-import Web3 from 'web3'
+import { Web3 } from 'web3'
 
 function getFunctionAbi (abi: Array<any>, functionName: string) {
   const functionAbi = abi.find(abiObj => abiObj.type === 'function' && abiObj.name === functionName)

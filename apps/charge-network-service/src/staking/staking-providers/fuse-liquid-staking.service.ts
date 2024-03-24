@@ -61,7 +61,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
       LiquidStakingABI,
       this.web3Provider,
       'withdraw',
-      [this.web3Provider.utils.toWei(tokenAmount)]
+      [this.web3Provider.utils.toWei(tokenAmount, 'ether')]
     )
   }
 
@@ -77,8 +77,8 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
     const sfContract = new this.web3Provider.eth.Contract(Erc20ABI as any, this.sfTokenAddress)
 
-    const priceRatio = await liquidStakingContract.methods.priceRatio().call()
-    const sfBalance = await sfContract.methods.balanceOf(accountAddress).call()
+    const priceRatio = await liquidStakingContract.methods.priceRatio().call<any>()
+    const sfBalance = await sfContract.methods.balanceOf(accountAddress).call<any>()
 
     const stakedAmount = Number(formatEther(sfBalance)) * Number(formatEther(priceRatio))
     const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
@@ -105,9 +105,9 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const blockRewardContract = new this.web3Provider.eth.Contract(BlockRewardABI as any, this.blockRewardAddress)
     const validatorFee = Number(this.validatorFee)
 
-    const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call()
-    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call()
-    const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call()
+    const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call<any>()
+    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call<any>()
+    const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call<any>()
 
     const rewardPerYearApr = (Number(formatEther(rewardPerBlock)) * blocksPerYear * (1 - validatorFee) / Number(formatEther(totalStakeAmount))) * 100
 
@@ -117,7 +117,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
   async tvl () {
     const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
 
-    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call()
+    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call<any>()
 
     const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
 

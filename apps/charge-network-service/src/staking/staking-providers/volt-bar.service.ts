@@ -13,7 +13,7 @@ import TradeService from '@app/common/services/trade.service'
 import { getBarStats, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
 import { secondsInDay } from 'date-fns/constants'
 import { getUnixTime } from 'date-fns'
-import { formatEther } from 'nestjs-ethers'
+import { BigNumberish, formatEther } from 'nestjs-ethers'
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {
@@ -55,7 +55,7 @@ export default class VoltBarService implements StakingProvider {
       VoltBarABI,
       this.web3Provider,
       'enter',
-      [this.web3Provider.utils.toWei(tokenAmount)]
+      [this.web3Provider.utils.toWei(tokenAmount, 'ether')]
     )
   }
 
@@ -64,7 +64,7 @@ export default class VoltBarService implements StakingProvider {
       VoltBarABI,
       this.web3Provider,
       'leave',
-      [this.web3Provider.utils.toWei(tokenAmount)]
+      [this.web3Provider.utils.toWei(tokenAmount, 'ether')]
     )
   }
 
@@ -137,7 +137,7 @@ export default class VoltBarService implements StakingProvider {
   async tvl ({ tokenAddress }: StakingOption) {
     const voltTokenContract = new this.web3Provider.eth.Contract(Erc20ABI as any, tokenAddress)
     try {
-      const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call()
+      const voltBalance = await voltTokenContract.methods.balanceOf(this.address).call<BigNumberish>()
       const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
       return Number(formatEther(voltBalance)) * voltPrice
     } catch (error) {

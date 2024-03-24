@@ -24,17 +24,17 @@ export class TokenService {
     const tokenContractInstance = new web3.eth.Contract(BasicTokenAbi, address)
     try {
       const [name, symbol, decimals] = await Promise.all([
-        tokenContractInstance.methods.name().call(),
-        tokenContractInstance.methods.symbol().call(),
-        tokenContractInstance.methods.decimals().call()
+        tokenContractInstance.methods.name().call<string>(),
+        tokenContractInstance.methods.symbol().call<string>(),
+        tokenContractInstance.methods.decimals().call<string>()
       ])
       const fetchedTokedData: Token = { name, symbol, decimals: parseInt(decimals), address }
       return fetchedTokedData
     } catch (error) {
       const decimals = 0
       const [name, symbol] = await Promise.all([
-        tokenContractInstance.methods.name().call(),
-        tokenContractInstance.methods.symbol().call()
+        tokenContractInstance.methods.name().call<string>(),
+        tokenContractInstance.methods.symbol().call<string>()
       ])
       const fetchedTokedData: Token = { name, symbol, decimals, address }
       return fetchedTokedData

@@ -7,8 +7,6 @@ import { ScannerStatusService } from '@app/notifications-service/common/scanner-
 import { LogFilter } from './interfaces/logs-filter'
 @Injectable()
 export abstract class EventsScannerService extends ScannerService {
-  // TODO: Create a Base class for events scanner and transaction scanner services
-
   constructor (
     configService: ConfigService,
     scannerStatusService: ScannerStatusService,

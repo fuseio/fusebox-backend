@@ -3,10 +3,8 @@ import { parseLog } from '@app/notifications-service/common/utils/helper-functio
 import { UserOpScannerStatusServiceString, userOpLogsFilterString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { BaseProvider, InjectEthersProvider, Log, EthersContract, InjectContractProvider } from 'nestjs-ethers'
+import { BaseProvider, InjectEthersProvider, Log } from 'nestjs-ethers'
 import { UserOpEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
-import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { EventsScannerService } from './events-scanner.service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { LogFilter } from './interfaces/logs-filter'
@@ -14,11 +12,10 @@ import ENTRY_POINT_ABI from '@app/notifications-service/common/constants/abi/ent
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
+import { GasService } from '@app/common/services/gas.service'
+
 @Injectable()
 export class UserOpEventsScannerService extends EventsScannerService {
-  // TODO: Create a Base class for events scanner and transaction scanner services
-  private tokenInfoCache: TokenInfoCache = {}
-
   constructor (
     configService: ConfigService,
     @Inject(UserOpScannerStatusServiceString)
@@ -27,12 +24,9 @@ export class UserOpEventsScannerService extends EventsScannerService {
     logsFilter: LogFilter,
     @Inject(smartWalletsService)
     private readonly dataLayerClient: ClientProxy,
-
     @InjectEthersProvider('regular-node')
     rpcProvider: BaseProvider,
-    @InjectContractProvider('regular-node')
-    private readonly ethersContract: EthersContract,
-    private webhooksService: WebhooksService
+    private gasService: GasService
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(UserOpEventsScannerService.name))
   }
@@ -61,6 +55,11 @@ export class UserOpEventsScannerService extends EventsScannerService {
     this.logger.log(`Processing UserOp event from block: ${log.blockNumber} & txHash:  ${log.transactionHash}`)
 
     const parsedLog = parseLog(log, ENTRY_POINT_ABI)
+    const gasValues = await this.gasService.fetchTransactionGasCosts(
+      parsedLog.transactionHash,
+      this.rpcProvider
+    )
+
     const eventData: UserOpEventData = {
       blockNumber: log.blockNumber,
       blockHash: log.blockHash,
@@ -70,7 +69,8 @@ export class UserOpEventsScannerService extends EventsScannerService {
       nonce: parsedLog.args[3].toString(),
       success: parsedLog.args[4],
       actualGasCost: parsedLog.args[5].toString(),
-      actualGasUsed: parsedLog.args[6].toString()
+      actualGasUsed: parsedLog.args[6].toString(),
+      ...gasValues
     }
     try {
       callMSFunction(this.dataLayerClient, 'update-user-op', eventData)

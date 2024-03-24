@@ -11,6 +11,7 @@ import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.se
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
 import { transactionsScannerStatusServiceString } from './transactions-scanner.constants'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
+import { GasService } from '@app/common/services/gas.service'
 
 @Injectable()
 export class TransactionsScannerService extends ScannerService {
@@ -23,8 +24,8 @@ export class TransactionsScannerService extends ScannerService {
     @InjectEthersProvider('full-archive-node')
     readonly rpcProvider: JsonRpcProvider,
     private readonly web3ProviderService: Web3ProviderService,
-
-    private webhooksService: WebhooksService
+    private webhooksService: WebhooksService,
+    private gasService: GasService
   ) {
     super(configService, scannerStatusService, rpcProvider, new Logger(TransactionsScannerService.name))
   }
@@ -70,6 +71,11 @@ export class TransactionsScannerService extends ScannerService {
 
   @logPerformance('TransactionsScanner::ProcessTrace')
   async processTrace (trace: any) {
+    const gasValues = await this.gasService.fetchTransactionGasCosts(
+      trace.transactionHash,
+      this.rpcProvider
+    )
+
     const eventData: TokenEventData = {
       to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
       from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
@@ -84,7 +90,8 @@ export class TransactionsScannerService extends ScannerService {
       isInternalTransaction: false,
       tokenName: 'FUSE',
       tokenDecimals: 18,
-      tokenId: null
+      tokenId: null,
+      ...gasValues
     }
 
     if (trace.subtraces > 0 || trace.traceAddress.length > 0) {

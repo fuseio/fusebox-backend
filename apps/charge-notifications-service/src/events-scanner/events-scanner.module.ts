@@ -16,7 +16,10 @@ import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.register({
+      ttl: 60,
+      max: 1000
+    }),
     EthersModule.forRootAsync({
       imports: [ConfigModule.forFeature(rpcConfig)],
       inject: [ConfigService],

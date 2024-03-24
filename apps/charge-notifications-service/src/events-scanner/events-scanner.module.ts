@@ -12,6 +12,7 @@ import { webhookEventProviders } from '@app/notifications-service/common/provide
 import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
+import { GasService } from '@app/common/services/gas.service'
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
     BroadcasterModule
   ],
   providers: [
+    GasService,
     ERC20EventsScannerService,
     UserOpEventsScannerService,
     ...eventsScannerProviders,

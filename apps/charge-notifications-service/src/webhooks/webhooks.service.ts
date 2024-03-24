@@ -111,7 +111,8 @@ export class WebhooksService {
       const watcherJson = watcher.toJSON()
 
       if (!isEmpty(watcherJson.webhookId)) {
-        return { ...watcherJson, ...watcherJson.webhookId }
+        const { _id, webhookUrl, eventType, projectId } = watcherJson.webhookId
+        return { ...watcherJson, webhookId: _id, webhookUrl, eventType, projectId }
       }
 
       return watcherJson

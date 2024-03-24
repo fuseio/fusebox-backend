@@ -104,8 +104,8 @@ export class WebhooksService {
 
   async getAddressWatchers (address: string): Promise<any> {
     const addressWatchers = await this.webhookAddressModel
-      .find({ lowercaseAddress: address.toLowerCase() })
-      .populate('webhookId', 'webhookUrl eventType projectId')
+      .find<WebhookAddress>({ lowercaseAddress: address.toLowerCase() })
+      .populate<Webhook>('webhookId', 'webhookUrl eventType projectId')
 
     return addressWatchers.map(watcher => {
       const watcherJson = watcher.toJSON()

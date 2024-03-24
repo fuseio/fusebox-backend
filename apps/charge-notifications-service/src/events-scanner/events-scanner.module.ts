@@ -4,7 +4,6 @@ import rpcConfig from '@app/notifications-service/common/config/rpc-config'
 import { eventsScannerProviders } from '@app/notifications-service/events-scanner/events-scanner.providers'
 import { UserOpEventsScannerService } from '@app/notifications-service/events-scanner/userop-events-scanner.service'
 import { ERC20EventsScannerService } from '@app/notifications-service/events-scanner/erc20-events-scanner.service'
-
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'

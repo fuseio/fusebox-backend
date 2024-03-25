@@ -9,14 +9,14 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
-import { formatEther } from 'nestjs-ethers'
+import { BigNumber, formatEther } from 'nestjs-ethers'
 
 @Injectable()
 export default class FuseLiquidStakingService implements StakingProvider {
   constructor (
-        private readonly web3ProviderService: Web3ProviderService,
-        private readonly configService: ConfigService,
-        private readonly tradeService: TradeService
+    private readonly web3ProviderService: Web3ProviderService,
+    private readonly configService: ConfigService,
+    private readonly tradeService: TradeService
   ) {}
 
   get address () {
@@ -77,10 +77,10 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
     const sfContract = new this.web3Provider.eth.Contract(Erc20ABI as any, this.sfTokenAddress)
 
-    const priceRatio = await liquidStakingContract.methods.priceRatio().call<any>()
-    const sfBalance = await sfContract.methods.balanceOf(accountAddress).call<any>()
+    const priceRatio = await liquidStakingContract.methods.priceRatio().call<BigInt>()
+    const sfBalance = await sfContract.methods.balanceOf(accountAddress).call<BigInt>()
 
-    const stakedAmount = Number(formatEther(sfBalance)) * Number(formatEther(priceRatio))
+    const stakedAmount = Number(formatEther(BigNumber.from(sfBalance))) * Number(formatEther(BigNumber.from(priceRatio)))
     const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
@@ -105,11 +105,11 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const blockRewardContract = new this.web3Provider.eth.Contract(BlockRewardABI as any, this.blockRewardAddress)
     const validatorFee = Number(this.validatorFee)
 
-    const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call<any>()
-    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call<any>()
-    const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call<any>()
+    const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call<BigInt>()
+    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call<BigInt>()
+    const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call<BigInt>()
 
-    const rewardPerYearApr = (Number(formatEther(rewardPerBlock)) * blocksPerYear * (1 - validatorFee) / Number(formatEther(totalStakeAmount))) * 100
+    const rewardPerYearApr = (Number(formatEther(BigNumber.from(rewardPerBlock))) * (Number(formatEther(BigNumber.from(blocksPerYear)))) * (1 - validatorFee) / Number(formatEther(BigNumber.from(totalStakeAmount)))) * 100
 
     return aprToApy(rewardPerYearApr, 365)
   }
@@ -117,10 +117,10 @@ export default class FuseLiquidStakingService implements StakingProvider {
   async tvl () {
     const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
 
-    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call<any>()
+    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call<BigInt>()
 
     const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
 
-    return Number(formatEther(totalStaked)) * fusePrice
+    return Number(formatEther(BigNumber.from(totalStaked))) * fusePrice
   }
 }

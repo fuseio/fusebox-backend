@@ -3,7 +3,6 @@ import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-o
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { parsedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { ConfigService } from '@nestjs/config'
 import * as walletActionsExamples from './constants/walletActionsExamples'
 import { Test, TestingModule } from '@nestjs/testing'
@@ -46,18 +45,9 @@ const basicUserOp = {
   actualGasUsed: 0
 }
 
-const config = {
-  rpcConfig: {
-    rpc: {
-      url: process.env.RPC_URL || 'https://rpc.fuse.io'
-    }
-  }
-}
-
 describe('DataLayerService Tests', () => {
   let userOpFactory: UserOpFactory
   let tokenService: TokenService
-  let configService: ConfigService
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -68,21 +58,17 @@ describe('DataLayerService Tests', () => {
           provide: ConfigService,
           useValue: {
             get: () => ({
-
               rpc: {
                 url: process.env.RPC_URL || 'https://rpc.fuse.io'
               }
-
             })
           }
-        },
-        Web3ProviderService
+        }
       ]
     }).compile()
 
     userOpFactory = module.get<UserOpFactory>(UserOpFactory)
     tokenService = module.get<TokenService>(TokenService)
-    configService = module.get<ConfigService>(ConfigService)
   })
 
   test('native token transfer', async () => {

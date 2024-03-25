@@ -3,7 +3,6 @@ import { BroadcasterModule } from '@app/notifications-service/broadcaster/broadc
 import rpcConfig from '@app/notifications-service/common/config/rpc-config'
 import { transactionsScannerProviders } from '@app/notifications-service/transactions-scanner/transactions-scanner.providers'
 import { TransactionsScannerService } from '@app/notifications-service/transactions-scanner/transactions-scanner.service'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
@@ -35,7 +34,6 @@ import { GasService } from '@app/common/services/gas.service'
   providers: [
     GasService,
     TransactionsScannerService,
-    Web3ProviderService,
     ...transactionsScannerProviders,
     ...webhookEventProviders,
     Logger

@@ -5,7 +5,7 @@ import { ERC20LogsFilterString, ERC20ScannerStatusServiceString } from '@app/not
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { InjectEthersProvider, EthersContract, InjectContractProvider } from 'nestjs-ethers'
-import { Log, formatUnits, AbstractProvider } from 'ethers'
+import { Log, formatUnits, JsonRpcProvider } from 'ethers'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
@@ -26,7 +26,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
     @Inject(ERC20LogsFilterString)
     logsFilter: LogFilter,
     @InjectEthersProvider('regular-node')
-    rpcProvider: AbstractProvider,
+    rpcProvider: JsonRpcProvider,
     @InjectContractProvider('regular-node')
     private readonly ethersContract: EthersContract,
     private webhooksService: WebhooksService,

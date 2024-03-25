@@ -3,7 +3,7 @@ import { parseLog } from '@app/notifications-service/common/utils/helper-functio
 import { UserOpScannerStatusServiceString, userOpLogsFilterString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AbstractProvider, Log } from 'ethers'
+import { JsonRpcProvider, Log } from 'ethers'
 import { UserOpEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { EventsScannerService } from './events-scanner.service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
@@ -26,7 +26,7 @@ export class UserOpEventsScannerService extends EventsScannerService {
     @Inject(smartWalletsService)
     private readonly dataLayerClient: ClientProxy,
     @InjectEthersProvider('regular-node')
-    rpcProvider: AbstractProvider,
+    rpcProvider: JsonRpcProvider,
     private gasService: GasService
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(UserOpEventsScannerService.name))

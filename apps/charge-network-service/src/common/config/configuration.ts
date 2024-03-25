@@ -8,7 +8,9 @@ export default () => ({
   validatorFee: '0.15',
   rpcConfig: {
     rpc: {
-      url: process.env.RPC_URL || 'https://rpc.fuse.io'
+      url: process.env.RPC_URL || 'https://rpc.fuse.io',
+      networkName: process.env.NETWORK_NAME || 'Fuse Mainnet',
+      chainId: parseInt(process.env.CHAIN_ID) || 122
     }
   },
   tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,

@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common'
 import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
 import { BigNumber } from '@ethersproject/bignumber'
-import { AbiCoder, Wallet, getBytes } from 'ethers'
+import { AbiCoder, Contract, JsonRpcProvider, Wallet, getBytes } from 'ethers'
 import { ConfigService } from '@nestjs/config'
-import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
+import { InjectEthersProvider } from 'nestjs-ethers'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { capitalize, isEmpty, has, get } from 'lodash'
 import { HttpService } from '@nestjs/axios'
@@ -21,18 +21,21 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 export class PaymasterApiService {
   private readonly logger = new Logger(PaymasterApiService.name)
   constructor (
+    @InjectEthersProvider('fuse')
+    private readonly fuseProvider: JsonRpcProvider,
+    @InjectEthersProvider('fuseSpark')
+    private readonly sparkProvider: JsonRpcProvider,
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
-    private paymasterWeb3ProviderService: PaymasterWeb3ProviderService,
     private httpService: HttpService
   ) { }
 
   async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
     try {
-      const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
+      const provider = this.getProviderByEnv(env)
       const [op] = body
       this.logger.log(`INITIAL OP: ${JSON.stringify(op)}`)
-      const { timestamp } = await web3.eth.getBlock('latest')
+      const { timestamp } = await provider.getBlock('latest')
 
       const validUntil = parseInt(timestamp.toString()) + 900
       const validAfter = 0
@@ -45,9 +48,10 @@ export class PaymasterApiService {
 
       const sponsorId = paymasterInfo.sponsorId
       const paymasterAddress = paymasterInfo.paymasterAddress
-      const paymasterContract: any = new web3.eth.Contract(
+      const paymasterContract = new Contract(
         fusePaymasterABI as any,
-        paymasterAddress
+        paymasterAddress,
+        provider
       )
 
       const hashForEstimateUserOpGasCall = await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
@@ -83,10 +87,8 @@ export class PaymasterApiService {
     }
   }
 
-  private async getHash (paymasterContract: any, op: any, validUntil: number, validAfter: number, sponsorId: string) {
-    return await paymasterContract.methods
-      .getHash(op, validUntil, validAfter, sponsorId)
-      .call()
+  private async getHash (paymasterContract: Contract, op: any, validUntil: number, validAfter: number, sponsorId: string) {
+    return await paymasterContract.getHash(op, validUntil, validAfter, sponsorId)
   }
 
   private async signHash (hash: string, paymasterInfo: any) {
@@ -198,6 +200,15 @@ export class PaymasterApiService {
     return [
       paymasterInfo.paymasterAddress
     ]
+  }
+
+  getProviderByEnv (env: string) {
+    if (env === 'production') {
+      return this.fuseProvider
+    }
+    if (env === 'sandbox') {
+      return this.sparkProvider
+    }
   }
 }
 

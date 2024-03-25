@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { AbstractProvider } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 
 @Injectable()
 export class GasService {
   private readonly logger = new Logger(GasService.name)
 
-  async fetchTransactionGasCosts (transactionHash: string, rpcProvider: AbstractProvider) {
+  async fetchTransactionGasCosts (transactionHash: string, rpcProvider: JsonRpcProvider) {
     const [tx, txReceipt] = await Promise.all([
       rpcProvider.getTransaction(transactionHash),
       rpcProvider.getTransactionReceipt(transactionHash)

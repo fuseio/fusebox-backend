@@ -1,7 +1,7 @@
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AbstractProvider, Log } from 'ethers'
+import { JsonRpcProvider, Log } from 'ethers'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { LogFilter } from './interfaces/logs-filter'
@@ -11,7 +11,7 @@ export abstract class EventsScannerService extends ScannerService {
     configService: ConfigService,
     scannerStatusService: ScannerStatusService,
     private readonly logsFilter: LogFilter,
-    rpcProvider: AbstractProvider,
+    rpcProvider: JsonRpcProvider,
     logger: Logger
   ) {
     super(configService, scannerStatusService, rpcProvider, logger)

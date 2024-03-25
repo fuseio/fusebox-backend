@@ -46,18 +46,9 @@ const basicUserOp = {
   actualGasUsed: 0
 }
 
-const config = {
-  rpcConfig: {
-    rpc: {
-      url: process.env.RPC_URL || 'https://rpc.fuse.io'
-    }
-  }
-}
-
 describe('DataLayerService Tests', () => {
   let userOpFactory: UserOpFactory
   let tokenService: TokenService
-  let configService: ConfigService
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -68,11 +59,9 @@ describe('DataLayerService Tests', () => {
           provide: ConfigService,
           useValue: {
             get: () => ({
-
               rpc: {
                 url: process.env.RPC_URL || 'https://rpc.fuse.io'
               }
-
             })
           }
         },
@@ -82,7 +71,6 @@ describe('DataLayerService Tests', () => {
 
     userOpFactory = module.get<UserOpFactory>(UserOpFactory)
     tokenService = module.get<TokenService>(TokenService)
-    configService = module.get<ConfigService>(ConfigService)
   })
 
   test('native token transfer', async () => {

@@ -62,7 +62,7 @@ export function findKeyword (frag: string): boolean {
   frag = frag.trim()
 
   let word = ''
-  const match = new RegExp(/[a-zA-Z]/)
+  const match = /[a-zA-Z]/
 
   for (const letter of frag.split('')) {
     if (!match.test(letter)) break

@@ -7,7 +7,7 @@ import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.servic
 import { Model } from 'mongoose'
 import { smartContractWalletString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
 import { SmartContractWallet } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-contract-wallet.interface'
-import { computeAddress, getBytes, hashMessage, recoverAddress } from 'ethers'
+import { getBytes, hashMessage, recoverAddress } from 'ethers'
 
 @Injectable()
 export class SmartWalletsAAService implements SmartWalletService {

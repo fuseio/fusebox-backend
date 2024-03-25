@@ -1,7 +1,7 @@
 import ERC20_ABI from '@app/notifications-service/common/constants/abi/erc20.json'
 import ERC721_ABI from '@app/notifications-service/common/constants/abi/erc721.json'
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
-import { Interface, Log } from 'nestjs-ethers'
+import { Interface, Log } from 'ethers'
 
 export const parseLog = (log: Log, abi: any) => {
   const abiInterface = new Interface(abi)

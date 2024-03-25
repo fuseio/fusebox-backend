@@ -8,7 +8,7 @@ import { Model } from 'mongoose'
 import { BackendWallet } from '@app/apps-service/charge-api/interfaces/backend-wallet.interface'
 import { walletTypes } from '@app/apps-service/charge-api/schemas/backend-wallet.schema'
 import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
-import { formatUnits } from 'nestjs-ethers'
+import { formatUnits } from 'ethers'
 
 @Injectable()
 export class ChargeApiService {

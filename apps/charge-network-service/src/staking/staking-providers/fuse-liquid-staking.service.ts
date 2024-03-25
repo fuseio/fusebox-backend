@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
-import { formatEther } from 'nestjs-ethers'
+import { formatEther } from 'ethers'
 
 @Injectable()
 export default class FuseLiquidStakingService implements StakingProvider {

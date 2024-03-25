@@ -1,6 +1,5 @@
 import { FuseSDK } from '@fuseio/fusebox-web-sdk'
-import { ethers } from 'ethers'
-import { parseEther } from 'nestjs-ethers'
+import { Wallet, parseEther } from 'ethers'
 import { FuseLegacySDK } from '@scripts/fuseLegacySDK'
 
 export class TransferToken {
@@ -16,7 +15,7 @@ export class TransferToken {
 
   accountAbstraction = async () => {
     try {
-      const credentials = new ethers.Wallet(this._privateKey)
+      const credentials = new Wallet(this._privateKey)
       const publicApiKey = process.env.PUBLIC_API_KEY
       const fuseSDK = await FuseSDK.init(publicApiKey, credentials, { withPaymaster: true })
 
@@ -33,7 +32,7 @@ export class TransferToken {
 
   legacy = async () => {
     try {
-      const credentials = new ethers.Wallet(this._privateKey)
+      const credentials = new Wallet(this._privateKey)
       const publicApiKey = process.env.PUBLIC_API_KEY
       const fuseLegacySDK = new FuseLegacySDK(publicApiKey)
       await fuseLegacySDK.init(credentials)

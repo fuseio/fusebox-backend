@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 
 export const NATIVE_TOKEN_TRANSFER_WALLET_ACTION = {
   walletAddress: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117',

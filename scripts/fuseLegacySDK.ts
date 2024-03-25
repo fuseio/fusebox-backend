@@ -1,5 +1,5 @@
-import { BigNumber, Wallet, ethers } from 'ethers'
-import { Interface } from 'ethers/lib/utils'
+import { Interface, JsonRpcProvider, Wallet, ethers, getBytes, hexlify, keccak256, toBeHex, zeroPadValue } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { Centrifuge } from 'centrifuge'
 import EventEmitter from 'events'
@@ -138,8 +138,8 @@ export class FuseLegacySDK {
     ownerAddress: string
   ): Promise<{ signature: string, hash: string }> => {
     const input = Uint8Array.from(Buffer.from(ownerAddress.replace('0x', ''), 'hex'))
-    const hash = ethers.utils.keccak256(input)
-    const signature = await credentials.signMessage(ethers.utils.arrayify(hash))
+    const hash = keccak256(input)
+    const signature = await credentials.signMessage(getBytes(hash))
     return { hash, signature }
   }
 
@@ -165,33 +165,33 @@ export class FuseLegacySDK {
       '0x00',
       from,
       to,
-      ethers.utils.hexZeroPad(ethers.utils.hexlify(value), 32),
+      zeroPadValue(toBeHex(value.toHexString()), 32),
       data,
       nonce,
-      ethers.utils.hexZeroPad(ethers.utils.hexlify(gasPrice), 32),
-      ethers.utils.hexZeroPad(ethers.utils.hexlify(gasLimit), 32)
+      zeroPadValue(toBeHex(gasPrice.toHexString()), 32),
+      zeroPadValue(toBeHex(gasLimit.toHexString()), 32)
     ]
 
     const input = `0x${inputArr.map((hexStr) => hexStr.slice(2)).join('')}`
 
-    const messagePayload = ethers.utils.keccak256(ethers.utils.arrayify(input))
+    const messagePayload = keccak256(getBytes(input))
     const signature = credentials.signMessage(messagePayload)
 
     return signature
   }
 
   private _getNonce = async (): Promise<string> => {
-    const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL)
+    const provider = new JsonRpcProvider(process.env.RPC_URL)
 
     const block = await provider.getBlockNumber()
     const timestamp = Date.now()
 
-    const blockHex = ethers.utils.hexZeroPad(ethers.utils.hexlify(block), 16)
-    const timestampHex = ethers.utils.hexZeroPad(ethers.utils.hexlify(timestamp), 16)
+    const blockHex = zeroPadValue(toBeHex(block), 16)
+    const timestampHex = zeroPadValue(toBeHex(timestamp), 16)
 
     const combinedHex = blockHex.substring(2) + timestampHex.substring(2)
 
-    return ethers.utils.hexlify(ethers.utils.arrayify('0x' + combinedHex))
+    return hexlify(getBytes('0x' + combinedHex))
   }
 
   private _encodedDataForContractCall = (abi: any, methodName: string, values: any[]) => {
@@ -286,7 +286,7 @@ export class FuseLegacySDK {
 
   relay = async (
     to: string,
-    amount: BigNumber
+    amount: BigInt
   ) => {
     try {
       const walletModule = 'TransferManager'

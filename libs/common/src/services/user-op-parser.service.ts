@@ -1,6 +1,6 @@
 import { decodeWithCalldata, sigHashFromCalldata } from '@app/common/utils/dtools/decodeBySigHash'
 import { Injectable } from '@nestjs/common'
-import { BigNumber } from 'nestjs-ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 
 @Injectable()
 export class UserOpParser {

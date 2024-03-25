@@ -10,7 +10,7 @@ import { EthereumPaymentLink } from '@app/apps-service/ethereum-payments/interfa
 import { ethereumPaymentAccountModelString, ethereumPaymentLinkModelString } from '@app/apps-service/ethereum-payments/ethereum-payments.constants'
 import { status } from '@app/apps-service/ethereum-payments/schemas/ethereum-payment-link.schema'
 import { EthereumBackendWallet } from '@app/apps-service/ethereum-payments/interfaces/ethereum-backend-wallet.interface'
-import { getAddress } from 'nestjs-ethers'
+import { getAddress } from 'ethers'
 import WebhookSendService from '@app/common/services/webhook-send.service'
 
 @Injectable()

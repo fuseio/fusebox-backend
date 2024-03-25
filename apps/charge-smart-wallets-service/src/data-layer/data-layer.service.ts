@@ -16,7 +16,7 @@ import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wa
 import { WalletActionInterface } from '@app/smart-wallets-service/data-layer/interfaces/wallet-action.interface'
 import { decodePaymasterAndData } from '@app/smart-wallets-service/common/utils/helper-functions'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import { formatUnits } from 'nestjs-ethers'
+import { formatUnits } from 'ethers'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'

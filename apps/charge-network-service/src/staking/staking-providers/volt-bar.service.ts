@@ -13,7 +13,7 @@ import TradeService from '@app/common/services/trade.service'
 import { getBarStats, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
 import { secondsInDay } from 'date-fns/constants'
 import { getUnixTime } from 'date-fns'
-import { formatEther } from 'nestjs-ethers'
+import { formatEther } from 'ethers'
 
 @Injectable()
 export default class VoltBarService implements StakingProvider {

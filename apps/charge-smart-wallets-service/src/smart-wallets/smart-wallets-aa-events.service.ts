@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import CentrifugoAPIService from '@app/common/services/centrifugo.service'
-import { formatUnits } from 'nestjs-ethers'
+import { formatUnits } from 'ethers'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'

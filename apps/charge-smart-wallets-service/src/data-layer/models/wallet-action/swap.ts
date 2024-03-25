@@ -3,7 +3,7 @@ import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-ac
 import { ERC20Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
-import { formatUnits } from 'nestjs-ethers'
+import { formatUnits } from 'ethers'
 
 export default class SwapTokens extends WalletAction {
   descGenerator (data: any) {

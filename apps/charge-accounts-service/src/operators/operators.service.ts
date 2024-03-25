@@ -1,6 +1,6 @@
 import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { ethers } from 'ethers'
+import { JsonRpcProvider, ethers, formatEther, parseEther, verifyMessage } from 'ethers'
 import { notificationsService, smartWalletsService } from '@app/common/constants/microservices.constants'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 import { UsersService } from '@app/accounts-service/users/users.service'
@@ -46,7 +46,7 @@ export class OperatorsService {
   }
 
   validate (authOperatorDto: AuthOperatorDto): string {
-    const recoveredAddress = ethers.utils.verifyMessage(authOperatorDto.message, authOperatorDto.signature)
+    const recoveredAddress = verifyMessage(authOperatorDto.message, authOperatorDto.signature)
     if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
       throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN)
     }
@@ -194,11 +194,11 @@ export class OperatorsService {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
     const contractAddress = paymasterEnvs[environment].etherspotWalletFactoryContractAddress
 
-    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    const provider = new JsonRpcProvider(paymasterEnvs[environment].url)
     const contract = new ethers.Contract(contractAddress, etherspotWalletFactoryAbi, provider)
 
     try {
-      return await contract.getAddress(owner, index)
+      return await contract['getAddress(address, uint256)'](owner, index)
     } catch (error) {
       throw new InternalServerErrorException(`Failed to predict wallet: ${error}`)
     }
@@ -278,10 +278,10 @@ export class OperatorsService {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
     const contractAddress = paymasterEnvs[environment].paymasterContractAddress
     const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
-    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    const provider = new JsonRpcProvider(paymasterEnvs[environment].url)
     const wallet = new ethers.Wallet(privateKey, provider)
     const contract = new ethers.Contract(contractAddress, paymasterAbi, wallet)
-    const ether = ethers.utils.parseEther(amount)
+    const ether = parseEther(amount)
     try {
       // Note: The transaction hash retrieval is intentionally not awaited here due to its ~14s delay.
       // However, any errors arising from this call will still be caught and handled appropriately.
@@ -331,10 +331,10 @@ export class OperatorsService {
 
   async getBalance (address: string, ver: string, environment: string): Promise<string> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
-    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    const provider = new JsonRpcProvider(paymasterEnvs[environment].url)
     try {
       const balance = await provider.getBalance(address)
-      return ethers.utils.formatEther(balance)
+      return formatEther(balance)
     } catch (error) {
       throw new InternalServerErrorException(`getBalance error: ${error}`)
     }

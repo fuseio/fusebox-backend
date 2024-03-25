@@ -1,5 +1,5 @@
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
-import { BaseProvider } from 'nestjs-ethers'
+import { AbstractProvider } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import { ScannerStatusService } from './scanner-status.service'
 
@@ -7,7 +7,7 @@ export abstract class ScannerService {
   constructor (
     protected configService: ConfigService,
     protected scannerStatusService: ScannerStatusService,
-    protected readonly rpcProvider: BaseProvider,
+    protected readonly rpcProvider: AbstractProvider,
     protected readonly logger
   ) { }
 

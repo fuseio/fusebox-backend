@@ -3,7 +3,8 @@ import { paymasterInfoModelString } from '@app/accounts-service/paymaster/paymas
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { Model } from 'mongoose'
 import { ConfigService } from '@nestjs/config'
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
+
 @Injectable()
 export class PaymasterService {
   constructor (

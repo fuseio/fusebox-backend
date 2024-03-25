@@ -5,7 +5,9 @@ import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
-import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'nestjs-ethers'
+import { JsonRpcProvider, formatEther } from 'ethers'
+import { InjectEthersProvider } from 'nestjs-ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
@@ -80,7 +82,7 @@ export class TransactionsScannerService extends ScannerService {
       to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
       from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
       value: BigNumber.from(trace.action.value).toString(),
-      valueEth: formatEther(BigNumber.from(trace.action.value)),
+      valueEth: formatEther(BigNumber.from(trace.action.value).toString()),
       txHash: trace.transactionHash,
       blockNumber: trace.blockNumber,
       blockHash: trace.blockHash,

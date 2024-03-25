@@ -6,10 +6,9 @@ import {
   InternalServerErrorException,
   Logger
 } from '@nestjs/common'
-import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
 import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
-
-import { BigNumber, Wallet } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
+import { AbiCoder, Wallet, getBytes } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
 import { callMSFunction } from '@app/common/utils/client-proxy'
@@ -95,13 +94,13 @@ export class PaymasterApiService {
       `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
     )
     const paymasterSigner = new Wallet(privateKeyString)
-    return await paymasterSigner.signMessage(arrayify(hash))
+    return await paymasterSigner.signMessage(getBytes(hash))
   }
 
   private buildPaymasterAndData (paymasterAddress: string, validUntil: number, validAfter: number, sponsorId: string, signature: string) {
     return hexConcat([
       paymasterAddress,
-      defaultAbiCoder.encode(
+      AbiCoder.defaultAbiCoder().encode(
         ['uint48', 'uint48', 'uint256', 'bytes'],
         [validUntil, validAfter, sponsorId, signature]
       ),
@@ -200,4 +199,8 @@ export class PaymasterApiService {
       paymasterInfo.paymasterAddress
     ]
   }
+}
+
+function hexConcat (arg0: string[]) {
+  return arg0.reduce((acc, val) => acc + val.replace('0x', ''), '0x')
 }

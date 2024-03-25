@@ -2,7 +2,7 @@ import { Model } from 'mongoose'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-ethers'
+import { getBytes, hashMessage, recoverAddress } from 'ethers'
 import { ConfigService } from '@nestjs/config'
 import { smartWalletString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
 import { SmartWallet, SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
@@ -35,8 +35,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
-      const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
-      const recoveredAddress = computeAddress(publicKey)
+      const recoveredAddress = recoverAddress(getBytes(hashMessage(getBytes(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress) {
         const jwt = this.jwtService.sign({

@@ -4,7 +4,9 @@ import { getTokenTypeAbi, getTransferEventTokenType, parseLog } from '@app/notif
 import { ERC20LogsFilterString, ERC20ScannerStatusServiceString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
+import { InjectEthersProvider, EthersContract, InjectContractProvider } from 'nestjs-ethers'
+import { Log, formatUnits, AbstractProvider } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfo } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
@@ -24,7 +26,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
     @Inject(ERC20LogsFilterString)
     logsFilter: LogFilter,
     @InjectEthersProvider('regular-node')
-    rpcProvider: BaseProvider,
+    rpcProvider: AbstractProvider,
     @InjectContractProvider('regular-node')
     private readonly ethersContract: EthersContract,
     private webhooksService: WebhooksService,
@@ -122,7 +124,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
 
     this.logger.log(`Token info for ${tokenAddress} was not found in cache...`)
 
-    const contract: Contract = this.ethersContract.create(
+    const contract = this.ethersContract.create(
       tokenAddress,
       abi
     )

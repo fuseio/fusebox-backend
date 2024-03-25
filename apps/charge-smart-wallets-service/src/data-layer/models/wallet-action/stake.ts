@@ -3,7 +3,7 @@ import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-ac
 import { ERC20Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { first, last } from 'lodash'
-import { ethers } from 'ethers'
+import { ZeroAddress } from 'ethers'
 import { LIQUID_STAKING_CONTRACT_ADDRESS } from '@app/smart-wallets-service/common/constants/addresess'
 
 export default class StakeTokens extends WalletAction {
@@ -61,7 +61,7 @@ export default class StakeTokens extends WalletAction {
       type: ERC_20_TYPE,
       ...receiveTokenDetails,
       value: '0',
-      from: ethers.constants.AddressZero
+      from: ZeroAddress
     } as ERC20Transfer
   }
 

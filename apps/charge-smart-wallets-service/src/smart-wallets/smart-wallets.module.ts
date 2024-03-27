@@ -11,7 +11,7 @@ import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.service'
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentrifugeClientProvider } from '@app/common/centrifuge/centrifugeClient.provider'
 import { getEnvPath } from '@app/common/utils/env.helper'
 import path from 'path'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
@@ -23,6 +23,7 @@ import { OperatorsModule } from '@app/accounts-service/operators/operators.modul
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { accountsService } from '@app/common/constants/microservices.constants'
 import TradeService from '@app/common/services/trade.service'
+
 @Module({
   imports: [
     DatabaseModule,
@@ -67,7 +68,7 @@ import TradeService from '@app/common/services/trade.service'
     })
   ],
   providers: [
-    CentrifugoAPIService,
+    CentrifugeClientProvider,
     CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,
@@ -75,7 +76,6 @@ import TradeService from '@app/common/services/trade.service'
     SmartWalletsLegacyService,
     SmartWalletsAAService,
     TradeService,
-
     ...smartWalletsProviders
   ],
   controllers: [SmartWalletsController]

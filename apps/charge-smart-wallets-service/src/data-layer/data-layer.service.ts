@@ -21,6 +21,7 @@ import { accountsService, apiService } from '@app/common/constants/microservices
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import TradeService from '@app/common/services/trade.service'
+import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 
 @Injectable()
 export class DataLayerService {
@@ -49,12 +50,20 @@ export class DataLayerService {
       }
       const userOp = await this.userOpFactory.createUserOp(baseUserOp)
       const response = await this.userOpModel.create(userOp) as UserOp
-      this.smartWalletsAAEventsService.publishUserOp(response.sender, response)
+      await this.smartWalletsAAEventsService.subscribeUserOpHash(response.userOpHash, response.sender)
+      await this.smartWalletsAAEventsService.publishUserOp({
+        eventName: websocketEvents.TRANSACTION_STARTED,
+        eventData: {
+          userOpHash: response.userOpHash,
+          sender: response.sender
+        }
+      })
       const walletAction = await this.createWalletActionFromUserOp(userOp)
       this.handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent({ userOp, walletAction })
       if (walletAction) {
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)
       }
+
       return response
     } catch (error) {
       this.logger.error('Error recording user op:', error)
@@ -68,8 +77,25 @@ export class DataLayerService {
         return 'No record found with the provided userOpHash'
       }
       const updatedUserOp = await this.userOpModel.findOneAndUpdate({ userOpHash: body.userOpHash }, body, { new: true })
-      this.smartWalletsAAEventsService.publishUserOp(updatedUserOp.sender, updatedUserOp)
+      const eventData = {
+        userOpHash: updatedUserOp.userOpHash,
+        sender: updatedUserOp.sender,
+        txHash: updatedUserOp.txHash
+      }
+      if (updatedUserOp.success) {
+        await this.smartWalletsAAEventsService.publishUserOp({
+          eventName: websocketEvents.TRANSACTION_SUCCEEDED,
+          eventData
+        })
+      } else {
+        await this.smartWalletsAAEventsService.publishUserOp({
+          eventName: websocketEvents.TRANSACTION_FAILED,
+          eventData
+        })
+      }
+      await this.smartWalletsAAEventsService.unsubscribeUserOpHash(updatedUserOp.userOpHash, updatedUserOp.sender)
       this.updateWalletAction(updatedUserOp)
+
       return updatedUserOp
     } catch (error) {
       this.logger.error('Error updating user op:', error)
@@ -209,12 +235,8 @@ export class DataLayerService {
   async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
-      if (!user) {
-        this.logger.error(`User with ${body.userOp.apiKey} isnt operator`)
+      if (!get(user, 'auth0Id')) {
         return
-      }
-      if (!user?.auth0Id) {
-        this.logger.error('Missing auth0Id for user')
       }
       if (get(body, 'walletAction.name') === 'tokenTransfer') {
         const [sent] = get(body, 'walletAction.sent', [])

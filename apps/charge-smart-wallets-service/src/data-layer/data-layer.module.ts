@@ -9,8 +9,7 @@ import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-o
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import Web3ProviderService from '@app/common/services/web3-provider.service'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
-import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
+import { CentrifugeClientProvider } from '@app/common/centrifuge/centrifugeClient.provider'
 import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
 import { ClientsModule, Transport } from '@nestjs/microservices'
@@ -53,8 +52,7 @@ import TradeService from '@app/common/services/trade.service'
     TokenService,
     Web3ProviderService,
     SmartWalletsAAEventsService,
-    CentrifugoAPIService,
-    CentrifugeProvider,
+    CentrifugeClientProvider,
     AnalyticsService,
     TradeService
   ]

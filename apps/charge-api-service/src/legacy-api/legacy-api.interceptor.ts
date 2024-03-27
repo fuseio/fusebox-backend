@@ -1,14 +1,16 @@
 import { ApiKeysService } from '@app/api-service/api-keys/api-keys.service'
 import { HttpService } from '@nestjs/axios'
-import { Injectable, NestInterceptor, ExecutionContext, HttpException } from '@nestjs/common'
+import { Injectable, NestInterceptor, ExecutionContext, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { lastValueFrom } from 'rxjs'
+import { lastValueFrom, throwError } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { get, isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 @Injectable()
 export class LegacyApiInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(LegacyApiInterceptor.name)
+
   constructor (
     private apiKeysService: ApiKeysService,
     private httpService: HttpService,
@@ -18,7 +20,7 @@ export class LegacyApiInterceptor implements NestInterceptor {
   async intercept (context: ExecutionContext): Promise<any> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(context)
 
-    const response = await lastValueFrom(this.httpService
+    const response = await this.httpService
       .request(
         requestConfig
       )
@@ -38,7 +40,6 @@ export class LegacyApiInterceptor implements NestInterceptor {
           )
         })
       )
-    )
 
     return response
   }

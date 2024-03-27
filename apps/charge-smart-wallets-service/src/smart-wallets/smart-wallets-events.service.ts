@@ -5,7 +5,7 @@ import { SmartWallet } from '@app/smart-wallets-service/smart-wallets/interfaces
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Centrifuge } from 'centrifuge'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentClient } from 'cent.js'
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { has, get } from 'lodash'
 import { versionType } from '@app/smart-wallets-service/smart-wallets/schemas/smart-wallet.schema'
@@ -17,7 +17,7 @@ export class SmartWalletsEventsService {
   constructor (
     private readonly configService: ConfigService,
     private readonly centrifuge: Centrifuge,
-    private readonly centrifugoAPIService: CentrifugoAPIService,
+    private readonly centClient: CentClient,
     @Inject(smartWalletString)
     private smartWalletModel: Model<SmartWallet>
   ) { }
@@ -190,7 +190,7 @@ export class SmartWalletsEventsService {
         return
       }
       const { transactionId } = eventData
-      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
+      await this.centClient.publish({ channel: `transaction:#${transactionId}`, data: messageData })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
@@ -205,7 +205,7 @@ export class SmartWalletsEventsService {
       await sleep(500)
       const { smartWalletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress })
-      await this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)
+      await this.centClient.unsubscribe({ channel: `transaction:#${transactionId}`, user: ownerAddress })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)

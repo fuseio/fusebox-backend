@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentClient } from 'cent.js'
 import { formatUnits } from 'nestjs-ethers'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { ClientProxy } from '@nestjs/microservices'
@@ -12,7 +12,7 @@ export class SmartWalletsAAEventsService {
   private readonly logger = new Logger(SmartWalletsAAEventsService.name)
 
   constructor (
-    private readonly centrifugoAPIService: CentrifugoAPIService,
+    private readonly centClient: CentClient,
     private analyticsService: AnalyticsService,
     private tradeService: TradeService,
     @Inject(accountsService) private readonly accountsClient: ClientProxy
@@ -22,7 +22,7 @@ export class SmartWalletsAAEventsService {
     const { userOpHash } = messageData.eventData
     try {
       this.logger.debug(`Publishing user op to channel: transaction:#${userOpHash}`)
-      await this.centrifugoAPIService.publish(`transaction:#${userOpHash}`, messageData)
+      await this.centClient.publish({ channel: `transaction:#${userOpHash}`, data: messageData })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:#${userOpHash}`)
@@ -31,7 +31,7 @@ export class SmartWalletsAAEventsService {
 
   async publishWalletAction (sender, messageData) {
     try {
-      this.centrifugoAPIService.publish(`walletAction:#${sender}`, messageData)
+      await this.centClient.publish({ channel: `walletAction:#${sender}`, data: messageData })
       if (messageData.name === 'tokenReceive') {
         this.handleReceiveWalletAction(messageData)
       }
@@ -44,7 +44,7 @@ export class SmartWalletsAAEventsService {
   async subscribeUserOpHash (userOpHash: string, sender: string) {
     try {
       this.logger.debug(`Subscribing to channel transaction:#${userOpHash}`)
-      await this.centrifugoAPIService.subscribe(`transaction:#${userOpHash}`, sender)
+      await this.centClient.subscribe({ channel: `transaction:#${userOpHash}`, user: sender })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during subscribe to channel transaction:#${userOpHash}`)
@@ -54,7 +54,7 @@ export class SmartWalletsAAEventsService {
   async unsubscribeUserOpHash (userOpHash, sender) {
     try {
       this.logger.debug(`Unsubscribing from channel transaction:#${userOpHash}`)
-      await this.centrifugoAPIService.unsubscribe(`transaction:#${userOpHash}`, sender)
+      await this.centClient.unsubscribe({ channel: `transaction:#${userOpHash}`, user: sender })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during unsubscribe from channel transaction:#${userOpHash}`)

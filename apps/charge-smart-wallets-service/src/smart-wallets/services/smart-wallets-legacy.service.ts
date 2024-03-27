@@ -10,7 +10,7 @@ import { generateSalt, generateTransactionId } from 'apps/charge-smart-wallets-s
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentClient } from 'cent.js'
 
 @Injectable()
 export class SmartWalletsLegacyService implements SmartWalletService {
@@ -20,7 +20,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly relayAPIService: RelayAPIService,
-    private readonly centrifugoAPIService: CentrifugoAPIService,
+    private readonly centClient: CentClient,
     @Inject(smartWalletString)
     private smartWalletModel: Model<SmartWallet>
   ) { }
@@ -106,7 +106,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       const salt = generateSalt()
       const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
-      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, ownerAddress)
+      await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: ownerAddress })
       this.relayAPIService.createWallet({
         v2: true,
         salt,
@@ -129,7 +129,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
-      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
+      await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: relayDto.ownerAddress })
       this.relayAPIService.relay({
         v2: true,
         transactionId,

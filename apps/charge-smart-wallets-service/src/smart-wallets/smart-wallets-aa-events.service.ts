@@ -16,15 +16,16 @@ export class SmartWalletsAAEventsService {
     private analyticsService: AnalyticsService,
     private tradeService: TradeService,
     @Inject(accountsService) private readonly accountsClient: ClientProxy
-
   ) { }
 
-  async publishUserOp (sender, messageData) {
+  async publishUserOp (messageData: any) {
+    const { userOpHash } = messageData.eventData
     try {
-      this.centrifugoAPIService.publish(`userOp:#${sender}`, messageData)
+      this.logger.debug(`Publishing user op to channel: transaction:#${userOpHash}`)
+      await this.centrifugoAPIService.publish(`transaction:#${userOpHash}`, messageData)
     } catch (error) {
       this.logger.error({ error })
-      this.logger.error(`An error occurred during publish message to channel: userOp:#${sender}`)
+      this.logger.error(`An error occurred during publish message to channel: transaction:#${userOpHash}`)
     }
   }
 
@@ -37,6 +38,26 @@ export class SmartWalletsAAEventsService {
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: walletAction:#${sender}`)
+    }
+  }
+
+  async subscribeUserOpHash (userOpHash: string, sender: string) {
+    try {
+      this.logger.debug(`Subscribing to channel transaction:#${userOpHash}`)
+      await this.centrifugoAPIService.subscribe(`transaction:#${userOpHash}`, sender)
+    } catch (error) {
+      this.logger.error({ error })
+      this.logger.error(`An error occurred during subscribe to channel transaction:#${userOpHash}`)
+    }
+  }
+
+  async unsubscribeUserOpHash (userOpHash, sender) {
+    try {
+      this.logger.debug(`Unsubscribing from channel transaction:#${userOpHash}`)
+      await this.centrifugoAPIService.unsubscribe(`transaction:#${userOpHash}`, sender)
+    } catch (error) {
+      this.logger.error({ error })
+      this.logger.error(`An error occurred during unsubscribe from channel transaction:#${userOpHash}`)
     }
   }
 

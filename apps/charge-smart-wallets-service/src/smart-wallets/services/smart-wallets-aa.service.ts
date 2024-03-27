@@ -35,7 +35,7 @@ export class SmartWalletsAAService implements SmartWalletService {
             smartWalletAddress: smartWalletsAuthDto.smartWalletAddress,
             ownerAddress: recoveredAddress
           },
-          channels: ['transaction', 'walletAction', 'userOp']
+          channels: ['transaction', 'walletAction']
         })
 
         try {

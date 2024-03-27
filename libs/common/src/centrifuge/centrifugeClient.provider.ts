@@ -5,6 +5,6 @@ export const CentrifugeClientProvider: Provider = {
   provide: CentClient,
   useFactory: (): CentClient => new CentClient({
     url: process.env.CENTRIFUGO_API_URL,
-    token: process.env.CENTRIFUGO_API_KEY
+    apiKey: process.env.CENTRIFUGO_API_KEY
   })
 }

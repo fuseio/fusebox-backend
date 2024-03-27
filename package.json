@@ -50,7 +50,7 @@
     "base64url": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "cache-manager": "^5.4.0",
-    "cent.js": "^4.0.0",
+    "cent.js": "^5.0.0",
     "centrifuge": "^5.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

@@ -23,28 +23,27 @@ export class ExplorerApiInterceptor implements NestInterceptor {
       context
     )
 
-    const response = await lastValueFrom(
-      this.httpService
-        .request(requestConfig)
-        .pipe(
-          map((axiosResponse: AxiosResponse) => {
-            return axiosResponse.data
-          })
-        )
-        .pipe(
-          catchError((e) => {
-            const errorReason =
+    const response = await
+    this.httpService
+      .request(requestConfig)
+      .pipe(
+        map((axiosResponse: AxiosResponse) => {
+          return axiosResponse.data
+        })
+      )
+      .pipe(
+        catchError((e) => {
+          const errorReason =
               e?.response?.data?.error ||
               e?.response?.data?.errors?.message ||
               ''
 
-            throw new HttpException(
+          throw new HttpException(
               `${e?.response?.statusText}: ${errorReason}`,
               e?.response?.status
-            )
-          })
-        )
-    )
+          )
+        })
+      )
 
     return response
   }

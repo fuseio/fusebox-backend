@@ -73,7 +73,9 @@ export class UserOpEventsScannerService extends EventsScannerService {
       ...gasValues
     }
     try {
-      callMSFunction(this.dataLayerClient, 'update-user-op', eventData)
+      callMSFunction(this.dataLayerClient, 'update-user-op', eventData).catch((error) => {
+        this.logger.error(`Failed to call update-user-op: ${error.message}`)
+      })
     } catch (error) {
       this.logger.error(`Failed to call update-user-op: ${error.message}`)
     }

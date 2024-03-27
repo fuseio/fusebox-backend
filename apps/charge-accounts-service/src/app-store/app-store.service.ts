@@ -30,7 +30,7 @@ export class AppStoreService {
     return this.availableApps.some(app => app.appName === appName)
   }
 
-  async activateApp (appName: String, auth0Id: string): Promise<any> {
+  async activateApp (appName: string, auth0Id: string): Promise<any> {
     if (!this.isAppAvailable(appName)) {
       return new HttpException('Application not found', HttpStatus.NOT_FOUND)
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import Web3 from 'web3'
+import { Web3 } from 'web3'
 
 @Injectable()
 export default class Web3ProviderService {

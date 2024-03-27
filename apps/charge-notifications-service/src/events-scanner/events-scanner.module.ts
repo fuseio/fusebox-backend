@@ -4,7 +4,6 @@ import rpcConfig from '@app/notifications-service/common/config/rpc-config'
 import { eventsScannerProviders } from '@app/notifications-service/events-scanner/events-scanner.providers'
 import { UserOpEventsScannerService } from '@app/notifications-service/events-scanner/userop-events-scanner.service'
 import { ERC20EventsScannerService } from '@app/notifications-service/events-scanner/erc20-events-scanner.service'
-
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
@@ -13,9 +12,14 @@ import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.mod
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { GasService } from '@app/common/services/gas.service'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
+    CacheModule.register({
+      ttl: 60,
+      max: 1000
+    }),
     EthersModule.forRootAsync({
       imports: [ConfigModule.forFeature(rpcConfig)],
       inject: [ConfigService],
@@ -55,5 +59,3 @@ import { GasService } from '@app/common/services/gas.service'
   ]
 })
 export class EventsScannerModule { }
-
-// TODO: webhookEventProviders verify that not needed here

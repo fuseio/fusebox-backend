@@ -10,7 +10,6 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { Model } from 'mongoose'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { ObjectId } from 'mongodb'
 
 @Injectable()
 export class ProjectsService {
@@ -35,13 +34,13 @@ export class ProjectsService {
     return this.projectModel.findById(id)
   }
 
-  async findOneByOwnerId (ownerId: ObjectId | string): Promise<Project> {
+  async findOneByOwnerId (ownerId: string): Promise<Project> {
     return this.projectModel.findOne({ ownerId })
   }
 
   async findAll (auth0Id: string): Promise<Project[]> {
     const userId = await this.usersService.findOneByAuth0Id(auth0Id)
-    return this.projectModel.find({ ownerId: userId })
+    return this.projectModel.find({ ownerId: userId._id })
   }
 
   async update (

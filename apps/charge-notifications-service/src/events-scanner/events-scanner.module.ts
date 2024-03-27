@@ -17,7 +17,7 @@ import { CacheModule } from '@nestjs/cache-manager'
 @Module({
   imports: [
     CacheModule.register({
-      ttl: 60,
+      ttl: 60000, // in milliseconds
       max: 1000
     }),
     EthersModule.forRootAsync({

@@ -19,6 +19,7 @@ export interface BaseUserOp {
 
 export interface UserOp extends BaseUserOp, Document {
   userOpHash: string; // UserOpHash is a string of hexadecimal characters
+  txHash: string; // TxHash is  a unique identifier that is generated whenever a transaction is performed
   walletFunction: object;
   targetFunctions: Array<object>;
   success: boolean; // Success is a boolean value that indicates whether the operation was successful or not

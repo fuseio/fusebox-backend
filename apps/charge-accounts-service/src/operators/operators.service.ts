@@ -113,7 +113,7 @@ export class OperatorsService {
       await this.addAddressToOperatorsWebhook(predictedWallet)
       await this.addAddressToTokenReceiveWebhook(predictedWallet)
       this.hubspotFormSubmit(createOperatorUserDto)
-      this.analyticsService.trackEvent('Operator Account Created', { ...eventData }, { user_id: user?.auth0Id })
+      this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
       return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
     } catch (error) {
       this.errorHandler(error)

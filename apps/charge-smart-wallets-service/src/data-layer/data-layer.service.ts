@@ -22,6 +22,7 @@ import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import TradeService from '@app/common/services/trade.service'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
+import { utils } from 'web3'
 @Injectable()
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
@@ -188,7 +189,7 @@ export class DataLayerService {
     let query
     if (tokenAddress) {
       const tokenAddressLower = tokenAddress.toLowerCase()
-
+      const tokenAddressChecksum = utils.toChecksumAddress(tokenAddress)
       query = {
         walletAddress,
         $or: [
@@ -197,6 +198,7 @@ export class DataLayerService {
               $elemMatch: {
                 $or: [
                   { address: tokenAddress },
+                  { address: tokenAddressChecksum },
                   { lowercasedAddress: tokenAddressLower }
                 ]
               }
@@ -207,6 +209,7 @@ export class DataLayerService {
               $elemMatch: {
                 $or: [
                   { address: tokenAddress },
+                  { address: tokenAddressChecksum },
                   { lowercasedAddress: tokenAddressLower }
                 ]
               }

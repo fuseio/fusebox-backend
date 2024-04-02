@@ -66,7 +66,6 @@ export class OperatorsService {
       if (!projectObject) {
         throw new HttpException('Project not found', HttpStatus.NOT_FOUND)
       }
-      // await this.analyticsService.operatorAccountActivationEvent({ id: user._id, projectId: projectObject._id })
 
       const apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
       if (!apiKeyInfo) {
@@ -106,10 +105,15 @@ export class OperatorsService {
       const secretKey = await this.createProjectSecret(projectObject)
       const sponsorId = await this.createPaymasters(projectObject)
       const predictedWallet = await this.predictWallet(auth0Id, 0, '0_1_0', 'production')
+      const eventData = {
+        email: user.email,
+        apiKey: publicKey
+      }
       await this.createOperatorWallet(user, predictedWallet)
       await this.addAddressToOperatorsWebhook(predictedWallet)
       await this.addAddressToTokenReceiveWebhook(predictedWallet)
       this.hubspotFormSubmit(createOperatorUserDto)
+      this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
       return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
     } catch (error) {
       this.errorHandler(error)

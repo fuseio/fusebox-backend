@@ -37,13 +37,16 @@ data:
       error_log /var/log/nginx/error.log info;
 
       # Timeouts
-      keepalive_timeout 65s;
+      keepalive_timeout 0;
 
       # Server
       server {
         listen 8888 deferred default_server;
 
         location /amplitude {
+          add_header 'Access-Control-Allow-Origin' '*';
+          add_header 'Access-Control-Allow-Methods' 'GET, POST';
+
           proxy_pass https://api2.amplitude.com/2/httpapi;
         }
 

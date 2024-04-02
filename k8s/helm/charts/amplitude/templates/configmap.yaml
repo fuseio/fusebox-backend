@@ -44,8 +44,13 @@ data:
         listen 8888 deferred default_server;
 
         location /amplitude {
-          add_header 'Access-Control-Allow-Origin' '*';
-          add_header 'Access-Control-Allow-Methods' 'GET, POST';
+          # Hide application Origin to avoid CORS header duplication
+          proxy_hide_header Access-Control-Allow-Origin;
+
+          add_header 'Access-Control-Allow-Origin' '*' always;          
+          add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+          add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+          add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
 
           proxy_pass https://api2.amplitude.com/2/httpapi;
         }

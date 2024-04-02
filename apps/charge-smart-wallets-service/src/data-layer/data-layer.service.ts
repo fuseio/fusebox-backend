@@ -197,7 +197,7 @@ export class DataLayerService {
             sent: {
               $elemMatch: {
                 $or: [
-                  { address: tokenAddress },
+                  { address: tokenAddressLower },
                   { address: tokenAddressChecksum },
                   { lowercasedAddress: tokenAddressLower }
                 ]
@@ -208,7 +208,7 @@ export class DataLayerService {
             received: {
               $elemMatch: {
                 $or: [
-                  { address: tokenAddress },
+                  { address: tokenAddressLower },
                   { address: tokenAddressChecksum },
                   { lowercasedAddress: tokenAddressLower }
                 ]

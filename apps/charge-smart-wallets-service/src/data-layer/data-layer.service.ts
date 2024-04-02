@@ -22,7 +22,6 @@ import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import TradeService from '@app/common/services/trade.service'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
-
 @Injectable()
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
@@ -188,21 +187,28 @@ export class DataLayerService {
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
-      query =
-      {
+      const tokenAddressLower = tokenAddress.toLowerCase()
+
+      query = {
         walletAddress,
         $or: [
           {
             sent: {
               $elemMatch: {
-                address: tokenAddress
+                $or: [
+                  { address: tokenAddress },
+                  { lowercasedAddress: tokenAddressLower }
+                ]
               }
             }
           },
           {
             received: {
               $elemMatch: {
-                address: tokenAddress
+                $or: [
+                  { address: tokenAddress },
+                  { lowercasedAddress: tokenAddressLower }
+                ]
               }
             }
           }
@@ -220,7 +226,9 @@ export class DataLayerService {
         limit: limit || 20,
         sort: { updatedAt: -1 }
       }
+
       const result = await this.paginatedWalletActionModel.paginate(query, options)
+
       return result
     } catch (error) {
       this.logger.error('Error fetching paginated wallet actions:', error)

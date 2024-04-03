@@ -188,8 +188,6 @@ export class DataLayerService {
   async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
-      const tokenAddressLower = tokenAddress.toLowerCase()
-      const tokenAddressChecksum = utils.toChecksumAddress(tokenAddress)
       query = {
         walletAddress,
         $or: [
@@ -197,9 +195,7 @@ export class DataLayerService {
             sent: {
               $elemMatch: {
                 $or: [
-                  { address: tokenAddressLower },
-                  { address: tokenAddressChecksum },
-                  { lowercasedAddress: tokenAddressLower }
+                  { address: tokenAddress.toLowerCase() }
                 ]
               }
             }
@@ -208,9 +204,7 @@ export class DataLayerService {
             received: {
               $elemMatch: {
                 $or: [
-                  { address: tokenAddressLower },
-                  { address: tokenAddressChecksum },
-                  { lowercasedAddress: tokenAddressLower }
+                  { address: tokenAddress.toLowerCase() }
                 ]
               }
             }

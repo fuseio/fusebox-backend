@@ -6,7 +6,6 @@ import {
   HttpException
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'

@@ -4,7 +4,7 @@ import paginate from 'mongoose-paginate-v2'
 const ercTransferMetadata = {
   name: { type: String, required: true },
   symbol: { type: String, required: true },
-  address: { type: String, required: true },
+  address: { type: String, required: true, lowercase: true },
   decimals: { type: Number, default: 0 },
   type: { type: String, required: true },
   value: { type: String, nullable: true },

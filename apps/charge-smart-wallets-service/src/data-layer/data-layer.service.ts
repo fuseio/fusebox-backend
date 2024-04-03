@@ -22,7 +22,6 @@ import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import TradeService from '@app/common/services/trade.service'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
-import { utils } from 'web3'
 @Injectable()
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
@@ -194,18 +193,18 @@ export class DataLayerService {
           {
             sent: {
               $elemMatch: {
-                $or: [
-                  { address: tokenAddress.toLowerCase() }
-                ]
+
+                address: tokenAddress.toLowerCase()
+
               }
             }
           },
           {
             received: {
               $elemMatch: {
-                $or: [
-                  { address: tokenAddress.toLowerCase() }
-                ]
+
+                address: tokenAddress.toLowerCase()
+
               }
             }
           }

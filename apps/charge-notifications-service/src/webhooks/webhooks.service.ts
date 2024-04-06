@@ -12,6 +12,9 @@ import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.
 import { addressTypes } from '@app/notifications-service/common/schemas/webhook-event.schema'
 import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
+import { InjectQueue } from '@nestjs/bull'
+import { JobOptions, Queue } from 'bull'
+import { webhookEventsQueueString } from '@app/common/constants/queues.constants'
 
 @Injectable()
 export class WebhooksService {
@@ -23,7 +26,9 @@ export class WebhooksService {
     @Inject(webhookAddressModelString)
     private webhookAddressModel: Model<WebhookAddress>,
     @Inject(webhookEventModelString)
-    private webhookEventModel: Model<WebhookEvent>
+    private webhookEventModel: Model<WebhookEvent>,
+    @InjectQueue(webhookEventsQueueString)
+    private readonly webhookEventsQueue: Queue
   ) { }
 
   async create (createWebhookDto: CreateWebhookDto): Promise<Webhook> {
@@ -105,7 +110,7 @@ export class WebhooksService {
   async getAddressWatchers (address: string): Promise<any> {
     const addressWatchers = await this.webhookAddressModel
       .find<WebhookAddress>({ lowercaseAddress: address.toLowerCase() })
-      .populate<Webhook>('webhookId', 'webhookUrl eventType projectId')
+      .populate<{ webhookId: Webhook }>('webhookId', 'webhookUrl eventType projectId')
 
     return addressWatchers.map(watcher => {
       const watcherJson = watcher.toJSON()
@@ -145,11 +150,7 @@ export class WebhooksService {
         !isEmpty(eventType) &&
         this.isRelevantEvent(eventData.tokenType, eventType)) {
         try {
-          this.logger.log(
-            `Creating a new webhook event for the tx ${eventData.txHash}`
-          )
-
-          await this.webhookEventModel.create({
+          const webhookEvent = await this.webhookEventModel.create({
             webhook: webhookId,
             projectId,
             webhookUrl,
@@ -158,9 +159,16 @@ export class WebhooksService {
             addressType
           })
 
-          this.logger.log(
-            `Created a new webhook event for the tx ${eventData.txHash}`
-          )
+          const jobOptions: JobOptions = {
+            jobId: webhookEvent._id.toString(),
+            delay: 0,
+            attempts: 6,
+            backoff: {
+              type: 'custom'
+            }
+          }
+
+          await this.webhookEventsQueue.add(webhookEvent, jobOptions)
         } catch (err) {
           this.logger.error(`Webhook event couldn't be added to the DB: ${err}`)
         }

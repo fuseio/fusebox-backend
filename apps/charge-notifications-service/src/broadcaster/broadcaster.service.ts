@@ -6,6 +6,9 @@ import { WebhookEvent } from '@app/notifications-service/common/interfaces/webho
 import { ConfigService } from '@nestjs/config'
 import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface'
 import WebhookSendService from '@app/common/services/webhook-send.service'
+import { InjectQueue } from '@nestjs/bull'
+import { Job, Queue } from 'bull'
+import { webhookEventsQueueString } from '@app/common/constants/queues.constants'
 
 @Injectable()
 export class BroadcasterService {
@@ -15,7 +18,9 @@ export class BroadcasterService {
     @Inject(webhookEventModelString)
     private webhookEventModel: Model<WebhookEvent>,
     private readonly configService: ConfigService,
-    private readonly webhookSendService: WebhookSendService
+    private readonly webhookSendService: WebhookSendService,
+    @InjectQueue(webhookEventsQueueString)
+    private readonly webhookEventsQueue: Queue
   ) { }
 
   get retryTimeIntervalsMS () {
@@ -35,62 +40,72 @@ export class BroadcasterService {
   }
 
   async start () {
-    while (true) {
-      const webhookEventsToSendNow = await this.webhookEventModel.find(
-        {
-          retryAfter: { $lte: new Date() },
-          success: false,
-          numberOfTries: { $lt: 6 }
-        }
-      ).populate<{ webhook: Webhook }>('webhook').sort({ retryAfter: -1 })
+    await this.processWebhookEventsFromQueue()
+  }
 
-      for (const webhookEvent of webhookEventsToSendNow) {
-        try {
-          this.logger.log(`Starting sending to ${webhookEvent.webhook.webhookUrl}. TxHash: ${webhookEvent.eventData.txHash}`)
-          webhookEvent.numberOfTries++
-          const response = await this.webhookSendService.sendData(webhookEvent)
-          webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
-          webhookEvent.success = true
-        } catch (err) {
-          let errorStatus: number, errorResponse: string
-          if (err instanceof HttpException) {
-            errorStatus = err.getStatus()
-            errorResponse = err.getResponse().toString()
-            if (isNaN(errorStatus)) {
-              this.logger.warn(`Webhook ${webhookEvent._id} unable to send an webhook event to its URL:${webhookEvent.webhook.webhookUrl}`
-              )
-            } else {
-              this.logger.error(
-                `Webhook ${webhookEvent._id} returned error. `,
-                `Error message: ${errorResponse}`,
-                `Error status: ${errorStatus}`
-              )
-            }
-          } else {
-            errorStatus = HttpStatus.INTERNAL_SERVER_ERROR
-            errorResponse = JSON.stringify(err)
-            this.logger.error(
-              `Webhook ${webhookEvent._id} returned error. `,
-              `Error message: ${errorResponse}`,
-              `Error status: ${errorStatus}`
-            )
-          }
+  private async processWebhookEventsFromQueue () {
+    // Process webhook events concurrently with a configurable concurrency limit
+    const concurrency = this.configService.get('webhookProcessingConcurrency') || 10
 
-          webhookEvent.responses.push(
-            this.getResponseDetailsWithDate(errorStatus, errorResponse)
-          )
+    this.webhookEventsQueue.process(concurrency, async (job: Job) => {
+      const webhookEvent = await this.webhookEventModel
+        .findOne({ _id: job.id })
+        .populate<{ webhook: Webhook }>('webhook')
+        .exec()
+      await this.processSingleWebhookEvent(webhookEvent)
+    })
+  }
 
-          webhookEvent.retryAfter = new Date(
-            this.getNewRetryAfterDate(webhookEvent)
-          )
-        } finally {
-          try {
-            await webhookEvent.save()
-          } catch (err) {
-            this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)
-          }
-        }
-      }
+  private async processSingleWebhookEvent (webhookEvent) {
+    try {
+      await this.attemptToSendWebhookEvent(webhookEvent)
+    } catch (err) {
+      await this.handleWebhookEventError(webhookEvent, err)
+    } finally {
+      await this.finalizeWebhookEvent(webhookEvent)
+    }
+  }
+
+  private async attemptToSendWebhookEvent (webhookEvent) {
+    webhookEvent.numberOfTries++
+    const response = await this.webhookSendService.sendData(webhookEvent)
+    webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
+    webhookEvent.success = true
+  }
+
+  private async handleWebhookEventError (webhookEvent, err: any) {
+    const { errorStatus, errorResponse } = this.extractErrorDetails(err)
+    this.logError(webhookEvent, errorStatus, errorResponse)
+    webhookEvent.responses.push(this.getResponseDetailsWithDate(errorStatus, errorResponse))
+    webhookEvent.retryAfter = new Date(this.getNewRetryAfterDate(webhookEvent))
+  }
+
+  private extractErrorDetails (err: any): { errorStatus: number; errorResponse: string } {
+    let errorStatus: number, errorResponse: string
+    if (err instanceof HttpException) {
+      errorStatus = err.getStatus()
+      errorResponse = err.getResponse().toString()
+    } else {
+      errorStatus = HttpStatus.INTERNAL_SERVER_ERROR
+      errorResponse = JSON.stringify(err)
+    }
+
+    return { errorStatus, errorResponse }
+  }
+
+  private logError (webhookEvent, errorStatus: number, errorResponse: string) {
+    if (isNaN(errorStatus)) {
+      this.logger.warn(`Webhook ${webhookEvent._id} unable to send an webhook event to its URL:${webhookEvent.webhook.webhookUrl}`)
+    } else {
+      this.logger.error(`Webhook ${webhookEvent._id} returned error. Error message: ${errorResponse}, Error status: ${errorStatus}`)
+    }
+  }
+
+  private async finalizeWebhookEvent (webhookEvent) {
+    try {
+      await webhookEvent.save()
+    } catch (err) {
+      this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)
     }
   }
 

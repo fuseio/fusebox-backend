@@ -7,10 +7,24 @@ import { DatabaseModule } from '@app/common'
 import { ConfigModule } from '@nestjs/config'
 import configuration from '@app/notifications-service/broadcaster/config/configuration'
 import WebhookSendService from '@app/common/services/webhook-send.service'
+import { WebhookEventsQueueModule } from '@app/common/modules/webhook-events-queue.module'
 
 @Module({
-  providers: [BroadcasterService, Logger, ...webhookEventProviders, WebhookSendService],
-  imports: [DatabaseModule, WebhooksModule, HttpModule, ConfigModule.forFeature(configuration)],
-  exports: [BroadcasterService]
+  imports: [
+    DatabaseModule,
+    WebhooksModule,
+    HttpModule,
+    ConfigModule.forFeature(configuration),
+    WebhookEventsQueueModule
+  ],
+  providers: [
+    BroadcasterService,
+    Logger,
+    ...webhookEventProviders,
+    WebhookSendService
+  ],
+  exports: [
+    BroadcasterService
+  ]
 })
 export class BroadcasterModule { }

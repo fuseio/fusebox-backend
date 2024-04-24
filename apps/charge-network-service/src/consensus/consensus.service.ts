@@ -1,6 +1,16 @@
-import { HttpException, Injectable, Logger } from '@nestjs/common'
+import { HttpException, Injectable, Logger, Inject } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Contract, InjectEthersProvider, Interface, JsonRpcProvider, formatEther, formatUnits } from 'nestjs-ethers'
+import {
+  Contract,
+  InjectEthersProvider,
+  Interface,
+  JsonRpcProvider,
+  formatEther,
+  formatUnits
+} from 'nestjs-ethers'
+import { Cron, CronExpression } from '@nestjs/schedule'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
 import MultiCallAbi from '@app/network-service/common/constants/abi/MultiCall'
 import ConsensusAbi from '@app/network-service/common/constants/abi/Consensus'
 import { HttpService } from '@nestjs/axios'
@@ -15,8 +25,17 @@ export class ConsensusService {
     private httpService: HttpService,
     @InjectEthersProvider('regular-node')
     private readonly provider: JsonRpcProvider,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
+
+  @Cron(CronExpression.EVERY_10_MINUTES)
+  async handleValidatorsUpdate () {
+    const validatorsInfo = await this.getValidators()
+    await this.cacheManager.set('validatorsInfo', validatorsInfo)
+
+    return this.cacheManager.get('validatorsInfo')
+  }
 
   get multiCallAddress () {
     return this.configService.getOrThrow('multiCallAddress')
@@ -82,6 +101,15 @@ export class ConsensusService {
         (1 - parseFloat(formatUnits(fee, 16)) / 100)
 
     return (reward * 100).toFixed(1)
+  }
+
+  async getCachedValidatorsInfo () {
+    const cachedInfo = await this.cacheManager.get('validatorsInfo')
+    if (!cachedInfo) {
+      return this.handleValidatorsUpdate()
+    }
+
+    return cachedInfo
   }
 
   async getValidators () {

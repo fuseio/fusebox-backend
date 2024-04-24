@@ -1,3 +1,5 @@
+import { CacheModule } from '@nestjs/cache-manager'
+import { ScheduleModule } from '@nestjs/schedule'
 import { Module } from '@nestjs/common'
 import { ConsensusController } from '@app/network-service/consensus/consensus.controller'
 import { ConsensusService } from '@app/network-service/consensus/consensus.service'
@@ -8,6 +10,11 @@ import { EthersModule } from 'nestjs-ethers'
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
+    CacheModule.register({
+      ttl: 60000, // in milliseconds
+      max: 1000
+    }),
     ConfigModule.forFeature(configuration),
     HttpModule,
     EthersModule.forRootAsync({

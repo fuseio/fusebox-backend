@@ -9,7 +9,7 @@ export class ConsensusController {
 
   @MessagePattern('get_validators')
   getValidators () {
-    return this.consensusService.getValidators()
+    return this.consensusService.getCachedValidatorsInfo()
   }
 
   @MessagePattern('delegated_amounts')

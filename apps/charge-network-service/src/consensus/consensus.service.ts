@@ -171,13 +171,11 @@ export class ConsensusService {
   async getValidatorsMetadata (validators: string[]) {
     const [
       pendingValidators
-    ] = await Promise.all([
-      this.aggregateCalls([
-        {
-          method: 'pendingValidators',
-          params: []
-        }
-      ])
+    ] = await this.aggregateCalls([
+      {
+        method: 'pendingValidators',
+        params: []
+      }
     ])
 
     const validatorDataPromises = validators.map((validator) =>

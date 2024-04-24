@@ -3,7 +3,6 @@ import { networkService } from '@app/common/constants/microservices.constants'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ConsensusApiController } from '@app/api-service/consensus-api/consensus-api.controller'
 import { ConsensusApiService } from '@app/api-service/consensus-api/consensus-api.service'
-import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
@@ -21,8 +20,7 @@ import { CacheModule } from '@nestjs/cache-manager'
           port: parseInt(process.env.NETWORK_TCP_PORT)
         }
       }
-    ]),
-    ApiKeyModule
+    ])
   ],
   providers: [ConsensusApiService],
   controllers: [ConsensusApiController]

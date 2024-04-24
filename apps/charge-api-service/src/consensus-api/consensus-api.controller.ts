@@ -3,15 +3,12 @@ import {
   Controller,
   Get,
   Post,
-  UseGuards,
   UseInterceptors
 } from '@nestjs/common'
-import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { ConsensusApiService } from '@app/api-service/consensus-api/consensus-api.service'
 import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/consensus.dto'
 import { CacheInterceptor } from '@nestjs/cache-manager'
 
-@UseGuards(IsValidPublicApiKeyGuard)
 @Controller('v0/consensus')
 @UseInterceptors(CacheInterceptor)
 export class ConsensusApiController {

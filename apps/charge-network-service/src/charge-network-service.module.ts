@@ -3,9 +3,15 @@ import { ChargeNetworkServiceController } from '@app/network-service/charge-netw
 import { StakingModule } from '@app/network-service/staking/staking.module'
 import { HttpModule } from '@nestjs/axios'
 import { GraphqlModule } from '@app/network-service/graphql/graphql.module'
+import { ConsensusModule } from '@app/network-service/consensus/consensus.module'
 
 @Module({
-  imports: [StakingModule, HttpModule, GraphqlModule],
+  imports: [
+    StakingModule,
+    HttpModule,
+    GraphqlModule,
+    ConsensusModule
+  ],
   controllers: [ChargeNetworkServiceController]
 })
 export class ChargeNetworkServiceModule { }

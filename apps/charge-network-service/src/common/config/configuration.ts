@@ -8,7 +8,9 @@ export default () => ({
   validatorFee: '0.15',
   rpcConfig: {
     rpc: {
-      url: process.env.RPC_URL || 'https://rpc.fuse.io'
+      url: process.env.RPC_URL || 'https://rpc.fuse.io',
+      networkName: process.env.NETWORK_NAME || 'Fuse Mainnet',
+      chainId: parseInt(process.env.CHAIN_ID) || 122
     }
   },
   tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,
@@ -36,5 +38,7 @@ export default () => ({
       stakingProviderId: 'fuse-liquid-staking',
       expired: false
     }
-  ]
+  ],
+  multiCallAddress: '0x3CE6158b7278Bf6792e014FA7B4f3c6c46fe9410',
+  botApi: 'https://bot.fuse.io/api/v1'
 })

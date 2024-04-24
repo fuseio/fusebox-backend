@@ -10,6 +10,7 @@ import { PaymasterApiModule } from '@app/api-service/paymaster-api/paymaster-api
 import { BundlerApiModule } from '@app/api-service/bundler-api/bundler-api.module'
 import { SmartWalletsAPIModule } from '@app/api-service/smart-wallets-api/smart-wallets-api.module'
 import { GraphqlAPIModule } from '@app/api-service/graphql-api/graphql-api.module'
+import { ConsensusApiModule } from '@app/api-service/consensus-api/consensus-api.module'
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { GraphqlAPIModule } from '@app/api-service/graphql-api/graphql-api.modul
     BundlerApiModule,
     SmartWalletsAPIModule,
     GraphqlAPIModule,
-    PaymasterApiModule
+    PaymasterApiModule,
+    ConsensusApiModule
   ],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]

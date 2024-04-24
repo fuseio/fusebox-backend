@@ -1,6 +1,6 @@
 import LiquidStakingABI from '@app/network-service/common/constants/abi/FuseLiquidStaking.json'
 import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
-import ConsensusABI from '@app/network-service/common/constants/abi/Consensus.json'
+import ConsensusABI from '@app/network-service/common/constants/abi/Consensus'
 import BlockRewardABI from '@app/network-service/common/constants/abi/BlockReward.json'
 import TradeService from '@app/common/services/trade.service'
 import Web3ProviderService from '@app/common/services/web3-provider.service'

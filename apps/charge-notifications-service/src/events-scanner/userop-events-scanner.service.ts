@@ -35,8 +35,6 @@ export class UserOpEventsScannerService extends EventsScannerService {
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
-    this.logger.log(`UserOpEventsScannerService: Processing blocks from ${fromBlock} to ${toBlock}`)
-
     const logs = await this.fetchLogs(fromBlock, toBlock)
 
     for (const log of logs) {
@@ -52,8 +50,6 @@ export class UserOpEventsScannerService extends EventsScannerService {
 
   @logPerformance('UserOpEventsScannerService::ProcessEvent')
   async processEvent (log: Log) {
-    this.logger.log(`Processing UserOp event from block: ${log.blockNumber} & txHash:  ${log.transactionHash}`)
-
     const parsedLog = parseLog(log, ENTRY_POINT_ABI)
     const gasValues = await this.gasService.fetchTransactionGasCosts(
       parsedLog.transactionHash,

@@ -38,10 +38,7 @@ export class TransactionsScannerService extends ScannerService {
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
-    this.logger.log(`TransactionsScanner: Processing blocks from ${fromBlock} to ${toBlock}`)
-
     for (let i = fromBlock; i <= toBlock; i++) {
-      this.logger.log(`Processing block ${i}`)
       await this.processBlockTraces(i)
       await this.scannerStatusService.updateStatus(i)
     }

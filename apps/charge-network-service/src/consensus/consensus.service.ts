@@ -145,7 +145,6 @@ export class ConsensusService {
       minStake
     ] = results
 
-    // const apy = await this.calculateEstimatedApy(validators[]) // Get random index
     const apy = await this.calculateEstimatedApy(validators[0])
     const combinedValidators = validators.concat(jailedValidators)
     const {

@@ -75,32 +75,51 @@ export class ConsensusService {
 
   async calculateEstimatedApy (validator: string) {
     if (!validator) {
-      return 0
+      return '0.0'
     }
 
-    const [results, totalSupply] = await Promise.all([
-      this.aggregateCalls([
-        {
-          method: 'totalStakeAmount',
-          params: []
-        },
-        {
-          method: 'validatorFee',
-          params: [validator]
-        }
-      ]),
-      this.getTotalSupply()
-    ])
+    try {
+      const [results, totalSupply] = await Promise.all([
+        this.aggregateCalls([
+          {
+            method: 'totalStakeAmount',
+            params: []
+          },
+          {
+            method: 'validatorFee',
+            params: [validator]
+          }
+        ]),
+        this.getTotalSupply()
+      ])
 
-    const [totalStakeAmount, fee] = results
+      const totalStakeAmount = parseFloat(formatEther(results[0]))
+      const feePercentage = parseFloat(formatUnits(results[1], 16)) / 100
 
-    const reward =
-        (totalSupply /
-          parseFloat(formatEther(totalStakeAmount))) *
-        0.05 *
-        (1 - parseFloat(formatUnits(fee, 16)) / 100)
+      if (totalStakeAmount === 0) {
+        return '0.0'
+      }
 
-    return (reward * 100).toFixed(1)
+      const reward = this.calculateReward(
+        totalSupply,
+        totalStakeAmount,
+        feePercentage
+      )
+
+      return reward.toFixed(1)
+    } catch (error) {
+      this.logger.error(`Error calculating APY for ${validator}: ${error}`)
+      return '0.0'
+    }
+  }
+
+  private calculateReward (
+    totalSupply: number,
+    totalStakeAmount: number,
+    feePercentage: number
+  ): number {
+    const baseRewardRate = 0.05 // 5% base reward rate
+    return (totalSupply / totalStakeAmount) * baseRewardRate * (1 - feePercentage) * 100
   }
 
   async getCachedValidatorsInfo () {
@@ -145,7 +164,6 @@ export class ConsensusService {
       minStake
     ] = results
 
-    const apy = await this.calculateEstimatedApy(validators[0])
     const combinedValidators = validators.concat(jailedValidators)
     const {
       totalDelegators,
@@ -154,7 +172,6 @@ export class ConsensusService {
     } = await this.getValidatorsMetadata(combinedValidators)
 
     return {
-      apy,
       totalStakeAmount: formatEther(totalStakeAmount),
       totalSupply,
       maxStake: formatEther(maxStake),
@@ -209,13 +226,18 @@ export class ConsensusService {
 
         if (!metadata.isJailed) {
           try {
-            const { Node } = await this.getNodeByAddress(validator)
+            const [{ Node }, apy] = await Promise.all([
+              this.getNodeByAddress(validator),
+              this.calculateEstimatedApy(validator)
+            ])
+
             return {
               ...baseMetadata,
               firstSeen: Node?.firstSeen,
               forDelegation: Node?.forDelegation,
               totalValidated: Node?.totalValidated,
-              uptime: Node?.upTime
+              uptime: Node?.upTime,
+              apy
             }
           } catch (error) {
             return baseMetadata

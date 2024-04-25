@@ -15,4 +15,5 @@ export interface IValidator {
     description?: string
     isPending?: boolean
     isJailed?: boolean,
+    apy?: string
 }

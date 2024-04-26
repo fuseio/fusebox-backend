@@ -112,6 +112,176 @@ export class GraphqlAPIController {
   @ApiOperation({ summary: 'Fetches user operations for a specific wallet address, including transactions, user operation hashes, and related activity data.' })
   @ApiParam({ name: 'apiKey', type: String, required: true })
   @ApiParam({ name: 'address', type: String, required: true })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            userOps: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string'
+                  },
+                  transactionHash: {
+                    type: 'string'
+                  },
+                  sender: {
+                    type: 'string'
+                  },
+                  entryPoint: {
+                    type: 'string'
+                  },
+                  paymaster: {
+                    type: 'string'
+                  },
+                  paymasterAndData: {
+                    type: 'string'
+                  },
+                  bundler: {
+                    type: 'string'
+                  },
+                  nonce: {
+                    type: 'string'
+                  },
+                  initCode: {
+                    type: 'string'
+                  },
+                  actualGasCost: {
+                    type: 'string'
+                  },
+                  callGasLimit: {
+                    type: 'string'
+                  },
+                  verificationGasLimit: {
+                    type: 'string'
+                  },
+                  preVerificationGas: {
+                    type: 'string'
+                  },
+                  maxFeePerGas: {
+                    type: 'string'
+                  },
+                  maxPriorityFeePerGas: {
+                    type: 'string'
+                  },
+                  baseFeePerGas: {
+                    type: 'string'
+                  },
+                  gasPrice: {
+                    type: 'string'
+                  },
+                  gasLimit: {
+                    type: 'string'
+                  },
+                  signature: {
+                    type: 'string'
+                  },
+                  success: {
+                    type: 'boolean'
+                  },
+                  revertReason: {
+                    type: 'string'
+                  },
+                  blockTime: {
+                    type: 'string'
+                  },
+                  blockNumber: {
+                    type: 'string'
+                  },
+                  network: {
+                    type: 'string'
+                  },
+                  target: {
+                    type: 'string'
+                  },
+                  accountTarget: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'string'
+                      },
+                      userOpsCount: {
+                        type: 'string'
+                      }
+                    }
+                  },
+                  callData: {
+                    type: 'string'
+                  },
+                  beneficiary: {
+                    type: 'string'
+                  },
+                  factory: {
+                    type: 'string'
+                  },
+                  erc721Transfers: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        from: {
+                          type: 'string'
+                        },
+                        to: {
+                          type: 'string'
+                        },
+                        tokenId: {
+                          type: 'string'
+                        },
+                        contractAddress: {
+                          type: 'string'
+                        },
+                        name: {
+                          type: 'string'
+                        },
+                        symbol: {
+                          type: 'string'
+                        }
+                      }
+                    }
+                  },
+                  erc20Transfers: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        from: {
+                          type: 'string'
+                        },
+                        to: {
+                          type: 'string'
+                        },
+                        value: {
+                          type: 'string'
+                        },
+                        contractAddress: {
+                          type: 'string'
+                        },
+                        name: {
+                          type: 'string'
+                        },
+                        symbol: {
+                          type: 'string'
+                        },
+                        decimals: {
+                          type: 'string'
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  })
   @ApiCreatedResponse({ description: 'A list of user operations associated with the wallet address.', type: Object })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   getUserOpsBySender (@Param('address') address: string) {

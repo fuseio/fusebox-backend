@@ -7,22 +7,39 @@ import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.deco
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { Project } from '@app/common/decorators/project.decorator'
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import { SmartWalletsAuth } from '@app/smart-wallets-service/entities/smart-wallets-auth.entity'
+import { TokenTransferWebhook } from '@app/smart-wallets-service/smart-wallets/entities/token-transfer-webhook.entity'
 
+@ApiTags('Smart Wallets V2 API')
 @Controller({ path: 'smart-wallets', version: '2' })
 export class SmartWalletsAPIV2Controller {
   private readonly logger = new Logger(SmartWalletsAPIV2Controller.name)
 
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
-  @UseGuards(IsPrdOrSbxKeyGuard)
   @Post('auth')
+  @UseGuards(IsPrdOrSbxKeyGuard)
+  @ApiOperation({ summary: 'Authenticate user using signed data standard EIP-191.' })
+  @ApiParam({ name: 'apiKey', type: String, required: true })
+  @ApiBody({ type: SmartWalletsAuth, required: true })
+  @ApiCreatedResponse({ description: 'The response object.', type: Object })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
   auth (@Project() projectId: string, @Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
     smartWalletsAuthDto.projectId = projectId
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
-  @UseGuards(AuthGuard('jwt'), IsPrdOrSbxKeyGuard)
   @Get('actions')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get wallet actions details.' })
+  @ApiParam({ name: 'apiKey', type: String, required: true })
+  @ApiParam({ name: 'page', type: String, required: false })
+  @ApiParam({ name: 'limit', type: String, required: false })
+  @ApiParam({ name: 'tokenAddress', type: String, required: false })
+  @ApiCreatedResponse({ description: 'The wallet actions details.', type: Object })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @UseGuards(AuthGuard('jwt'), IsPrdOrSbxKeyGuard)
   getHistoricalTxs (
     @SmartWalletOwner() user: ISmartWalletUser,
     @Query('page') page?: string,
@@ -33,6 +50,9 @@ export class SmartWalletsAPIV2Controller {
   }
 
   @Post('token-transfers')
+  @ApiOperation({ summary: 'Handle token transfer webhook.' })
+  @ApiCreatedResponse({ description: 'The response object.', type: Object })
+  @ApiBody({ type: TokenTransferWebhook, required: true })
   async handleTokenTransferWebhook (
     @Body() tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {

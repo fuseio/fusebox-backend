@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,7 +16,7 @@ import { IsCreatorOwnerGuard } from '@app/accounts-service/projects/guards/is-cr
 import { IsProjectOwnerGuard } from '@app/accounts-service/projects/guards/is-project-owner.guard'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
 import { MessagePattern } from '@nestjs/microservices'
-import { ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 @ApiTags('Projects')
 @Controller({ path: 'projects', version: '1' })
@@ -30,7 +29,7 @@ export class ProjectsController {
    */
   @Post()
   @ApiOperation({ summary: 'Create a new project for the authenticated user.' })
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'The project has been successfully created.' })
+  @ApiCreatedResponse({ description: 'The project has been successfully created.' })
   @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   create (@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto)
@@ -89,7 +88,7 @@ export class ProjectsController {
    */
   @Post('/secret/:projectId')
   @ApiOperation({ summary: 'Create an API key secret for the given project.' })
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'The API key secret has been successfully created.' })
+  @ApiCreatedResponse({ description: 'The API key secret has been successfully created.' })
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   createSecret (@Param('projectId') projectId: string) {
     return this.projectsService.createSecret({ projectId, createLegacyAccount: true })
@@ -154,7 +153,7 @@ export class ProjectsController {
     */
   @Post('/sandbox/:projectId')
   @ApiOperation({ summary: 'Create a sandbox API key for the given project.' })
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'The sandbox API key has been successfully created.' })
+  @ApiCreatedResponse({ description: 'The sandbox API key has been successfully created.' })
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   createSandboxKey (@Param('projectId') projectId: string) {
     return this.projectsService.createSandboxKey(projectId)

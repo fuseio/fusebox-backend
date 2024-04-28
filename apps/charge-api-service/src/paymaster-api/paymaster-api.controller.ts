@@ -1,8 +1,8 @@
-import { Controller, UseGuards, Req, Post, Res, HttpStatus } from '@nestjs/common'
+import { Controller, UseGuards, Req, Post, Res } from '@nestjs/common'
 import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { JSONRPCServer } from 'json-rpc-2.0'
-import { ApiOperation, ApiResponse, ApiTags, ApiBody, ApiCreatedResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse } from '@nestjs/swagger'
 
 @ApiTags('Paymaster JSON-RPC API')
 @UseGuards(IsPrdOrSbxKeyGuard)
@@ -74,7 +74,7 @@ export class PaymasterApiController {
     }
   })
   @ApiCreatedResponse({ description: 'JSON-RPC Response', type: Object })
-  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Internal Server Error' })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
   async jsonRpc (@Req() req, @Res() res) {
     try {
       const jsonRPCRequest = req.body

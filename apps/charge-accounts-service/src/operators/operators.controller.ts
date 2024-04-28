@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Head, HttpStatus, Logger, Param, Post, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Head, Logger, Param, Post, Res, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
@@ -7,7 +7,7 @@ import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operat
 import { Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { MessagePattern } from '@nestjs/microservices'
-import { ApiBody, ApiCreatedResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { AuthOperator } from '@app/accounts-service/operators/entities/auth-operator.entity'
 import { CreateOperatorUser } from '@app/accounts-service/operators/entities/create-operator-user.entity'
 
@@ -27,7 +27,7 @@ export class OperatorsController {
   @ApiOperation({ summary: 'Check if operator exist' })
   @ApiParam({ name: 'address', type: String, required: true })
   @ApiCreatedResponse({ description: 'Operator exist' })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Operator does not exist' })
+  @ApiNotFoundResponse({ description: 'Operator does not exist' })
   async checkOperatorExistence (@Param('address') address: string, @Res() response: Response) {
     const statusCode = await this.operatorsService.checkOperatorExistenceByEoaAddress(address)
     response.status(statusCode).send()
@@ -42,7 +42,7 @@ export class OperatorsController {
   @ApiOperation({ summary: 'Validate operator' })
   @ApiBody({ type: AuthOperator, required: true })
   @ApiCreatedResponse({ description: 'The operator has been successfully validated.' })
-  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   validate (@Body() authOperatorDto: AuthOperatorDto) {
     return this.operatorsService.validate(authOperatorDto)
   }
@@ -90,7 +90,7 @@ export class OperatorsController {
   @Get('/is-activated')
   @ApiOperation({ summary: 'Check if operator wallet is activated' })
   @ApiCreatedResponse({ description: 'Wallet is activated' })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Wallet not activated' })
+  @ApiNotFoundResponse({ description: 'Wallet not activated' })
   @UseGuards(JwtAuthGuard)
   async checkWalletActivationStatus (@User('sub') auth0Id: string, @Res() response: Response) {
     const isActivated = await this.operatorsService.checkWalletActivationStatus(auth0Id)

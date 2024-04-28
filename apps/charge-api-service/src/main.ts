@@ -4,7 +4,7 @@ import { ChargeApiServiceModule } from 'apps/charge-api-service/src/charge-api-s
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { apiServiceLoggerContext } from '@app/common/constants/microservices.constants'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { setupSwagger } from './common/utils/swagger/setup-swagger'
 
 async function bootstrap () {
   const app = await NestFactory.create(ChargeApiServiceModule)
@@ -37,12 +37,7 @@ async function bootstrap () {
 
   await app.startAllMicroservices()
 
-  const config = new DocumentBuilder()
-    .setTitle('FuseBox API')
-    .setDescription('FuseBox is an Open Source Wallet-As-A-Service platform based on Account Abstraction')
-    .build()
-  const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  setupSwagger(app)
 
   await app.listen(process.env.API_PORT)
 }

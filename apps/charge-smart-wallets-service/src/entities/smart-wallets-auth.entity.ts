@@ -12,7 +12,4 @@ export class SmartWalletsAuth {
 
   @ApiProperty({ description: 'The smart wallet address.', required: false, example: '0x1234567890abcdef' })
     smartWalletAddress: string
-
-  @ApiProperty({ description: 'The project ID.', required: false })
-    projectId: string
 }

@@ -15,12 +15,15 @@ import { SmartWalletsAuth } from '@app/smart-wallets-service/entities/smart-wall
 export class SmartWalletsAPIController {
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
-  @ApiOperation({ summary: 'Authenticate user using signed data standard EIP-191.' })
-  @ApiParam({ name: 'apiKey', type: String, required: true })
+  @Post('auth')
+  @ApiOperation({
+    summary: 'Authenticate user',
+    description: 'Authenticate user using signed data standard EIP-191.'
+  })
+  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiBody({ type: SmartWalletsAuth, required: true })
   @ApiCreatedResponse({ description: 'The response object.', type: Object })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
-  @Post('auth')
+  @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }

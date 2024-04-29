@@ -28,7 +28,7 @@ export class ProjectsController {
    * @param createProjectDto
    */
   @Post()
-  @ApiOperation({ summary: 'Create a new project for the authenticated user.' })
+  @ApiOperation({ summary: 'Create a new project.' })
   @ApiCreatedResponse({ description: 'The project has been successfully created.' })
   @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   create (@Body() createProjectDto: CreateProjectDto) {
@@ -164,7 +164,7 @@ export class ProjectsController {
    * @param projectId
    * @returns the sandbox API key associated with the given project
    */
-    @Get('/sandbox/:projectId')
+  @Get('/sandbox/:projectId')
   @ApiOperation({ summary: 'Get the sandbox API key associated with the project.' })
   @ApiCreatedResponse({ description: 'The sandbox API key associated with the project.' })
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
@@ -173,9 +173,9 @@ export class ProjectsController {
   }
 
   @MessagePattern('find-one-project')
-    findOneInternal (id: string) {
-      return this.projectsService.findOne(id)
-    }
+  findOneInternal (id: string) {
+    return this.projectsService.findOne(id)
+  }
 
   @MessagePattern('find-one-project-by-owner-id')
   findOneByIdInternal (id: string) {

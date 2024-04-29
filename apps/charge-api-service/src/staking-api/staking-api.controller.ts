@@ -3,7 +3,7 @@ import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-va
 import { StakingAPIService } from '@app/api-service/staking-api/staking-api.service'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
-import { ApiOperation, ApiParam, ApiBody, ApiTags, ApiForbiddenResponse, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiBody, ApiTags, ApiForbiddenResponse, ApiCreatedResponse, ApiOkResponse, ApiQuery } from '@nestjs/swagger'
 import { StakingOption } from '@app/network-service/staking/interfaces'
 import { Stake } from '@app/network-service/staking/entities/stake.entity'
 import { Unstake } from '@app/network-service/staking/entities/unstake.entity'
@@ -21,7 +21,7 @@ export class StakingApiController {
     summary: 'Retrieve staking options',
     description: 'Fetches available staking options including details like APR, token information, and provider IDs.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   @ApiOkResponse({
     description: 'A list of staking options.',
@@ -43,7 +43,7 @@ export class StakingApiController {
     summary: 'Stake tokens',
     description: 'Stakes a specified amount of tokens from a wallet.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiBody({ type: Stake, required: true })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   @ApiCreatedResponse({
@@ -65,7 +65,7 @@ export class StakingApiController {
     summary: 'Unstake tokens',
     description: 'Unstakes a specified amount of tokens back to a wallet.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiBody({ type: Unstake, required: true })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   @ApiCreatedResponse({
@@ -87,8 +87,8 @@ export class StakingApiController {
     summary: 'Get staked tokens by wallet address',
     description: 'Retrieves information about tokens staked by a specific wallet address.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
-  @ApiParam({ name: 'accountAddress', type: String, required: true })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiParam({ name: 'accountAddress', type: String, required: true, description: 'The wallet address to query staked tokens for.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   @ApiOkResponse({
     description: 'Staked tokens information for the specified wallet address.',

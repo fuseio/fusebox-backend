@@ -7,7 +7,7 @@ import { SmartWalletOwner } from '@app/common/decorators/smart-wallet-owner.deco
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 import { Project } from '@app/common/decorators/project.decorator'
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger'
 import { SmartWalletsAuth } from '@app/smart-wallets-service/entities/smart-wallets-auth.entity'
 import { TokenTransferWebhook } from '@app/smart-wallets-service/smart-wallets/entities/token-transfer-webhook.entity'
 
@@ -24,7 +24,7 @@ export class SmartWalletsAPIV2Controller {
     summary: 'Authenticate user',
     description: 'Authenticate user using signed data standard EIP-191.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiBody({ type: SmartWalletsAuth, required: true })
   @ApiCreatedResponse({ description: 'The response object.', type: Object })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -39,7 +39,7 @@ export class SmartWalletsAPIV2Controller {
     summary: 'Get Wallet Actions',
     description: 'Get wallet actions associated with the wallet address.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiParam({ name: 'page', type: String, required: false, description: 'Page number for pagination.' })
   @ApiParam({ name: 'limit', type: String, required: false, description: 'Number of items per page.' })
   @ApiParam({ name: 'tokenAddress', type: String, required: false, description: 'Filter actions by token address.' })

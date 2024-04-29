@@ -2,7 +2,7 @@ import { Controller, UseGuards, Req, Post, Res } from '@nestjs/common'
 import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { JSONRPCServer } from 'json-rpc-2.0'
-import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiQuery } from '@nestjs/swagger'
 
 @ApiTags('Paymaster JSON-RPC API')
 @UseGuards(IsPrdOrSbxKeyGuard)
@@ -30,6 +30,7 @@ export class PaymasterApiController {
 
   @Post()
   @ApiOperation({ summary: 'JSON-RPC API' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiBody({
     description: 'JSON-RPC Request',
     type: Object,

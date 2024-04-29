@@ -1,7 +1,7 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { GraphqlAPIService } from '@app/api-service/graphql-api/graphql-api.service'
-import { ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger'
 
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller('v0/graphql')
@@ -16,7 +16,7 @@ export class GraphqlAPIController {
     summary: 'Get NFTs by wallet address',
     description: 'Retrieves NFTs associated with a specific wallet address, including details like creation time, token ID, and collection information.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiParam({ name: 'address', type: String, required: true, description: 'The wallet address to query for NFTs.' })
   @ApiOkResponse({
     description: 'A list of NFTs associated with the wallet address.',
@@ -37,7 +37,7 @@ export class GraphqlAPIController {
     summary: 'Get UserOps by wallet address',
     description: 'Fetches user operations for a specific wallet address, including transactions, user operation hashes, and related activity data.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiParam({ name: 'address', type: String, required: true, description: 'The wallet address to query for user operations.' })
   @ApiOkResponse({
     description: 'A list of user operations associated with the wallet address.',

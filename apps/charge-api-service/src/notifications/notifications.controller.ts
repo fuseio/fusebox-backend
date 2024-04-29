@@ -5,7 +5,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { IsValidApiKeysGuard } from '@app/api-service/api-keys/guards/is-valid-api-keys.guard'
 import { IsApiKeyProjectMatchGuard } from '@app/api-service/api-keys/guards/is-api-key-project-owner.guard'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
-import { ApiOperation, ApiParam, ApiBody, ApiHeader, ApiTags, ApiForbiddenResponse, ApiCreatedResponse, getSchemaPath, ApiOkResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiBody, ApiHeader, ApiTags, ApiForbiddenResponse, ApiCreatedResponse, getSchemaPath, ApiOkResponse, ApiQuery } from '@nestjs/swagger'
 import { CreateWebhookAddresses } from '@app/notifications-service/webhooks/entities/create-webhook-addresses.entity'
 import { CreateWebhook } from '@app/notifications-service/webhooks/entities/create-webhook.entity'
 import { UpdateWebhook } from '@app/notifications-service/webhooks/entities/update-webhook.entity'
@@ -22,7 +22,7 @@ export class NotificationsController {
     summary: 'Create a webhook',
     description: 'Create a webhook associated with a project to receive notifications.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiBody({ type: CreateWebhook, required: true, description: 'The webhook to create.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -43,7 +43,7 @@ export class NotificationsController {
     summary: 'Update a webhook',
     description: 'Update a webhook\'s details such as its URL or event type.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiBody({ type: UpdateWebhook, required: true, description: 'The webhook to update.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -64,7 +64,7 @@ export class NotificationsController {
     summary: 'Delete a webhook',
     description: 'Delete a webhook associated with a project to stop receiving notifications.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiParam({ name: 'webhookId', type: String, required: true, description: 'The unique identifier of the webhook.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -93,7 +93,7 @@ export class NotificationsController {
     summary: 'Get a webhook by ID',
     description: 'Retrieve details of a specific webhook by its ID.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiParam({ name: 'webhookId', type: String, required: true, description: 'The unique identifier of the webhook.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -114,7 +114,7 @@ export class NotificationsController {
     summary: 'Get webhooks for a project',
     description: 'Retrieve all webhooks associated with a given project ID.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiParam({ name: 'projectId', type: String, required: true, description: 'The unique identifier of the project.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -138,7 +138,7 @@ export class NotificationsController {
     summary: 'Add addresses to a webhook',
     description: 'Associate new addresses with an existing webhook to listen for their events.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiBody({ type: CreateWebhookAddresses, required: true, description: 'The addresses to create.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -162,7 +162,7 @@ export class NotificationsController {
     summary: 'Get addresses for a webhook',
     description: 'Retrieve all addresses associated with a specific webhook.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiParam({ name: 'webhookId', type: String, required: true, description: 'The unique identifier of the webhook.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
@@ -186,7 +186,7 @@ export class NotificationsController {
     summary: 'Delete addresses from a webhook',
     description: 'Remove addresses from a webhook\'s listening scope.'
   })
-  @ApiParam({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiHeader({ name: 'API-SECRET', required: true, description: 'The secret API key for authentication.' })
   @ApiBody({ type: CreateWebhookAddresses, required: true, description: 'The addresses to delete.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })

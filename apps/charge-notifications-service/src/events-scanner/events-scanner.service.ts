@@ -21,8 +21,6 @@ export abstract class EventsScannerService extends ScannerService {
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
-    this.logger.log(`EventFilter: Processing blocks from ${fromBlock} to ${toBlock}`)
-
     const logs = await this.fetchLogs(fromBlock, toBlock)
 
     for (const log of logs) {
@@ -37,14 +35,13 @@ export abstract class EventsScannerService extends ScannerService {
   }
 
   async fetchLogs (fromBlock: number, toBlock: number) {
-    this.logger.debug(`EventFilter: Fetching logs ${fromBlock} to ${toBlock}. topics: ${this.logsFilter.topics}, address: ${this.logsFilter.address}`)
     const logs = await this.rpcProvider.getLogs({
       fromBlock,
       toBlock,
       topics: this.logsFilter.topics,
       address: this.logsFilter.address
     })
-    this.logger.debug(`EventFilter: ${logs.length} logs found`)
+
     return logs
   }
 

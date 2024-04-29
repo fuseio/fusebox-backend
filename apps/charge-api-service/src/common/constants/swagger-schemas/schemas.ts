@@ -1,5 +1,146 @@
 const SWAGGER_SCHEMA_DEFINITIONS = {
   schemas: {
+    TransactionRequest: {
+      type: 'object',
+      properties: {
+        to: {
+          type: 'string'
+        },
+        data: {
+          type: 'string'
+        }
+      }
+    },
+    DelegatedAmountsByDelegatorsResponse: {
+      type: 'object',
+      properties: {
+        delegatedAmountsByDelegators: {
+          type: 'object',
+          additionalProperties: {
+            type: 'object',
+            properties: {
+              address: {
+                type: 'string'
+              },
+              amountFormatted: {
+                type: 'string'
+              },
+              amount: {
+                type: 'string'
+              }
+            }
+          }
+        }
+      }
+    },
+    ValidatorsResponse: {
+      type: 'object',
+      properties: {
+        totalStakeAmount: {
+          type: 'string'
+        },
+        totalSupply: {
+          type: 'number'
+        },
+        maxStake: {
+          type: 'string'
+        },
+        minStake: {
+          type: 'string'
+        },
+        totalDelegators: {
+          type: 'integer'
+        },
+        allValidators: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        },
+        activeValidators: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        },
+        jailedValidators: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        },
+        pendingValidators: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        },
+        validatorsMetadata: {
+          type: 'object',
+          additionalProperties: {
+            type: 'object',
+            properties: {
+              address: {
+                type: 'string'
+              },
+              name: {
+                type: 'string'
+              },
+              status: {
+                type: 'string'
+              },
+              isPending: {
+                type: 'boolean'
+              },
+              stakeAmount: {
+                type: 'string'
+              },
+              fee: {
+                type: 'string'
+              },
+              delegatorsLength: {
+                type: 'string'
+              },
+              delegators: {
+                type: 'object',
+                additionalProperties: {
+                  type: 'object',
+                  properties: {
+                    address: {
+                      type: 'string'
+                    },
+                    amount: {
+                      type: 'string'
+                    },
+                    amountFormatted: {
+                      type: 'string'
+                    }
+                  }
+                }
+              },
+              isJailed: {
+                type: 'boolean'
+              },
+              firstSeen: {
+                type: 'number'
+              },
+              forDelegation: {
+                type: 'integer'
+              },
+              totalValidated: {
+                type: 'integer'
+              },
+              uptime: {
+                type: 'integer'
+              },
+              apy: {
+                type: 'string'
+              }
+            }
+          }
+        }
+      }
+    },
     StakingOptionsResponse: {
       type: 'array',
       items: {

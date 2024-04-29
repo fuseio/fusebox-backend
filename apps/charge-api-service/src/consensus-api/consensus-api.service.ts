@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { networkService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/consensus.dto'
+import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/delegate.dto'
 
 @Injectable()
 export class ConsensusApiService {

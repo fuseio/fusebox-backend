@@ -5,10 +5,19 @@ import {
   Post,
   UseInterceptors
 } from '@nestjs/common'
-import { ConsensusApiService } from '@app/api-service/consensus-api/consensus-api.service'
-import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/consensus.dto'
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  getSchemaPath
+} from '@nestjs/swagger'
 import { CacheInterceptor } from '@nestjs/cache-manager'
-import { ApiOkResponse, ApiOperation, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { ConsensusApiService } from '@app/api-service/consensus-api/consensus-api.service'
+import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/delegate.dto'
+import { DelegatedAmounts } from '@app/network-service/consensus/entities/delegate.entity'
+import { WithdrawAmountsDto } from '@app/network-service/consensus/dto/withdraw.dto'
+import { WithdrawAmounts } from '@app/network-service/consensus/entities/withdraw.entity'
 
 @ApiTags('Consensus')
 @Controller('v0/consensus')
@@ -36,11 +45,19 @@ export class ConsensusApiController {
   }
 
   @Post('delegated_amounts')
+  @ApiOperation({
+    summary: 'Get delegated amounts',
+    description: 'Fetches the delegated amounts for the specified validators.'
+  })
+  @ApiBody({
+    type: DelegatedAmounts,
+    description: 'Delegated amounts for the specified validators.'
+  })
   @ApiOkResponse({
     description: 'Delegated amounts for the specified validators.',
     content: {
       'application/json': {
-        schema: { $ref: getSchemaPath('DelegatedAmountsResponse') }
+        schema: { $ref: getSchemaPath('DelegatedAmountsByDelegatorsResponse') }
       }
     }
   })
@@ -53,16 +70,20 @@ export class ConsensusApiController {
     summary: 'Delegate',
     description: 'Gets the data required for delegating to a validator.'
   })
+  @ApiBody({
+    type: DelegatedAmounts,
+    description: 'Delegated amounts for the specified validators.'
+  })
   @ApiOkResponse({
     description: 'Delegation data.',
     content: {
       'application/json': {
-        schema: { $ref: getSchemaPath('DelegateResponse') }
+        schema: { $ref: getSchemaPath('TransactionRequest') }
       }
     }
   })
-  delegate (@Body() data: { validator: string }) {
-    return this.consensusApiService.delegate(data.validator)
+  delegate (@Body() delegatedAmountsDto: DelegatedAmountsDto) {
+    return this.consensusApiService.delegate(delegatedAmountsDto.validator)
   }
 
   @Post('withdraw')
@@ -70,15 +91,19 @@ export class ConsensusApiController {
     summary: 'Withdraw',
     description: 'Gets the data required for withdrawing from a validator.'
   })
+  @ApiBody({
+    type: WithdrawAmounts,
+    description: 'Withdrawal data for the specified validator.'
+  })
   @ApiOkResponse({
     description: 'Withdrawal data.',
     content: {
       'application/json': {
-        schema: { $ref: getSchemaPath('WithdrawResponse') }
+        schema: { $ref: getSchemaPath('TransactionRequest') }
       }
     }
   })
-  withdraw (@Body() data: { validator: string, amount: string }) {
-    return this.consensusApiService.withdraw(data.validator, data.amount)
+  withdraw (@Body() withdrawAmountsDto: WithdrawAmountsDto) {
+    return this.consensusApiService.withdraw(withdrawAmountsDto.validator, withdrawAmountsDto.amount)
   }
 }

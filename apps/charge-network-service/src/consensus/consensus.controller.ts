@@ -1,7 +1,7 @@
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ConsensusService } from '@app/network-service/consensus/consensus.service'
-import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/consensus.dto'
+import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/delegate.dto'
 
 @Controller('consensus')
 export class ConsensusController {

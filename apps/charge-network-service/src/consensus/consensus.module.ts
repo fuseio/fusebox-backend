@@ -12,8 +12,7 @@ import { EthersModule } from 'nestjs-ethers'
   imports: [
     ScheduleModule.forRoot(),
     CacheModule.register({
-      ttl: 60000, // in milliseconds
-      max: 1000
+      ttl: 600000 // in milliseconds
     }),
     ConfigModule.forFeature(configuration),
     HttpModule,

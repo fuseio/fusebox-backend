@@ -8,7 +8,7 @@ import {
   formatEther,
   formatUnits
 } from 'nestjs-ethers'
-import { Cron, CronExpression } from '@nestjs/schedule'
+import { Cron, CronExpression, Timeout } from '@nestjs/schedule'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import MultiCallAbi from '@app/network-service/common/constants/abi/MultiCall'
@@ -36,6 +36,12 @@ export class ConsensusService {
     await this.cacheManager.set('validatorsInfo', validatorsInfo)
 
     return this.cacheManager.get('validatorsInfo')
+  }
+
+  @Timeout(5000)
+  async fetchValidatorsTimeout () {
+    // Called once after 5 seconds
+    await this.handleValidatorsUpdate()
   }
 
   get multiCallAddress () {
@@ -223,7 +229,7 @@ export class ConsensusService {
           description: validatorData?.description,
           stakeAmount: metadata.stakeAmount,
           fee: metadata.fee,
-          delegatorsLength: metadata.delegatorsLength,
+          delegatorsLength: metadata?.delegatorsLength || '0',
           delegators: metadata.delegators,
           isJailed: metadata.isJailed
         }

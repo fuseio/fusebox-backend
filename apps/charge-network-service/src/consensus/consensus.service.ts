@@ -136,7 +136,7 @@ export class ConsensusService {
     return cachedInfo
   }
 
-  private getValidatorMethods () {
+  private getConsensusMethods () {
     return [
       'totalStakeAmount',
       'getValidators',
@@ -149,16 +149,16 @@ export class ConsensusService {
 
   @logPerformance('ConsensusService::GetValidators')
   async getValidators () {
-    const validatorMethods = this.getValidatorMethods()
+    const consensusMethods = this.getConsensusMethods()
     const [results, totalSupply] = await Promise.all([
-      this.aggregateCalls(validatorMethods),
+      this.aggregateCalls(consensusMethods),
       this.getTotalSupply()
     ])
 
-    return this.formatValidatorsResults(results, totalSupply)
+    return this.formatConsensusResults(results, totalSupply)
   }
 
-  private async formatValidatorsResults (
+  private async formatConsensusResults (
     results,
     totalSupply
   ) {

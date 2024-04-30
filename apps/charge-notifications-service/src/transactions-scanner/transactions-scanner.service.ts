@@ -1,11 +1,10 @@
 import { NATIVE_FUSE_ADDRESS } from '@app/notifications-service/common/constants/addresses'
 import { TokenType } from '@app/notifications-service/common/constants/token-types'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { isEmpty } from 'lodash'
-import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther } from 'nestjs-ethers'
+import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther, getAddress } from 'nestjs-ethers'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
@@ -23,15 +22,10 @@ export class TransactionsScannerService extends ScannerService {
     scannerStatusService: ScannerStatusService,
     @InjectEthersProvider('full-archive-node')
     readonly rpcProvider: JsonRpcProvider,
-    private readonly web3ProviderService: Web3ProviderService,
     private webhooksService: WebhooksService,
     private gasService: GasService
   ) {
     super(configService, scannerStatusService, rpcProvider, new Logger(TransactionsScannerService.name))
-  }
-
-  get web3Provider () {
-    return this.web3ProviderService.getProvider()
   }
 
   @logPerformance('TransactionsScanner::ProcessBlocks')
@@ -74,8 +68,8 @@ export class TransactionsScannerService extends ScannerService {
     )
 
     const eventData: TokenEventData = {
-      to: this.web3Provider.utils.toChecksumAddress(trace.action.to),
-      from: this.web3Provider.utils.toChecksumAddress(trace.action.from),
+      to: getAddress(trace.action.to),
+      from: getAddress(trace.action.from),
       value: BigNumber.from(trace.action.value).toString(),
       valueEth: formatEther(BigNumber.from(trace.action.value)),
       txHash: trace.transactionHash,

@@ -26,7 +26,6 @@ import { CacheModule } from '@nestjs/cache-manager'
       token: 'regular-node',
       useFactory: async (configService: ConfigService) => {
         const config = configService.get('rpcConfig')
-        console.log('Rpc config ' + JSON.stringify(config))
         return {
           network: { name: config.rpc.networkName, chainId: config.rpc.chainId },
           custom: config.rpc.url,

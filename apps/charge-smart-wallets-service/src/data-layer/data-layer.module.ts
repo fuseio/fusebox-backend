@@ -2,13 +2,13 @@ import { DataLayerController } from '@app/smart-wallets-service/data-layer/data-
 import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-layer.service'
 import { dataLayerProviders } from '@app/smart-wallets-service/data-layer/data-layer.providers'
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import config from 'apps/charge-smart-wallets-service/src/data-layer/config/config'
 import { DatabaseModule } from '@app/common'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
+import { EthersModule } from 'nestjs-ethers'
 import { CentrifugeClientProvider } from '@app/common/centrifuge/centrifugeClient.provider'
 import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
@@ -22,6 +22,21 @@ import TradeService from '@app/common/services/trade.service'
     DatabaseModule,
     ConfigModule.forFeature(config),
     HttpModule,
+    EthersModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      token: 'regular-node',
+      useFactory: async (configService: ConfigService) => {
+        const config = configService.get('rpcConfig')
+        const { rpc } = config
+        const { url, networkName, chainId } = rpc
+        return {
+          network: { name: networkName, chainId },
+          custom: url,
+          useDefaultProvider: false
+        }
+      }
+    }),
     ClientsModule.register([
       {
         name: accountsService,
@@ -50,7 +65,6 @@ import TradeService from '@app/common/services/trade.service'
     UserOpFactory,
     UserOpParser,
     TokenService,
-    Web3ProviderService,
     SmartWalletsAAEventsService,
     CentrifugeClientProvider,
     AnalyticsService,

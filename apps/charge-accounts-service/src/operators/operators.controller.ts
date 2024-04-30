@@ -52,10 +52,10 @@ export class OperatorsController {
    * @param authOperatorDto
    * @returns the user and project with public key
    */
+  @UseGuards(JwtAuthGuard)
   @Get('/account')
   @ApiOperation({ summary: 'Get current operator' })
   @ApiCreatedResponse({ description: 'The operator has been successfully fetched.' })
-  @UseGuards(JwtAuthGuard)
   async getOperatorsUserAndProject (@User('sub') auth0Id: string) {
     return this.operatorsService.getOperatorUserAndProject(auth0Id)
   }
@@ -65,10 +65,10 @@ export class OperatorsController {
    * @param authOperatorDto
    * @returns the user, project and AA wallet with public key
    */
+  @UseGuards(JwtAuthGuard)
   @Post('/account')
   @ApiOperation({ summary: 'Create user, project and AA wallet for an operator' })
   @ApiBody({ type: CreateOperatorUser, required: true })
-  @UseGuards(JwtAuthGuard)
   async createOperatorUserAndProjectAndWallet (@Body() createOperatorUserDto: CreateOperatorUserDto, @User('sub') auth0Id: string) {
     return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
   }
@@ -87,11 +87,11 @@ export class OperatorsController {
    * Check if operator wallet is activated
    * @returns OK if operator wallet is activated, not found otherwise
    */
+  @UseGuards(JwtAuthGuard)
   @Get('/is-activated')
   @ApiOperation({ summary: 'Check if operator wallet is activated' })
   @ApiCreatedResponse({ description: 'Wallet is activated' })
   @ApiNotFoundResponse({ description: 'Wallet not activated' })
-  @UseGuards(JwtAuthGuard)
   async checkWalletActivationStatus (@User('sub') auth0Id: string, @Res() response: Response) {
     const isActivated = await this.operatorsService.checkWalletActivationStatus(auth0Id)
     if (!isActivated) {
@@ -105,10 +105,10 @@ export class OperatorsController {
    * @param authOperatorDto
    * @returns sponsored transactions count
    */
+  @UseGuards(JwtAuthGuard)
   @Get('/sponsored-transaction')
   @ApiOperation({ summary: 'Get sponsored transactions count' })
   @ApiCreatedResponse({ description: 'The sponsored transactions count has been successfully fetched.' })
-  @UseGuards(JwtAuthGuard)
   async getSponsoredTransactionsCount (@User('sub') auth0Id: string) {
     return this.operatorsService.getSponsoredTransactionsCount(auth0Id)
   }

@@ -27,10 +27,10 @@ export class ProjectsController {
    * Creates a new project for the authenticated user
    * @param createProjectDto
    */
+  @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   @Post()
   @ApiOperation({ summary: 'Create a new project.' })
   @ApiCreatedResponse({ description: 'The project has been successfully created.' })
-  @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   create (@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto)
   }
@@ -38,10 +38,10 @@ export class ProjectsController {
   /**
    * Finds all the projects of the authenticated user
    */
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Find all the projects of the authenticated user.' })
   @ApiCreatedResponse({ description: 'The projects have been successfully fetched.' })
-  @UseGuards(JwtAuthGuard)
   findAll (@User('sub') auth0Id: string) {
     return this.projectsService.findAll(auth0Id)
   }

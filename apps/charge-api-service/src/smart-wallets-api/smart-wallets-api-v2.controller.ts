@@ -18,8 +18,8 @@ export class SmartWalletsAPIV2Controller {
 
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
-  @Post('auth')
   @UseGuards(IsPrdOrSbxKeyGuard)
+  @Post('auth')
   @ApiOperation({
     summary: 'Authenticate user',
     description: 'Authenticate user using signed data standard EIP-191.'
@@ -33,6 +33,7 @@ export class SmartWalletsAPIV2Controller {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
+  @UseGuards(AuthGuard('jwt'), IsPrdOrSbxKeyGuard)
   @Get('actions')
   @ApiBearerAuth()
   @ApiOperation({
@@ -52,7 +53,6 @@ export class SmartWalletsAPIV2Controller {
     }
   })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
-  @UseGuards(AuthGuard('jwt'), IsPrdOrSbxKeyGuard)
   getHistoricalTxs (
     @SmartWalletOwner() user: ISmartWalletUser,
     @Query('page') page?: string,

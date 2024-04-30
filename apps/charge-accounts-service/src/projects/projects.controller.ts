@@ -51,18 +51,18 @@ export class ProjectsController {
    * authenticated user is the owner of the project
    * @param id Project ID
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get project by id.' })
   @ApiCreatedResponse({ description: 'The project has been successfully fetched.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   findOne (@Param('id') id: string) {
     return this.projectsService.findOne(id)
   }
 
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/paymaster/:sponsorId')
   @ApiOperation({ summary: 'Get project by sponsor id.' })
   @ApiCreatedResponse({ description: 'The project has been successfully fetched.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   getProjectBySponsorId (@Param('sponsorId') sponsorId: string) {
     return this.projectsService.getProjectBySponsorId(sponsorId)
   }
@@ -73,10 +73,10 @@ export class ProjectsController {
    * @param id Project ID
    * @param updateProjectDto
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update the project with the given id.' })
   @ApiCreatedResponse({ description: 'The project has been successfully updated.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   update (@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(id, updateProjectDto)
   }
@@ -86,10 +86,10 @@ export class ProjectsController {
    * @param projectId
    * @returns the generated API key secret or error if secret already exists
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/secret/:projectId')
   @ApiOperation({ summary: 'Create an API key secret for the given project.' })
   @ApiCreatedResponse({ description: 'The API key secret has been successfully created.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   createSecret (@Param('projectId') projectId: string) {
     return this.projectsService.createSecret({ projectId, createLegacyAccount: true })
   }
@@ -99,10 +99,10 @@ export class ProjectsController {
    * @param projectId
    * @returns true if secret exists for the given project, false otherwise
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/secret/:projectId')
   @ApiOperation({ summary: 'Check if an API key secret for the given project exists.' })
   @ApiCreatedResponse({ description: 'The API key secret exists.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   checkIfSecretExists (@Param('projectId') projectId: string) {
     return this.projectsService.checkIfSecretExists(projectId)
   }
@@ -112,10 +112,10 @@ export class ProjectsController {
    * @param projectId
    * @returns an object containing the unsensitive fields of api keys
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/apikeysinfo/:projectId')
   @ApiOperation({ summary: 'Get API keys unsensitive info for the given project.' })
   @ApiCreatedResponse({ description: 'The API keys unsensitive info has been successfully fetched.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   getApiKeysInfo (@Param('projectId') projectId: string) {
     return this.projectsService.getApiKeysInfo(projectId)
   }
@@ -125,10 +125,10 @@ export class ProjectsController {
    * @param projectId
    * @returns the new API key secret
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Put('/secret/:projectId')
   @ApiOperation({ summary: 'Revokes the old API key secret and generates a new one for the given project.' })
   @ApiCreatedResponse({ description: 'The API key secret has been successfully updated.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   updateSecret (@Param('projectId') projectId: string) {
     return this.projectsService.updateSecret(projectId)
   }
@@ -138,10 +138,10 @@ export class ProjectsController {
    * @param projectId
    * @returns the public API key associated with the given project
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/public/:projectId')
   @ApiOperation({ summary: 'Get the public API key associated with the project.' })
   @ApiCreatedResponse({ description: 'The public API key associated with the project.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   getPublic (@Param('projectId') projectId: string) {
     return this.projectsService.getPublic(projectId)
   }
@@ -151,10 +151,10 @@ export class ProjectsController {
     * @param projectId
     * @returns the generated sandbox API key or error if key already exists
     */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/sandbox/:projectId')
   @ApiOperation({ summary: 'Create a sandbox API key for the given project.' })
   @ApiCreatedResponse({ description: 'The sandbox API key has been successfully created.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   createSandboxKey (@Param('projectId') projectId: string) {
     return this.projectsService.createSandboxKey(projectId)
   }
@@ -164,10 +164,10 @@ export class ProjectsController {
    * @param projectId
    * @returns the sandbox API key associated with the given project
    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/sandbox/:projectId')
   @ApiOperation({ summary: 'Get the sandbox API key associated with the project.' })
   @ApiCreatedResponse({ description: 'The sandbox API key associated with the project.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   getSandboxKey (@Param('projectId') projectId: string) {
     return this.projectsService.getSandboxKey(projectId)
   }

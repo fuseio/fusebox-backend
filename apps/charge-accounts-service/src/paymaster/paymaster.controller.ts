@@ -15,23 +15,23 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 export class PaymasterController {
   constructor (private readonly paymasterService: PaymasterService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get('version-list')
   @ApiOperation({ summary: 'Get available paymaster version list.' })
-  @UseGuards(JwtAuthGuard)
   getAvailableVersionList () {
     return this.paymasterService.getAvailableVersionList()
   }
 
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post(':id')
   @ApiOperation({ summary: 'Create a new paymaster for the project.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   create (@Param('id') id: string) {
     return this.paymasterService.create(id, '0_1_0')
   }
 
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Get active paymasters for the project.' })
-  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   findActivePaymasters (@Param('id') id: string) {
     return this.paymasterService.findActivePaymasters(id)
   }

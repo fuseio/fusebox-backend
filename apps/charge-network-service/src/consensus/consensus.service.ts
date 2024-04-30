@@ -17,6 +17,7 @@ import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/consensus.dto'
 import { IValidator } from '@app/network-service/consensus/interfaces'
+import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
 
 @Injectable()
 export class ConsensusService {
@@ -73,6 +74,7 @@ export class ConsensusService {
     )
   }
 
+  @logPerformance('ConsensusService::CalculateEstimatedApy')
   async calculateEstimatedApy (validator: string) {
     if (!validator) {
       return '0.0'
@@ -131,6 +133,7 @@ export class ConsensusService {
     return cachedInfo
   }
 
+  @logPerformance('ConsensusService::GetValidators')
   async getValidators () {
     const validatorMethods = [
       'totalStakeAmount',
@@ -185,6 +188,7 @@ export class ConsensusService {
     }
   }
 
+  @logPerformance('ConsensusService::GetValidatorsMetadata')
   async getValidatorsMetadata (validators: string[]) {
     const [
       pendingValidators
@@ -258,6 +262,7 @@ export class ConsensusService {
     }
   }
 
+  @logPerformance('ConsensusService::GetValidatorData')
   async getValidatorData (validatorAddress: string): Promise<Partial<IValidator>> {
     try {
       const validatorDataMethods = [
@@ -355,6 +360,7 @@ export class ConsensusService {
     return responseData
   }
 
+  @logPerformance('ConsensusService::GetTotalSupply')
   async getTotalSupply () {
     const url = `${this.botApi}/stats/total_supply_simple`
     const responseData = await this.httpProxyGet(url)
@@ -393,6 +399,7 @@ export class ConsensusService {
     }
   }
 
+  @logPerformance('ConsensusService::FetchValidatorsMap')
   async fetchValidatorsMap () {
     const url = 'https://raw.githubusercontent.com/fuseio/console-dapp/master/validators/validators.json'
     const responseData = await this.httpProxyGet(url)

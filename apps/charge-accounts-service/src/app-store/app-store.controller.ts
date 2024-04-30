@@ -4,7 +4,9 @@ import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('App Store')
 @Controller('app-store')
 export class AppStoreController {
   constructor (private readonly appStoreService: AppStoreService) { }

@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { SWAGGER_SCHEMA_DEFINITIONS } from '../../constants/swagger-schemas'
 import metadata from '@app/api-service/metadata'
 import networkMetadata from '@app/network-service/metadata'
+import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
 
 export async function setupSwagger (app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()
@@ -11,8 +12,9 @@ export async function setupSwagger (app: INestApplication): Promise<void> {
     .setExternalDoc('Fuse Docs', 'https://docs.fuse.io')
     .addServer('https://api.fuse.io', 'Production')
     .addServer('https://api.staging.fuse.io', 'Staging')
-    .addServer('http://localhost:5002', 'Local')
+    .addServer(`http://localhost:${process.env.API_PORT}`, 'Local')
     .build()
+
   await SwaggerModule.loadPluginMetadata(metadata)
   await SwaggerModule.loadPluginMetadata(networkMetadata)
   const document = SwaggerModule.createDocument(app, config)

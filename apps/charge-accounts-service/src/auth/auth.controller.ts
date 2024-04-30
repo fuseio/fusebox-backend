@@ -3,7 +3,9 @@ import { CreateUserDto } from '@app/accounts-service/users/dto/create-user.dto'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('User Authentication')
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
   constructor (

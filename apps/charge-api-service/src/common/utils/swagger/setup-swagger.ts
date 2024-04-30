@@ -3,7 +3,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { SWAGGER_SCHEMA_DEFINITIONS } from '../../constants/swagger-schemas'
 import metadata from '@app/api-service/metadata'
 import networkMetadata from '@app/network-service/metadata'
-import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
 
 export async function setupSwagger (app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()

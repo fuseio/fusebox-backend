@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
-import { BigNumber, formatEther } from 'nestjs-ethers'
+import { formatEther } from 'nestjs-ethers'
 
 @Injectable()
 export default class FuseLiquidStakingService implements StakingProvider {
@@ -80,7 +80,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const priceRatio = await liquidStakingContract.methods.priceRatio().call<BigInt>()
     const sfBalance = await sfContract.methods.balanceOf(accountAddress).call<BigInt>()
 
-    const stakedAmount = Number(formatEther(BigNumber.from(sfBalance))) * Number(formatEther(BigNumber.from(priceRatio)))
+    const stakedAmount = Number(formatEther(sfBalance.toString())) * Number(formatEther(priceRatio.toString()))
     const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
@@ -109,7 +109,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call<BigInt>()
     const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call<BigInt>()
 
-    const rewardPerYearApr = (Number(formatEther(BigNumber.from(rewardPerBlock))) * (Number(formatEther(BigNumber.from(blocksPerYear)))) * (1 - validatorFee) / Number(formatEther(BigNumber.from(totalStakeAmount)))) * 100
+    const rewardPerYearApr = (Number(formatEther(rewardPerBlock.toString())) * Number(blocksPerYear) * (1 - validatorFee) / Number(formatEther(totalStakeAmount.toString()))) * 100
 
     return aprToApy(rewardPerYearApr, 365)
   }
@@ -121,6 +121,6 @@ export default class FuseLiquidStakingService implements StakingProvider {
 
     const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
 
-    return Number(formatEther(BigNumber.from(totalStaked))) * fusePrice
+    return Number(formatEther(totalStaked.toString())) * fusePrice
   }
 }

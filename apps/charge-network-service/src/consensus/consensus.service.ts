@@ -209,15 +209,18 @@ export class ConsensusService {
     const validatorDatas: Partial<IValidator>[] = await Promise.all(
       validatorDataPromises
     )
+    const validatorsMap = await this.fetchValidatorsMap()
 
     let totalDelegators = 0
     const validatorsMetadata: IValidator[] = await Promise.all(
       validators.map(async (validator, index) => {
         const metadata: Partial<IValidator> = validatorDatas[index]
-        const validatorData = validators[validator.toLowerCase()]
+        const validatorMetadataData = validators[validator.toLowerCase()]
         totalDelegators += parseInt(metadata.delegatorsLength, 10)
+        const validatorData = validatorsMap[validator.toLowerCase()]
 
         const baseMetadata: IValidator = {
+          ...validatorMetadataData,
           address: validator,
           name: validatorData?.name || validator,
           website: validatorData?.website,

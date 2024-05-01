@@ -52,14 +52,16 @@ export default class VoltBarService implements StakingProvider {
     return this.graphService.getBlockClient()
   }
 
+  get voltBarInterface () {
+    return new Interface(VoltBarABI)
+  }
+
   stake ({ tokenAmount }: StakeDto) {
-    const iface = new Interface(VoltBarABI)
-    return iface.encodeFunctionData('enter', [parseEther(tokenAmount)])
+    return this.voltBarInterface.encodeFunctionData('enter', [parseEther(tokenAmount)])
   }
 
   unStake ({ tokenAmount }: UnstakeDto) {
-    const iface = new Interface(VoltBarABI)
-    return iface.encodeFunctionData('leave', [parseEther(tokenAmount)])
+    return this.voltBarInterface.encodeFunctionData('leave', [parseEther(tokenAmount)])
   }
 
   async stakedToken (

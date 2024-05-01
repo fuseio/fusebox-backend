@@ -49,8 +49,8 @@ export class PaymasterApiService {
       const sponsorId = paymasterInfo.sponsorId
       const paymasterAddress = paymasterInfo.paymasterAddress
       const paymasterContract = new Contract(
-        fusePaymasterABI as any,
         paymasterAddress,
+        fusePaymasterABI,
         provider
       )
 
@@ -87,10 +87,19 @@ export class PaymasterApiService {
     }
   }
 
-  private async getHash (paymasterContract: any, op: any, validUntil: number, validAfter: number, sponsorId: string) {
-    return await paymasterContract.methods
-      .getHash(op, validUntil, validAfter, sponsorId)
-      .call()
+  private async getHash (
+    paymasterContract: Contract,
+    op: any,
+    validUntil: number,
+    validAfter: number,
+    sponsorId: string
+  ) {
+    return await paymasterContract.getHash(
+      op,
+      validUntil,
+      validAfter,
+      sponsorId
+    )
   }
 
   private async signHash (hash: string, paymasterInfo: any) {

@@ -1,0 +1,1520 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>fusebox-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ChargeApiService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/charge-apps-service/src/charge-api/charge-api.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                            <li>
+                                <a href="#sleep" >sleep</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#addWebhookAddress" >addWebhookAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createBackendWallet" >createBackendWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getBackendWalletByAddress" >getBackendWalletByAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPriceFromTradeApi" >getPriceFromTradeApi</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUpdatedJobData" >getUpdatedJobData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getWalletBalance" >getWalletBalance</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#httpProxyGet" >httpProxyGet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#httpProxyPost" >httpProxyPost</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#transferTokens" >transferTokens</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#getPaymentsAllowedTokens" >getPaymentsAllowedTokens</a>
+                                </li>
+                                <li>
+                                    <a href="#chargeBaseUrl" >chargeBaseUrl</a>
+                                </li>
+                                <li>
+                                    <a href="#unmarshalBaseUrl" >unmarshalBaseUrl</a>
+                                </li>
+                                <li>
+                                    <a href="#unmarshalAuthKey" >unmarshalAuthKey</a>
+                                </li>
+                                <li>
+                                    <a href="#chargePublicKey" >chargePublicKey</a>
+                                </li>
+                                <li>
+                                    <a href="#chargeWebhookId" >chargeWebhookId</a>
+                                </li>
+                                <li>
+                                    <a href="#walletPhoneNumber" >walletPhoneNumber</a>
+                                </li>
+                                <li>
+                                    <a href="#getSleepMS" >getSleepMS</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(httpService: HttpService, configService: ConfigService, backendWalletModel: <a href="../interfaces/BackendWallet.html" target="_self">Model&lt;BackendWallet&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:15</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>httpService</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>backendWalletModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/BackendWallet.html" target="_self" >Model&lt;BackendWallet&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addWebhookAddress"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>addWebhookAddress</b></span>
+                        <a href="#addWebhookAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addWebhookAddress(params: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>params</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createBackendWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createBackendWallet</b></span>
+                        <a href="#createBackendWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createBackendWallet(walletType: <a href="../undefineds/walletTypes.html" target="_self">walletTypes</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>walletType</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#walletTypes" target="_self" >walletTypes</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Record&lt;string, any&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBackendWalletByAddress"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getBackendWalletByAddress</b></span>
+                        <a href="#getBackendWalletByAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBackendWalletByAddress(address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>address</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPriceFromTradeApi"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getPriceFromTradeApi</b></span>
+                        <a href="#getPriceFromTradeApi"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPriceFromTradeApi(tokenAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tokenAddress</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUpdatedJobData"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getUpdatedJobData</b></span>
+                        <a href="#getUpdatedJobData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUpdatedJobData(jobData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="155"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jobData</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getWalletBalance"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getWalletBalance</b></span>
+                        <a href="#getWalletBalance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getWalletBalance(address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, networkName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:124</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>address</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>networkName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;fuse&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="httpProxyGet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>httpProxyGet</b></span>
+                        <a href="#httpProxyGet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>httpProxyGet(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>url</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="httpProxyPost"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>httpProxyPost</b></span>
+                        <a href="#httpProxyPost"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>httpProxyPost(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, requestBody: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>url</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>requestBody</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transferTokens"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>transferTokens</b></span>
+                        <a href="#transferTokens"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>transferTokens(transferTokensDto: <a href="../classes/TransferTokensDto.html" target="_self">TransferTokensDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>transferTokensDto</td>
+                                            <td>
+                                                            <code><a href="../classes/TransferTokensDto.html" target="_self" >TransferTokensDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(ChargeApiService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sleep"></a>
+                    <span class="name">
+                        <span ><b>sleep</b></span>
+                        <a href="#sleep"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getPaymentsAllowedTokens"></a>
+                        <span class="name"><b>getPaymentsAllowedTokens</b><a href="#getPaymentsAllowedTokens"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>getPaymentsAllowedTokens()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:24</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="chargeBaseUrl"></a>
+                        <span class="name"><b>chargeBaseUrl</b><a href="#chargeBaseUrl"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>chargeBaseUrl()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:28</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="unmarshalBaseUrl"></a>
+                        <span class="name"><b>unmarshalBaseUrl</b><a href="#unmarshalBaseUrl"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>unmarshalBaseUrl()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:32</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="unmarshalAuthKey"></a>
+                        <span class="name"><b>unmarshalAuthKey</b><a href="#unmarshalAuthKey"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>unmarshalAuthKey()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:36</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="chargePublicKey"></a>
+                        <span class="name"><b>chargePublicKey</b><a href="#chargePublicKey"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>chargePublicKey()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:40</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="chargeWebhookId"></a>
+                        <span class="name"><b>chargeWebhookId</b><a href="#chargeWebhookId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>chargeWebhookId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:44</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="walletPhoneNumber"></a>
+                        <span class="name"><b>walletPhoneNumber</b><a href="#walletPhoneNumber"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>walletPhoneNumber()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:48</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getSleepMS"></a>
+                        <span class="name"><b>getSleepMS</b><a href="#getSleepMS"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>getSleepMS()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">apps/charge-apps-service/src/charge-api/charge-api.service.ts:52</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpService } from &#x27;@nestjs/axios&#x27;
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from &#x27;@nestjs/common&#x27;
+import { catchError, lastValueFrom, map } from &#x27;rxjs&#x27;
+import { isEmpty, keyBy, merge, values } from &#x27;lodash&#x27;
+import { ConfigService } from &#x27;@nestjs/config&#x27;
+import { backendWalletModelString } from &#x27;@app/apps-service/charge-api/backend-wallet.constants&#x27;
+import { Model } from &#x27;mongoose&#x27;
+import { BackendWallet } from &#x27;@app/apps-service/charge-api/interfaces/backend-wallet.interface&#x27;
+import { walletTypes } from &#x27;@app/apps-service/charge-api/schemas/backend-wallet.schema&#x27;
+import { TransferTokensDto } from &#x27;@app/apps-service/payments/dto/transfer-tokens.dto&#x27;
+import { formatUnits } from &#x27;nestjs-ethers&#x27;
+
+@Injectable()
+export class ChargeApiService {
+  private readonly logger &#x3D; new Logger(ChargeApiService.name)
+
+  constructor (
+    private httpService: HttpService,
+    private configService: ConfigService,
+    @Inject(backendWalletModelString)
+    private backendWalletModel: Model&lt;BackendWallet&gt;
+  ) { }
+
+  get getPaymentsAllowedTokens () {
+    return this.configService.get(&#x27;paymentsAllowedTokens&#x27;)
+  }
+
+  get chargeBaseUrl () {
+    return this.configService.get(&#x27;CHARGE_BASE_URL&#x27;)
+  }
+
+  get unmarshalBaseUrl () {
+    return this.configService.get(&#x27;UNMARSHAL_BASE_URL&#x27;)
+  }
+
+  get unmarshalAuthKey () {
+    return this.configService.get(&#x27;UNMARSHAL_AUTH_KEY&#x27;)
+  }
+
+  get chargePublicKey () {
+    return this.configService.get(&#x27;CHARGE_PUBLIC_KEY&#x27;)
+  }
+
+  get chargeWebhookId () {
+    return this.configService.get(&#x27;CHARGE_WEBHOOK_ID&#x27;)
+  }
+
+  get walletPhoneNumber () {
+    return this.configService.get(&#x27;CHARGE_WALLET_PHONE_NUMBER&#x27;)
+  }
+
+  get getSleepMS () {
+    return this.configService.get(&#x27;JOB_SLEEP_MS&#x27;)
+  }
+
+  sleep &#x3D; (ms: number) &#x3D;&gt; new Promise((resolve) &#x3D;&gt; setTimeout(resolve, ms))
+
+  async createBackendWallet (walletType: walletTypes): Promise&lt;Record&lt;string, any&gt;&gt; {
+    const phoneNumber &#x3D; this.walletPhoneNumber
+    const url &#x3D; &#x60;${this.chargeBaseUrl}/api/v0/admin/wallets/create?apiKey&#x3D;${this.chargePublicKey}&#x60;
+
+    const requestBody &#x3D; {
+      phoneNumber
+    }
+
+    const responseData &#x3D; await this.httpProxyPost(url, requestBody)
+
+    const jobData &#x3D; responseData?.job
+    const walletAddress &#x3D; jobData?.data?.walletAddress
+
+    const backendWallet &#x3D; await this.backendWalletModel.create({
+      jobId: jobData._id,
+      walletAddress,
+      walletType
+    })
+
+    setTimeout(async () &#x3D;&gt; {
+      const updatedJobData &#x3D; await this.getUpdatedJobData(jobData)
+      await this.backendWalletModel.findByIdAndUpdate(
+        backendWallet._id,
+        {
+          walletAddress: updatedJobData.data.walletAddress,
+          accountAddress: updatedJobData.data.accountAddress,
+          ownerAddress: updatedJobData.data.data.owner
+        }
+      )
+    }, this.getSleepMS)
+
+    backendWallet.save()
+
+    return backendWallet
+  }
+
+  async transferTokens (transferTokensDto: TransferTokensDto) {
+    const url &#x3D; &#x60;${this.chargeBaseUrl}/api/v0/admin/tokens/transfer?apiKey&#x3D;${this.chargePublicKey}&#x60;
+
+    const requestBody &#x3D; {
+      from: transferTokensDto.from,
+      to: transferTokensDto.to,
+      amount: transferTokensDto.amount,
+      tokenAddress: transferTokensDto.tokenAddress
+    }
+
+    const responseData &#x3D; await this.httpProxyPost(url, requestBody)
+
+    let jobData &#x3D; responseData?.job
+
+    await this.sleep(this.getSleepMS)
+
+    jobData &#x3D; await this.getUpdatedJobData(jobData)
+
+    this.logger.log(JSON.stringify(jobData))
+
+    if (jobData?.data?.status &#x3D;&#x3D;&#x3D; &#x27;failed&#x27;) {
+      throw new HttpException(
+        &#x60;Transfering tokens failed. Fail reason ${jobData?.data?.failReason}&#x60;,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    }
+
+    return jobData
+  }
+
+  async getWalletBalance (address: string, networkName: string &#x3D; &#x27;fuse&#x27;) {
+    const tokensBalanceUrl &#x3D; &#x60;${this.unmarshalBaseUrl}/v1/${networkName}/address/${address}/assets?chainId&#x3D;122&amp;token&#x3D;false&amp;auth_key&#x3D;${this.unmarshalAuthKey}&#x60;
+
+    const tokensBalance &#x3D; await this.httpProxyGet(tokensBalanceUrl)
+
+    const paymentsAllowedTokens &#x3D; this.getPaymentsAllowedTokens
+
+    const extendedTokensBalance &#x3D; values(merge(keyBy(tokensBalance, &#x27;contract_address&#x27;), keyBy(paymentsAllowedTokens, &#x27;contract_address&#x27;)))
+
+    for (const [index, token] of extendedTokensBalance.entries()) {
+      if (isEmpty(token.balance)) {
+        token.balance &#x3D; &#x27;0&#x27;
+      }
+
+      if (isEmpty(token.verified)) {
+        const priceData &#x3D; await this.getPriceFromTradeApi(token.tokenAddress || token.contract_address)
+        token.quote_rate &#x3D; priceData.data.price
+        const formattedBalance &#x3D; formatUnits(token.balance, token.contract_decimals)
+        token.quote &#x3D; (parseFloat(formattedBalance) * parseFloat(token.quote_rate)).toString()
+
+        extendedTokensBalance[index] &#x3D; token
+      }
+    }
+
+    return extendedTokensBalance
+  }
+
+  async getBackendWalletByAddress (address: string) {
+    return this.backendWalletModel.findOne({ walletAddress: address })
+  }
+
+  async getUpdatedJobData (jobData: any) {
+    const jobId &#x3D; jobData?._id
+
+    const url &#x3D; &#x60;${this.chargeBaseUrl}/api/v0/jobs/${jobId}?apiKey&#x3D;${this.chargePublicKey}&#x60;
+
+    const responseData &#x3D; await this.httpProxyGet(url)
+
+    return responseData
+  }
+
+  async addWebhookAddress (params: { walletAddress: string, webhookId: string }) {
+    const url &#x3D; &#x60;${this.chargeBaseUrl}/api/v0/notifications/webhook/add-addresses?apiKey&#x3D;${this.chargePublicKey}&#x60;
+    const requestBody &#x3D; {
+      webhookId: params.webhookId,
+      addresses: [params.walletAddress]
+    }
+
+    await this.httpProxyPost(url, requestBody)
+  }
+
+  async getPriceFromTradeApi (tokenAddress: string) {
+    const url &#x3D; &#x60;${this.chargeBaseUrl}/api/v0/trade/price/${tokenAddress}?apiKey&#x3D;${this.chargePublicKey}&#x60;
+    const response &#x3D; await this.httpProxyGet(url)
+    return response
+  }
+
+  async httpProxyPost (url: string, requestBody: any) {
+    const responseData &#x3D; await lastValueFrom(
+      this.httpService.post(url, requestBody)
+        .pipe(map((response) &#x3D;&gt; {
+          return response.data
+        })
+        )
+        .pipe(
+          catchError(e &#x3D;&gt; {
+            throw new HttpException(
+              &#x60;${e?.response?.statusText}: ${e?.response?.data?.error}&#x60;,
+              e?.response?.status
+            )
+          })
+        )
+    )
+
+    return responseData
+  }
+
+  async httpProxyGet (url: string) {
+    const responseData &#x3D; await lastValueFrom(
+      this.httpService.get(url)
+        .pipe(map((response) &#x3D;&gt; {
+          return response.data
+        })
+        )
+        .pipe(
+          catchError(e &#x3D;&gt; {
+            throw new HttpException(
+              &#x60;${e?.response?.statusText}: ${e?.response?.data?.error}&#x60;,
+              e?.response?.status
+            )
+          })
+        )
+    )
+
+    return responseData
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ChargeApiService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

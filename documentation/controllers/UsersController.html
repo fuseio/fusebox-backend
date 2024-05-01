@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,9 +12,58 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -36,26 +85,32 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >UsersController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >UsersController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/users/users.controller.ts</code>
+            <code>apps/charge-accounts-service/src/users/users.controller.ts</code>
         </p>
 
 
@@ -64,7 +119,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -78,6 +133,12 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                <a href="#findOneInternal" >findOneInternal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#submitQuestionnaire" >submitQuestionnaire</a>
                             </li>
                         </ul>
@@ -92,7 +153,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -101,8 +162,86 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="findOneInternal"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>findOneInternal</b></span>
+                        <a href="#findOneInternal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findOneInternal(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;find-one-user&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">apps/charge-accounts-service/src/users/users.controller.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="submitQuestionnaire"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>submitQuestionnaire</b></span>
                         <a href="#submitQuestionnaire"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -110,7 +249,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>submitQuestionnaire(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, submitQuestionnaireDto: <a href="../classes/SubmitQuestionnaireDto.html" target="_self">SubmitQuestionnaireDto</a>)</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>submitQuestionnaire(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, submitQuestionnaireDto: <a href="../classes/SubmitQuestionnaireDto.html" target="_self">SubmitQuestionnaireDto</a>)</code>
                 </td>
             </tr>
 
@@ -122,75 +262,73 @@
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/users/users.controller.ts:19</a></div>
-                </td>
-            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="20"
+                                    class="link-to-prism">apps/charge-accounts-service/src/users/users.controller.ts:20</a></div>
+                        </td>
+                    </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Submits questionnaire answers for the given user id and verifies that the authenticated
+                        <div class="io-description"><p>Submits questionnaire answers for the given user id and verifies that the authenticated
 user has the given user id</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>User ID</p>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>submitQuestionnaireDto</td>
-                                    <td>
-                                                <code><a href="../classes/SubmitQuestionnaireDto.html" target="_self" >SubmitQuestionnaireDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                    <td>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            <td>
+                                                    <p>User ID</p>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>submitQuestionnaireDto</td>
+                                            <td>
+                                                            <code><a href="../classes/SubmitQuestionnaireDto.html" target="_self" >SubmitQuestionnaireDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -198,27 +336,36 @@ user has the given user id</p>
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Post, Body, UseGuards, Param } from &#x27;@nestjs/common&#x27;;
-import { UsersService } from &#x27;./users.service&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
-import { SubmitQuestionnaireDto } from &#x27;./dto/submit-questionnaire.dto&#x27;;
-import { IsAccountOwnerGuard } from &#x27;./guards/is-account-owner.guard&#x27;;
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Post, Body, UseGuards, Param } from &#x27;@nestjs/common&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
+import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
+import { SubmitQuestionnaireDto } from &#x27;@app/accounts-service/users/dto/submit-questionnaire.dto&#x27;
+import { IsAccountOwnerGuard } from &#x27;@app/accounts-service/users/guards/is-account-owner.guard&#x27;
+import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
 
 @Controller({ path: &#x27;users&#x27;, version: &#x27;1&#x27; })
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor (private readonly usersService: UsersService) { }
 
   /**
-   * Submits questionnaire answers for the given user id and verifies that the authenticated 
+   * Submits questionnaire answers for the given user id and verifies that the authenticated
    * user has the given user id
    * @param id User ID
-   * @param submitQuestionnaireDto 
+   * @param submitQuestionnaireDto
    */
   @UseGuards(JwtAuthGuard, IsAccountOwnerGuard)
   @Post(&#x27;/questionnaire/:id&#x27;)
-  submitQuestionnaire(@Param(&#x27;id&#x27;) id: string, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
-    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto);
+  submitQuestionnaire (
+    @Param(&#x27;id&#x27;) id: string,
+    @Body() submitQuestionnaireDto: SubmitQuestionnaireDto
+  ) {
+    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto)
+  }
+
+  @MessagePattern(&#x27;find-one-user&#x27;)
+  findOneInternal (id: string) {
+    return this.usersService.findOne(id)
   }
 }
 </code></pre>
@@ -269,6 +416,19 @@ export class UsersController {
             var COMPODOC_CURRENT_PAGE_URL = 'UsersController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

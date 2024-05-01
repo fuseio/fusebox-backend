@@ -1,0 +1,1078 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>fusebox-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >SmartWalletsLegacyService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#auth" >auth</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createWallet" >createWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAvailableUpgrades" >getAvailableUpgrades</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getHistoricalTxs" >getHistoricalTxs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getWallet" >getWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#installUpgrade" >installUpgrade</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#relay" >relay</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#sharedAddresses" >sharedAddresses</a>
+                                </li>
+                                <li>
+                                    <a href="#wsUrl" >wsUrl</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(jwtService: JwtService, configService: ConfigService, relayAPIService: <a href="../injectables/RelayAPIService.html" target="_self">RelayAPIService</a>, centClient: CentClient, smartWalletModel: <a href="../interfaces/SmartWallet.html" target="_self">Model&lt;SmartWallet&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:17</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>jwtService</td>
+                                                  
+                                                        <td>
+                                                                    <code>JwtService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>relayAPIService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/RelayAPIService.html" target="_self" >RelayAPIService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>centClient</td>
+                                                  
+                                                        <td>
+                                                                    <code>CentClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>smartWalletModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/SmartWallet.html" target="_self" >Model&lt;SmartWallet&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auth"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>auth</b></span>
+                        <a href="#auth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>auth(smartWalletsAuthDto: <a href="../classes/SmartWalletsAuthDto.html" target="_self">SmartWalletsAuthDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>smartWalletsAuthDto</td>
+                                            <td>
+                                                            <code><a href="../classes/SmartWalletsAuthDto.html" target="_self" >SmartWalletsAuthDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createWallet</b></span>
+                        <a href="#createWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createWallet(smartWalletUser: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="100"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>smartWalletUser</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAvailableUpgrades"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getAvailableUpgrades</b></span>
+                        <a href="#getAvailableUpgrades"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAvailableUpgrades()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="162"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:162</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHistoricalTxs"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getHistoricalTxs</b></span>
+                        <a href="#getHistoricalTxs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHistoricalTxs(user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="148"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getWallet</b></span>
+                        <a href="#getWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getWallet(smartWalletUser: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>smartWalletUser</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="installUpgrade"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>installUpgrade</b></span>
+                        <a href="#installUpgrade"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>installUpgrade()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="166"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:166</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="relay"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>relay</b></span>
+                        <a href="#relay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>relay(relayDto: <a href="../classes/RelayDto.html" target="_self">RelayDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:129</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>relayDto</td>
+                                            <td>
+                                                            <code><a href="../classes/RelayDto.html" target="_self" >RelayDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(SmartWalletsLegacyService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:17</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sharedAddresses"></a>
+                        <span class="name"><b>sharedAddresses</b><a href="#sharedAddresses"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>sharedAddresses()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:28</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="wsUrl"></a>
+                        <span class="name"><b>wsUrl</b><a href="#wsUrl"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>wsUrl()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.ts:32</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Model } from &#x27;mongoose&#x27;
+import { SmartWalletsAuthDto } from &#x27;@app/smart-wallets-service/dto/smart-wallets-auth.dto&#x27;
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from &#x27;@nestjs/common&#x27;
+import { JwtService } from &#x27;@nestjs/jwt&#x27;
+import { arrayify, computeAddress, hashMessage, recoverPublicKey } from &#x27;nestjs-ethers&#x27;
+import { ConfigService } from &#x27;@nestjs/config&#x27;
+import { smartWalletString } from &#x27;@app/smart-wallets-service/smart-wallets/smart-wallets.constants&#x27;
+import { SmartWallet, SmartWalletService } from &#x27;@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface&#x27;
+import { generateSalt, generateTransactionId } from &#x27;apps/charge-smart-wallets-service/src/common/utils/helper-functions&#x27;
+import RelayAPIService from &#x27;apps/charge-smart-wallets-service/src/common/services/relay-api.service&#x27;
+import { RelayDto } from &#x27;@app/smart-wallets-service/smart-wallets/dto/relay.dto&#x27;
+import { ISmartWalletUser } from &#x27;@app/common/interfaces/smart-wallet.interface&#x27;
+import { CentClient } from &#x27;cent.js&#x27;
+
+@Injectable()
+export class SmartWalletsLegacyService implements SmartWalletService {
+  private readonly logger &#x3D; new Logger(SmartWalletsLegacyService.name)
+
+  constructor (
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly relayAPIService: RelayAPIService,
+    private readonly centClient: CentClient,
+    @Inject(smartWalletString)
+    private smartWalletModel: Model&lt;SmartWallet&gt;
+  ) { }
+
+  get sharedAddresses () {
+    return this.configService.get(&#x27;sharedAddresses&#x27;)
+  }
+
+  get wsUrl () {
+    return this.configService.get(&#x27;wsUrl&#x27;)
+  }
+
+  async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
+    try {
+      const publicKey &#x3D; recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
+      const recoveredAddress &#x3D; computeAddress(publicKey)
+
+      if (recoveredAddress &#x3D;&#x3D;&#x3D; smartWalletsAuthDto.ownerAddress) {
+        const jwt &#x3D; this.jwtService.sign({
+          sub: recoveredAddress,
+          info: {
+            ownerAddress: recoveredAddress
+          },
+          channels: [&#x27;transaction&#x27;]
+        })
+        return { jwt }
+      } else {
+        throw new Error(&#x27;Owner Address does not match recovered address in signature&#x27;)
+      }
+    } catch (err) {
+      this.logger.error(&#x60;An error occurred during Smart Wallets Auth. ${err}&#x60;)
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async getWallet (smartWalletUser: ISmartWalletUser) {
+    const { ownerAddress } &#x3D; smartWalletUser
+    const smartWallet &#x3D; await this.smartWalletModel.findOne({ ownerAddress })
+    if (!smartWallet) {
+      throw new Error(&#x27;Not found&#x27;)
+    }
+    if (!smartWallet.isContractDeployed) {
+      const transactionId &#x3D; generateTransactionId(smartWallet.salt)
+      const walletModules &#x3D; this.sharedAddresses.walletModules
+      this.relayAPIService.createWallet({
+        v2: true,
+        salt: smartWallet.salt,
+        transactionId,
+        smartWalletUser,
+        owner: ownerAddress,
+        walletModules,
+        walletFactoryAddress: this.sharedAddresses.WalletFactory
+      }).catch(err &#x3D;&gt; {
+        const errorMessage &#x3D; &#x60;Retry wallet creation failed: ${err}&#x60;
+        this.logger.error(errorMessage)
+      })
+    }
+
+    const {
+      smartWalletAddress,
+      walletModules,
+      networks,
+      version,
+      paddedVersion
+    } &#x3D; smartWallet
+
+    return {
+      smartWalletAddress,
+      walletModules,
+      networks,
+      version,
+      paddedVersion,
+      ownerAddress
+    }
+  }
+
+  async createWallet (smartWalletUser: ISmartWalletUser) {
+    try {
+      const { ownerAddress } &#x3D; smartWalletUser
+      if (await this.smartWalletModel.findOne({ ownerAddress })) {
+        throw new Error(&#x27;Owner address already has a deployed smart wallet&#x27;)
+      }
+      const salt &#x3D; generateSalt()
+      const transactionId &#x3D; generateTransactionId(salt)
+      const walletModules &#x3D; this.sharedAddresses.walletModules
+      await this.centClient.subscribe({ channel: &#x60;transaction:#${transactionId}&#x60;, user: ownerAddress })
+      this.relayAPIService.createWallet({
+        v2: true,
+        salt,
+        transactionId,
+        smartWalletUser,
+        owner: ownerAddress,
+        walletModules,
+        walletFactoryAddress: this.sharedAddresses.WalletFactory
+      })
+      return {
+        connectionUrl: this.wsUrl,
+        transactionId
+      }
+    } catch (err) {
+      this.logger.error(&#x60;An error occurred during Smart Wallets Creation. ${err}&#x60;)
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async relay (relayDto: RelayDto) {
+    try {
+      const transactionId &#x3D; generateTransactionId(relayDto.data)
+      await this.centClient.subscribe({ channel: &#x60;transaction:#${transactionId}&#x60;, user: relayDto.ownerAddress })
+      this.relayAPIService.relay({
+        v2: true,
+        transactionId,
+        ...relayDto
+      })
+      return {
+        connectionUrl: this.wsUrl,
+        transactionId
+      }
+    } catch (err) {
+      this.logger.error(&#x60;An error occurred during relay execution. ${err}&#x60;)
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async getHistoricalTxs (user: ISmartWalletUser) {
+    try {
+      const { smartWalletAddress } &#x3D; await this.smartWalletModel.findOne({ ownerAddress: user.ownerAddress })
+      const result &#x3D; await this.relayAPIService.getHistoricalTxs(smartWalletAddress, user.query)
+      return {
+        ...result
+      }
+    } catch (error) {
+      this.logger.error(&#x60;An error occurred during fetching historical txs. ${error}&#x60;)
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  // TODO
+  async getAvailableUpgrades () {
+  }
+
+  // TODO
+  async installUpgrade () {
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'SmartWalletsLegacyService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -35,7 +35,7 @@ export class ConsensusService {
     const validatorsInfo = await this.getValidators()
     await this.cacheManager.set('validatorsInfo', validatorsInfo)
 
-    return this.cacheManager.get('validatorsInfo')
+    return validatorsInfo
   }
 
   @Timeout(5000)
@@ -81,36 +81,33 @@ export class ConsensusService {
   }
 
   @logPerformance('ConsensusService::CalculateEstimatedApy')
-  async calculateEstimatedApy (validator: string) {
+  async calculateEstimatedApy (
+    validator: string,
+    totalSupply: number,
+    totalStakeAmount: string
+  ) {
     if (!validator) {
       return '0.0'
     }
 
     try {
-      const [results, totalSupply] = await Promise.all([
-        this.aggregateCalls([
-          {
-            method: 'totalStakeAmount',
-            params: []
-          },
-          {
-            method: 'validatorFee',
-            params: [validator]
-          }
-        ]),
-        this.getTotalSupply()
+      const [fee] = await this.aggregateCalls([
+        {
+          method: 'validatorFee',
+          params: [validator]
+        }
       ])
 
-      const totalStakeAmount = parseFloat(formatEther(results[0]))
-      const feePercentage = parseFloat(formatUnits(results[1], 16)) / 100
+      const totalStake = parseFloat(totalStakeAmount)
+      const feePercentage = parseFloat(formatUnits(fee, 16)) / 100
 
-      if (totalStakeAmount === 0) {
+      if (totalStake === 0) {
         return '0.0'
       }
 
       const reward = this.calculateReward(
         totalSupply,
-        totalStakeAmount,
+        totalStake,
         feePercentage
       )
 
@@ -139,46 +136,51 @@ export class ConsensusService {
     return cachedInfo
   }
 
-  @logPerformance('ConsensusService::GetValidators')
-  async getValidators () {
-    const validatorMethods = [
+  private getConsensusMethods () {
+    return [
       'totalStakeAmount',
       'getValidators',
       'jailedValidators',
       'getMaxStake',
-      'getMinStake'
-    ]
+      'getMinStake',
+      'pendingValidators'
+    ].map(method => ({ method, params: [] }))
+  }
 
-    const [
-      results,
-      totalSupply
-    ] = await Promise.all([
-      this.aggregateCalls(
-        validatorMethods
-          .map(
-            method => ({
-              method,
-              params: []
-            })
-          )
-      ),
+  @logPerformance('ConsensusService::GetValidators')
+  async getValidators () {
+    const consensusMethods = this.getConsensusMethods()
+    const [results, totalSupply] = await Promise.all([
+      this.aggregateCalls(consensusMethods),
       this.getTotalSupply()
     ])
 
+    return this.formatConsensusResults(results, totalSupply)
+  }
+
+  private async formatConsensusResults (
+    results,
+    totalSupply
+  ) {
     const [
       totalStakeAmount,
       validators,
       jailedValidators,
       maxStake,
-      minStake
+      minStake,
+      pendingValidators
     ] = results
 
     const combinedValidators = validators.concat(jailedValidators)
     const {
       totalDelegators,
-      pendingValidators,
       validatorsMetadata
-    } = await this.getValidatorsMetadata(combinedValidators)
+    } = await this.getValidatorsMetadata(
+      combinedValidators,
+      pendingValidators,
+      totalSupply,
+      formatEther(totalStakeAmount)
+    )
 
     return {
       totalStakeAmount: formatEther(totalStakeAmount),
@@ -195,31 +197,30 @@ export class ConsensusService {
   }
 
   @logPerformance('ConsensusService::GetValidatorsMetadata')
-  async getValidatorsMetadata (validators: string[]) {
-    const [
-      pendingValidators
-    ] = await this.aggregateCalls([
-      {
-        method: 'pendingValidators',
-        params: []
-      }
-    ])
-
+  async getValidatorsMetadata (
+    validators: string[],
+    pendingValidators: string[],
+    totalSupply: number,
+    totalStakeAmount: string
+  ) {
     const validatorDataPromises = validators.map((validator) =>
       this.getValidatorData(validator)
     )
     const validatorDatas: Partial<IValidator>[] = await Promise.all(
       validatorDataPromises
     )
+    const validatorsMap = await this.fetchValidatorsMap()
 
     let totalDelegators = 0
     const validatorsMetadata: IValidator[] = await Promise.all(
       validators.map(async (validator, index) => {
         const metadata: Partial<IValidator> = validatorDatas[index]
-        const validatorData = validators[validator.toLowerCase()]
+        const validatorMetadataData = validators[validator.toLowerCase()]
         totalDelegators += parseInt(metadata.delegatorsLength, 10)
+        const validatorData = validatorsMap[validator.toLowerCase()]
 
         const baseMetadata: IValidator = {
+          ...validatorMetadataData,
           address: validator,
           name: validatorData?.name || validator,
           website: validatorData?.website,
@@ -238,7 +239,11 @@ export class ConsensusService {
           try {
             const [{ Node }, apy] = await Promise.all([
               this.getNodeByAddress(validator),
-              this.calculateEstimatedApy(validator)
+              this.calculateEstimatedApy(
+                validator,
+                totalSupply,
+                totalStakeAmount
+              )
             ])
 
             return {

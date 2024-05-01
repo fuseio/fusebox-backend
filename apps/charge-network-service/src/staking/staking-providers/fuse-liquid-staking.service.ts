@@ -52,14 +52,16 @@ export default class FuseLiquidStakingService implements StakingProvider {
     return this.configService.get('validatorFee')
   }
 
+  get liquidStakingInterface () {
+    return new Interface(LiquidStakingABI)
+  }
+
   stake () {
-    const iface = new Interface(LiquidStakingABI)
-    return iface.encodeFunctionData('deposit', [])
+    return this.liquidStakingInterface.encodeFunctionData('deposit', [])
   }
 
   unStake ({ tokenAmount }: UnstakeDto) {
-    const iface = new Interface(LiquidStakingABI)
-    return iface.encodeFunctionData('withdraw', [parseEther(tokenAmount)])
+    return this.liquidStakingInterface.encodeFunctionData('withdraw', [parseEther(tokenAmount)])
   }
 
   async stakedToken (
@@ -106,7 +108,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
       const rewardPerBlock: BigInt = await blockRewardContract.getBlockRewardAmount()
       const blocksPerYear: BigInt = await blockRewardContract.getBlocksPerYear()
 
-      const rewardPerYearApr = (Number(rewardPerBlock) * Number(blocksPerYear) * (1 - validatorFee) / Number(totalStakeAmount)) * 100
+      const rewardPerYearApr = (Number(formatEther(rewardPerBlock.toString())) * Number(blocksPerYear) * (1 - validatorFee) / Number(formatEther(totalStakeAmount.toString()))) * 100
 
       return aprToApy(rewardPerYearApr, 365)
     } catch (error) {
@@ -120,7 +122,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
       const totalStaked = await liquidStakingContract.systemTotalStaked()
       const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
 
-      return Number(formatEther(totalStaked)) * fusePrice
+      return Number(formatEther(totalStaked.toString())) * fusePrice
     } catch (error) {
       this.logger.error(`tvl error: ${error}`)
     }

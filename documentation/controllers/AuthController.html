@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,9 +12,58 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -36,26 +85,32 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >AuthController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >AuthController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/auth/auth.controller.ts</code>
+            <code>apps/charge-accounts-service/src/auth/auth.controller.ts</code>
         </p>
 
 
@@ -64,7 +119,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -78,9 +133,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#create" >create</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#findOne" >findOne</a>
                             </li>
@@ -96,7 +155,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -107,6 +166,8 @@
                 <td class="col-md-4">
                     <a name="create"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>create</b></span>
                         <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -114,7 +175,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>create(createUserDto: <a href="../interfaces/User.html" target="_self">CreateUserDto</a>)</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>create(createUserDto: <a href="../classes/CreateUserDto.html" target="_self">CreateUserDto</a>)</code>
                 </td>
             </tr>
 
@@ -126,55 +188,53 @@
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/auth/auth.controller.ts:17</a></div>
-                </td>
-            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="19"
+                                    class="link-to-prism">apps/charge-accounts-service/src/auth/auth.controller.ts:19</a></div>
+                        </td>
+                    </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Registers a new user for the authenticated user</p>
+                        <div class="io-description"><p>Registers a new user for the authenticated user</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>createUserDto</td>
-                                    <td>
-                                                <code><a href="../interfaces/User.html" target="_self" >CreateUserDto</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>createUserDto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateUserDto.html" target="_self" >CreateUserDto</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -185,7 +245,9 @@
                 <td class="col-md-4">
                     <a name="findOne"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>findOne</b></span>
                         <a href="#findOne"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -193,7 +255,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>findOne(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -206,58 +268,56 @@
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="27"
-                            class="link-to-prism">src/auth/auth.controller.ts:27</a></div>
-                </td>
-            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">apps/charge-accounts-service/src/auth/auth.controller.ts:29</a></div>
+                        </td>
+                    </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                    <td>
-                                        <p>Logs in the authenticated user&#39;s auth0Id and returns the user id in our db</p>
+                                            <td>
+                                                    <p>Logs in the authenticated user&#39;s auth0Id and returns the user id in our db</p>
 
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -265,37 +325,39 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Post, UseGuards } from &#x27;@nestjs/common&#x27;;
-import { CreateUserDto } from &#x27;src/users/dto/create-user.dto&#x27;;
-import { User } from &#x27;src/users/user.decorator&#x27;;
-import { UsersService } from &#x27;src/users/users.service&#x27;;
-import { JwtAuthGuard } from &#x27;./guards/jwt-auth.guard&#x27;;
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Post, UseGuards } from &#x27;@nestjs/common&#x27;
+import { CreateUserDto } from &#x27;@app/accounts-service/users/dto/create-user.dto&#x27;
+import { User } from &#x27;@app/accounts-service/users/user.decorator&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
+import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
 
 @Controller({ path: &#x27;auth&#x27;, version: &#x27;1&#x27; })
 export class AuthController {
-    constructor(private readonly usersService: UsersService) { }
+  constructor (
+    private readonly usersService: UsersService
+  ) {}
 
-    /**
-     * Registers a new user for the authenticated user
-     * @param createUserDto 
-     */
-    @UseGuards(JwtAuthGuard)
-    @Post(&#x27;/register&#x27;)
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto);
-    }
+  /**
+   * Registers a new user for the authenticated user
+   * @param createUserDto
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/register&#x27;)
+  create (@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto)
+  }
 
-    /**
-     * 
-     * @param id Logs in the authenticated user&#x27;s auth0Id and returns the user id in our db
-     */
-    @UseGuards(JwtAuthGuard)
-    @Post(&#x27;/login&#x27;)
-    async findOne(@User(&#x27;sub&#x27;) id: string) {
-        const user &#x3D; await this.usersService.findOneByAuth0Id(id);
-        return { id: user?.id };
-    }
+  /**
+   *
+   * @param id Logs in the authenticated user&#x27;s auth0Id and returns the user id in our db
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/login&#x27;)
+  async findOne (@User(&#x27;sub&#x27;) id: string) {
+    const user &#x3D; await this.usersService.findOneByAuth0Id(id)
+    return { id: user?.id }
+  }
 }
 </code></pre>
     </div>
@@ -345,6 +407,19 @@ export class AuthController {
             var COMPODOC_CURRENT_PAGE_URL = 'AuthController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

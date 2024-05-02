@@ -1,0 +1,3014 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>fusebox-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >OperatorsService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/charge-accounts-service/src/operators/operators.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#addAddressToOperatorsWebhook" >addAddressToOperatorsWebhook</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#addAddressToTokenReceiveWebhook" >addAddressToTokenReceiveWebhook</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkOperatorExistenceByEoaAddress" >checkOperatorExistenceByEoaAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkWalletActivationStatus" >checkWalletActivationStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#constructUserProjectResponse" >constructUserProjectResponse</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createOperatorUserAndProjectAndWallet" >createOperatorUserAndProjectAndWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createOperatorWallet" >createOperatorWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createPaymasters" >createPaymasters</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createProject" >createProject</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createProjectSecret" >createProjectSecret</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createUser" >createUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAddressFromOperatorsWebhook" >deleteAddressFromOperatorsWebhook</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#errorHandler" >errorHandler</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findOperatorBySmartWallet" >findOperatorBySmartWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findWalletOwner" >findWalletOwner</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#fundPaymaster" >fundPaymaster</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getBalance" >getBalance</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getOperatorUserAndProject" >getOperatorUserAndProject</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getSponsoredTransactionsCount" >getSponsoredTransactionsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook" >handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#hubspotFormSubmit" >hubspotFormSubmit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#operatorAccountActivationEvent" >operatorAccountActivationEvent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#predictWallet" >predictWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateIsActivated" >updateIsActivated</a>
+                            </li>
+                            <li>
+                                <a href="#validate" >validate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#validateInput" >validateInput</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(jwtService: JwtService, usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>, configService: ConfigService, operatorWalletModel: <a href="../interfaces/OperatorWallet.html" target="_self">Model&lt;OperatorWallet&gt;</a>, paymasterService: <a href="../injectables/PaymasterService.html" target="_self">PaymasterService</a>, projectsService: <a href="../injectables/ProjectsService.html" target="_self">ProjectsService</a>, dataLayerClient: ClientProxy, notificationsClient: ClientProxy, analyticsService: <a href="../injectables/AnalyticsService.html" target="_self">AnalyticsService</a>, httpService: HttpService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>jwtService</td>
+                                                  
+                                                        <td>
+                                                                    <code>JwtService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>usersService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UsersService.html" target="_self" >UsersService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>operatorWalletModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/OperatorWallet.html" target="_self" >Model&lt;OperatorWallet&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>paymasterService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PaymasterService.html" target="_self" >PaymasterService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>projectsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ProjectsService.html" target="_self" >ProjectsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dataLayerClient</td>
+                                                  
+                                                        <td>
+                                                                    <code>ClientProxy</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>notificationsClient</td>
+                                                  
+                                                        <td>
+                                                                    <code>ClientProxy</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>analyticsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AnalyticsService.html" target="_self" >AnalyticsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>httpService</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addAddressToOperatorsWebhook"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>addAddressToOperatorsWebhook</b></span>
+                        <a href="#addAddressToOperatorsWebhook"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addAddressToOperatorsWebhook(walletAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="353"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:353</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>walletAddress</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addAddressToTokenReceiveWebhook"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>addAddressToTokenReceiveWebhook</b></span>
+                        <a href="#addAddressToTokenReceiveWebhook"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addAddressToTokenReceiveWebhook(walletAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="362"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:362</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>walletAddress</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkOperatorExistenceByEoaAddress"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>checkOperatorExistenceByEoaAddress</b></span>
+                        <a href="#checkOperatorExistenceByEoaAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkOperatorExistenceByEoaAddress(eoaAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>eoaAddress</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkWalletActivationStatus"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>checkWalletActivationStatus</b></span>
+                        <a href="#checkWalletActivationStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkWalletActivationStatus(auth0Id)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="347"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:347</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>auth0Id</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="constructUserProjectResponse"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>constructUserProjectResponse</b></span>
+                        <a href="#constructUserProjectResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>constructUserProjectResponse(user: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, projectObject: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, publicKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, secretKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>projectObject</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>publicKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>secretKey</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>sponsorId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{ user: { id: any; name: any; email: any; auth0Id: any; }; project: { id: any; ownerId: any; name: any; description: any; publicKey: string; secretKey: string; sponsorId: string; }; }</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createOperatorUserAndProjectAndWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createOperatorUserAndProjectAndWallet</b></span>
+                        <a href="#createOperatorUserAndProjectAndWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createOperatorUserAndProjectAndWallet(createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:98</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>createOperatorUserDto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>auth0Id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createOperatorWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createOperatorWallet</b></span>
+                        <a href="#createOperatorWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createOperatorWallet(user: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, predictedWallet: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="155"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>predictedWallet</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPaymasters"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createPaymasters</b></span>
+                        <a href="#createPaymasters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPaymasters(projectObject: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>projectObject</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createProject"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createProject</b></span>
+                        <a href="#createProject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createProject(user: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:131</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>createOperatorUserDto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createProjectSecret"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createProjectSecret</b></span>
+                        <a href="#createProjectSecret"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createProjectSecret(projectObject: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>projectObject</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createUser"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createUser</b></span>
+                        <a href="#createUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createUser(createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:123</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>createOperatorUserDto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>auth0Id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAddressFromOperatorsWebhook"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>deleteAddressFromOperatorsWebhook</b></span>
+                        <a href="#deleteAddressFromOperatorsWebhook"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAddressFromOperatorsWebhook(walletAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="371"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:371</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>walletAddress</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorHandler"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>errorHandler</b></span>
+                        <a href="#errorHandler"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>errorHandler(error: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:186</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findOperatorBySmartWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findOperatorBySmartWallet</b></span>
+                        <a href="#findOperatorBySmartWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findOperatorBySmartWallet(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="328"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:328</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/OperatorWallet.html" target="_self" >Promise&lt;OperatorWallet&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findWalletOwner"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findWalletOwner</b></span>
+                        <a href="#findWalletOwner"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findWalletOwner(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="324"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:324</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/OperatorWallet.html" target="_self" >Promise&lt;OperatorWallet&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fundPaymaster"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>fundPaymaster</b></span>
+                        <a href="#fundPaymaster"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fundPaymaster(sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, amount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ver: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="281"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sponsorId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>amount</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>ver</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>environment</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBalance"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getBalance</b></span>
+                        <a href="#getBalance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBalance(address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ver: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="336"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:336</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>address</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>ver</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>environment</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOperatorUserAndProject"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getOperatorUserAndProject</b></span>
+                        <a href="#getOperatorUserAndProject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getOperatorUserAndProject(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>auth0Id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSponsoredTransactionsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getSponsoredTransactionsCount</b></span>
+                        <a href="#getSponsoredTransactionsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSponsoredTransactionsCount(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="300"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>auth0Id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook</b></span>
+                        <a href="#handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook(webhookEvent: <a href="../interfaces/WebhookEvent.html" target="_self">WebhookEvent</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="211"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:211</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>webhookEvent</td>
+                                            <td>
+                                                            <code><a href="../interfaces/WebhookEvent.html" target="_self" >WebhookEvent</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hubspotFormSubmit"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>hubspotFormSubmit</b></span>
+                        <a href="#hubspotFormSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>hubspotFormSubmit(createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="394"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:394</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>createOperatorUserDto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="operatorAccountActivationEvent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>operatorAccountActivationEvent</b></span>
+                        <a href="#operatorAccountActivationEvent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>operatorAccountActivationEvent(undefined)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="380"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:380</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="predictWallet"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>predictWallet</b></span>
+                        <a href="#predictWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>predictWallet(owner: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, ver: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>owner</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>ver</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>environment</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateIsActivated"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateIsActivated</b></span>
+                        <a href="#updateIsActivated"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateIsActivated(_id: ObjectId, isActivated: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="332"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:332</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>_id</td>
+                                            <td>
+                                                        <code>ObjectId</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>isActivated</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validate"></a>
+                    <span class="name">
+                        <span ><b>validate</b></span>
+                        <a href="#validate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>validate(authOperatorDto: <a href="../classes/AuthOperatorDto.html" target="_self">AuthOperatorDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>authOperatorDto</td>
+                                            <td>
+                                                            <code><a href="../classes/AuthOperatorDto.html" target="_self" >AuthOperatorDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateInput"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>validateInput</b></span>
+                        <a href="#validateInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validateInput(createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="315"
+                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:315</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>createOperatorUserDto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>auth0Id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(OperatorsService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">apps/charge-accounts-service/src/operators/operators.service.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from &#x27;@nestjs/common&#x27;
+import { JwtService } from &#x27;@nestjs/jwt&#x27;
+import { ethers } from &#x27;ethers&#x27;
+import { notificationsService, smartWalletsService } from &#x27;@app/common/constants/microservices.constants&#x27;
+import { PaymasterService } from &#x27;@app/accounts-service/paymaster/paymaster.service&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
+import { AuthOperatorDto } from &#x27;@app/accounts-service/operators/dto/auth-operator.dto&#x27;
+import paymasterAbi from &#x27;@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json&#x27;
+import etherspotWalletFactoryAbi from &#x27;@app/accounts-service/operators/abi/EtherspotWalletFactory.abi.json&#x27;
+import { ConfigService } from &#x27;@nestjs/config&#x27;
+import { CreateOperatorUserDto } from &#x27;@app/accounts-service/operators/dto/create-operator-user.dto&#x27;
+import { OperatorWallet } from &#x27;@app/accounts-service/operators/interfaces/operator-wallet.interface&#x27;
+import { operatorWalletModelString } from &#x27;@app/accounts-service/operators/operators.constants&#x27;
+import { Model, ObjectId } from &#x27;mongoose&#x27;
+import { WebhookEvent } from &#x27;@app/apps-service/payments/interfaces/webhook-event.interface&#x27;
+import { ProjectsService } from &#x27;@app/accounts-service/projects/projects.service&#x27;
+import { callMSFunction } from &#x27;@app/common/utils/client-proxy&#x27;
+import { ClientProxy } from &#x27;@nestjs/microservices&#x27;
+import { CreateWebhookAddressesDto } from &#x27;@app/notifications-service/webhooks/dto/create-webhook-addresses.dto&#x27;
+import { AnalyticsService } from &#x27;@app/common/services/analytics.service&#x27;
+import { HttpService } from &#x27;@nestjs/axios&#x27;
+import { catchError, lastValueFrom, map } from &#x27;rxjs&#x27;
+
+@Injectable()
+export class OperatorsService {
+  private readonly logger &#x3D; new Logger(OperatorsService.name)
+  constructor (
+    private readonly jwtService: JwtService,
+    private readonly usersService: UsersService,
+    private configService: ConfigService,
+    @Inject(operatorWalletModelString)
+    private operatorWalletModel: Model&lt;OperatorWallet&gt;,
+    private readonly paymasterService: PaymasterService,
+    private readonly projectsService: ProjectsService,
+    @Inject(smartWalletsService)
+    private readonly dataLayerClient: ClientProxy,
+    @Inject(notificationsService)
+    private readonly notificationsClient: ClientProxy,
+    private readonly analyticsService: AnalyticsService,
+    private httpService: HttpService
+  ) { }
+
+  async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise&lt;number&gt; {
+    const operator &#x3D; await this.usersService.findOneByAuth0Id(eoaAddress)
+    return operator ? 200 : 404
+  }
+
+  validate (authOperatorDto: AuthOperatorDto): string {
+    const recoveredAddress &#x3D; ethers.utils.verifyMessage(authOperatorDto.message, authOperatorDto.signature)
+    if (authOperatorDto.externallyOwnedAccountAddress !&#x3D;&#x3D; recoveredAddress) {
+      throw new HttpException(&#x27;Wallet ownership verification failed&#x27;, HttpStatus.FORBIDDEN)
+    }
+    return this.jwtService.sign({
+      sub: recoveredAddress
+    })
+  }
+
+  async getOperatorUserAndProject (auth0Id: string) {
+    try {
+      const user &#x3D; await this.usersService.findOneByAuth0Id(auth0Id)
+      if (!user) {
+        throw new HttpException(&#x27;User not found&#x27;, HttpStatus.NOT_FOUND)
+      }
+
+      const projectObject &#x3D; await this.projectsService.findOneByOwnerId(user._id)
+      if (!projectObject) {
+        throw new HttpException(&#x27;Project not found&#x27;, HttpStatus.NOT_FOUND)
+      }
+
+      const apiKeyInfo &#x3D; await this.projectsService.getApiKeysInfo(projectObject._id)
+      if (!apiKeyInfo) {
+        throw new HttpException(&#x27;API Key info not found&#x27;, HttpStatus.NOT_FOUND)
+      }
+
+      const paymasters &#x3D; await this.paymasterService.findActivePaymasters(projectObject._id)
+      if (!paymasters || paymasters.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new HttpException(&#x27;No active paymasters found&#x27;, HttpStatus.NOT_FOUND)
+      }
+
+      const project &#x3D; {
+        id: projectObject._id,
+        ownerId: projectObject.ownerId,
+        name: projectObject.name,
+        description: projectObject.description,
+        publicKey: apiKeyInfo.publicKey,
+        sandboxKey: apiKeyInfo.sandboxKey,
+        secretPrefix: apiKeyInfo.secretPrefix,
+        secretLastFourChars: apiKeyInfo.secretLastFourChars,
+        sponsorId: paymasters[0].sponsorId
+      }
+
+      return { user, project }
+    } catch (error) {
+      this.errorHandler(error)
+    }
+  }
+
+  async createOperatorUserAndProjectAndWallet (createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
+    this.validateInput(createOperatorUserDto, auth0Id)
+
+    try {
+      const user &#x3D; await this.createUser(createOperatorUserDto, auth0Id)
+      const projectObject &#x3D; await this.createProject(user, createOperatorUserDto)
+      const publicKey &#x3D; await this.projectsService.getPublic(projectObject._id)
+      const secretKey &#x3D; await this.createProjectSecret(projectObject)
+      const sponsorId &#x3D; await this.createPaymasters(projectObject)
+      const predictedWallet &#x3D; await this.predictWallet(auth0Id, 0, &#x27;0_1_0&#x27;, &#x27;production&#x27;)
+      const eventData &#x3D; {
+        email: user.email,
+        apiKey: publicKey
+      }
+      await this.createOperatorWallet(user, predictedWallet)
+      await this.addAddressToOperatorsWebhook(predictedWallet)
+      await this.addAddressToTokenReceiveWebhook(predictedWallet)
+      this.hubspotFormSubmit(createOperatorUserDto)
+      this.analyticsService.trackEvent(&#x27;New Operator Created&#x27;, { ...eventData }, { user_id: user?.auth0Id })
+      return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
+    } catch (error) {
+      this.errorHandler(error)
+    }
+  }
+
+  private async createUser (createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
+    return await this.usersService.create({
+      name: &#x60;${createOperatorUserDto.firstName} ${createOperatorUserDto.lastName}&#x60;,
+      email: createOperatorUserDto.email,
+      auth0Id
+    })
+  }
+
+  private async createProject (user: any, createOperatorUserDto: CreateOperatorUserDto) {
+    return await this.projectsService.create({
+      ownerId: user._id,
+      name: createOperatorUserDto.name || user.name,
+      description: createOperatorUserDto.description || &#x27;Empty description&#x27;
+    })
+  }
+
+  private async createProjectSecret (projectObject: any) {
+    const { secretKey } &#x3D; await this.projectsService.createSecret({ projectId: projectObject._id, createLegacyAccount: false })
+    if (!secretKey) {
+      throw new HttpException(&#x27;Failed to create secret&#x27;, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+    return secretKey
+  }
+
+  private async createPaymasters (projectObject: any) {
+    const paymasters &#x3D; await this.paymasterService.create(projectObject._id, &#x27;0_1_0&#x27;)
+    if (!paymasters) {
+      throw new HttpException(&#x27;Failed to create paymasters&#x27;, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+    return paymasters[0].sponsorId
+  }
+
+  private async createOperatorWallet (user: any, predictedWallet: string) {
+    const operatorWalletCreationResult &#x3D; await this.operatorWalletModel.create({
+      ownerId: user._id,
+      smartWalletAddress: predictedWallet.toLowerCase()
+    })
+    if (!operatorWalletCreationResult) {
+      throw new HttpException(&#x27;Failed to create operator wallet&#x27;, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  private constructUserProjectResponse (user: any, projectObject: any, publicKey: string, secretKey: string, sponsorId: string) {
+    // Constructs the response object from the created entities
+    return {
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        auth0Id: user.auth0Id
+      },
+      project: {
+        id: projectObject._id,
+        ownerId: projectObject.ownerId,
+        name: projectObject.name,
+        description: projectObject.description,
+        publicKey,
+        secretKey,
+        sponsorId
+      }
+    }
+  }
+
+  private errorHandler (error: any) {
+    // Improved error handling, distinguishing between different error types
+    if (error instanceof HttpException) {
+      this.logger.error(&#x60;Failed to create operator: ${error.getResponse()}&#x60;)
+      throw new InternalServerErrorException(error.message)
+    } else {
+      this.logger.error(&#x60;Failed to create operator: ${error.message}&#x60;)
+      throw new InternalServerErrorException(error.message)
+    }
+  }
+
+  async predictWallet (owner: string, index: number, ver: string, environment: string): Promise&lt;string&gt; {
+    const paymasterEnvs &#x3D; this.configService.getOrThrow(&#x60;paymaster.${ver}&#x60;)
+    const contractAddress &#x3D; paymasterEnvs[environment].etherspotWalletFactoryContractAddress
+
+    const provider &#x3D; new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    const contract &#x3D; new ethers.Contract(contractAddress, etherspotWalletFactoryAbi, provider)
+
+    try {
+      return await contract.getAddress(owner, index)
+    } catch (error) {
+      throw new InternalServerErrorException(&#x60;Failed to predict wallet: ${error}&#x60;)
+    }
+  }
+
+  async handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook (webhookEvent: WebhookEvent): Promise&lt;void&gt; {
+    this.logger.log(&#x60;handleWebhook: ${JSON.stringify(webhookEvent)}&#x60;)
+    const DEPOSIT_REQUIRED &#x3D; 10 // Consider moving to a config or class constant
+    const valueEthInWebhookEvent &#x3D; webhookEvent.valueEth
+    const address &#x3D; webhookEvent.to.toLowerCase()
+
+    try {
+      if (webhookEvent.direction !&#x3D;&#x3D; &#x27;incoming&#x27;) {
+        throw new HttpException(&#x27;Webhook event direction is not incoming.&#x27;, HttpStatus.BAD_REQUEST)
+      }
+      if (webhookEvent.tokenType !&#x3D;&#x3D; &#x27;FUSE&#x27;) {
+        throw new HttpException(&#x27;Webhook event token type is not FUSE.&#x27;, HttpStatus.BAD_REQUEST)
+      }
+      if (!webhookEvent.to || webhookEvent.to.trim() &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        throw new HttpException(&#x27;Webhook event &quot;to&quot; address is missing or empty.&#x27;, HttpStatus.BAD_REQUEST)
+      }
+
+      const balance &#x3D; await this.getBalance(address, &#x27;0_1_0&#x27;, &#x27;production&#x27;)
+      if (!balance) {
+        throw new HttpException(&#x27;Failed to retrieve balance.&#x27;, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+      const isBalanceSufficient &#x3D; parseFloat(balance) &gt;&#x3D; DEPOSIT_REQUIRED
+
+      if (parseFloat(balance) &lt; parseFloat(valueEthInWebhookEvent)) {
+        throw new HttpException(&#x27;Webhook event contains more FUSE than onChain balance&#x27;, HttpStatus.OK)
+      }
+      if (!isBalanceSufficient) {
+        throw new HttpException(&#x27;Balance is not sufficient&#x27;, HttpStatus.OK)
+      }
+
+      const wallet &#x3D; await this.findOperatorBySmartWallet(address)
+      if (!wallet) {
+        throw new HttpException(&#x27;Wallet not found.&#x27;, HttpStatus.NOT_FOUND)
+      }
+      if (wallet.isActivated) {
+        throw new HttpException(&#x27;Account already activated&#x27;, HttpStatus.OK)
+      }
+
+      const project &#x3D; await this.projectsService.findOneByOwnerId(wallet.ownerId)
+      if (!project) {
+        throw new HttpException(&#x27;Project not found.&#x27;, HttpStatus.NOT_FOUND)
+      }
+
+      const [paymaster] &#x3D; await this.paymasterService.findActivePaymasters(project._id)
+      if (!paymaster?.sponsorId) {
+        throw new HttpException(&#x60;Sponsor id for project id: ${project._id} is missing&#x60;, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+
+      await this.fundPaymaster(paymaster.sponsorId, &#x27;1&#x27;, &#x27;0_1_0&#x27;, &#x27;production&#x27;)
+      // Note: If the &#x27;fundPaymaster&#x27; call fails, the operator&#x27;s account will not be activated,
+      // and the webhook call will respond negatively. In such cases, a retry mechanism from the
+      // notification service will be utilized.
+      await this.updateIsActivated(wallet._id, true)
+      try {
+        this.operatorAccountActivationEvent({ id: wallet.ownerId, projectId: project._id })
+      } catch (error) {
+        this.logger.error(&#x60;Error on sending activation event to Amplitude: ${error}&#x60;)
+      }
+      await this.deleteAddressFromOperatorsWebhook(address)
+    } catch (error) {
+      if (error instanceof HttpException) {
+        this.logger.error(&#x60;Error on operator funding: ${error.getResponse()}&#x60;)
+        throw error // Rethrow the HttpException to be handled by NestJS&#x27;s global exception filter
+      } else {
+        this.logger.error(&#x60;Error on operator funding: ${error.message}&#x60;)
+        throw new InternalServerErrorException(error.message)
+      }
+    }
+  }
+
+  async fundPaymaster (sponsorId: string, amount: string, ver: string, environment: string): Promise&lt;any&gt; {
+    const paymasterEnvs &#x3D; this.configService.getOrThrow(&#x60;paymaster.${ver}&#x60;)
+    const contractAddress &#x3D; paymasterEnvs[environment].paymasterContractAddress
+    const privateKey &#x3D; this.configService.get(&#x27;PAYMASTER_FUNDER_PRIVATE_KEY&#x27;)
+    const provider &#x3D; new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    const wallet &#x3D; new ethers.Wallet(privateKey, provider)
+    const contract &#x3D; new ethers.Contract(contractAddress, paymasterAbi, wallet)
+    const ether &#x3D; ethers.utils.parseEther(amount)
+    try {
+      // Note: The transaction hash retrieval is intentionally not awaited here due to its ~14s delay.
+      // However, any errors arising from this call will still be caught and handled appropriately.
+      await contract.depositFor(sponsorId, { value: ether })
+      return HttpStatus.OK
+    } catch (error) {
+      this.logger.error(&#x60;depositFor fund paymaster failed: ${sponsorId} value: ${amount} etherAmount: ${ether} error: ${error}&#x60;)
+      throw new InternalServerErrorException(&#x60;depositFor fund paymaster error: ${error}&#x60;)
+    }
+  }
+
+  async getSponsoredTransactionsCount (auth0Id: string) {
+    const user &#x3D; await this.usersService.findOneByAuth0Id(auth0Id)
+    const project &#x3D; await this.projectsService.findOneByOwnerId(user._id)
+    const paymasters &#x3D; await this.paymasterService.findActivePaymasters(project._id)
+    const sponsorId &#x3D; paymasters?.[0]?.sponsorId
+    let sponsoredTransactions &#x3D; 0
+    if (sponsorId) {
+      sponsoredTransactions &#x3D; await callMSFunction(this.dataLayerClient, &#x27;sponsored-transactions-count&#x27;, sponsorId)
+        .catch(e &#x3D;&gt; {
+          this.logger.log(&#x60;sponsored-transactions-count failed: ${JSON.stringify(e)}&#x60;)
+        })
+    }
+    return { sponsoredTransactions }
+  }
+
+  private validateInput (createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
+    if (!createOperatorUserDto.email || !createOperatorUserDto.firstName || !createOperatorUserDto.lastName) {
+      throw new BadRequestException(&#x27;Missing required fields in createOperatorUserDto&#x27;)
+    }
+    if (!auth0Id) {
+      throw new BadRequestException(&#x27;auth0Id is required&#x27;)
+    }
+  }
+
+  async findWalletOwner (value: string): Promise&lt;OperatorWallet&gt; {
+    return this.operatorWalletModel.findOne({ ownerId: value })
+  }
+
+  async findOperatorBySmartWallet (value: string): Promise&lt;OperatorWallet&gt; {
+    return this.operatorWalletModel.findOne({ smartWalletAddress: value.toLowerCase() })
+  }
+
+  async updateIsActivated (_id: ObjectId, isActivated: boolean): Promise&lt;any&gt; {
+    return this.operatorWalletModel.updateOne({ _id }, { isActivated })
+  }
+
+  async getBalance (address: string, ver: string, environment: string): Promise&lt;string&gt; {
+    const paymasterEnvs &#x3D; this.configService.getOrThrow(&#x60;paymaster.${ver}&#x60;)
+    const provider &#x3D; new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
+    try {
+      const balance &#x3D; await provider.getBalance(address)
+      return ethers.utils.formatEther(balance)
+    } catch (error) {
+      throw new InternalServerErrorException(&#x60;getBalance error: ${error}&#x60;)
+    }
+  }
+
+  async checkWalletActivationStatus (auth0Id) {
+    const user &#x3D; await this.usersService.findOneByAuth0Id(auth0Id)
+    const wallet &#x3D; await this.findWalletOwner(user._id)
+    return wallet?.isActivated || false
+  }
+
+  async addAddressToOperatorsWebhook (walletAddress: string) {
+    const webhookId &#x3D; this.configService.get(&#x27;PAYMASTER_FUNDER_WEBHOOK_ID&#x27;)
+    const requestBody: CreateWebhookAddressesDto &#x3D; {
+      webhookId,
+      addresses: [walletAddress]
+    }
+    return callMSFunction(this.notificationsClient, &#x27;create_addresses&#x27;, requestBody)
+  }
+
+  async addAddressToTokenReceiveWebhook (walletAddress: string) {
+    const webhookId &#x3D; this.configService.get(&#x27;INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID&#x27;)
+    const requestBody: CreateWebhookAddressesDto &#x3D; {
+      webhookId,
+      addresses: [walletAddress]
+    }
+    return callMSFunction(this.notificationsClient, &#x27;create_addresses&#x27;, requestBody)
+  }
+
+  async deleteAddressFromOperatorsWebhook (walletAddress: string) {
+    const webhookId &#x3D; this.configService.get(&#x27;PAYMASTER_FUNDER_WEBHOOK_ID&#x27;)
+    const requestBody: CreateWebhookAddressesDto &#x3D; {
+      webhookId,
+      addresses: [walletAddress]
+    }
+    return callMSFunction(this.notificationsClient, &#x27;delete_addresses&#x27;, requestBody)
+  }
+
+  async operatorAccountActivationEvent ({ id, projectId }) {
+    try {
+      const user &#x3D; await this.usersService.findOne(id)
+      const publicKey &#x3D; (await this.projectsService.getPublic(projectId)).publicKey
+      const eventData &#x3D; {
+        email: user.email,
+        apiKey: publicKey
+      }
+      this.analyticsService.trackEvent(&#x27;Operator Account Activated&#x27;, { ...eventData }, { user_id: user?.auth0Id })
+    } catch (error) {
+      this.logger.error(&#x27;Error tracking event:&#x27;, error)
+    }
+  }
+
+  async hubspotFormSubmit (createOperatorUserDto: CreateOperatorUserDto) {
+    const hubspotPortalId &#x3D; this.configService.getOrThrow(&#x27;hubspotPortalId&#x27;)
+    const hubspotOperatorCreationFormId &#x3D; this.configService.getOrThrow(&#x27;hubspotOperatorCreationFormId&#x27;)
+    const hubspotPrivateAppAccessKey &#x3D; this.configService.getOrThrow(&#x27;hubspotPrivateAppAccessKey&#x27;)
+    const url &#x3D; &#x60;https://api.hsforms.com/submissions/v3/integration/secure/submit/${hubspotPortalId}/${hubspotOperatorCreationFormId}&#x60;
+
+    const data &#x3D; {
+      submittedAt: Date.now(),
+      fields: [
+        {
+          name: &#x27;email&#x27;,
+          value: &#x60;${createOperatorUserDto.email}&#x60;
+        },
+        {
+          name: &#x27;firstname&#x27;,
+          value: &#x60;${createOperatorUserDto.firstName}&#x60;
+        },
+        {
+          name: &#x27;lastname&#x27;,
+          value: &#x60;${createOperatorUserDto.lastName}&#x60;
+        },
+        {
+          name: &#x27;company_domain&#x27;,
+          value: &#x60;${createOperatorUserDto.name}&#x60;
+        }
+      ],
+      context: {
+        pageUri: &#x27;https://console.fuse.io/dashboard&#x27;,
+        pageName: &#x27;Operator contact details&#x27;
+      }
+    }
+
+    try {
+      const response &#x3D; await lastValueFrom(
+        this.httpService.post(url, data, {
+          headers: {
+            &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+            Authorization: &#x60;Bearer ${hubspotPrivateAppAccessKey}&#x60;
+          }
+        }).pipe(
+          map(response &#x3D;&gt; response.data),
+          catchError(e &#x3D;&gt; {
+            throw new HttpException(
+              &#x60;Error sending data to HubSpot: ${e.response?.statusText || &#x27;Unknown Error&#x27;}: ${e.response?.data?.error || &#x27;&#x27;}&#x60;,
+              e.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
+            )
+          })
+        )
+      )
+
+      this.logger.log(&#x27;Submission successful&#x27;, response)
+    } catch (error) {
+      this.logger.error(&#x27;Submission failed:&#x27;, error.response ? error.response.data : error.message)
+    }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'OperatorsService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -133,14 +133,14 @@ spec:
             httpGet:
               path: /api/health
               port: 5002
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /api/health
               port: 5002
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
 
           # Resources
           resources:

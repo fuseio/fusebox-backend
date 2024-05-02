@@ -15,7 +15,7 @@ import MultiCallAbi from '@app/network-service/common/constants/abi/MultiCall'
 import ConsensusAbi from '@app/network-service/common/constants/abi/Consensus'
 import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
-import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/consensus.dto'
+import { DelegatedAmountsDto } from '@app/network-service/consensus/dto/delegate.dto'
 import { IValidator } from '@app/network-service/consensus/interfaces'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
 

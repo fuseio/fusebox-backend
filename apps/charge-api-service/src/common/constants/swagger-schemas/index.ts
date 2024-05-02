@@ -1,0 +1,5 @@
+import SWAGGER_SCHEMA_DEFINITIONS from './schemas'
+
+export {
+  SWAGGER_SCHEMA_DEFINITIONS
+}

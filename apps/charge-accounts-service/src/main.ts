@@ -5,6 +5,7 @@ import Helmet from 'helmet'
 import { TcpOptions, Transport } from '@nestjs/microservices'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
+import { setupSwagger } from '@app/accounts-service/common/utils/swagger/setup-swagger'
 
 async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
@@ -37,6 +38,9 @@ async function bootstrap () {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
   app.connectMicroservice(microServiceOptions, { inheritAppConfig: true })
   await app.startAllMicroservices()
+
+  setupSwagger(app)
+
   await app.listen(process.env.ACCOUNTS_PORT)
 }
 bootstrap()

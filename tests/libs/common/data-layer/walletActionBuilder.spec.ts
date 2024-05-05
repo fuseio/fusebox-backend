@@ -3,7 +3,6 @@ import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-o
 import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { parsedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
 import { ConfigService } from '@nestjs/config'
 import * as walletActionsExamples from './constants/walletActionsExamples'
 import { Test, TestingModule } from '@nestjs/testing'
@@ -64,8 +63,7 @@ describe('DataLayerService Tests', () => {
               }
             })
           }
-        },
-        Web3ProviderService
+        }
       ]
     }).compile()
 

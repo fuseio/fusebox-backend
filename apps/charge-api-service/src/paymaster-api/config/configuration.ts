@@ -1,10 +1,14 @@
 export default () => ({
   paymasterApi: {
     production: {
-      url: process.env.RPC_URL || 'https://rpc.fuse.io'
+      url: process.env.RPC_URL || 'https://rpc.fuse.io',
+      networkName: process.env.NETWORK_NAME || 'Fuse Mainnet',
+      chainId: parseInt(process.env.CHAIN_ID) || 122
     },
     sandbox: {
-      url: process.env.SPARK_RPC_URL || 'https://rpc.fusespark.io/'
+      url: process.env.SPARK_RPC_URL || 'https://rpc.fusespark.io/',
+      networkName: 'Fuse Spark',
+      chainId: parseInt(process.env.CHAIN_ID) || 123
     },
     keys: {
       '0_1_0': {

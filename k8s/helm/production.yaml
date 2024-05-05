@@ -28,7 +28,7 @@ accounts:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -38,14 +38,14 @@ accounts:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: "fusebox-accounts-security-policy"
@@ -79,7 +79,7 @@ amplitude:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -89,14 +89,14 @@ amplitude:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
 api:
   enabled: true
@@ -112,11 +112,11 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # Service - RPS per Pod
   maxRatePerEndpoint: 100
@@ -213,14 +213,14 @@ centrifugo:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: null
@@ -235,7 +235,7 @@ network:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -273,11 +273,11 @@ notifications:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # ConfigMap
   configMap:
@@ -338,14 +338,14 @@ skandha:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: null
@@ -364,11 +364,11 @@ smart-wallets:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # ConfigMap
   configMap:

@@ -118,14 +118,14 @@ spec:
             httpGet:
               path: /accounts/v1/health
               port: 5001
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /accounts/v1/health
               port: 5001
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
 
           # Resources
           resources:

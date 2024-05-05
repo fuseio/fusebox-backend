@@ -38,8 +38,6 @@ export class ERC20EventsScannerService extends EventsScannerService {
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
 
-    this.logger.log(`ERC20EventsScannerService: Processing blocks from ${fromBlock} to ${toBlock}`)
-
     const logs = await this.fetchLogs(fromBlock, toBlock)
 
     for (const log of logs) {
@@ -55,8 +53,6 @@ export class ERC20EventsScannerService extends EventsScannerService {
 
   @logPerformance('ERC20EventsScannerService::ProcessEvent')
   async processEvent (log: Log) {
-    this.logger.log(`Processing event from block: ${log.blockNumber} & txHash: ${log.transactionHash}`)
-
     const tokenType = getTransferEventTokenType(log)
     const abi = getTokenTypeAbi(tokenType)
 
@@ -116,11 +112,8 @@ export class ERC20EventsScannerService extends EventsScannerService {
   private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
     const token = await this.cacheManager.get(tokenAddress) as TokenInfo
     if (token) {
-      this.logger.log(`Token info for ${tokenAddress} was found in cache...`)
       return [token.name, token.symbol, token.decimals]
     }
-
-    this.logger.log(`Token info for ${tokenAddress} was not found in cache...`)
 
     const contract: Contract = this.ethersContract.create(
       tokenAddress,

@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
+import { Injectable, Logger } from '@nestjs/common'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
@@ -11,16 +10,12 @@ import FuseLiquidStakingService from '@app/network-service/staking/staking-provi
 
 @Injectable()
 export class StakingService {
+  private readonly logger = new Logger(StakingService.name)
   constructor (
-    private readonly web3ProviderService: Web3ProviderService,
     private readonly voltBarService: VoltBarService,
     private readonly fuseLiquidStakingService: FuseLiquidStakingService,
     private readonly configService: ConfigService
   ) { }
-
-  get web3Provider () {
-    return this.web3ProviderService.getProvider()
-  }
 
   get stakingOptionsConfig () {
     return this.configService.get('stakingOptions') as Array<StakingOption>
@@ -67,19 +62,23 @@ export class StakingService {
   async stakedTokens (accountAddress: string) {
     const stakedTokens = []
 
-    for (const stakingOption of this.stakingOptionsConfig) {
-      const stakingProvider = this.getStakingProvider(stakingOption)
-      const stakedToken = await stakingProvider.stakedToken(accountAddress, stakingOption)
+    try {
+      for (const stakingOption of this.stakingOptionsConfig) {
+        const stakingProvider = this.getStakingProvider(stakingOption)
+        const stakedToken = await stakingProvider.stakedToken(accountAddress, stakingOption)
 
-      if (stakedToken.stakedAmount > 0) {
-        stakedTokens.push(stakedToken)
+        if (stakedToken.stakedAmount > 0) {
+          stakedTokens.push(stakedToken)
+        }
       }
-    }
 
-    return {
-      totalStakedAmountUSD: sumBy(stakedTokens, 'stakedAmountUSD'),
-      totalEarnedAmountUSD: sumBy(stakedTokens, 'earnedAmountUSD'),
-      stakedTokens
+      return {
+        totalStakedAmountUSD: sumBy(stakedTokens, 'stakedAmountUSD'),
+        totalEarnedAmountUSD: sumBy(stakedTokens, 'earnedAmountUSD'),
+        stakedTokens
+      }
+    } catch (error) {
+      this.logger.error('Error fetching staked tokens', error)
     }
   }
 

@@ -28,7 +28,7 @@ accounts:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -38,14 +38,14 @@ accounts:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: "fusebox-staging-accounts-security-policy"
@@ -102,7 +102,7 @@ api:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -112,14 +112,14 @@ api:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: "fusebox-staging-api-security-policy"
@@ -197,7 +197,7 @@ centrifugo:
   enabled: true
 
   # Replicas
-  replicas: 1
+  replicas: 2
 
   # Affinity (zones)
   affinity:
@@ -211,7 +211,7 @@ centrifugo:
     tag: "v5.2.2"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: null
@@ -219,11 +219,11 @@ centrifugo:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
 gateway-api:
   enabled: true
@@ -273,11 +273,11 @@ notifications:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "1000m"
-      memory: "2Gi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # ConfigMap
   configMap:
@@ -361,11 +361,11 @@ smart-wallets:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "250m"
+      memory: "500Mi"
 
   # ConfigMap
   configMap:
@@ -374,7 +374,6 @@ smart-wallets:
     legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
     charge_base_url: "https://api.staging.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
-    
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

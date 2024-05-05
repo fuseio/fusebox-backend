@@ -88,14 +88,14 @@ spec:
             httpGet:
               path: /network/health
               port: 5005
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /network/health
               port: 5005
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           
           # Resources
           resources:

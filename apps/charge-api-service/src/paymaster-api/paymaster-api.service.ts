@@ -183,13 +183,15 @@ export class PaymasterApiService {
       throw new InternalServerErrorException('Error getting gas estimation from paymaster')
     }
 
-    const result = get(response, 'result')
+    const result = get(response, 'result') as Record<string, any>
     this.logger.log(`Gas estimation received: ${JSON.stringify(result)}`)
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 
     return {
       ...result,
+      verificationGasLimit: result.verificationGasLimit,
+      preVerificationGas: result.preVerificationGas,
       callGasLimit
     }
   }

@@ -17,6 +17,16 @@ import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
+interface GasDetails {
+  preVerificationGas: string;
+  verificationGasLimit: string;
+  verificationGas: string;
+  validUntil: string;
+  callGasLimit: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
+}
+
 @Injectable()
 export class PaymasterApiService {
   private readonly logger = new Logger(PaymasterApiService.name)
@@ -60,7 +70,7 @@ export class PaymasterApiService {
 
       op.paymasterAndData = paymasterAndDataForEstimateUserOpGasCall
 
-      const gases = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
+      const gases: GasDetails = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
 
       const actualVerificationGasLimit = Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
@@ -121,7 +131,7 @@ export class PaymasterApiService {
     ])
   }
 
-  async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {
+  async estimateUserOpGas (op, requestEnvironment, entrypointAddress): Promise<GasDetails> {
     const data = {
       jsonrpc: '2.0',
       method: 'eth_estimateUserOperationGas',
@@ -183,15 +193,13 @@ export class PaymasterApiService {
       throw new InternalServerErrorException('Error getting gas estimation from paymaster')
     }
 
-    const result = get(response, 'result') as Record<string, any>
+    const result = get(response, 'result') as GasDetails
     this.logger.log(`Gas estimation received: ${JSON.stringify(result)}`)
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 
     return {
       ...result,
-      verificationGasLimit: result.verificationGasLimit,
-      preVerificationGas: result.preVerificationGas,
       callGasLimit
     }
   }

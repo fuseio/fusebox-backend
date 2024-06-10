@@ -28,7 +28,7 @@ accounts:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -102,7 +102,7 @@ api:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -148,7 +148,7 @@ api:
     - explorer_api_key
 
 apps:
-  enabled: false # [DEPRECATED]
+  enabled: true
 
   # Replicas
   replicas: 1
@@ -168,7 +168,7 @@ apps:
       memory: "1Gi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 10
+  maxRatePerEndpoint: 50
 
   # Security - CloudArmor
   securityPolicy: null
@@ -187,17 +187,17 @@ apps:
     - mongo_uri
     - charge_public_key
     - charge_secret_key
-    - charge_webhook_id
-    - unmarshal_auth_key
-    - charge_payments_ethereum_mnemonic
-    - alchemy_webhook_id
-    - alchemy_auth_key
+    # - charge_webhook_id
+    # - unmarshal_auth_key
+    # - charge_payments_ethereum_mnemonic
+    # - alchemy_webhook_id
+    # - alchemy_auth_key
 
 centrifugo:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:

@@ -15,9 +15,6 @@ global:
   # -- ClusterSecretStore name (should be created before apply)
   clusterSecretStore: "gcp-store"
 
-  # -- DNS domain (used for `HTTPRoute` resource)
-  domain: "example.com"
-
   # Image
   image:
     # -- Repository ID

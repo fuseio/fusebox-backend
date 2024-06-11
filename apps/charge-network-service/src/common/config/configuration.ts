@@ -14,11 +14,11 @@ export default () => ({
     }
   },
   tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,
-  voltBarGraphUrl: 'https://graph-fuse-mainnet.hirenodes.io/subgraphs/name/volt/bar',
-  blockGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-blocks',
-  voltageGraphUrl: 'https://api.thegraph.com/subgraphs/name/voltfinance/voltage-exchange',
-  nftGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/fuse-nft-v2',
-  accountAbstractionGraphUrl: 'https://api.thegraph.com/subgraphs/name/fuseio/account-abstraction',
+  voltBarGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/AH6ViHt7LJJEiBJPBY1u7RQF737CRs4uk6a9uvMcSTZJ',
+  blockGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/4NdGNtBYVAuWriUfcb58vLmiaendp7v8EQ9tGe3i1RPo',
+  voltageGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/4buFyoUT8Lay3T1DK9ctdMdcpkZMdi5EpCBWZCBTKvQd',
+  nftGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/36MBsLQLDobyKmN9NWW5bStUS5GdXjK6mmKytMxcWFbq',
+  accountAbstractionGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/hmmXWtoJqnvYaQKrBjXzPzwiXksVHoGrTZGrDi4FRtL',
   stakingOptions: [
     {
       tokenAddress: '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4',

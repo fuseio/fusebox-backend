@@ -108,14 +108,14 @@ spec:
             httpGet:
               path: /smart-wallets/v1/health
               port: 5007
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /smart-wallets/v1/health
               port: 5007
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           
           # Resources
           resources:

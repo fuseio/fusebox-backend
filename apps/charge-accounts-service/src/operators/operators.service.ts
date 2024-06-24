@@ -21,6 +21,7 @@ import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 
+import axios from 'axios'
 @Injectable()
 export class OperatorsService {
   private readonly logger = new Logger(OperatorsService.name)
@@ -112,7 +113,7 @@ export class OperatorsService {
       await this.createOperatorWallet(user, predictedWallet)
       await this.addAddressToOperatorsWebhook(predictedWallet)
       await this.addAddressToTokenReceiveWebhook(predictedWallet)
-      this.hubspotFormSubmit(createOperatorUserDto)
+      this.googleFormSubmit(createOperatorUserDto)
       this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
       return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
     } catch (error) {
@@ -391,59 +392,29 @@ export class OperatorsService {
     }
   }
 
-  async hubspotFormSubmit (createOperatorUserDto: CreateOperatorUserDto) {
-    const hubspotPortalId = this.configService.getOrThrow('hubspotPortalId')
-    const hubspotOperatorCreationFormId = this.configService.getOrThrow('hubspotOperatorCreationFormId')
-    const hubspotPrivateAppAccessKey = this.configService.getOrThrow('hubspotPrivateAppAccessKey')
-    const url = `https://api.hsforms.com/submissions/v3/integration/secure/submit/${hubspotPortalId}/${hubspotOperatorCreationFormId}`
+  async googleFormSubmit (createOperatorUserDto: CreateOperatorUserDto) {
+    const formActionUrl = this.configService.getOrThrow('googleOperatorFormUrl')
 
-    const data = {
-      submittedAt: Date.now(),
-      fields: [
-        {
-          name: 'email',
-          value: `${createOperatorUserDto.email}`
-        },
-        {
-          name: 'firstname',
-          value: `${createOperatorUserDto.firstName}`
-        },
-        {
-          name: 'lastname',
-          value: `${createOperatorUserDto.lastName}`
-        },
-        {
-          name: 'company_domain',
-          value: `${createOperatorUserDto.name}`
-        }
-      ],
-      context: {
-        pageUri: 'https://console.fuse.io/dashboard',
-        pageName: 'Operator contact details'
-      }
-    }
+    const formData = new URLSearchParams()
+    formData.append('entry.1781500597', createOperatorUserDto.email)
+    formData.append('entry.1823923312', createOperatorUserDto.firstName)
+    formData.append('entry.995318623', createOperatorUserDto.lastName)
+    formData.append('entry.1016494914', createOperatorUserDto.name)
 
     try {
-      const response = await lastValueFrom(
-        this.httpService.post(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${hubspotPrivateAppAccessKey}`
-          }
-        }).pipe(
-          map(response => response.data),
-          catchError(e => {
-            throw new HttpException(
-              `Error sending data to HubSpot: ${e.response?.statusText || 'Unknown Error'}: ${e.response?.data?.error || ''}`,
-              e.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
-            )
-          })
-        )
-      )
+      const response = await axios.post(formActionUrl, formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
 
-      this.logger.log('Submission successful', response)
+      this.logger.log('Submission to Google Form successful')
     } catch (error) {
-      this.logger.error('Submission failed:', error.response ? error.response.data : error.message)
+      this.logger.error('Submission to Google Form failed:', error.response ? error.response.data : error.message)
+      throw new HttpException(
+        `Error sending data to Google Form: ${error.response?.statusText || 'Unknown Error'}: ${error.response?.data?.error || ''}`,
+        error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
+      )
     }
   }
 }

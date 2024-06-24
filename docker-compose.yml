@@ -33,7 +33,7 @@ services:
       - NOTIFICATIONS_TCP_PORT
       - AMPLITUDE_API_KEY
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
-      - GOOGLE_OPERATOR_FOR_URL
+      - GOOGLE_OPERATOR_FORM_URL
 
     depends_on:
       - charge-api-service

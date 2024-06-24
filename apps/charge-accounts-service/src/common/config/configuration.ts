@@ -1,8 +1,6 @@
 export default () => ({
   amplitudeApiKey: process.env.AMPLITUDE_API_KEY,
-  hubspotPortalId: process.env.HUBSPOT_PORTAL_ID,
-  hubspotOperatorCreationFormId: process.env.HUBSPOT_OPERATOR_CREATION_FORM_ID,
-  hubspotPrivateAppAccessKey: process.env.HUBSPOT_PRIVATE_APP_ACCESS_KEY,
+  googleOperatorFormUrl: process.env.GOOGLE_OPERATOR_FORM_URL,
   paymaster: {
     '0_1_0': {
       production: {

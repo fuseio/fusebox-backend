@@ -93,6 +93,4 @@ secret:
   - paymaster_funder_api_secret_key
   - amplitude_api_key
   - incoming_token_transfers_webhook_id
-  - hubspot_portal_id
-  - hubspot_operator_creation_form_id
-  - hubspot_private_app_access_key
+  - google_operator_form_url

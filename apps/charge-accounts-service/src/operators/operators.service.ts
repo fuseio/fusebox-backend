@@ -19,7 +19,6 @@ import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpService } from '@nestjs/axios'
-import { catchError, lastValueFrom, map } from 'rxjs'
 
 import axios from 'axios'
 @Injectable()

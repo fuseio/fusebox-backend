@@ -15,11 +15,11 @@ import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-token
 @Injectable()
 export class AppStoreService {
   constructor (
-        @Inject(appStoreService) private readonly appStoreClient: ClientProxy,
-        @Inject(applicationModelString)
-        private applicationModel: Model<Application>,
-        private usersService: UsersService,
-        private configService: ConfigService
+    @Inject(appStoreService) private readonly appStoreClient: ClientProxy,
+    @Inject(applicationModelString)
+    private applicationModel: Model<Application>,
+    private usersService: UsersService,
+    private configService: ConfigService
   ) { }
 
   get availableApps () {
@@ -86,6 +86,10 @@ export class AppStoreService {
     createPaymentLinkDto.ownerId = ownerId
 
     return callMSFunction(this.appStoreClient, 'create_payment_link', createPaymentLinkDto)
+  }
+
+  async getPaymentLink (paymentLinkId: string) {
+    return callMSFunction(this.appStoreClient, 'get_payment_link', paymentLinkId)
   }
 
   async getPaymentLinks (auth0Id: string) {

@@ -83,8 +83,6 @@ export class AppStoreService {
 
   async createPaymentLink (auth0Id: string, createPaymentLinkDto: CreatePaymentLinkDto) {
     const ownerId = await this.getUserId(auth0Id)
-    console.log(ownerId)
-
     createPaymentLinkDto.ownerId = ownerId
 
     return callMSFunction(this.appStoreClient, 'create_payment_link', createPaymentLinkDto)

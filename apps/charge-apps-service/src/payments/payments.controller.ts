@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { PaymentsService } from '@app/apps-service/payments/payments.service'
 import { MessagePattern } from '@nestjs/microservices'
@@ -30,8 +30,8 @@ export class PaymentsController {
     return this.paymentsService.createPaymentLink(userId, createPaymentLinkDto)
   }
 
-  @Get('payment_link/:paymentLinkId')
-  getPaymentLink (@Param('paymentLinkId') paymentLinkId: string) {
+  @MessagePattern('get_payment_link')
+  getPaymentLink (@Body() paymentLinkId: string) {
     return this.paymentsService.getPaymentLink(paymentLinkId)
   }
 
@@ -42,7 +42,7 @@ export class PaymentsController {
     return this.paymentsService.getPaymentLinks(userId || ownerId)
   }
 
-  @Post('webhook')
+  @MessagePattern('payment_links_webhook')
   webhook (@Body() webhookEvent: WebhookEvent) {
     return this.paymentsService.handleWebhook(webhookEvent)
   }

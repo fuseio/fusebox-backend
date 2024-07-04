@@ -121,8 +121,8 @@ export class ChargeApiService {
     return jobData
   }
 
-  async getWalletBalance (address: string, networkName: string = 'fuse') {
-    const tokensBalanceUrl = `${this.unmarshalBaseUrl}/v1/${networkName}/address/${address}/assets?chainId=122&token=false&auth_key=${this.unmarshalAuthKey}`
+  async getWalletBalance (address: string) {
+    const tokensBalanceUrl = `https://explorer.fuse.io/api/v2/addresses/${address}/token-balances`
 
     const tokensBalance = await this.httpProxyGet(tokensBalanceUrl)
 

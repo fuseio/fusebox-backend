@@ -11,6 +11,7 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ApiKeysDto } from '@app/apps-service/api-keys/dto/api-keys.dto'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
+import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 
 @Injectable()
 export class AppStoreService {
@@ -82,6 +83,7 @@ export class AppStoreService {
 
   async createPaymentLink (auth0Id: string, createPaymentLinkDto: CreatePaymentLinkDto) {
     const ownerId = await this.getUserId(auth0Id)
+    console.log(ownerId)
 
     createPaymentLinkDto.ownerId = ownerId
 
@@ -90,6 +92,10 @@ export class AppStoreService {
 
   async getPaymentLink (paymentLinkId: string) {
     return callMSFunction(this.appStoreClient, 'get_payment_link', paymentLinkId)
+  }
+
+  async paymentLinkWebhook (webhookEvent: WebhookEvent) {
+    return callMSFunction(this.appStoreClient, 'payment_links_webhook', webhookEvent)
   }
 
   async getPaymentLinks (auth0Id: string) {

@@ -42,7 +42,7 @@ export class PaymentsController {
     return this.paymentsService.getPaymentLinks(userId || ownerId)
   }
 
-  @Post('webhook')
+  @MessagePattern('payment_links_webhook')
   webhook (@Body() webhookEvent: WebhookEvent) {
     return this.paymentsService.handleWebhook(webhookEvent)
   }

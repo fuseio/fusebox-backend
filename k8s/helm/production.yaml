@@ -128,7 +128,7 @@ api:
     explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "false"
     bundler_api_prd_url: "https://fuse-bundler.etherspot.io"
-    bundler_api_sandbox_url: "https://fusetestnet-bundler.etherspot.io"
+    bundler_api_sandbox_url: "https://testnet-rpc.etherspot.io/v1/123"
     spark_rpc_url: "https://rpc.fusespark.io"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"

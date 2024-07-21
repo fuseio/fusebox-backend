@@ -1,7 +1,6 @@
 import { HttpService } from '@nestjs/axios'
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { catchError, lastValueFrom, map } from 'rxjs'
-import { isEmpty, keyBy, merge, values } from 'lodash'
 import { ConfigService } from '@nestjs/config'
 import { backendWalletModelString } from '@app/apps-service/charge-api/backend-wallet.constants'
 import { Model } from 'mongoose'

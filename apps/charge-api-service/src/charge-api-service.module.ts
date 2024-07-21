@@ -11,6 +11,7 @@ import { BundlerApiModule } from '@app/api-service/bundler-api/bundler-api.modul
 import { SmartWalletsAPIModule } from '@app/api-service/smart-wallets-api/smart-wallets-api.module'
 import { GraphqlAPIModule } from '@app/api-service/graphql-api/graphql-api.module'
 import { ConsensusApiModule } from '@app/api-service/consensus-api/consensus-api.module'
+import { BalancesAPIModule } from '@app/api-service/balances-api/balances-api.module'
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { ConsensusApiModule } from '@app/api-service/consensus-api/consensus-api
     SmartWalletsAPIModule,
     GraphqlAPIModule,
     PaymasterApiModule,
-    ConsensusApiModule
+    ConsensusApiModule,
+    BalancesAPIModule
   ],
   controllers: [ChargeApiServiceController],
   providers: [ChargeApiServiceService]

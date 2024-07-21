@@ -253,10 +253,15 @@ network:
   # ConfigMap
   configMap:
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    primary_service: "unmarshal"
+    explorer_api_url: "https://explorer.fuse.io/api"
+    unmarshal_base_url: "https://api.unmarshal.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
     - rpc_url
+    - unmarshal_auth_key
+    - explorer_api_key
 
 notifications:
   enabled: true

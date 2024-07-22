@@ -74,23 +74,6 @@ export class AppStoreController {
   }
 
   /***
-    * Get a payment link for the account
-    */
-  @UseGuards(JwtAuthGuard)
-  @Get('payment_link/:paymentLinkId')
-  getPaymentLink (@Param('paymentLinkId') paymentLinkId: string) {
-    return this.appStoreService.getPaymentLink(paymentLinkId)
-  }
-
-  /***
-    * Endpoint for payment link webhook
-    */
-  @Post('payment_link_webhook')
-  paymentLinkWebhook (@Body() webhookEvent: WebhookEvent) {
-    return this.appStoreService.paymentLinkWebhook(webhookEvent)
-  }
-
-  /***
     * Gets all payment links for the account
     */
   @UseGuards(JwtAuthGuard)

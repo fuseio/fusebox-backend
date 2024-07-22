@@ -88,14 +88,6 @@ export class AppStoreService {
     return callMSFunction(this.appStoreClient, 'create_payment_link', createPaymentLinkDto)
   }
 
-  async getPaymentLink (paymentLinkId: string) {
-    return callMSFunction(this.appStoreClient, 'get_payment_link', paymentLinkId)
-  }
-
-  async paymentLinkWebhook (webhookEvent: WebhookEvent) {
-    return callMSFunction(this.appStoreClient, 'payment_links_webhook', webhookEvent)
-  }
-
   async getPaymentLinks (auth0Id: string) {
     const ownerId = await this.getUserId(auth0Id)
 

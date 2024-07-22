@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { catchError, lastValueFrom, map } from 'rxjs'
+import { isEmpty, keyBy, merge, values } from 'lodash'
 import { ConfigService } from '@nestjs/config'
 import { backendWalletModelString } from '@app/apps-service/charge-api/backend-wallet.constants'
 import { Model } from 'mongoose'
@@ -121,73 +122,30 @@ export class ChargeApiService {
   }
 
   async getWalletBalance (address: string) {
-    try {
-      const tokensBalanceUrl = `https://explorer.fuse.io/api/v2/addresses/${address}/token-balances`
-      const nativeBalanceUrl = `https://explorer.fuse.io/api?module=account&action=eth_get_balance&address=${address}`
+    const tokensBalanceUrl = `https://explorer.fuse.io/api/v2/addresses/${address}/token-balances`
 
-      const [tokensBalance, nativeBalanceResponse] = await Promise.all([
-        this.httpProxyGet(tokensBalanceUrl),
-        this.httpProxyGet(nativeBalanceUrl)
-      ])
+    const tokensBalance = await this.httpProxyGet(tokensBalanceUrl)
 
-      const nativeBalanceHex = nativeBalanceResponse.result
-      const nativeBalance = parseInt(nativeBalanceHex, 16).toString()
+    const paymentsAllowedTokens = this.getPaymentsAllowedTokens
 
-      // Process native token balance
-      const extendedTokensBalance = [{
-        tokenSymbol: 'FUSE',
-        tokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-        contract_address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-        contract_decimals: 18,
-        logo_url: 'https://assets.unmarshal.io/tokens/fuse_0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.png',
-        value: nativeBalance,
-        token: {
-          address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-          decimals: 18,
-          exchange_rate: 0 // Placeholder, update with actual rate if available
-        },
-        quote: '0' // Placeholder, update with actual quote if available
-      }]
+    const extendedTokensBalance = values(merge(keyBy(tokensBalance, 'contract_address'), keyBy(paymentsAllowedTokens, 'contract_address')))
 
-      for (const token of tokensBalance) {
-        const tokenData = {
-          tokenSymbol: token.token.symbol,
-          tokenAddress: token.token.address,
-          contract_address: token.token.address,
-          contract_decimals: token.token.decimals,
-          logo_url: token.token.icon_url,
-          value: token.value,
-          token: {
-            address: token.token.address,
-            decimals: token.token.decimals,
-            exchange_rate: 0
-          },
-          quote: '0'
-        }
-
-        if (parseFloat(token.value) > 0) {
-          try {
-            const priceData = await this.getPriceFromTradeApi(token.token.address)
-            tokenData.token.exchange_rate = priceData.data.price || 0
-          } catch (error) {
-            tokenData.token.exchange_rate = 0
-          }
-
-          const formattedBalance = formatUnits(token.value, token.token.decimals)
-          tokenData.quote = (parseFloat(formattedBalance) * tokenData.token.exchange_rate).toString() || '0'
-        }
-
-        extendedTokensBalance.push(tokenData)
+    for (const [index, token] of extendedTokensBalance.entries()) {
+      if (isEmpty(token.balance)) {
+        token.balance = '0'
       }
 
-      return extendedTokensBalance
-    } catch (error) {
-      this.logger.error(`Failed to get wallet balance for address ${address}: ${error.message}`)
-      throw new HttpException(
-        `Failed to get wallet balance: ${error.message}`,
-        HttpStatus.INTERNAL_SERVER_ERROR
-      )
+      if (isEmpty(token.verified)) {
+        const priceData = await this.getPriceFromTradeApi(token.tokenAddress || token.contract_address)
+        token.quote_rate = priceData.data.price
+        const formattedBalance = formatUnits(token.balance, token.contract_decimals)
+        token.quote = (parseFloat(formattedBalance) * parseFloat(token.quote_rate)).toString()
+
+        extendedTokensBalance[index] = token
+      }
     }
+
+    return extendedTokensBalance
   }
 
   async getBackendWalletByAddress (address: string) {

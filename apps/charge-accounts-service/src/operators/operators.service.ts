@@ -19,9 +19,8 @@ import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpService } from '@nestjs/axios'
-import { catchError, lastValueFrom, map } from 'rxjs'
-
 import axios from 'axios'
+
 @Injectable()
 export class OperatorsService {
   private readonly logger = new Logger(OperatorsService.name)
@@ -402,7 +401,7 @@ export class OperatorsService {
     formData.append('entry.1016494914', createOperatorUserDto.name)
 
     try {
-      const response = await axios.post(formActionUrl, formData, {
+      await axios.post(formActionUrl, formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }

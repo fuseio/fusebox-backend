@@ -73,7 +73,6 @@ accounts:
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
 
-
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.
 
@@ -128,7 +127,7 @@ api:
     explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "true"
     bundler_api_prd_url: "https://fuse-bundler.etherspot.io"
-    bundler_api_sandbox_url: "https://fusetestnet-bundler.etherspot.io"
+    bundler_api_sandbox_url: "https://testnet-rpc.etherspot.io/v1/123"
     spark_rpc_url: "https://rpc.fusespark.io"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
@@ -147,7 +146,7 @@ api:
     - explorer_api_key
 
 apps:
-  enabled: true
+  enabled: false
 
   # Replicas
   replicas: 1
@@ -186,6 +185,7 @@ apps:
     - mongo_uri
     - charge_public_key
     - charge_secret_key
+    - charge_payment_links_webhook_id
     # - charge_webhook_id
     # - unmarshal_auth_key
     # - charge_payments_ethereum_mnemonic
@@ -253,10 +253,15 @@ network:
   # ConfigMap
   configMap:
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    primary_service: "unmarshal"
+    explorer_api_url: "https://explorer.fuse.io/api"
+    unmarshal_base_url: "https://api.unmarshal.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
     - rpc_url
+    - unmarshal_auth_key
+    - explorer_api_key
 
 notifications:
   enabled: true

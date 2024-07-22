@@ -5,6 +5,7 @@ import { User } from '@app/accounts-service/users/user.decorator'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 import { ApiTags } from '@nestjs/swagger'
+import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 
 @ApiTags('App Store')
 @Controller('app-store')
@@ -70,6 +71,23 @@ export class AppStoreController {
   @Post('payment_link')
   createPaymentLink (@Body() createPaymentLinkDto: CreatePaymentLinkDto, @User('sub') auth0Id: string) {
     return this.appStoreService.createPaymentLink(auth0Id, createPaymentLinkDto)
+  }
+
+  /***
+    * Get a payment link for the account
+    */
+  @UseGuards(JwtAuthGuard)
+  @Get('payment_link/:paymentLinkId')
+  getPaymentLink (@Param('paymentLinkId') paymentLinkId: string) {
+    return this.appStoreService.getPaymentLink(paymentLinkId)
+  }
+
+  /***
+    * Endpoint for payment link webhook
+    */
+  @Post('payment_link_webhook')
+  paymentLinkWebhook (@Body() webhookEvent: WebhookEvent) {
+    return this.appStoreService.paymentLinkWebhook(webhookEvent)
   }
 
   /***

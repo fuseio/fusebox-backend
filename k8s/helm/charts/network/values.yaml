@@ -54,7 +54,15 @@ autoscaling:
 configMap:
   # -- Legacy - Fuse trade API URL
   legacy_fuse_trade_api_url: ""
+  # -- BlockScout API URL
+  explorer_api_url: ""
+  # -- Unmarshal - Base URL
+  unmarshal_base_url: ""
+  # -- Primary Service
+  primary_service: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
   - rpc_url
+  - unmarshal_auth_key
+  - explorer_api_key

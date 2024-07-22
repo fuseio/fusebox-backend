@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  title: Balances API
+  description: |
+    The Balances API provides endpoints to query wallet balances for NFTs and ERC20 tokens.
+  version: 1.0.0
+
+tags:
+  - name: Balances
+    description: Balances API endpoints
+
+servers:
+  - url: https://api.fuse.io/api/v0/balances
+    description: Production server
+  - url: https://api.staging.fuse.io/api/v0/balances
+    description: Staging server
+
+paths:
+  /nft-assets/{address}:
+    get:
+      tags:
+        - Balances
+      summary: Get Non Fungible NFT Token Balances
+      parameters:
+        - $ref: "#/components/parameters/ApiKey"
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The wallet address to query for associated NFTs.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NftBalancesResponse'
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+
+  /assets/{address}:
+    get:
+      tags:
+        - Balances
+      summary: Get Fungible ERC20 Token Balances
+      parameters:
+        - $ref: "#/components/parameters/ApiKey"
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The wallet address to query for ERC20 tokens.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetBalancesResponse'
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+
+components:
+  parameters:
+    ApiKey:
+      name: apiKey
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your API key to authenticate requests.
+
+  schemas:
+    NftBalancesResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            account:
+              type: object
+              properties:
+                address:
+                  type: string
+                collectibles:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/NftCollectible'
+    NftCollectible:
+      type: object
+      properties:
+        collection:
+          type: object
+          properties:
+            collectionAddress:
+              type: string
+            collectionName:
+              type: string
+            collectionSymbol:
+              type: string
+        created:
+          type: string
+        creator:
+          type: object
+          properties:
+            id:
+              type: string
+        description:
+          type: string
+        descriptorUri:
+          type: string
+        id:
+          type: string
+        imageURL:
+          type: string
+        name:
+          type: string
+        owner:
+          type: object
+          properties:
+            id:
+              type: string
+        tokenId:
+          type: string
+    AssetBalancesResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/FungibleToken'
+        status:
+          type: string
+    FungibleToken:
+      type: object
+      properties:
+        balance:
+          type: string
+        contractAddress:
+          type: string
+        decimals:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        type:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        errorMessage:
+          type: object
+          properties:
+            message:
+              type: string
+            error:
+              type: string
+            statusCode:
+              type: integer
+        path:
+          type: string
+
+  responses:
+    ForbiddenError:
+      description: Access to the resource is forbidden.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              statusCode:
+                type: integer
+              errorMessage:
+                type: string
+              error:
+                type: string

@@ -73,7 +73,6 @@ accounts:
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
 
-
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.
 
@@ -147,7 +146,7 @@ api:
     - explorer_api_key
 
 apps:
-  enabled: true
+  enabled: false
 
   # Replicas
   replicas: 1

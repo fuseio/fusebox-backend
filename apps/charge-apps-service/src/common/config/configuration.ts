@@ -1,8 +1,6 @@
 export default () => ({
   CHARGE_BASE_URL: process.env.CHARGE_BASE_URL,
   CHARGE_PUBLIC_KEY: process.env.CHARGE_PUBLIC_KEY,
-  CHARGE_SECRET_KEY: process.env.CHARGE_SECRET_KEY,
-  CHARGE_PAYMENT_LINKS_WEBHOOK_ID: process.env.CHARGE_PAYMENT_LINKS_WEBHOOK_ID,
   paymentsAllowedTokens: [
     {
       tokenSymbol: 'USDC',

@@ -5,7 +5,6 @@ import { User } from '@app/accounts-service/users/user.decorator'
 import { CreatePaymentLinkDto } from '@app/apps-service/payments/dto/create-payment-link.dto'
 import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-tokens.dto'
 import { ApiTags } from '@nestjs/swagger'
-import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 
 @ApiTags('App Store')
 @Controller('app-store')

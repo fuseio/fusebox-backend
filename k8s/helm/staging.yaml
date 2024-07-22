@@ -146,7 +146,7 @@ api:
     - explorer_api_key
 
 apps:
-  enabled: false
+  enabled: false # [DEPRECATED]
 
   # Replicas
   replicas: 1
@@ -166,7 +166,7 @@ apps:
       memory: "1Gi"
 
   # Service - RPS per Pod
-  maxRatePerEndpoint: 50
+  maxRatePerEndpoint: 10
 
   # Security - CloudArmor
   securityPolicy: null
@@ -185,12 +185,11 @@ apps:
     - mongo_uri
     - charge_public_key
     - charge_secret_key
-    - charge_payment_links_webhook_id
-    # - charge_webhook_id
-    # - unmarshal_auth_key
-    # - charge_payments_ethereum_mnemonic
-    # - alchemy_webhook_id
-    # - alchemy_auth_key
+    - charge_webhook_id
+    - unmarshal_auth_key
+    - charge_payments_ethereum_mnemonic
+    - alchemy_webhook_id
+    - alchemy_auth_key
 
 centrifugo:
   enabled: true

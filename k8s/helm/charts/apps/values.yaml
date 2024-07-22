@@ -15,6 +15,9 @@ global:
   # -- ClusterSecretStore name (should be created before apply)
   clusterSecretStore: "gcp-store"
 
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
+
   # Image
   image:
     # -- Repository ID
@@ -48,6 +51,12 @@ autoscaling:
     # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
     max_replicas: 5
 
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
 # -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
 logging:
   enabled: true
@@ -78,4 +87,3 @@ secret:
   - charge_payments_ethereum_mnemonic
   - alchemy_webhook_id
   - alchemy_auth_key
-  - charge_payment_links_webhook_id

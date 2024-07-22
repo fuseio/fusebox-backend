@@ -18,9 +18,6 @@ spec:
         - path:
             value: /accounts/v1
             type: PathPrefix
-        - path:
-            value: /app-store/v1
-            type: PathPrefix
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:

@@ -33,7 +33,7 @@ export class PaymentsService {
   }
 
   get chargePaymentLinksWebhookId () {
-    return this.configService.get('CHARGE_PAYMENT_LINKS_WEBHOOK_ID')
+    return this.configService.get('CHARGE_WEBHOOK_ID')
   }
 
   get allowedTokenAddresses () {

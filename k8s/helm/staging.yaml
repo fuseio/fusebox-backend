@@ -185,11 +185,12 @@ apps:
     - mongo_uri
     - charge_public_key
     - charge_secret_key
-    - charge_webhook_id
-    - unmarshal_auth_key
-    - charge_payments_ethereum_mnemonic
-    - alchemy_webhook_id
-    - alchemy_auth_key
+    - charge_payment_links_webhook_id
+    # - charge_webhook_id
+    # - unmarshal_auth_key
+    # - charge_payments_ethereum_mnemonic
+    # - alchemy_webhook_id
+    # - alchemy_auth_key
 
 centrifugo:
   enabled: true

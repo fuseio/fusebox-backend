@@ -21,50 +21,50 @@ import { StakingOption, StakingProvider } from '@app/network-service/staking/int
 export default class FuseLiquidStakingService implements StakingProvider {
   private readonly logger = new Logger(FuseLiquidStakingService.name)
 
-  constructor(
+  constructor (
     @InjectEthersProvider('regular-node')
     private readonly provider: JsonRpcProvider,
     private readonly configService: ConfigService,
     private readonly tradeService: TradeService
   ) { }
 
-  get address() {
+  get address () {
     return this.configService.get('fuseLiquidStakingAddress')
   }
 
-  get sfTokenAddress() {
+  get sfTokenAddress () {
     return this.configService.get('sfTokenAddress')
   }
 
-  get consensusAddress() {
+  get consensusAddress () {
     return this.configService.get('consensusAddress')
   }
 
-  get blockRewardAddress() {
+  get blockRewardAddress () {
     return this.configService.get('blockRewardAddress')
   }
 
-  get wfuseAddress() {
+  get wfuseAddress () {
     return this.configService.get('wfuseAddress')
   }
 
-  get validatorFee() {
+  get validatorFee () {
     return this.configService.get('validatorFee')
   }
 
-  get liquidStakingInterface() {
+  get liquidStakingInterface () {
     return new Interface(LiquidStakingABI)
   }
 
-  stake() {
+  stake () {
     return this.liquidStakingInterface.encodeFunctionData('deposit', [])
   }
 
-  unStake({ tokenAmount }: UnstakeDto) {
+  unStake ({ tokenAmount }: UnstakeDto) {
     return this.liquidStakingInterface.encodeFunctionData('withdraw', [parseEther(tokenAmount)])
   }
 
-  async stakedToken(
+  async stakedToken (
     accountAddress: string,
     {
       tokenAddress,
@@ -99,7 +99,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     }
   }
 
-  async stakingApr() {
+  async stakingApr () {
     try {
       const consensusContract = new Contract(this.consensusAddress, ConsensusABI, this.provider)
       const blockRewardContract = new Contract(this.blockRewardAddress, BlockRewardABI, this.provider)
@@ -116,7 +116,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     }
   }
 
-  async tvl() {
+  async tvl () {
     try {
       const liquidStakingContract = new Contract(this.address, LiquidStakingABI, this.provider)
       const totalStaked = await liquidStakingContract.systemTotalStaked()

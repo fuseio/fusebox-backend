@@ -24,7 +24,7 @@ import { getUnixTime } from 'date-fns'
 export default class VoltBarService implements StakingProvider {
   private readonly logger = new Logger(VoltBarService.name)
 
-  constructor(
+  constructor (
     @InjectEthersProvider('regular-node')
     private readonly provider: JsonRpcProvider,
     private readonly graphService: GraphService,
@@ -32,39 +32,39 @@ export default class VoltBarService implements StakingProvider {
     private readonly tradeService: TradeService
   ) { }
 
-  get address() {
+  get address () {
     return this.configService.get('voltBarAddress')
   }
 
-  get stakingProviderId() {
+  get stakingProviderId () {
     return voltBarId
   }
 
-  get voltBarGraphClient() {
+  get voltBarGraphClient () {
     return this.graphService.getVoltBarClient()
   }
 
-  get voltageClient() {
+  get voltageClient () {
     return this.graphService.getVoltageClient()
   }
 
-  get blockClient() {
+  get blockClient () {
     return this.graphService.getBlockClient()
   }
 
-  get voltBarInterface() {
+  get voltBarInterface () {
     return new Interface(VoltBarABI)
   }
 
-  stake({ tokenAmount }: StakeDto) {
+  stake ({ tokenAmount }: StakeDto) {
     return this.voltBarInterface.encodeFunctionData('enter', [parseEther(tokenAmount)])
   }
 
-  unStake({ tokenAmount }: UnstakeDto) {
+  unStake ({ tokenAmount }: UnstakeDto) {
     return this.voltBarInterface.encodeFunctionData('leave', [parseEther(tokenAmount)])
   }
 
-  async stakedToken(
+  async stakedToken (
     accountAddress: string,
     {
       tokenAddress,
@@ -101,7 +101,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async stakingApr() {
+  async stakingApr () {
     const days = 31
     const latestTimestamp = getUnixTime(new Date())
     const startTimestamp = (latestTimestamp / secondsInDay) - days
@@ -130,7 +130,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async tvl({ tokenAddress }: StakingOption) {
+  async tvl ({ tokenAddress }: StakingOption) {
     try {
       const voltTokenContract = new Contract(tokenAddress, Erc20ABI, this.provider)
       const voltBalance = await voltTokenContract.balanceOf(this.address)
@@ -142,7 +142,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  private async getStakingData(accountAddress: string) {
+  private async getStakingData (accountAddress: string) {
     try {
       const data = await this.voltBarGraphClient.request(getBarUser, {
         barId: this.address.toLowerCase(),

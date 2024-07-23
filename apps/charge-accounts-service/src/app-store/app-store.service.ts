@@ -15,11 +15,11 @@ import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-token
 @Injectable()
 export class AppStoreService {
   constructor (
-        @Inject(appStoreService) private readonly appStoreClient: ClientProxy,
-        @Inject(applicationModelString)
-        private applicationModel: Model<Application>,
-        private usersService: UsersService,
-        private configService: ConfigService
+    @Inject(appStoreService) private readonly appStoreClient: ClientProxy,
+    @Inject(applicationModelString)
+    private applicationModel: Model<Application>,
+    private usersService: UsersService,
+    private configService: ConfigService
   ) { }
 
   get availableApps () {

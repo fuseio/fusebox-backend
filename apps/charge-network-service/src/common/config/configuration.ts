@@ -19,6 +19,15 @@ export default () => ({
   voltageGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/4buFyoUT8Lay3T1DK9ctdMdcpkZMdi5EpCBWZCBTKvQd',
   nftGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/36MBsLQLDobyKmN9NWW5bStUS5GdXjK6mmKytMxcWFbq',
   accountAbstractionGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/hmmXWtoJqnvYaQKrBjXzPzwiXksVHoGrTZGrDi4FRtL',
+  unmarshal: {
+    baseUrl: process.env.UNMARSHAL_BASE_URL || 'https://api.unmarshal.com',
+    apiKey: process.env.UNMARSHAL_AUTH_KEY
+  },
+  explorer: {
+    baseUrl: process.env.EXPLORER_API_URL || 'https://explorer.fuse.io/api',
+    apiKey: process.env.EXPLORER_API_KEY
+  },
+  primaryService: process.env.PRIMARY_SERVICE || 'unmarshal',
   stakingOptions: [
     {
       tokenAddress: '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4',

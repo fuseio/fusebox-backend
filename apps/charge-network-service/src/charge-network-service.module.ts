@@ -4,13 +4,15 @@ import { StakingModule } from '@app/network-service/staking/staking.module'
 import { HttpModule } from '@nestjs/axios'
 import { GraphqlModule } from '@app/network-service/graphql/graphql.module'
 import { ConsensusModule } from '@app/network-service/consensus/consensus.module'
+import { BalancesModule } from './balances/balances.module'
 
 @Module({
   imports: [
     StakingModule,
     HttpModule,
     GraphqlModule,
-    ConsensusModule
+    ConsensusModule,
+    BalancesModule
   ],
   controllers: [ChargeNetworkServiceController]
 })

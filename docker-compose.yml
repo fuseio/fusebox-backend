@@ -133,6 +133,11 @@ services:
       - NETWORK_PORT
       - NETWORK_TCP_PORT
       - LEGACY_FUSE_TRADE_API_URL
+      - EXPLORER_API_URL
+      - EXPLORER_API_KEY
+      - UNMARSHAL_BASE_URL
+      - UNMARSHAL_AUTH_KEY
+      - PRIMARY_SERVICE
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -157,6 +162,7 @@ services:
       - CHARGE_PUBLIC_KEY
       - CHARGE_SECRET_KEY
       - CHARGE_WEBHOOK_ID
+      - CHARGE_PAYMENT_LINKS_WEBHOOK_ID
       - JOB_SLEEP_MS
       - UNMARSHAL_BASE_URL
       - UNMARSHAL_AUTH_KEY

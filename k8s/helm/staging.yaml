@@ -28,7 +28,7 @@ accounts:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -73,7 +73,6 @@ accounts:
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
 
-
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.
 
@@ -101,7 +100,7 @@ api:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -186,17 +185,18 @@ apps:
     - mongo_uri
     - charge_public_key
     - charge_secret_key
-    - charge_webhook_id
-    - unmarshal_auth_key
-    - charge_payments_ethereum_mnemonic
-    - alchemy_webhook_id
-    - alchemy_auth_key
+    - charge_payment_links_webhook_id
+    # - charge_webhook_id
+    # - unmarshal_auth_key
+    # - charge_payments_ethereum_mnemonic
+    # - alchemy_webhook_id
+    # - alchemy_auth_key
 
 centrifugo:
   enabled: true
 
   # Replicas
-  replicas: 2
+  replicas: 1
 
   # Affinity (zones)
   affinity:
@@ -253,10 +253,15 @@ network:
   # ConfigMap
   configMap:
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    primary_service: "unmarshal"
+    explorer_api_url: "https://explorer.fuse.io/api"
+    unmarshal_base_url: "https://api.unmarshal.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
     - rpc_url
+    - unmarshal_auth_key
+    - explorer_api_key
 
 notifications:
   enabled: true
@@ -272,11 +277,11 @@ notifications:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "1Gi"
+      cpu: "1000m"
+      memory: "2Gi"
 
   # ConfigMap
   configMap:
@@ -360,11 +365,11 @@ smart-wallets:
   # Resources (requests & limits)
   resources:
     requests:
-      cpu: "250m"
-      memory: "500Mi"
+      cpu: "500m"
+      memory: "1Gi"
     limits:
-      cpu: "250m"
-      memory: "500Mi"
+      cpu: "500m"
+      memory: "1Gi"
 
   # ConfigMap
   configMap:

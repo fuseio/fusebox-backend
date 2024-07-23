@@ -77,3 +77,4 @@ secret:
   - charge_public_key
   - charge_secret_key
   - incoming_token_transfers_webhook_id
+  - coin_gecko_api_key

@@ -262,6 +262,7 @@ network:
     - rpc_url
     - unmarshal_auth_key
     - explorer_api_key
+    - coin_gecko_api_key
 
 notifications:
   enabled: true
@@ -390,3 +391,4 @@ smart-wallets:
     - charge_public_key
     - charge_secret_key
     - incoming_token_transfers_webhook_id
+    - coin_gecko_api_key

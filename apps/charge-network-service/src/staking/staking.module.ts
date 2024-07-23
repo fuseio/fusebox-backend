@@ -6,14 +6,15 @@ import configuration from 'apps/charge-network-service/src/common/config/configu
 import { EthersModule } from 'nestjs-ethers'
 import VoltBarService from '@app/network-service/staking/staking-providers/volt-bar.service'
 import GraphService from '@app/network-service/staking/graph.service'
-import TradeService from '@app/common/services/trade.service'
 import { HttpModule } from '@nestjs/axios'
 import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
+import { TokenModule } from '@app/common/token/token.module'
 
 @Module({
   imports: [
     ConfigModule.forFeature(configuration),
     HttpModule,
+    TokenModule,
     EthersModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -35,9 +36,8 @@ import FuseLiquidStakingService from '@app/network-service/staking/staking-provi
     StakingService,
     VoltBarService,
     FuseLiquidStakingService,
-    GraphService,
-    TradeService
+    GraphService
   ],
   exports: [StakingService]
 })
-export class StakingModule {}
+export class StakingModule { }

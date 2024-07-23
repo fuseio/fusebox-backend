@@ -20,13 +20,13 @@ import { formatUnits } from 'nestjs-ethers'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import TradeService from '@app/common/services/trade.service'
+import TradeService from '@app/common/token/trade.service'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 @Injectable()
 export class DataLayerService {
   private readonly logger = new Logger(DataLayerService.name)
 
-  constructor (
+  constructor(
     @Inject(userOpString)
     private userOpModel: Model<UserOp>,
     @Inject(walletActionString)
@@ -40,7 +40,7 @@ export class DataLayerService {
     private tradeService: TradeService
   ) { }
 
-  async recordUserOp (baseUserOp: BaseUserOp) {
+  async recordUserOp(baseUserOp: BaseUserOp) {
     try {
       if (baseUserOp.paymasterAndData !== '0x') {
         const paymasterAddressAndSponsorId = decodePaymasterAndData(baseUserOp.paymasterAndData)
@@ -69,7 +69,7 @@ export class DataLayerService {
     }
   }
 
-  async updateUserOp (body: UserOp) {
+  async updateUserOp(body: UserOp) {
     try {
       const existingUserOp = await this.userOpModel.findOne({ userOpHash: body.userOpHash })
       if (isNil(existingUserOp)) {
@@ -101,7 +101,7 @@ export class DataLayerService {
     }
   }
 
-  async createWalletActionFromUserOp (parsedUserOp: UserOp) {
+  async createWalletActionFromUserOp(parsedUserOp: UserOp) {
     try {
       const walletAction = await parsedUserOpToWalletAction(parsedUserOp, this.tokenService)
       await this.paginatedWalletActionModel.create(walletAction)
@@ -111,7 +111,7 @@ export class DataLayerService {
     }
   }
 
-  async updateWalletAction (userOp: any) {
+  async updateWalletAction(userOp: any) {
     try {
       const walletAction = confirmedUserOpToWalletAction(userOp)
       const updatedWalletAction = await this.paginatedWalletActionModel.findOneAndUpdate({ userOpHash: walletAction.userOpHash }, walletAction, { new: true }).lean() as WalletActionInterface
@@ -124,7 +124,7 @@ export class DataLayerService {
     }
   }
 
-  async handleTokenTransferWebhook (
+  async handleTokenTransferWebhook(
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     try {
@@ -184,7 +184,7 @@ export class DataLayerService {
     }
   }
 
-  async getPaginatedWalletActions (pageNumber: number, walletAddress, limit, tokenAddress) {
+  async getPaginatedWalletActions(pageNumber: number, walletAddress, limit, tokenAddress) {
     let query
     if (tokenAddress) {
       const searchObject = {
@@ -226,11 +226,11 @@ export class DataLayerService {
     }
   }
 
-  async findSponsoredTransactionsCount (sponsorId: string): Promise<number> {
+  async findSponsoredTransactionsCount(sponsorId: string): Promise<number> {
     return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
   }
 
-  async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {
+  async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent(body) {
     try {
       const user = await this.getOperatorByApiKey(body.userOp.apiKey)
       if (!get(user, 'auth0Id')) {
@@ -240,7 +240,7 @@ export class DataLayerService {
         const [sent] = get(body, 'walletAction.sent', [])
         if (has(sent, 'address') && has(sent, 'value') && has(sent, 'decimals')) {
           const { address, value, decimals } = sent
-          const tokenPriceInUsd = await this.tradeService.getTokenPrice(address)
+          const tokenPriceInUsd = await this.tradeService.getTokenPriceByAddress(address)
           const amount = formatUnits(value, decimals)
           const amountUsd = Number(tokenPriceInUsd) * Number(amount)
           const event = {
@@ -262,7 +262,7 @@ export class DataLayerService {
     }
   }
 
-  async getOperatorByApiKey (apiKey) {
+  async getOperatorByApiKey(apiKey) {
     try {
       const projectId = await callMSFunction(this.apiClient, 'get_project_id_by_public_key', apiKey)
       const project = await callMSFunction(this.accountsClient, 'find-one-project', projectId)

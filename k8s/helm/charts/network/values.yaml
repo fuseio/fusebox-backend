@@ -69,3 +69,4 @@ secret:
   - rpc_url
   - unmarshal_auth_key
   - explorer_api_key
+  - coin_gecko_api_key

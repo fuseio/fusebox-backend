@@ -138,6 +138,7 @@ services:
       - UNMARSHAL_BASE_URL
       - UNMARSHAL_AUTH_KEY
       - PRIMARY_SERVICE
+      - COIN_GECKO_API_KEY
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -211,6 +212,7 @@ services:
       - ACCOUNTS_HOST
       - ACCOUNTS_TCP_PORT
       - LEGACY_FUSE_TRADE_API_URL
+      - COIN_GECKO_API_KEY
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

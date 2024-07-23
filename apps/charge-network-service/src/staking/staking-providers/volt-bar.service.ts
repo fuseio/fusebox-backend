@@ -15,7 +15,7 @@ import {
 import GraphService from '@app/network-service/staking/graph.service'
 import { ConfigService } from '@nestjs/config'
 import { daysInYear, voltBarId } from '@app/network-service/common/constants'
-import TradeService from '@app/common/services/trade.service'
+import TradeService from '@app/common/token/trade.service'
 import { getBarStats, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
 import { secondsInDay } from 'date-fns/constants'
 import { getUnixTime } from 'date-fns'
@@ -24,7 +24,7 @@ import { getUnixTime } from 'date-fns'
 export default class VoltBarService implements StakingProvider {
   private readonly logger = new Logger(VoltBarService.name)
 
-  constructor (
+  constructor(
     @InjectEthersProvider('regular-node')
     private readonly provider: JsonRpcProvider,
     private readonly graphService: GraphService,
@@ -32,39 +32,39 @@ export default class VoltBarService implements StakingProvider {
     private readonly tradeService: TradeService
   ) { }
 
-  get address () {
+  get address() {
     return this.configService.get('voltBarAddress')
   }
 
-  get stakingProviderId () {
+  get stakingProviderId() {
     return voltBarId
   }
 
-  get voltBarGraphClient () {
+  get voltBarGraphClient() {
     return this.graphService.getVoltBarClient()
   }
 
-  get voltageClient () {
+  get voltageClient() {
     return this.graphService.getVoltageClient()
   }
 
-  get blockClient () {
+  get blockClient() {
     return this.graphService.getBlockClient()
   }
 
-  get voltBarInterface () {
+  get voltBarInterface() {
     return new Interface(VoltBarABI)
   }
 
-  stake ({ tokenAmount }: StakeDto) {
+  stake({ tokenAmount }: StakeDto) {
     return this.voltBarInterface.encodeFunctionData('enter', [parseEther(tokenAmount)])
   }
 
-  unStake ({ tokenAmount }: UnstakeDto) {
+  unStake({ tokenAmount }: UnstakeDto) {
     return this.voltBarInterface.encodeFunctionData('leave', [parseEther(tokenAmount)])
   }
 
-  async stakedToken (
+  async stakedToken(
     accountAddress: string,
     {
       tokenAddress,
@@ -76,7 +76,7 @@ export default class VoltBarService implements StakingProvider {
     try {
       const stakingData: any = await this.getStakingData(accountAddress)
 
-      const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+      const voltPrice = await this.tradeService.getTokenPriceByAddress(tokenAddress)
 
       const stakedAmount = Number(stakingData?.user?.xVolt ?? 0) * Number(stakingData?.bar?.ratio ?? 0)
       const stakedAmountUSD = stakedAmount * voltPrice
@@ -101,7 +101,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async stakingApr () {
+  async stakingApr() {
     const days = 31
     const latestTimestamp = getUnixTime(new Date())
     const startTimestamp = (latestTimestamp / secondsInDay) - days
@@ -130,11 +130,11 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  async tvl ({ tokenAddress }: StakingOption) {
+  async tvl({ tokenAddress }: StakingOption) {
     try {
       const voltTokenContract = new Contract(tokenAddress, Erc20ABI, this.provider)
       const voltBalance = await voltTokenContract.balanceOf(this.address)
-      const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+      const voltPrice = await this.tradeService.getTokenPriceByAddress(tokenAddress)
       return Number(formatEther(voltBalance)) * voltPrice
     } catch (error) {
       this.logger.error(`tvl error: ${error}`)
@@ -142,7 +142,7 @@ export default class VoltBarService implements StakingProvider {
     }
   }
 
-  private async getStakingData (accountAddress: string) {
+  private async getStakingData(accountAddress: string) {
     try {
       const data = await this.voltBarGraphClient.request(getBarUser, {
         barId: this.address.toLowerCase(),

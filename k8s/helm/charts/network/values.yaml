@@ -63,6 +63,8 @@ configMap:
   unmarshal_base_url: ""
   # -- Primary Service
   primary_service: ""
+  # -- CoinGecko URL
+  coin_gecko_url: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:

@@ -8,24 +8,27 @@ import { Cache } from 'cache-manager'
 
 @Injectable()
 export default class TradeService {
-  constructor (
+  constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
 
-  private readonly API_URL = 'https://pro-api.coingecko.com/api/v3'
+  private get apiUrl(): string {
+    return this.configService.getOrThrow<string>('coinGeckoApiUrl')
+  }
 
-  async getTokenPriceByAddress (tokenAddress: string): Promise<number> {
+  private get apiKey(): string {
+    return this.configService.getOrThrow<string>('coinGeckoApiKey')
+  }
+
+  async getTokenPriceByAddress(tokenAddress: string): Promise<number> {
     const cacheKey = `token_price_${tokenAddress.toLowerCase()}`
     const cachedPrice = await this.cacheManager.get<number>(cacheKey)
 
-    if (cachedPrice !== undefined) {
+    if (cachedPrice) {
       return cachedPrice
     }
-
-    const apiKey = this.configService.get<string>('coinGeckoApiKey')
-    if (!apiKey) throw new Error('CoinGecko API key is not configured')
 
     const address = tokenAddress.toLowerCase()
     const isNativeFuse = address === NATIVE_FUSE_TOKEN.address.toLowerCase()
@@ -34,10 +37,10 @@ export default class TradeService {
     let params: Record<string, string>
 
     if (isNativeFuse) {
-      url = `${this.API_URL}/simple/price`
+      url = `${this.apiUrl}/simple/price`
       params = { ids: 'fuse-network-token', vs_currencies: 'usd' }
     } else {
-      url = `${this.API_URL}/simple/token_price/fuse`
+      url = `${this.apiUrl}/simple/token_price/fuse`
       params = { contract_addresses: address, vs_currencies: 'usd' }
     }
 
@@ -48,7 +51,7 @@ export default class TradeService {
           params,
           headers: {
             accept: 'application/json',
-            'x-cg-pro-api-key': apiKey
+            'x-cg-pro-api-key': this.apiKey
           }
         }
       ))
@@ -56,7 +59,7 @@ export default class TradeService {
       const key = isNativeFuse ? 'fuse-network-token' : address
       const price = data[key]?.usd ?? 0
 
-      await this.cacheManager.set(cacheKey, price, 300000) // Cache for 5 minutes (300000 ms)
+      await this.cacheManager.set(cacheKey, price)
 
       return price
     } catch (error) {

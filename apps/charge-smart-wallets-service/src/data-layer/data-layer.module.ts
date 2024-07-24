@@ -70,7 +70,8 @@ import { TokenModule } from '@app/common/token/token.module'
     TokenService,
     SmartWalletsAAEventsService,
     CentrifugeClientProvider,
-    AnalyticsService]
+    AnalyticsService
+  ]
 })
 
 export class DataLayerModule { }

@@ -1,5 +1,6 @@
 export default () => ({
   coinGeckoApiKey: process.env.COIN_GECKO_API_KEY,
+  coinGeckoUrl: process.env.COIN_GECKO_URL,
   voltBarAddress: '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1',
   fuseLiquidStakingAddress: '0xa3dc222eC847Aac61FB6910496295bF344Ea46be',
   wfuseAddress: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629',

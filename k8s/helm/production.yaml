@@ -256,6 +256,7 @@ network:
     primary_service: "unmarshal"
     explorer_api_url: "https://explorer.fuse.io/api"
     unmarshal_base_url: "https://api.unmarshal.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -382,6 +383,7 @@ smart-wallets:
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     charge_base_url: "https://api.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

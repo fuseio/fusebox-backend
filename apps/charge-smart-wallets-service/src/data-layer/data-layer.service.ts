@@ -20,7 +20,7 @@ import { formatUnits } from 'nestjs-ethers'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import TradeService from '@app/common/services/trade.service'
+import TradeService from '@app/common/token/trade.service'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
 @Injectable()
 export class DataLayerService {
@@ -240,7 +240,7 @@ export class DataLayerService {
         const [sent] = get(body, 'walletAction.sent', [])
         if (has(sent, 'address') && has(sent, 'value') && has(sent, 'decimals')) {
           const { address, value, decimals } = sent
-          const tokenPriceInUsd = await this.tradeService.getTokenPrice(address)
+          const tokenPriceInUsd = await this.tradeService.getTokenPriceByAddress(address)
           const amount = formatUnits(value, decimals)
           const amountUsd = Number(tokenPriceInUsd) * Number(amount)
           const event = {

@@ -22,7 +22,7 @@ import { AnalyticsService } from '@app/common/services/analytics.service'
 import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { accountsService } from '@app/common/constants/microservices.constants'
-import TradeService from '@app/common/services/trade.service'
+import { TokenModule } from '@app/common/token/token.module'
 
 @Module({
   imports: [
@@ -31,6 +31,7 @@ import TradeService from '@app/common/services/trade.service'
     NotificationsModule,
     UsersModule,
     ProjectsModule,
+    TokenModule,
     OperatorsModule,
     ClientsModule.register([
       {
@@ -75,7 +76,6 @@ import TradeService from '@app/common/services/trade.service'
     AnalyticsService,
     SmartWalletsLegacyService,
     SmartWalletsAAService,
-    TradeService,
     ...smartWalletsProviders
   ],
   controllers: [SmartWalletsController]

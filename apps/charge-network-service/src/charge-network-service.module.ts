@@ -5,6 +5,8 @@ import { HttpModule } from '@nestjs/axios'
 import { GraphqlModule } from '@app/network-service/graphql/graphql.module'
 import { ConsensusModule } from '@app/network-service/consensus/consensus.module'
 import { BalancesModule } from './balances/balances.module'
+import { TokenModule } from '@app/common/token/token.module'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
   imports: [
@@ -12,7 +14,9 @@ import { BalancesModule } from './balances/balances.module'
     HttpModule,
     GraphqlModule,
     ConsensusModule,
-    BalancesModule
+    BalancesModule,
+    ConfigModule,
+    TokenModule
   ],
   controllers: [ChargeNetworkServiceController]
 })

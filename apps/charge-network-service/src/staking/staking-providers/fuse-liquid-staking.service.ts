@@ -2,7 +2,7 @@ import LiquidStakingABI from '@app/network-service/common/constants/abi/FuseLiqu
 import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
 import ConsensusABI from '@app/network-service/common/constants/abi/Consensus'
 import BlockRewardABI from '@app/network-service/common/constants/abi/BlockReward.json'
-import TradeService from '@app/common/services/trade.service'
+import TradeService from '@app/common/token/trade.service'
 import {
   Contract,
   InjectEthersProvider,
@@ -26,7 +26,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     private readonly provider: JsonRpcProvider,
     private readonly configService: ConfigService,
     private readonly tradeService: TradeService
-  ) {}
+  ) { }
 
   get address () {
     return this.configService.get('fuseLiquidStakingAddress')
@@ -80,7 +80,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const sfBalance = await sfContract.balanceOf(accountAddress)
 
     const stakedAmount = Number(formatEther(sfBalance.toString())) * Number(formatEther(priceRatio.toString()))
-    const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
+    const fusePrice = await this.tradeService.getTokenPriceByAddress(this.wfuseAddress)
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
 
@@ -120,7 +120,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     try {
       const liquidStakingContract = new Contract(this.address, LiquidStakingABI, this.provider)
       const totalStaked = await liquidStakingContract.systemTotalStaked()
-      const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
+      const fusePrice = await this.tradeService.getTokenPriceByAddress(this.wfuseAddress)
 
       return Number(formatEther(totalStaked.toString())) * fusePrice
     } catch (error) {

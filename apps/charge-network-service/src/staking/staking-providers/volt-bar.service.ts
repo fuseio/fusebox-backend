@@ -15,7 +15,7 @@ import {
 import GraphService from '@app/network-service/staking/graph.service'
 import { ConfigService } from '@nestjs/config'
 import { daysInYear, voltBarId } from '@app/network-service/common/constants'
-import TradeService from '@app/common/services/trade.service'
+import TradeService from '@app/common/token/trade.service'
 import { getBarStats, getBarUser } from '@app/network-service/common/constants/graph-queries/voltbar'
 import { secondsInDay } from 'date-fns/constants'
 import { getUnixTime } from 'date-fns'
@@ -76,7 +76,7 @@ export default class VoltBarService implements StakingProvider {
     try {
       const stakingData: any = await this.getStakingData(accountAddress)
 
-      const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+      const voltPrice = await this.tradeService.getTokenPriceByAddress(tokenAddress)
 
       const stakedAmount = Number(stakingData?.user?.xVolt ?? 0) * Number(stakingData?.bar?.ratio ?? 0)
       const stakedAmountUSD = stakedAmount * voltPrice
@@ -134,7 +134,7 @@ export default class VoltBarService implements StakingProvider {
     try {
       const voltTokenContract = new Contract(tokenAddress, Erc20ABI, this.provider)
       const voltBalance = await voltTokenContract.balanceOf(this.address)
-      const voltPrice = await this.tradeService.getTokenPrice(tokenAddress)
+      const voltPrice = await this.tradeService.getTokenPriceByAddress(tokenAddress)
       return Number(formatEther(voltBalance)) * voltPrice
     } catch (error) {
       this.logger.error(`tvl error: ${error}`)

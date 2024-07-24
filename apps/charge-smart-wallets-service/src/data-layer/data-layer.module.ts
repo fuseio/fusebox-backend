@@ -15,13 +15,16 @@ import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wa
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import TradeService from '@app/common/services/trade.service'
+import TradeService from '@app/common/token/trade.service'
+import { TokenModule } from '@app/common/token/token.module'
 
 @Module({
   imports: [
     DatabaseModule,
     ConfigModule.forFeature(config),
     HttpModule,
+    ConfigModule,
+    TokenModule,
     EthersModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -67,8 +70,7 @@ import TradeService from '@app/common/services/trade.service'
     TokenService,
     SmartWalletsAAEventsService,
     CentrifugeClientProvider,
-    AnalyticsService,
-    TradeService
+    AnalyticsService
   ]
 })
 

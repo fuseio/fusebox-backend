@@ -1,6 +1,8 @@
 export default () => ({
   tradeApiBaseUrl: process.env.LEGACY_FUSE_TRADE_API_URL,
   amplitudeApiKey: process.env.AMPLITUDE_API_KEY,
+  coinGeckoApiKey: process.env.COIN_GECKO_API_KEY,
+  coinGeckoUrl: process.env.COIN_GECKO_URL,
   rpcConfig: {
     rpc: {
       url: process.env.RPC_URL || 'https://rpc.fuse.io',

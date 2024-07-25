@@ -15,7 +15,7 @@ export default class TradeService {
   ) { }
 
   private get apiUrl(): string {
-    return this.configService.getOrThrow<string>('coinGeckoApiUrl')
+    return this.configService.getOrThrow<string>('coinGeckoUrl')
   }
 
   private get apiKey(): string {

@@ -256,12 +256,14 @@ network:
     primary_service: "unmarshal"
     explorer_api_url: "https://explorer.fuse.io/api"
     unmarshal_base_url: "https://api.unmarshal.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
     - rpc_url
     - unmarshal_auth_key
     - explorer_api_key
+    - coin_gecko_api_key
 
 notifications:
   enabled: true
@@ -381,6 +383,7 @@ smart-wallets:
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
     charge_base_url: "https://api.fuse.io"
     legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -393,3 +396,4 @@ smart-wallets:
     - charge_public_key
     - charge_secret_key
     - incoming_token_transfers_webhook_id
+    - coin_gecko_api_key

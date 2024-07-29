@@ -70,7 +70,7 @@ export class UnmarshalService implements BalanceService {
         decimals: asset.contract_decimals.toString(),
         name: asset.contract_name,
         symbol: asset.contract_ticker_symbol,
-        type: asset.type
+        type: asset.type === 'ERC20' ? 'ERC-20' : asset.type
       })),
       status: '1'
     }

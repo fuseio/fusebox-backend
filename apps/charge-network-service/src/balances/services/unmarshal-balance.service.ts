@@ -33,6 +33,7 @@ export class UnmarshalService implements BalanceService {
     return {
       data: {
         account: {
+          id: unmarshalData[0]?.owner || '',
           address: unmarshalData[0]?.owner || '',
           collectibles: unmarshalData.map(asset => ({
             collection: {

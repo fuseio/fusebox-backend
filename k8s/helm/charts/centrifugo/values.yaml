@@ -23,7 +23,7 @@ global:
     # -- Repository ID
     repository: "centrifugo/centrifugo"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: "v5.2.2"
+    tag: "v5.4.3"
 
 # -- Replicas
 replicas: 1

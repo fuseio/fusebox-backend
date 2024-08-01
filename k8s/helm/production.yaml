@@ -325,7 +325,7 @@ relay:
     - relay_secret
 
 skandha:
-  enabled: true # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
+  enabled: false # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
 
   # Replicas
   replicas: 2

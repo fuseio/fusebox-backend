@@ -8,21 +8,21 @@ import { Cache } from 'cache-manager'
 
 @Injectable()
 export default class TradeService {
-  constructor(
+  constructor (
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
 
-  private get apiUrl(): string {
+  private get apiUrl (): string {
     return this.configService.getOrThrow<string>('coinGeckoUrl')
   }
 
-  private get apiKey(): string {
+  private get apiKey (): string {
     return this.configService.getOrThrow<string>('coinGeckoApiKey')
   }
 
-  async getTokenPriceByAddress(tokenAddress: string): Promise<number> {
+  async getTokenPriceByAddress (tokenAddress: string): Promise<number> {
     const cacheKey = `token_price_${tokenAddress.toLowerCase()}`
     const cachedPrice = await this.cacheManager.get<number>(cacheKey)
 

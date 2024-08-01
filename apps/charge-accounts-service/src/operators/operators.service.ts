@@ -289,7 +289,16 @@ export class OperatorsService {
     try {
       // Note: The transaction hash retrieval is intentionally not awaited here due to its ~14s delay.
       // However, any errors arising from this call will still be caught and handled appropriately.
-      await contract.depositFor(sponsorId, { value: ether })
+      const gasPrice = await provider.getGasPrice()
+
+      // Prepare the transaction options
+      const txOptions = {
+        value: ether,
+        maxPriorityFeePerGas: gasPrice,
+        gasPrice: gasPrice,
+        maxFeePerGas: gasPrice
+      }
+      await contract.depositFor(sponsorId, txOptions)
       return HttpStatus.OK
     } catch (error) {
       this.logger.error(`depositFor fund paymaster failed: ${sponsorId} value: ${amount} etherAmount: ${ether} error: ${error}`)

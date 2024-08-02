@@ -207,7 +207,7 @@ centrifugo:
   image:
     repository: "centrifugo/centrifugo"
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5.4.3"
+    tag: "v5.4.4"
 
   # Resources (requests & limits)
   resources:

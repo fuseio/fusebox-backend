@@ -287,16 +287,14 @@ export class OperatorsService {
     const contract = new ethers.Contract(contractAddress, paymasterAbi, wallet)
     const ether = ethers.utils.parseEther(amount)
     try {
-      // Note: The transaction hash retrieval is intentionally not awaited here due to its ~14s delay.
-      // However, any errors arising from this call will still be caught and handled appropriately.
-      const gasPrice = await provider.getGasPrice()
+      const feeData = await provider.getFeeData()
+      const maxPriorityFeePerGas = feeData.maxPriorityFeePerGas
+      const maxFeePerGas = feeData.maxFeePerGas
 
-      // Prepare the transaction options
       const txOptions = {
         value: ether,
-        maxPriorityFeePerGas: gasPrice,
-        gasPrice: gasPrice,
-        maxFeePerGas: gasPrice
+        maxPriorityFeePerGas,
+        maxFeePerGas
       }
       await contract.depositFor(sponsorId, txOptions)
       return HttpStatus.OK

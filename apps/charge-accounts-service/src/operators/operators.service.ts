@@ -287,12 +287,14 @@ export class OperatorsService {
     const contract = new ethers.Contract(contractAddress, paymasterAbi, wallet)
     const ether = ethers.utils.parseEther(amount)
     try {
-      const gasPrice = await provider.getFeeData()
+      const feeData = await provider.getFeeData()
+      const maxPriorityFeePerGas = feeData.maxPriorityFeePerGas
+      const maxFeePerGas = feeData.maxFeePerGas
 
       const txOptions = {
         value: ether,
-        maxPriorityFeePerGas: gasPrice,
-        maxFeePerGas: gasPrice
+        maxPriorityFeePerGas,
+        maxFeePerGas
       }
       await contract.depositFor(sponsorId, txOptions)
       return HttpStatus.OK

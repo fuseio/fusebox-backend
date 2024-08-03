@@ -318,10 +318,8 @@ export class OperatorsService {
         }
       }
 
-      const tx = await contract.depositFor(sponsorId, txOptions)
-      const receipt = await tx.wait()
+      await contract.depositFor(sponsorId, txOptions)
 
-      this.logger.log(`Transaction successful. Hash: ${receipt.transactionHash}`)
       return HttpStatus.OK
     } catch (error) {
       this.logger.error(`depositFor fund paymaster failed: ${sponsorId} value: ${amount} etherAmount: ${ether} error: ${error}`)

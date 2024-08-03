@@ -293,30 +293,24 @@ export class OperatorsService {
       // Get current fee data
       const feeData = await provider.getFeeData()
 
-      let txOptions: any = {
+      // Ensure minimum priority fee of 10 Gwei
+      const minPriorityFee = ethers.utils.parseUnits('10', 'gwei')
+      const maxPriorityFeePerGas = ethers.BigNumber.from(feeData.maxPriorityFeePerGas).gt(minPriorityFee)
+        ? feeData.maxPriorityFeePerGas
+        : minPriorityFee
+
+      // Calculate max fee: max(2 * baseFee + maxPriorityFeePerGas, feeData.maxFeePerGas)
+      const maxFeePerGas = ethers.BigNumber.from(feeData.lastBaseFeePerGas).mul(2).add(maxPriorityFeePerGas)
+      const finalMaxFeePerGas = maxFeePerGas.gt(feeData.maxFeePerGas) ? maxFeePerGas : feeData.maxFeePerGas
+
+      const txOptions = {
         value: ether,
-        gasLimit: gasEstimate.mul(11).div(10) // Add 10% buffer to estimated gas
+        maxPriorityFeePerGas,
+        maxFeePerGas: finalMaxFeePerGas,
+        gasLimit: gasEstimate.mul(12).div(10) // Add 20% buffer to estimated gas
       }
 
-      if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
-        // EIP-1559 supported
-        const maxPriorityFeePerGas = ethers.BigNumber.from(feeData.maxPriorityFeePerGas).mul(12).div(10) // 120% of suggested
-        const maxFeePerGas = ethers.BigNumber.from(feeData.maxFeePerGas).gt(feeData.lastBaseFeePerGas.add(maxPriorityFeePerGas))
-          ? feeData.maxFeePerGas
-          : feeData.lastBaseFeePerGas.add(maxPriorityFeePerGas)
-
-        txOptions = {
-          ...txOptions,
-          maxFeePerGas,
-          maxPriorityFeePerGas
-        }
-      } else {
-        // Legacy transaction
-        txOptions = {
-          ...txOptions,
-          gasPrice: feeData.gasPrice
-        }
-      }
+      this.logger.log(`Sending transaction with options: ${JSON.stringify(txOptions)}`)
 
       await contract.depositFor(sponsorId, txOptions)
 

@@ -287,16 +287,39 @@ export class OperatorsService {
     const contract = new ethers.Contract(contractAddress, paymasterAbi, wallet)
     const ether = ethers.utils.parseEther(amount)
     try {
-      const feeData = await provider.getFeeData()
-      const maxPriorityFeePerGas = feeData.maxPriorityFeePerGas
-      const maxFeePerGas = feeData.maxFeePerGas
+      // Estimate gas
+      const gasEstimate = await contract.estimateGas.depositFor(sponsorId, { value: ether })
 
-      const txOptions = {
+      // Get current fee data
+      const feeData = await provider.getFeeData()
+
+      let txOptions: any = {
         value: ether,
-        maxPriorityFeePerGas,
-        maxFeePerGas
+        gasLimit: gasEstimate.mul(11).div(10) // Add 10% buffer to estimated gas
       }
+
+      if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
+        // EIP-1559 supported
+        const maxPriorityFeePerGas = ethers.BigNumber.from(feeData.maxPriorityFeePerGas).mul(12).div(10) // 120% of suggested
+        const maxFeePerGas = ethers.BigNumber.from(feeData.maxFeePerGas).gt(feeData.lastBaseFeePerGas.add(maxPriorityFeePerGas))
+          ? feeData.maxFeePerGas
+          : feeData.lastBaseFeePerGas.add(maxPriorityFeePerGas)
+
+        txOptions = {
+          ...txOptions,
+          maxFeePerGas,
+          maxPriorityFeePerGas
+        }
+      } else {
+        // Legacy transaction
+        txOptions = {
+          ...txOptions,
+          gasPrice: feeData.gasPrice
+        }
+      }
+
       await contract.depositFor(sponsorId, txOptions)
+
       return HttpStatus.OK
     } catch (error) {
       this.logger.error(`depositFor fund paymaster failed: ${sponsorId} value: ${amount} etherAmount: ${ether} error: ${error}`)

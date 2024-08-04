@@ -407,7 +407,7 @@ export class ConsensusService {
   private async readMaxStake () {
     return this.getCacheOrFetch({
       cacheKey: 'maxStake',
-      volatility: 'low',
+      volatility: 'high',
       fetchFunction: async () => {
         const [maxStakeResult] = await this.aggregateCalls([
           {
@@ -424,7 +424,7 @@ export class ConsensusService {
   private async readMinStake () {
     return this.getCacheOrFetch({
       cacheKey: 'minStake',
-      volatility: 'low',
+      volatility: 'high',
       fetchFunction: async () => {
         const [minStakeResult] = await this.aggregateCalls([
           {

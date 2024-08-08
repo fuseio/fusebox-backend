@@ -33,12 +33,12 @@ export default class BalancesService {
     }
   }
 
-  async getERC721TokenBalances (address: string) {
+  async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
     try {
-      return await this.primaryService.getERC721TokenBalances(address)
+      return await this.primaryService.getERC721TokenBalances(address, limit, cursor)
     } catch (error) {
       this.logger.error(`Primary service failed: ${error.message}. Falling back to secondary service.`)
-      return await this.fallbackService.getERC721TokenBalances(address)
+      return await this.fallbackService.getERC721TokenBalances(address, limit, cursor)
     }
   }
 }

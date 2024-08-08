@@ -6,8 +6,10 @@ info:
   version: 1.0.0
 
 tags:
-  - name: Balances
-    description: Balances API endpoints
+  - name: NFT tokens
+    description: The NFT Assets API lets you get all ERC-721 and ERC-1155 NFT assets owned by an address.
+  - name: ERC20 tokens
+    description: The ERC20 Assets API lets you get all ERC20 tokens owned by an address including the native token.
 
 servers:
   - url: https://api.fuse.io/api/v0/balances
@@ -19,7 +21,7 @@ paths:
   /nft-assets/{address}:
     get:
       tags:
-        - Balances
+        - NFT tokens
       summary: Get Non Fungible NFT Token Balances
       parameters:
         - $ref: "#/components/parameters/ApiKey"
@@ -29,20 +31,35 @@ paths:
           schema:
             type: string
           description: The wallet address to query for associated NFTs.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+          description: The maximum number of NFTs to return per request. Default is 100.
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Cursor for pagination. Use the nextCursor from the previous response to fetch the next page.
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NftBalancesResponse'
+                $ref: "#/components/schemas/NftBalancesResponse"
         "403":
           $ref: "#/components/responses/ForbiddenError"
 
   /assets/{address}:
     get:
       tags:
-        - Balances
+        - ERC20 tokens
       summary: Get Fungible ERC20 Token Balances
       parameters:
         - $ref: "#/components/parameters/ApiKey"
@@ -58,7 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AssetBalancesResponse'
+                $ref: "#/components/schemas/AssetBalancesResponse"
         "403":
           $ref: "#/components/responses/ForbiddenError"
 
@@ -87,7 +104,11 @@ components:
                 collectibles:
                   type: array
                   items:
-                    $ref: '#/components/schemas/NftCollectible'
+                    $ref: "#/components/schemas/NftCollectible"
+        nextCursor:
+          type: string
+          nullable: true
+          description: Cursor to use for fetching the next page of results. Null if there are no more results.
     NftCollectible:
       type: object
       properties:
@@ -132,7 +153,7 @@ components:
         result:
           type: array
           items:
-            $ref: '#/components/schemas/FungibleToken'
+            $ref: "#/components/schemas/FungibleToken"
         status:
           type: string
     FungibleToken:

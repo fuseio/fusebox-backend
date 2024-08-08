@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   charge-accounts-service:
     command: npm run start:debug --service=charge-accounts-service --port=9229

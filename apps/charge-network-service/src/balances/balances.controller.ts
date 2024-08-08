@@ -14,7 +14,7 @@ export class BalancesController {
   }
 
   @MessagePattern('get_erc721_token_balances')
-  getERC721TokenBalances (address: string) {
-    return this.balancesService.getERC721TokenBalances(address)
+  getERC721TokenBalances (data: { address: string; limit?: number; cursor?: string }) {
+    return this.balancesService.getERC721TokenBalances(data.address, data.limit, data.cursor)
   }
 }

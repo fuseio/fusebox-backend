@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   charge-accounts-service:
     container_name: charge-accounts-service

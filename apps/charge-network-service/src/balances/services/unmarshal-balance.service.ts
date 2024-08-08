@@ -22,6 +22,10 @@ export class UnmarshalService implements BalanceService {
   }
 
   private isBase64 (str: string): boolean {
+    if (!str) {
+      return false
+    }
+
     try {
       return btoa(atob(str)) === str
     } catch (err) {
@@ -29,13 +33,13 @@ export class UnmarshalService implements BalanceService {
     }
   }
 
-  private transformToNFTSubgraphFormat (unmarshalData: any) {
+  private transformToNFTSubgraphFormat (nftAssets: any) {
     return {
       data: {
         account: {
-          id: unmarshalData[0]?.owner || '',
-          address: unmarshalData[0]?.owner || '',
-          collectibles: unmarshalData.map(asset => ({
+          id: nftAssets[0]?.owner || '',
+          address: nftAssets[0]?.owner || '',
+          collectibles: nftAssets.map(asset => ({
             collection: {
               collectionAddress: asset.asset_contract,
               collectionName: asset.asset_contract_name,
@@ -71,7 +75,11 @@ export class UnmarshalService implements BalanceService {
         decimals: asset.contract_decimals.toString(),
         name: asset.contract_name,
         symbol: asset.contract_ticker_symbol,
-        type: asset.type === 'ERC20' ? 'ERC-20' : asset.type
+        type: asset.contract_address === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+          ? 'native'
+          : asset.type === 'ERC20'
+            ? 'ERC-20'
+            : asset.type
       })),
       status: '1'
     }
@@ -86,12 +94,30 @@ export class UnmarshalService implements BalanceService {
     return this.transformToExplorerFormat(unmarshalData)
   }
 
-  async getERC721TokenBalances (address: string) {
-    const uri = `${this.unmarshalBaseUrl}/v3/fuse/address/${address}/nft-assets?includeLowVolume=true&auth_key=${this.unmarshalApiKey}`
+  async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
+    let uri = `${this.unmarshalBaseUrl}/v3/fuse/address/${address}/nft-assets?includeLowVolume=true&auth_key=${this.unmarshalApiKey}`
+
+    const pageSize = Math.min(limit || 100, 100) // Ensure we don't exceed Unmarshal's limit
+    uri += `&pageSize=${pageSize}`
+
+    if (cursor) {
+      const decodedCursor = Buffer.from(cursor, 'base64').toString('ascii')
+      uri += `&offset=${decodedCursor}`
+    }
+
     const observable = this.httpService
       .get(uri)
-      .pipe(map(res => res.data.nft_assets))
+      .pipe(map(res => res.data))
     const unmarshalData = await lastValueFrom(observable)
-    return this.transformToNFTSubgraphFormat(unmarshalData)
+
+    const data = this.transformToNFTSubgraphFormat(unmarshalData.nft_assets)
+    const nextCursor = unmarshalData.next_offset
+      ? Buffer.from(unmarshalData.next_offset + '').toString('base64')
+      : null
+
+    return {
+      nextCursor,
+      ...data
+    }
   }
 }

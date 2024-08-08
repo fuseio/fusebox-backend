@@ -69,6 +69,12 @@ paths:
           schema:
             type: string
           description: The wallet address to query for ERC20 tokens.
+        - name: tokenAddress
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional. The specific token address to query. If not provided, all token balances will be returned.
       responses:
         "200":
           description: OK

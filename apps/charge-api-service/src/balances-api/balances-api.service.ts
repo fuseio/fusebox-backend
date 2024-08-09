@@ -9,11 +9,11 @@ export class BalancesAPIService {
     @Inject(networkService) private readonly networkClient: ClientProxy
   ) { }
 
-  async getERC20TokenBalances (address: string): Promise<any> {
-    return callMSFunction(this.networkClient, 'get_erc20_token_balances', address)
+  async getERC20TokenBalances (address: string, tokenAddress?: string): Promise<any> {
+    return callMSFunction(this.networkClient, 'get_erc20_token_balances', { address, tokenAddress })
   }
 
-  async getERC721TokenBalances (address: string): Promise<any> {
-    return callMSFunction(this.networkClient, 'get_erc721_token_balances', address)
+  async getERC721TokenBalances (address: string, limit: number = 100, cursor?: string): Promise<any> {
+    return callMSFunction(this.networkClient, 'get_erc721_token_balances', { address, limit, cursor })
   }
 }

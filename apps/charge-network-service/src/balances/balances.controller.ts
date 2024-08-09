@@ -9,12 +9,12 @@ export class BalancesController {
   ) { }
 
   @MessagePattern('get_erc20_token_balances')
-  getERC20TokenBalances (address: string) {
-    return this.balancesService.getERC20TokenBalances(address)
+  getERC20TokenBalances (data: { address: string; tokenAddress?: string }) {
+    return this.balancesService.getERC20TokenBalances(data.address, data.tokenAddress)
   }
 
   @MessagePattern('get_erc721_token_balances')
-  getERC721TokenBalances (address: string) {
-    return this.balancesService.getERC721TokenBalances(address)
+  getERC721TokenBalances (data: { address: string; limit?: number; cursor?: string }) {
+    return this.balancesService.getERC721TokenBalances(data.address, data.limit, data.cursor)
   }
 }

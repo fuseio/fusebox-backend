@@ -18,9 +18,13 @@ export class BalancesAPIController {
   })
   @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   @ApiParam({ name: 'address', type: String, required: true, description: 'The wallet address to query for ERC20 token balances.' })
+  @ApiQuery({ name: 'tokenAddress', type: String, required: false, description: 'Optional. Filter results by a specific token address.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
-  getERC20TokenBalances (@Param('address') address: string) {
-    return this.balancesAPIService.getERC20TokenBalances(address)
+  getERC20TokenBalances (
+    @Param('address') address: string,
+    @Query('tokenAddress') tokenAddress?: string
+  ) {
+    return this.balancesAPIService.getERC20TokenBalances(address, tokenAddress)
   }
 
   @Get('nft-assets/:address')

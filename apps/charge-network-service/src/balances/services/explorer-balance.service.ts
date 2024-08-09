@@ -6,6 +6,7 @@ import { BalanceService } from '../interfaces/balances.interface'
 import GraphQLService from '@app/common/services/graphql.service'
 import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
 import { ethers } from 'ethers'
+import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 
 @Injectable()
 export class ExplorerService implements BalanceService {
@@ -43,7 +44,7 @@ export class ExplorerService implements BalanceService {
     return [
       {
         balance: balance.toString(),
-        contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+        contractAddress: NATIVE_FUSE_TOKEN.address.toLowerCase(),
         decimals: '18',
         name: 'Fuse',
         symbol: 'FUSE',

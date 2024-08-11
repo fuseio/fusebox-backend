@@ -289,8 +289,8 @@ notifications:
   configMap:
     network_name: "fuse"
     chain_id: "122"
-    max_blocks: "2500"
-    timeout_interval: "10000"
+    max_blocks: "1500"
+    timeout_interval: "20000"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

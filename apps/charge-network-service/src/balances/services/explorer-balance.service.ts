@@ -7,6 +7,7 @@ import GraphQLService from '@app/common/services/graphql.service'
 import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
 import { ethers } from 'ethers'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { isEmpty } from 'lodash'
 
 @Injectable()
 export class ExplorerService implements BalanceService {
@@ -83,10 +84,12 @@ export class ExplorerService implements BalanceService {
     }
 
     const data = await this.graphQLService.fetchFromGraphQL(this.nftGraphUrl, query, variables)
-    const collectibles = data.data.account.collectibles
-    const nextCursor = collectibles.length === variables.first
-      ? Buffer.from((variables.skip || 0) + collectibles.length + '').toString('base64')
-      : null
+    const collectibles = data?.data?.account?.collectibles || []
+    const nextCursor = isEmpty(collectibles)
+      ? null
+      : collectibles.length === variables.first
+        ? Buffer.from((variables.skip || 0) + collectibles.length + '').toString('base64')
+        : null
 
     return {
       nextCursor,

@@ -50,13 +50,13 @@ const targetActionMap = {
   }
 }
 
-function executeSingleAction(name: string, targetAddress: string) {
+function executeSingleAction (name: string, targetAddress: string) {
   const addressActionMap = targetActionMap[targetAddress.toLowerCase()]
   const ActionClass = addressActionMap?.[name] || singleActionMap[name]
   return ActionClass ? new ActionClass() : null
 }
 
-function executeBatchAction(targetFunctions) {
+function executeBatchAction (targetFunctions) {
   if (targetFunctions.length !== 2) {
     // TODO: support more than 2 calls
     throw new Error('Unsupported batch action')
@@ -75,7 +75,7 @@ function executeBatchAction(targetFunctions) {
   return ActionClass ? new ActionClass(firstCall.name) : null
 }
 
-function getWalletActionType(parsedUserOp): WalletAction {
+function getWalletActionType (parsedUserOp): WalletAction {
   const walletFunctionName = parsedUserOp.walletFunction.name
   const { name, targetAddress } = parsedUserOp.targetFunctions[0]
   if (walletFunctionName === 'execute') {
@@ -87,7 +87,7 @@ function getWalletActionType(parsedUserOp): WalletAction {
   throw new Error('Unsupported wallet function name')
 }
 
-export async function parsedUserOpToWalletAction(
+export async function parsedUserOpToWalletAction (
   parsedUserOp: UserOp, tokenService: TokenService
 ) {
   const actionType = getWalletActionType(parsedUserOp)
@@ -98,7 +98,7 @@ export async function parsedUserOpToWalletAction(
   return actionType.execute(parsedUserOp)
 }
 
-export function confirmedUserOpToWalletAction(userOp: any) {
+export function confirmedUserOpToWalletAction (userOp: any) {
   return {
     userOpHash: userOp.userOpHash,
     txHash: userOp.txHash,
@@ -107,7 +107,7 @@ export function confirmedUserOpToWalletAction(userOp: any) {
   }
 }
 
-export function tokenReceiveToWalletAction(
+export function tokenReceiveToWalletAction (
   fromWalletAddress: string,
   toWalletAddress: string,
   txHash: string,

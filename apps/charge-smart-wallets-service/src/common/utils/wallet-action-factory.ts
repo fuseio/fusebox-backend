@@ -7,7 +7,8 @@ import {
   SwapTokens,
   UnstakeTokens,
   StakeTokens,
-  NftTransfer
+  NftTransfer,
+  SwapTrade
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
 import { TokenReceive } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive'
@@ -32,6 +33,9 @@ const targetActionMap = {
     swapExactTokensForETH: SwapTokens,
     swapETHForExactTokens: SwapTokens
   },
+  '0xeca6055ac01e717cef70b8c6fc5f9ca32cb4118a': {
+    transformERC20: SwapTrade
+  },
   '0x0be9e53fd7edac9f859882afdda116645287c629': {
     withdraw: SwapTokens,
     deposit: SwapTokens
@@ -46,13 +50,13 @@ const targetActionMap = {
   }
 }
 
-function executeSingleAction (name: string, targetAddress: string) {
+function executeSingleAction(name: string, targetAddress: string) {
   const addressActionMap = targetActionMap[targetAddress.toLowerCase()]
   const ActionClass = addressActionMap?.[name] || singleActionMap[name]
   return ActionClass ? new ActionClass() : null
 }
 
-function executeBatchAction (targetFunctions) {
+function executeBatchAction(targetFunctions) {
   if (targetFunctions.length !== 2) {
     // TODO: support more than 2 calls
     throw new Error('Unsupported batch action')
@@ -71,7 +75,7 @@ function executeBatchAction (targetFunctions) {
   return ActionClass ? new ActionClass(firstCall.name) : null
 }
 
-function getWalletActionType (parsedUserOp): WalletAction {
+function getWalletActionType(parsedUserOp): WalletAction {
   const walletFunctionName = parsedUserOp.walletFunction.name
   const { name, targetAddress } = parsedUserOp.targetFunctions[0]
   if (walletFunctionName === 'execute') {
@@ -83,7 +87,7 @@ function getWalletActionType (parsedUserOp): WalletAction {
   throw new Error('Unsupported wallet function name')
 }
 
-export async function parsedUserOpToWalletAction (
+export async function parsedUserOpToWalletAction(
   parsedUserOp: UserOp, tokenService: TokenService
 ) {
   const actionType = getWalletActionType(parsedUserOp)
@@ -94,7 +98,7 @@ export async function parsedUserOpToWalletAction (
   return actionType.execute(parsedUserOp)
 }
 
-export function confirmedUserOpToWalletAction (userOp: any) {
+export function confirmedUserOpToWalletAction(userOp: any) {
   return {
     userOpHash: userOp.userOpHash,
     txHash: userOp.txHash,
@@ -103,7 +107,7 @@ export function confirmedUserOpToWalletAction (userOp: any) {
   }
 }
 
-export function tokenReceiveToWalletAction (
+export function tokenReceiveToWalletAction(
   fromWalletAddress: string,
   toWalletAddress: string,
   txHash: string,
@@ -116,7 +120,7 @@ export function tokenReceiveToWalletAction (
   const action =
     executeSingleAction('tokenReceive', toWalletAddress) as TokenReceive
 
-  return action.executeReceiveAction(
+  const result = action.executeReceiveAction(
     fromWalletAddress,
     toWalletAddress,
     txHash,
@@ -126,4 +130,6 @@ export function tokenReceiveToWalletAction (
     blockNumber,
     tokenId
   )
+
+  return result
 }

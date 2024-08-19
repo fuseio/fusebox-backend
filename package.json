@@ -48,6 +48,7 @@
     "@nestjs/platform-express": "^10.3.8",
     "@nestjs/schedule": "^4.0.2",
     "@nestjs/swagger": "^7.3.1",
+    "@openchainxyz/abi-guesser": "^1.0.2",
     "abitype": "^1.0.2",
     "axios": "^1.6.8",
     "base64url": "^3.0.1",
@@ -79,6 +80,7 @@
     "reflect-metadata": "^0.2.2",
     "rimraf": "^5.0.6",
     "rxjs": "^7.8.1",
+    "viem": "^2.19.4",
     "ws": "^8.17.0",
     "zod": "^3.23.8"
   },

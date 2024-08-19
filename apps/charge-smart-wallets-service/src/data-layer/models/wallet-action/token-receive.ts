@@ -1,7 +1,11 @@
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
 import { ERC20Transfer, ERC721Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
-import { ERC_721_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
+import { ERC_721_TYPE, NATIVE_TOKEN_TYPE, TRADE_SWAP_SKIP } from '@app/smart-wallets-service/common/constants/tokenTypes'
+
+const SKIP_SWAP_CONTRACT_ADDRESS = '0x63ed5bBa94D397616aD482BB26bB21E0feceF1a5'
+
+type TokenTransferData = ERC20Transfer | ERC721Transfer | { type: string }
 
 export class TokenReceive extends WalletAction {
   constructTokenTransferData (
@@ -10,7 +14,11 @@ export class TokenReceive extends WalletAction {
     tokenType: string,
     { name, symbol, address, decimals },
     tokenId?: number
-  ) {
+  ): TokenTransferData {
+    if (targetAddress.toLowerCase() === SKIP_SWAP_CONTRACT_ADDRESS.toLowerCase()) {
+      return { type: TRADE_SWAP_SKIP }
+    }
+
     const token = this.getToken(tokenType, name, symbol, address, decimals)
 
     if (tokenType === ERC_721_TYPE) {
@@ -50,12 +58,16 @@ export class TokenReceive extends WalletAction {
   constructResponse (
     fromWalletAddress: string,
     txHash: string,
-    tokenTransferData: ERC20Transfer,
+    tokenTransferData: TokenTransferData,
     blockNumber: number,
     tokenId?: number
   ) {
-    const symbol = tokenTransferData.symbol
-    const decimals = tokenTransferData.decimals
+    if ('type' in tokenTransferData && tokenTransferData.type === TRADE_SWAP_SKIP) {
+      return null
+    }
+
+    const symbol = 'symbol' in tokenTransferData ? tokenTransferData.symbol : ''
+    const decimals = 'decimals' in tokenTransferData ? tokenTransferData.decimals : 0
 
     let description: string
 
@@ -67,7 +79,7 @@ export class TokenReceive extends WalletAction {
       description = this.generateDescription({
         action: 'Received',
         symbol,
-        valueInWei: tokenTransferData.value,
+        valueInWei: 'value' in tokenTransferData ? tokenTransferData.value : '0',
         decimals
       })
     }
@@ -100,7 +112,8 @@ export class TokenReceive extends WalletAction {
       fromWalletAddress,
       value,
       tokenType,
-      { name, symbol, address, decimals }
+      { name, symbol, address, decimals },
+      tokenId
     )
 
     return this.constructResponse(

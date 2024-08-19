@@ -128,9 +128,7 @@ export class DataLayerService {
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {
     try {
-      const {
-        direction
-      } = tokenTransferWebhookDto
+      const { direction } = tokenTransferWebhookDto
 
       if (direction === 'incoming') {
         this.logger.debug('Handling token transfer webhook...')
@@ -166,6 +164,11 @@ export class DataLayerService {
           blockNumber,
           tokenId
         )
+
+        if (walletAction === null) {
+          this.logger.debug('Skipping wallet action for specific address')
+          return true
+        }
 
         this.logger.debug('Creating a new receive wallet action...')
         this.smartWalletsAAEventsService.publishWalletAction(walletAction.walletAddress, walletAction)

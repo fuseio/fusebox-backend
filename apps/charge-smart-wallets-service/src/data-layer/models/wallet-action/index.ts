@@ -6,6 +6,7 @@ import NftTransfer from '@app/smart-wallets-service/data-layer/models/wallet-act
 import StakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/stake'
 import SwapTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/swap'
 import UnstakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/unstake'
+import SwapTrade from './swap-trade'
 // import BatchTransaction from './batch-transaction'
 
 export {
@@ -16,6 +17,7 @@ export {
   NftTransfer,
   StakeTokens,
   SwapTokens,
-  UnstakeTokens
+  UnstakeTokens,
+  SwapTrade
   // BatchTransaction
 }

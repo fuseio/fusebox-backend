@@ -25,9 +25,12 @@ Set the environment variables by running
 ```bash
 cp .env.example .env
 cp apps/charge-api-service/.env.example apps/charge-api-service/.env
+cp apps/charge-app-service/.env.example apps/charge-app-service/.env
 cp apps/charge-network-service/.env.example apps/charge-network-service/.env
 cp apps/charge-relay-service/.env.example apps/charge-relay-service/.env
-
+cp apps/charge-accounts-service/.env.example apps/charge-accounts-service/.env
+cp apps/charge-notifications-service/.env.example apps/charge-notifications-service/.env
+cp apps/charge-smart-wallets-service/.env.example apps/charge-smart-wallets-service/.env
 ```
 
 Make sure you update the .env files with necessary variable values before proceeding to the next step.
@@ -35,11 +38,8 @@ Make sure you update the .env files with necessary variable values before procee
 ## Running the app
 
 ```bash
-#docker dev
-$ npm run docker:dev
-
-#docker debug
-$ npm run docker:debug
+#docker full debug
+$ npm run docker:full-debug
 
 "Then run the 'Debug: Charge' configuration in launch.json through the debugger in VS Code"
 

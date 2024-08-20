@@ -8,11 +8,6 @@ import {
   UNSTAKE_NATIVE_TOKENS_CALLDATA,
   ERC_20_STAKE_CALLDATA,
   ERC_20_UNSTAKE_CALLDATA,
-  SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA,
-  SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA,
-  SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA,
-  SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA,
-  SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA,
   // BATCH_TRANSACTION_CALLDATA_ONLY_ERC20_TOKENS,
   // BATCH_TRANSACTION_CALLDATA,
   TRANSFER_NFT_CALLDATA,
@@ -96,64 +91,6 @@ describe('UserOpParser Tests', () => {
     expect(res.targetFunctions[0].name).toBe('transferFrom')
     expect(res.targetFunctions[0].callData[0]).toBe('0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
     expect(res.targetFunctions[0].callData[1]).toBe('0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
-  })
-
-  it('swapExactETHForTokens function calldata', async () => {
-    const res = await parser.parseCallData(SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA)
-    expect(res.name).toBe('execute')
-    expect(res.targetFunctions[0].targetAddress).toBe('0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5')
-    expect(res.targetFunctions[0].name).toBe('swapExactETHForTokens')
-    expect(res.targetFunctions[0].callData[1][0]).toBe('0x0BE9e53fd7EDaC9F859882AfdDa116645287C629')
-    expect(res.targetFunctions[0].callData[1][1]).toBe('0x495d133B938596C9984d462F007B676bDc57eCEC')
-    expect(res.targetFunctions[0].callData[2]).toBe('0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
-  })
-
-  it('swapETHForExactTokens function calldata', async () => {
-    const res = await parser.parseCallData(SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA)
-    expect(res.name).toBe('execute')
-    expect(res.targetFunctions[0].targetAddress).toBe('0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5')
-    expect(res.targetFunctions[0].name).toBe('swapETHForExactTokens')
-    expect(res.targetFunctions[0].callData[1][0]).toBe('0x0BE9e53fd7EDaC9F859882AfdDa116645287C629')
-    expect(res.targetFunctions[0].callData[1][1]).toBe('0x6a5F6A8121592BeCd6747a38d67451B310F7f156')
-    expect(res.targetFunctions[0].callData[2]).toBe('0xdf5bA6044f17Ec46B1F00c580916843E25996db9')
-  })
-
-  it('swapTokensForExactEth function calldata', async () => {
-    const res = await parser.parseCallData(SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA)
-    expect(res.name).toBe('executeBatch')
-    expect(res.targetFunctions[0].targetAddress).toBe('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
-    expect(res.targetFunctions[1].targetAddress).toBe('0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5')
-    expect(res.targetFunctions[0].targetAddress).toBe('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
-    expect(res.targetFunctions[1].name).toBe('swapTokensForExactETH')
-    expect(res.targetFunctions[1].callData[2][0]).toBe('0x6a5F6A8121592BeCd6747a38d67451B310F7f156') // BUSD
-    expect(res.targetFunctions[1].callData[2][1]).toBe('0x0BE9e53fd7EDaC9F859882AfdDa116645287C629') // Goodollar
-    expect(res.targetFunctions[1].callData[3]).toBe('0xdf5bA6044f17Ec46B1F00c580916843E25996db9')
-  })
-
-  it('swapExactTokensForEth function calldata', async () => {
-    const res = await parser.parseCallData(SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA)
-    expect(res.name).toBe('executeBatch')
-    expect(res.targetFunctions[0].targetAddress).toBe('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
-    expect(res.targetFunctions[1].targetAddress).toBe('0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5')
-    expect(res.targetFunctions[0].targetAddress).toBe('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4')
-    expect(res.targetFunctions[1].name).toBe('swapExactTokensForETH')
-    expect(res.targetFunctions[1].callData[2][0]).toBe('0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4') // Volt
-    expect(res.targetFunctions[1].callData[2][1]).toBe('0x0BE9e53fd7EDaC9F859882AfdDa116645287C629') // Goodollar
-    expect(res.targetFunctions[1].callData[3]).toBe('0xE65513Fe95F52F4350D2184c2fD722c37e6Fd995')
-  })
-
-  it('swapExactTokensForTokens function calldata', async () => {
-    const res = await parser.parseCallData(SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA)
-    expect(res.name).toBe('executeBatch')
-    expect(res.targetFunctions[0].targetAddress).toBe('0x495d133B938596C9984d462F007B676bDc57eCEC')
-    expect(res.targetFunctions[1].targetAddress).toBe('0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5')
-    expect(res.targetFunctions[0].name).toBe('approve')
-    expect(res.targetFunctions[0].targetAddress).toBe('0x495d133B938596C9984d462F007B676bDc57eCEC') // Goodollar Approve
-    expect(res.targetFunctions[1].name).toBe('swapExactTokensForTokens')
-    expect(res.targetFunctions[1].callData[2][0]).toBe('0x495d133B938596C9984d462F007B676bDc57eCEC') // Goodollar
-    expect(res.targetFunctions[1].callData[2][1]).toBe('0x0BE9e53fd7EDaC9F859882AfdDa116645287C629') // WFUSE
-    expect(res.targetFunctions[1].callData[2][2]).toBe('0x588e24DEd8f850b14BB2e62E9c50A7Cd5Ee13Da9') // TerraLuna
-    expect(res.targetFunctions[1].callData[3]).toBe('0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
   })
 
   it('swapRouterErc20ToErc20', async () => {

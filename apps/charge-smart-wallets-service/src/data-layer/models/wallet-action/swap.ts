@@ -12,15 +12,79 @@ export default class TokenSwapExecutor extends WalletAction {
   }
 
   async execute (parsedUserOp: any) {
-    const transformERC20Function = parsedUserOp.targetFunctions.find(
-      (func: any) => func.name === 'transformERC20'
-    )
-
-    if (!transformERC20Function) {
-      throw new Error('transformERC20 function not found in targetFunctions')
+    if (!parsedUserOp || typeof parsedUserOp !== 'object') {
+      throw new Error('Invalid parsedUserOp: not an object')
     }
 
-    const { callData } = transformERC20Function
+    const { walletFunction, targetFunctions } = parsedUserOp
+
+    if (walletFunction && typeof walletFunction === 'object') {
+      const { name: walletFunctionName, targetFunctions: walletFunctionTargetFunctions } = walletFunction
+
+      if (Array.isArray(walletFunctionTargetFunctions)) {
+        if (walletFunctionName === 'executeBatch') {
+          return this.handleBatchExecution(parsedUserOp, walletFunctionTargetFunctions)
+        } else {
+          return this.handleSingleExecution(parsedUserOp, walletFunctionTargetFunctions[0])
+        }
+      }
+    }
+
+    if (Array.isArray(targetFunctions)) {
+      if (targetFunctions.length > 1) {
+        return this.handleBatchExecution(parsedUserOp, targetFunctions)
+      } else {
+        return this.handleSingleExecution(parsedUserOp, targetFunctions[0])
+      }
+    }
+
+    throw new Error('Invalid or missing targetFunctions in parsedUserOp')
+  }
+
+  private async handleBatchExecution (parsedUserOp: any, targetFunctions: any[]) {
+    for (const func of targetFunctions) {
+      const { name, targetAddress, callData, value } = func || {}
+
+      if (!name) {
+        console.log('Skipping function with no name')
+        continue
+      }
+
+      if (name === 'transformERC20') {
+        return this.handleTransformERC20(parsedUserOp, callData)
+      } else if (name === 'withdraw') {
+        return this.handleWithdraw(parsedUserOp, targetAddress, callData)
+      } else if (name === 'deposit') {
+        return this.handleDeposit(parsedUserOp, targetAddress, value)
+      }
+    }
+
+    throw new Error('Unsupported swap operation in batch execution')
+  }
+
+  private async handleSingleExecution (parsedUserOp: any, targetFunction: any) {
+    if (!targetFunction) {
+      throw new Error('Missing targetFunction in single execution')
+    }
+
+    const { name, targetAddress, callData, value } = targetFunction
+
+    if (!name) {
+      throw new Error('Missing name in targetFunction')
+    }
+
+    if (name === 'transformERC20') {
+      return this.handleTransformERC20(parsedUserOp, callData)
+    } else if (name === 'withdraw') {
+      return this.handleWithdraw(parsedUserOp, targetAddress, callData)
+    } else if (name === 'deposit') {
+      return this.handleDeposit(parsedUserOp, targetAddress, value)
+    }
+
+    throw new Error(`Unsupported swap operation: ${name}`)
+  }
+
+  private async handleTransformERC20 (parsedUserOp: any, callData: any[]) {
     const [inputToken, outputToken, inputTokenAmount, minOutputTokenAmount] = callData
 
     const isInputNative = inputToken.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
@@ -33,37 +97,73 @@ export default class TokenSwapExecutor extends WalletAction {
       ? NATIVE_FUSE_TOKEN
       : await this.tokenService.fetchTokenDetails(outputToken)
 
-    const sentTokenDetails: ERC20Transfer = {
-      type: isInputNative ? NATIVE_TOKEN_TYPE : ERC_20_TYPE,
-      ...sentTokenData,
-      to: parsedUserOp.sender,
-      value: inputTokenAmount.toString()
-    }
+    return this.constructSwapResponse(parsedUserOp, {
+      sentToken: {
+        ...sentTokenData,
+        type: isInputNative ? NATIVE_TOKEN_TYPE : ERC_20_TYPE,
+        value: inputTokenAmount.toString()
+      },
+      receivedToken: {
+        ...receivedTokenData,
+        type: isOutputNative ? NATIVE_TOKEN_TYPE : ERC_20_TYPE,
+        value: minOutputTokenAmount.toString()
+      }
+    })
+  }
 
-    const receivedTokenDetails: ERC20Transfer = {
-      type: isOutputNative ? NATIVE_TOKEN_TYPE : ERC_20_TYPE,
-      ...receivedTokenData,
-      to: parsedUserOp.sender,
-      value: minOutputTokenAmount.toString()
-    }
+  private async handleWithdraw (parsedUserOp: any, targetAddress: string, callData: any[]) {
+    const [value] = callData
+    const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
 
+    return this.constructSwapResponse(parsedUserOp, {
+      sentToken: {
+        ...tokenData,
+        type: ERC_20_TYPE,
+        value: value.toString()
+      },
+      receivedToken: {
+        ...NATIVE_FUSE_TOKEN,
+        type: NATIVE_TOKEN_TYPE,
+        value: value.toString()
+      }
+    })
+  }
+
+  private async handleDeposit (parsedUserOp: any, targetAddress: string, value: string) {
+    const tokenData = await this.tokenService.fetchTokenDetails(targetAddress)
+
+    return this.constructSwapResponse(parsedUserOp, {
+      sentToken: {
+        ...NATIVE_FUSE_TOKEN,
+        type: NATIVE_TOKEN_TYPE,
+        value: value.toString()
+      },
+      receivedToken: {
+        ...tokenData,
+        type: ERC_20_TYPE,
+        value: value.toString()
+      }
+    })
+  }
+
+  private constructSwapResponse (parsedUserOp: any, { sentToken, receivedToken }: { sentToken: ERC20Transfer, receivedToken: ERC20Transfer }) {
     return {
       name: 'swapTokens',
       walletAddress: parsedUserOp.sender,
       status: 'pending',
-      sent: [sentTokenDetails],
-      received: [receivedTokenDetails],
+      sent: [{ ...sentToken, to: parsedUserOp.sender }],
+      received: [{ ...receivedToken, to: parsedUserOp.sender }],
       userOpHash: parsedUserOp.userOpHash,
       txHash: '',
       blockNumber: 0,
       description: this.generateDescription({
         action: 'Swapped',
-        sentToken: sentTokenDetails.symbol,
-        sentTokenDecimals: sentTokenDetails.decimals,
-        sentTokenValueInWei: sentTokenDetails.value,
-        recToken: receivedTokenDetails.symbol,
-        recTokenDecimals: receivedTokenDetails.decimals,
-        recTokenValueInWei: receivedTokenDetails.value
+        sentToken: sentToken.symbol,
+        sentTokenDecimals: sentToken.decimals,
+        sentTokenValueInWei: sentToken.value,
+        recToken: receivedToken.symbol,
+        recTokenDecimals: receivedToken.decimals,
+        recTokenValueInWei: receivedToken.value
       })
     }
   }

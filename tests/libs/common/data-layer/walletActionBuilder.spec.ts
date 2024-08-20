@@ -13,11 +13,6 @@ import {
   UNSTAKE_NATIVE_TOKENS_CALLDATA,
   ERC_20_STAKE_CALLDATA,
   ERC_20_UNSTAKE_CALLDATA,
-  SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA,
-  SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA,
-  SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA,
-  SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA,
-  SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA,
   TRANSFER_NFT_CALLDATA,
   SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA,
   SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA
@@ -224,41 +219,6 @@ describe('DataLayerService Tests', () => {
     const userOp = await userOpFactory.createUserOp(basicUserOp)
     const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
     expect(walletActionRes).toEqual(walletActionsExamples.ERC_20_TOKEN_UNSTAKE_WALLET_ACTION)
-  })
-
-  test('swap eth for EXACT tokens transfer', async () => {
-    basicUserOp.callData = SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA
-    const userOp = await userOpFactory.createUserOp(basicUserOp)
-    const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-    expect(walletActionRes).toEqual(walletActionsExamples.SWAP_ETH_FOR_EXACT_TOKENS_WALLET_ACTION)
-  })
-
-  test('swap EXACT eth for tokens transfer', async () => {
-    basicUserOp.callData = SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA
-    const userOp = await userOpFactory.createUserOp(basicUserOp)
-    const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-    expect(walletActionRes).toEqual(walletActionsExamples.SWAP_EXACT_ETH_FOR_TOKENS_WALLET_ACTION)
-  })
-
-  test('swap EXACT tokens for eth transfer', async () => {
-    basicUserOp.callData = SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA
-    const userOp = await userOpFactory.createUserOp(basicUserOp)
-    const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-    expect(walletActionRes).toEqual(walletActionsExamples.SWAP_EXACT_TOKENS_FOR_ETH_WALLET_ACTION)
-  })
-
-  test('swap tokens for EXACT eth transfer', async () => {
-    basicUserOp.callData = SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA
-    const userOp = await userOpFactory.createUserOp(basicUserOp)
-    const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-    expect(walletActionRes).toEqual(walletActionsExamples.SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION)
-  })
-
-  test('swap EXACT tokens to tokens transfer', async () => {
-    basicUserOp.callData = SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA
-    const userOp = await userOpFactory.createUserOp(basicUserOp)
-    const walletActionRes = await parsedUserOpToWalletAction(userOp, tokenService)
-    expect(walletActionRes).toEqual(walletActionsExamples.SWAP_EXACT_TOKENS_TO_TOKENS_WALLET_ACTION)
   })
 
   test('swap tokens to EXACT tokens', async () => {

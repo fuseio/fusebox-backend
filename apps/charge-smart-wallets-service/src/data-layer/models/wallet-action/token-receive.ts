@@ -1,9 +1,9 @@
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
 import { ERC20Transfer, ERC721Transfer } from '@app/smart-wallets-service/data-layer/interfaces/token-interfaces'
-import { ERC_721_TYPE, NATIVE_TOKEN_TYPE, TRADE_SWAP_SKIP } from '@app/smart-wallets-service/common/constants/tokenTypes'
-
-const SKIP_SWAP_CONTRACT_ADDRESS = '0x63ed5bBa94D397616aD482BB26bB21E0feceF1a5'
+import { ERC_721_TYPE, NATIVE_TOKEN_TYPE, RECEIVE_SKIP } from '@app/smart-wallets-service/common/constants/tokenTypes'
+import { includes } from 'lodash'
+import { SKIP_ADDRESSES } from '@app/smart-wallets-service/common/constants/receiveSkipAddresses'
 
 type TokenTransferData = ERC20Transfer | ERC721Transfer | { type: string }
 
@@ -15,8 +15,8 @@ export class TokenReceive extends WalletAction {
     { name, symbol, address, decimals },
     tokenId?: number
   ): TokenTransferData {
-    if (targetAddress.toLowerCase() === SKIP_SWAP_CONTRACT_ADDRESS.toLowerCase()) {
-      return { type: TRADE_SWAP_SKIP }
+    if (includes(SKIP_ADDRESSES.map(addr => addr.toLowerCase()), targetAddress.toLowerCase())) {
+      return { type: RECEIVE_SKIP }
     }
 
     const token = this.getToken(tokenType, name, symbol, address, decimals)
@@ -62,7 +62,7 @@ export class TokenReceive extends WalletAction {
     blockNumber: number,
     tokenId?: number
   ) {
-    if ('type' in tokenTransferData && tokenTransferData.type === TRADE_SWAP_SKIP) {
+    if ('type' in tokenTransferData && tokenTransferData.type === RECEIVE_SKIP) {
       return null
     }
 

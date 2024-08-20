@@ -8,7 +8,7 @@ import {
   UnstakeTokens,
   StakeTokens,
   NftTransfer,
-  SwapTrade
+  TokenSwapExecutor
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
 import { TokenReceive } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive'
@@ -34,7 +34,7 @@ const targetActionMap = {
     swapETHForExactTokens: SwapTokens
   },
   '0xeca6055ac01e717cef70b8c6fc5f9ca32cb4118a': {
-    transformERC20: SwapTrade
+    transformERC20: TokenSwapExecutor
   },
   '0x0be9e53fd7edac9f859882afdda116645287c629': {
     withdraw: SwapTokens,

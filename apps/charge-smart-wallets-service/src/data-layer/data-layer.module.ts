@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import config from 'apps/charge-smart-wallets-service/src/data-layer/config/config'
 import { DatabaseModule } from '@app/common'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
-import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { EthersModule } from 'nestjs-ethers'
 import { CentrifugeClientProvider } from '@app/common/centrifuge/centrifugeClient.provider'
@@ -16,6 +15,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { TokenModule } from '@app/common/token/token.module'
+import { UserOpParser } from '@app/common/services/user-op-parser.service'
 
 @Module({
   imports: [

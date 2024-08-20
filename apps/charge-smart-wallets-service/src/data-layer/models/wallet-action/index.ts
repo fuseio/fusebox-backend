@@ -4,9 +4,9 @@ import ERC20Transfer from '@app/smart-wallets-service/data-layer/models/wallet-a
 import NativeTransfer from '@app/smart-wallets-service/data-layer/models/wallet-action/native-transfer'
 import NftTransfer from '@app/smart-wallets-service/data-layer/models/wallet-action/nft-transfer'
 import StakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/stake'
-import SwapTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/swap'
+import SwapTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/legacy-swap'
 import UnstakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/unstake'
-import SwapTrade from './swap-trade'
+import TokenSwapExecutor from './swap'
 // import BatchTransaction from './batch-transaction'
 
 export {
@@ -18,6 +18,6 @@ export {
   StakeTokens,
   SwapTokens,
   UnstakeTokens,
-  SwapTrade
+  TokenSwapExecutor
   // BatchTransaction
 }

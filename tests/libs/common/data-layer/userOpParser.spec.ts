@@ -1,4 +1,3 @@
-import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import {
@@ -20,6 +19,7 @@ import {
   SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA,
   SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA
 } from './constants/calldataExamples'
+import { UserOpParser } from '@app/common/services/user-op-parser.service'
 
 describe('UserOpParser Tests', () => {
   let parser: UserOpParser
@@ -156,7 +156,7 @@ describe('UserOpParser Tests', () => {
     expect(res.targetFunctions[1].callData[3]).toBe('0x5BBEA139C1b1b32CF7b5C7fD1D1fF802De006117')
   })
 
-  it('swapRouterErc20toErc20', async () => {
+  it('swapRouterErc20ToErc20', async () => {
     const res = await parser.parseCallData(SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA)
 
     expect(res.name).toBe('executeBatch')
@@ -178,7 +178,7 @@ describe('UserOpParser Tests', () => {
     expect(Array.isArray(res.targetFunctions[1].callData[4])).toBe(true)
   })
 
-  it('swapRouterNativetoErc20', async () => {
+  it('swapRouterNativeToErc20', async () => {
     const res = await parser.parseCallData(SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA)
 
     expect(res.name).toBe('execute')

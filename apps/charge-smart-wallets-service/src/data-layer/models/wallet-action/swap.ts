@@ -4,7 +4,7 @@ import { ERC20Transfer } from '@app/smart-wallets-service/data-layer/interfaces/
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { formatUnits } from 'nestjs-ethers'
 
-export default class SwapTrade extends WalletAction {
+export default class TokenSwapExecutor extends WalletAction {
   descGenerator (data: any) {
     const sentValue = formatUnits(data.sentTokenValueInWei, data.sentTokenDecimals)
     const recValue = formatUnits(data.recTokenValueInWei, data.recTokenDecimals)

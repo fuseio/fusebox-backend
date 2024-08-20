@@ -1,6 +1,5 @@
 import { expect } from '@jest/globals'
 import { UserOpFactory } from '@app/smart-wallets-service/common/services/user-op-factory.service'
-import { UserOpParser } from '@app/smart-wallets-service/common/services/user-op-parser.service'
 import { parsedUserOpToWalletAction } from '@app/smart-wallets-service/common/utils/wallet-action-factory'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { ConfigService } from '@nestjs/config'
@@ -23,6 +22,7 @@ import {
   SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA,
   SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA
 } from './constants/calldataExamples'
+import { UserOpParser } from '@app/common/services/user-op-parser.service'
 
 const basicUserOp = {
   sender: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117',

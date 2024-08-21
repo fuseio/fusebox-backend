@@ -360,3 +360,67 @@ export const ERC_20_TRANSFER_WALLET_ACTION = {
   blockNumber: 0,
   description: 'Transferred 1.0 Fmb'
 }
+
+export const SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION =
+{
+  walletAddress: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117',
+  name: 'swapTokens',
+  status: 'pending',
+  received: [
+    {
+      name: 'USD Coin on Fuse',
+      symbol: 'USDC',
+      address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5',
+      decimals: 6,
+      type: 'ERC-20',
+      value: '87',
+      to: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117'
+    }
+  ],
+  sent: [
+    {
+      name: 'VoltToken',
+      symbol: 'VOLT',
+      address: '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4',
+      decimals: 18,
+      type: 'ERC-20',
+      value: '1000000000000000000',
+      to: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117'
+    }
+  ],
+  userOpHash: '0x111',
+  txHash: '',
+  blockNumber: 0,
+  description: '1.0 VOLT was swapped to 0.000087 USDC'
+}
+export const SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION = {
+  walletAddress: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117',
+  name: 'swapTokens',
+  status: 'pending',
+  received: [
+    {
+      name: 'USD Coin on Fuse',
+      symbol: 'USDC',
+      address: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5',
+      decimals: 6,
+      type: 'ERC-20',
+      value: '333',
+      to: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117'
+    }
+  ],
+  sent: [
+    {
+      name: 'Fuse Token',
+      symbol: 'FUSE',
+      address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+      decimals: 18,
+      type: 'native',
+      value: '10000000000000000',
+      to: '0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117'
+    }
+  ],
+  userOpHash: '0x111',
+  txHash: '',
+  blockNumber: 0,
+  description: '0.01 FUSE was swapped to 0.000333 USDC'
+}

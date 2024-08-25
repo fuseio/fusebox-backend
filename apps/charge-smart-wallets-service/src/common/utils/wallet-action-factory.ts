@@ -7,7 +7,8 @@ import {
   UnstakeTokens,
   StakeTokens,
   NftTransfer,
-  TokenSwapExecutor
+  TokenSwapExecutor,
+  BatchTransaction
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
 import { TokenReceive } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive'
@@ -49,22 +50,25 @@ function executeSingleAction (name: string, targetAddress: string) {
 }
 
 function executeBatchAction (targetFunctions) {
-  if (targetFunctions.length !== 2) {
-    // TODO: support more than 2 calls
-    throw new Error('Unsupported batch action')
+  if (targetFunctions.length === 2) {
+    const [firstCall, lastCall] = targetFunctions
+    const lastCallAddressMap = targetActionMap[lastCall.targetAddress.toLowerCase()]
+
+    // Check if it's a specific action like swap
+    if (lastCallAddressMap) {
+      const ActionClass = lastCallAddressMap[lastCall.name]
+      if (ActionClass) {
+        if (ActionClass.prototype instanceof WalletAction) {
+          return new ActionClass()
+        } else if (typeof ActionClass === 'function') {
+          return new (ActionClass(firstCall.name))()
+        }
+      }
+    }
   }
 
-  const [firstCall, lastCall] = targetFunctions
-
-  const addressActionMap = targetActionMap[lastCall.targetAddress.toLowerCase()]
-
-  let ActionClass = addressActionMap?.[lastCall.name]
-
-  if (ActionClass && !(ActionClass.prototype instanceof WalletAction)) {
-    ActionClass = ActionClass(firstCall.name)
-  }
-
-  return ActionClass ? new ActionClass(firstCall.name) : null
+  // If it's not a specific action or has more than 2 functions, use BatchTransaction
+  return new BatchTransaction()
 }
 
 function getWalletActionType (parsedUserOp): WalletAction {

@@ -14,3 +14,42 @@ export const getFactories = gql`
         }
     }
 `
+
+export const getTokenPriceByBlock = gql`
+    query getTokenPrice($address: ID!) {
+        token(id: $address) {
+            derivedETH
+        }
+    }
+`
+
+export const bundleFields = gql`
+    fragment bundleFields on Bundle {
+        id
+        ethPrice
+    }
+`
+
+export const fusePriceQuery = gql`
+    query ethPriceQuery($id: Int! = 1, $block: Block_height) {
+        bundles(id: $id, block: $block) {
+            ...bundleFields
+        }
+    }
+
+    ${bundleFields}
+`
+
+export const getTokenDayDataV2 = gql`
+    query ($id: String!, $from: Int!, $first: Int!) {
+        tokens(where: { id: $id, liquidity_gt: 0 }) {
+            id
+            liquidity
+            dayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
+                date
+                priceUSD
+                volumeUSD
+            }
+        }
+    }
+`

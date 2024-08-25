@@ -1,10 +1,11 @@
-import { GraphQLClient, gql } from 'graphql-request'
 import { Injectable, Logger } from '@nestjs/common'
 import { Stat, TokenStat } from './interfaces'
+import { fusePriceQuery, getTokenDayDataV2, getTokenPriceByBlock } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v2'
 import { get, head } from 'lodash'
-import { getBlockQuery, getTokenDataQuery, getTokenUsdPrice } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v3'
+import { getBlockQuery, getTokenDataQuery, getTokenDayDataV3, getTokenUsdPrice } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v3'
 
 import { Duration } from 'dayjs/plugin/duration'
+import { GraphQLClient } from 'graphql-request'
 import { NATIVE_FUSE_ADDRESS } from '@app/notifications-service/common/constants/addresses'
 import { TokenHistoricalStatisticsDto } from './dto/token-stats.dto'
 import { TokenPriceChangeIntervalDto } from './dto/token-price-change-interval.dto'
@@ -50,7 +51,6 @@ export class VoltageDexService {
   }
 
   async getTokenPriceChangeInterval (tokenPriceChangeIntervalDto: TokenPriceChangeIntervalDto) {
-    // const MAX_RESULT_SIZE: number = 50
     const currentTime = dayjs.utc()
     const windowSize: any = tokenPriceChangeIntervalDto.timeFrame.toLowerCase()
 
@@ -103,15 +103,6 @@ export class VoltageDexService {
   }
 
   async getBlockFromTimestamp (timestamp: number) {
-    // {
-    //   blocks: [
-    //     {
-    //       id: "0xb8a4e958c845ba0fc5c5fa52e9f872bf7debe093e885e4376df518ce094c60f6",
-    //       number: "31249038",
-    //       timestamp: "1724489035",
-    //     },
-    //   ],
-    // }
     const result = await this.voltageDexGraphService.getBlockClient().request<{
       blocks: { number: string, timestamp: string }[];
     }>(getBlockQuery, {
@@ -121,12 +112,6 @@ export class VoltageDexService {
     return Number(result?.blocks?.[0]?.timestamp)
   }
 
-  // {
-  //   "id": "0x0be9e53fd7edac9f859882afdda116645287c629-19719",
-  //   "date": 1703721600,
-  //   "priceUSD": "0.07859389890301313902395304642987116",
-  //   "volumeUSD": "0",
-  // }
   async getTokenData (tokenAddress: string, blocknumber?: number) {
     const normalizedAddress = tokenAddress.toLowerCase()
 
@@ -167,19 +152,6 @@ export class VoltageDexService {
   }
 
   private async getTokenDataV3 (tokenAddress: string, blocknumber?: number) {
-    const query = gql`
-      query ($tokenAddress: String!, $from: Int!, $first: Int!) {
-        tokens(where: { id: $tokenAddress, totalValueLockedUSD_gt: 0 }) {
-          totalValueLockedUSD
-          tokenDayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
-            date
-            priceUSD
-            volumeUSD
-          }
-        }
-      }
-    `
-
     const result = await this.voltageDexGraphService.getVoltageV3Client().request<{
       tokens: {
         tokenDayData: {
@@ -188,7 +160,7 @@ export class VoltageDexService {
           volumeUSD: string
         }[]
       }[]
-    }>(query, {
+    }>(getTokenDayDataV3, {
       tokenAddress,
       from: blocknumber,
       first: 1
@@ -198,20 +170,6 @@ export class VoltageDexService {
   }
 
   private async getTokenDataV2 (tokenAddress: string, blocknumber?: number) {
-    const query = gql`
-      query ($id: String!, $from: Int!, $first: Int!) {
-        tokens(where: { id: $id, liquidity_gt: 0 }) {
-          id
-          liquidity
-          dayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
-            date
-            priceUSD
-            volumeUSD
-          }
-        }
-      }
-    `
-
     const result = await this.voltageDexGraphService.getVoltageV2Client().request<{
       tokens: {
         dayData: {
@@ -220,7 +178,7 @@ export class VoltageDexService {
           volumeUSD: string
         }[]
       }[]
-    }>(query, {
+    }>(getTokenDayDataV2, {
       id: tokenAddress,
       from: blocknumber,
       first: 1
@@ -279,19 +237,6 @@ export class VoltageDexService {
   }
 
   private async getVoltageV2Tokens (numberOfDays: number, tokenAddress: string) {
-    const GET_VOLTAGE_V2_TOKENS = gql`
-      query ($from: Int!, $first: Int!, $id: String!) {
-        tokens(where: { id: $id, liquidity_gt: 0 }) {
-          id
-          liquidity
-          dayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
-            date
-            priceUSD
-          }
-        }
-      }
-    `
-
     const now = dayjs.utc()
     const response = await this.voltageDexGraphService.getVoltageV2Client().request<{
       tokens: {
@@ -301,7 +246,7 @@ export class VoltageDexService {
           priceUSD: string
         }[]
       }[]
-    }>(GET_VOLTAGE_V2_TOKENS, {
+    }>(getTokenDayDataV2, {
       from: now.subtract(numberOfDays, 'day').unix(),
       first: numberOfDays,
       id: tokenAddress
@@ -311,18 +256,6 @@ export class VoltageDexService {
   }
 
   private async getVoltageV3Tokens (numberOfDays: number, tokenAddress: string) {
-    const GET_VOLTAGE_V3_TOKENS = gql`
-      query ($from: Int!, $first: Int!, $tokenAddress: String!) {
-        tokens(where: { id: $tokenAddress, totalValueLockedUSD_gt: 0 }) {
-          totalValueLockedUSD
-          tokenDayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
-            date
-            priceUSD
-          }
-        }
-      }
-    `
-
     const now = dayjs.utc()
     const response = await this.voltageDexGraphService.getVoltageV3Client().request<{
       tokens: {
@@ -332,7 +265,7 @@ export class VoltageDexService {
           priceUSD: string
         }[]
       }[]
-    }>(GET_VOLTAGE_V3_TOKENS, {
+    }>(getTokenDayDataV3, {
       from: now.subtract(numberOfDays, 'day').unix(),
       first: numberOfDays,
       tokenAddress
@@ -350,46 +283,21 @@ export class VoltageDexService {
   }
 
   private async getTokenV2Price (address: string): Promise<number> {
-    const query = gql`
-      query getTokenPrice($address: ID!) {
-        token(id: $address) {
-          derivedETH
-        }
-      }
-    `
-
     const response = await this.voltageDexGraphService.getVoltageV2Client().request<{
       token: {
         derivedETH: string
       }
-    }>(query, { address: address.toLowerCase() })
+    }>(getTokenPriceByBlock, { address: address.toLowerCase() })
 
     return response?.token?.derivedETH ? Number(response.token.derivedETH) : 0
   }
-
-  private bundleFields = gql`
-    fragment bundleFields on Bundle {
-      id
-      ethPrice
-    }
-  `
-
-  private fusePriceQuery = gql`
-    query ethPriceQuery($id: Int! = 1, $block: Block_height) {
-      bundles(id: $id, block: $block) {
-        ...bundleFields
-      }
-    }
-
-    ${this.bundleFields}
-  `
 
   private async getFusePrice (): Promise<number> {
     const result = await this.voltageDexGraphService.getVoltageV2Client().request<{
       bundles: {
         ethPrice: string
       }[]
-    }>(this.fusePriceQuery, { id: 1 })
+    }>(fusePriceQuery, { id: 1 })
 
     return result?.bundles?.[0]?.ethPrice ? Number(result.bundles[0].ethPrice) : 0
   }
@@ -474,23 +382,18 @@ export class VoltageDexService {
         end = skip + skipCount
       }
 
-      // Add try catch
-      try {
-        const sliced = list.slice(skip, end)
-        const q = query(...vars, sliced)
-        const result = await localClient.request(q)
+      const sliced = list.slice(skip, end)
+      const q = query(...vars, sliced)
+      const result = await localClient.request(q)
 
-        fetchedData = {
-          ...fetchedData,
-          ...(result as Record<string, unknown>)
-        }
-        if (Object.keys(result).length < skipCount || skip + skipCount > list.length) {
-          allFound = true
-        } else {
-          skip += skipCount
-        }
-      } catch (error) {
-        this.logger.error('Error fetching data:', error)
+      fetchedData = {
+        ...fetchedData,
+        ...(result as Record<string, unknown>)
+      }
+      if (Object.keys(result).length < skipCount || skip + skipCount > list.length) {
+        allFound = true
+      } else {
+        skip += skipCount
       }
     }
 

@@ -89,20 +89,21 @@ export class VoltageDexService {
   async getPreviousTokenPrice (tokenPriceDto: TokenPriceDto) {
     const address = this.getTokenAddressFromTokenMap(tokenPriceDto.tokenAddress.toLowerCase())
     const duration = tokenPriceDto.duration
-      ? dayjs.duration(tokenPriceDto.duration)
+      ? dayjs.duration(tokenPriceDto.duration.duration)
       : dayjs.duration(1, 'days')
-    const previousBlock = await this.getPreviousBlock(duration)
-    const oneDayHighBlock = await this.getTokenData(address, previousBlock)
+    const previousTimestamp = await this.getPreviousBlock(duration)
+    const oneDayHighBlock = await this.getTokenData(address, previousTimestamp)
     return oneDayHighBlock?.priceUSD
   }
 
   async getPreviousBlock (duration: Duration) {
     const currentTime = dayjs()
-    const previousTime = currentTime.subtract(duration).unix()
-    return this.getBlockFromTimestamp(previousTime)
+    const seconds = duration.asSeconds()
+    const previousTime = currentTime.subtract(seconds, 'seconds').unix()
+    return this.getBlockInfoFromTimestamp(previousTime)
   }
 
-  async getBlockFromTimestamp (timestamp: number) {
+  async getBlockInfoFromTimestamp (timestamp: number) {
     const result = await this.voltageDexGraphService.getBlockClient().request<{
       blocks: { number: string, timestamp: string }[];
     }>(getBlockQuery, {
@@ -112,11 +113,11 @@ export class VoltageDexService {
     return Number(result?.blocks?.[0]?.timestamp)
   }
 
-  async getTokenData (tokenAddress: string, blocknumber?: number) {
+  async getTokenData (tokenAddress: string, fromTimestamp?: number) {
     const normalizedAddress = tokenAddress.toLowerCase()
 
     // Query V3
-    const v3Result = await this.getTokenDataV3(normalizedAddress, blocknumber)
+    const v3Result = await this.getTokenDataV3(normalizedAddress, fromTimestamp)
 
     // If V3 has data, return it
     if (v3Result) {
@@ -124,7 +125,7 @@ export class VoltageDexService {
     }
 
     // If V3 doesn't have data, query V2
-    return this.getTokenDataV2(normalizedAddress, blocknumber)
+    return this.getTokenDataV2(normalizedAddress, fromTimestamp)
   }
 
   async getTokenStats (tokenHistoricalStatisticsDto: TokenHistoricalStatisticsDto) {
@@ -151,7 +152,7 @@ export class VoltageDexService {
     return head(data)
   }
 
-  private async getTokenDataV3 (tokenAddress: string, blocknumber?: number) {
+  private async getTokenDataV3 (tokenAddress: string, fromTimestamp?: number) {
     const result = await this.voltageDexGraphService.getVoltageV3Client().request<{
       tokens: {
         tokenDayData: {
@@ -162,14 +163,14 @@ export class VoltageDexService {
       }[]
     }>(getTokenDayDataV3, {
       tokenAddress,
-      from: blocknumber,
+      from: fromTimestamp,
       first: 1
     })
 
     return result?.tokens[0]?.tokenDayData[0]
   }
 
-  private async getTokenDataV2 (tokenAddress: string, blocknumber?: number) {
+  private async getTokenDataV2 (tokenAddress: string, fromTimestamp?: number) {
     const result = await this.voltageDexGraphService.getVoltageV2Client().request<{
       tokens: {
         dayData: {
@@ -180,7 +181,7 @@ export class VoltageDexService {
       }[]
     }>(getTokenDayDataV2, {
       id: tokenAddress,
-      from: blocknumber,
+      from: fromTimestamp,
       first: 1
     })
 

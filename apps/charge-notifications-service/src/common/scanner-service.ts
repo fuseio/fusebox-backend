@@ -43,7 +43,7 @@ export abstract class ScannerService {
         )
         await this.scannerStatusService.updateStatus(toBlockNumber)
       } catch (error) {
-        // this.logger.error(`Failed to process blocks: ${error}`)
+        this.logger.error(`Failed to process blocks: ${error}`)
       }
     }
   }

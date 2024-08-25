@@ -52,9 +52,9 @@ export class TransactionsScannerService extends ScannerService {
         try {
           await this.processTrace(trace)
         } catch (error) {
-          // this.logger.error('Failed to process transaction:')
-          // this.logger.error({ trace })
-          // this.logger.error(error)
+          this.logger.error('Failed to process transaction:')
+          this.logger.error({ trace })
+          this.logger.error(error)
         }
       }
     }

@@ -6,6 +6,7 @@ import { LogFilter } from './interfaces/logs-filter'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
+
 @Injectable()
 export abstract class EventsScannerService extends ScannerService {
   constructor (
@@ -28,9 +29,9 @@ export abstract class EventsScannerService extends ScannerService {
       try {
         await this.processEvent(log)
       } catch (error) {
-        // this.logger.error('Failed to process log:')
-        // this.logger.error({ log })
-        // this.logger.error(error)
+        this.logger.error('Failed to process log:')
+        this.logger.error({ log })
+        this.logger.error(error)
       }
     }
   }

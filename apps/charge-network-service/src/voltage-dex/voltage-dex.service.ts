@@ -1,7 +1,8 @@
 import { GraphQLClient, gql } from 'graphql-request'
 import { Injectable, Logger } from '@nestjs/common'
-import { Stat, TimeFrame, TokenStat } from './interfaces'
-import { getBlockQuery, getPricesByBlockQuery, getTokenDataQuery, getTokenUsdPrice } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v3'
+import { Stat, TokenStat } from './interfaces'
+import { get, head } from 'lodash'
+import { getBlockQuery, getTokenDataQuery, getTokenUsdPrice } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v3'
 
 import { Duration } from 'dayjs/plugin/duration'
 import { NATIVE_FUSE_ADDRESS } from '@app/notifications-service/common/constants/addresses'
@@ -10,7 +11,6 @@ import { TokenPriceChangeIntervalDto } from './dto/token-price-change-interval.d
 import { TokenPriceDto } from './dto/token-price.dto'
 import VoltageDexGraphService from '@app/network-service/voltage-dex/graph.service'
 import dayjs from '@app/common/utils/dayjs'
-import { get } from 'lodash'
 import { getBlocksQuery } from '@app/network-service/common/constants/graph-queries/fuse-blocks'
 import { getSubgraphHealth } from '../common/constants/graph-queries/health'
 
@@ -40,59 +40,6 @@ export class VoltageDexService {
     return this.getTokenPriceV2(address)
   }
 
-  private async getTokenPriceV2 (address: string): Promise<string> {
-    const fusePrice = await this.getFusePrice()
-    const tokenFusePrice = await this.getEthTokenV2Price(address)
-
-    const price = fusePrice * tokenFusePrice
-    return price.toString()
-  }
-
-  private async getEthTokenV2Price (address: string): Promise<number> {
-    const query = gql`
-      query getTokenPrice($address: ID!) {
-        token(id: $address) {
-          derivedETH
-        }
-      }
-    `
-
-    const response = await this.voltageDexGraphService.getVoltageV2Client().request<{
-      token: {
-        derivedETH: string
-      }
-    }>(query, { address: address.toLowerCase() })
-
-    return response?.token?.derivedETH ? parseFloat(response.token.derivedETH) : 0
-  }
-
-  private bundleFields = gql`
-    fragment bundleFields on Bundle {
-      id
-      ethPrice
-    }
-  `
-
-  private fusePriceQuery = gql`
-    query ethPriceQuery($id: Int! = 1, $block: Block_height) {
-      bundles(id: $id, block: $block) {
-        ...bundleFields
-      }
-    }
-
-    ${this.bundleFields}
-  `
-
-  private async getFusePrice (): Promise<number> {
-    const result = await this.voltageDexGraphService.getVoltageV2Client().request<{
-      bundles: {
-        ethPrice: string
-      }[]
-    }>(this.fusePriceQuery, { id: 1 })
-
-    return result?.bundles?.[0]?.ethPrice ? parseFloat(result.bundles[0].ethPrice) : 0
-  }
-
   async getTokenPriceChange (tokenPriceDto: TokenPriceDto) {
     const [currentPrice, previousPrice] = await Promise.all([
       this.getTokenPrice(tokenPriceDto),
@@ -103,63 +50,33 @@ export class VoltageDexService {
   }
 
   async getTokenPriceChangeInterval (tokenPriceChangeIntervalDto: TokenPriceChangeIntervalDto) {
-    const MAX_RESULT_SIZE: number = 50
+    // const MAX_RESULT_SIZE: number = 50
     const currentTime = dayjs.utc()
     const windowSize: any = tokenPriceChangeIntervalDto.timeFrame.toLowerCase()
 
-    const time = tokenPriceChangeIntervalDto.timeFrame === TimeFrame.ALL
-      ? 1645617935 // Voltage deployment timestamp - need to check this
-      : currentTime.subtract(1, windowSize).startOf('hour').unix()
+    const time = currentTime.subtract(1, windowSize).startOf('hour').unix()
 
     const secondsInTimeFrame = currentTime.unix() - time
-    const interval = parseInt((secondsInTimeFrame / MAX_RESULT_SIZE).toString())
-    const timestamps = this.getTimestamps(time, interval)
-
-    if (timestamps.length === 0) {
-      return []
-    }
-
-    let blocks = await this.getBlocksFromTimestamp(timestamps, 100)
-
-    if (!blocks || blocks.length === 0) {
-      return []
-    }
-
-    const { latestBlock } = await this.getLatestBlocks()
-
-    if (latestBlock) {
-      blocks = blocks.filter(b => parseFloat(b.number) <= parseFloat(latestBlock))
-    }
-
+    const numberOfDays = Math.ceil(secondsInTimeFrame / (24 * 60 * 60))
+    this.logger.log(`Fetching token price for ${tokenPriceChangeIntervalDto.tokenAddress} for ${numberOfDays} days`)
     const address = tokenPriceChangeIntervalDto.tokenAddress.toLowerCase()
 
-    const result: any = await this.splitQuery(
-      getPricesByBlockQuery,
-      this.voltageDexGraphService.getVoltageV3Client(),
-      [address],
-      blocks
-    )
+    const [v2Token, v3Token] = await this.fetchToken(numberOfDays, address)
 
-    let values: Array<any> = []
-    for (const row in result) {
-      const timestamp = parseFloat(row.split('t')[1])
-      const derivedUSD = parseFloat(result[row]?.derivedUSD)
-      if (timestamp) {
-        values.push({
-          timestamp,
-          priceUSD: derivedUSD
-        })
-      }
+    if (!v2Token && !v3Token) {
+      return []
     }
 
-    values = values.sort((a, b) => a.timestamp - b.timestamp)
+    const tokenDayData = this.selectBestTokenData(v2Token, v3Token)
+
+    const parsedTokenDayData = this.parseTokenDayData(tokenDayData)
 
     const formattedHistory = []
-    for (let i = 0; i < values.length - 1; i++) {
-      const previousPrice = parseFloat(values[i].priceUSD) || 0
-      const currentPrice = parseFloat(values[i + 1].priceUSD) || 0
+    for (let i = 0; i < parsedTokenDayData.length - 1; i++) {
+      const previousPrice = parsedTokenDayData[i].priceUSD
+      const currentPrice = parsedTokenDayData[i + 1].priceUSD
       formattedHistory.push({
-        timestamp: values[i].timestamp,
+        timestamp: parsedTokenDayData[i].timestamp,
         priceChange: this.getPercentChange(currentPrice.toString(), previousPrice.toString()),
         previousPrice,
         currentPrice
@@ -223,6 +140,30 @@ export class VoltageDexService {
 
     // If V3 doesn't have data, query V2
     return this.getTokenDataV2(normalizedAddress, blocknumber)
+  }
+
+  async getTokenStats (tokenHistoricalStatisticsDto: TokenHistoricalStatisticsDto) {
+    const normalizedAddress = tokenHistoricalStatisticsDto.tokenAddress.toLowerCase()
+    const response = await this.voltageDexGraphService.getVoltageV3Client().request<{
+      tokens: {
+        tokenDayData: {
+          date: number
+          priceUSD: string
+          volumeUSD: string
+        }[]
+      }[]
+    }>(getTokenDataQuery, {
+      first: tokenHistoricalStatisticsDto.limit ?? 30,
+      tokenAddress: normalizedAddress
+    })
+
+    const data = response.tokens.map(({ tokenDayData }: { tokenDayData: { date: number; priceUSD: string; volumeUSD: string }[] }) =>
+      tokenDayData.map(({ priceUSD, volumeUSD, date }: Stat) =>
+        new TokenStat(tokenHistoricalStatisticsDto.tokenAddress, priceUSD, volumeUSD, date)
+      )
+    )
+
+    return head(data)
   }
 
   private async getTokenDataV3 (tokenAddress: string, blocknumber?: number) {
@@ -298,19 +239,159 @@ export class VoltageDexService {
     return null
   }
 
-  async getTokenStats (tokenHistoricalStatisticsDto: TokenHistoricalStatisticsDto) {
-    const normalizedAddress = tokenHistoricalStatisticsDto.tokenAddress.toLowerCase()
-    const response = await this.voltageDexGraphService.getVoltageV3Client().request<{
-      tokenDayDatas: {
-        date: number
-        priceUSD: string
-        volumeUSD: string
-      }[]
-    }>(getTokenDataQuery(normalizedAddress, tokenHistoricalStatisticsDto.limit))
+  private async fetchToken (numberOfDays: number, tokenAddress: string) {
+    const promises = await Promise.allSettled([
+      this.getVoltageV2Tokens(numberOfDays, tokenAddress),
+      this.getVoltageV3Tokens(numberOfDays, tokenAddress)
+    ])
 
-    return response.tokenDayDatas.map(({ priceUSD, volumeUSD, date }: Stat) =>
-      new TokenStat(tokenHistoricalStatisticsDto.tokenAddress, priceUSD, volumeUSD, date)
-    )
+    return promises.map((promise) => (promise.status === 'fulfilled' ? promise.value : null))
+  }
+
+  private selectBestTokenData (v2Token: any, v3Token: any) {
+    const v2Liquidity = Number(v2Token?.liquidity ?? 0)
+    const v2TokenDayDataLength = v2Token?.dayData?.length ?? 0
+
+    const v3TVL = Number(v3Token?.totalValueLockedUSD ?? 0)
+    const v3TokenDayDataLength = v3Token?.tokenDayData?.length ?? 0
+
+    if (v2TokenDayDataLength >= v3TokenDayDataLength && v2Liquidity >= v3TVL) {
+      return v2Token?.dayData
+    } else if (v3TokenDayDataLength >= v2TokenDayDataLength && v3TVL >= v2Liquidity) {
+      return v3Token?.tokenDayData
+    } else {
+      // Default to one with highest TVL
+      return v2Liquidity > v3TVL ? v2Token?.dayData : v3Token?.tokenDayData
+    }
+  }
+
+  private parseTokenDayData (tokenDayData: any[]) {
+    return tokenDayData.map((dayData) => {
+      const { priceUSD } = dayData
+      const date = dayData?.date ? dayData.date : dayData.timestamp
+
+      return {
+        priceUSD: Number(priceUSD),
+        timestamp: parseFloat(date),
+        date: dayjs.unix(date).format('YYYY-MM-DD')
+      }
+    }).sort((a, b) => a.timestamp - b.timestamp)
+  }
+
+  private async getVoltageV2Tokens (numberOfDays: number, tokenAddress: string) {
+    const GET_VOLTAGE_V2_TOKENS = gql`
+      query ($from: Int!, $first: Int!, $id: String!) {
+        tokens(where: { id: $id, liquidity_gt: 0 }) {
+          id
+          liquidity
+          dayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
+            date
+            priceUSD
+          }
+        }
+      }
+    `
+
+    const now = dayjs.utc()
+    const response = await this.voltageDexGraphService.getVoltageV2Client().request<{
+      tokens: {
+        liquidity: string
+        dayData: {
+          date: number
+          priceUSD: string
+        }[]
+      }[]
+    }>(GET_VOLTAGE_V2_TOKENS, {
+      from: now.subtract(numberOfDays, 'day').unix(),
+      first: numberOfDays,
+      id: tokenAddress
+    })
+
+    return response?.tokens[0] || []
+  }
+
+  private async getVoltageV3Tokens (numberOfDays: number, tokenAddress: string) {
+    const GET_VOLTAGE_V3_TOKENS = gql`
+      query ($from: Int!, $first: Int!, $tokenAddress: String!) {
+        tokens(where: { id: $tokenAddress, totalValueLockedUSD_gt: 0 }) {
+          totalValueLockedUSD
+          tokenDayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
+            date
+            priceUSD
+          }
+        }
+      }
+    `
+
+    const now = dayjs.utc()
+    const response = await this.voltageDexGraphService.getVoltageV3Client().request<{
+      tokens: {
+        totalValueLockedUSD: string
+        tokenDayData: {
+          date: number
+          priceUSD: string
+        }[]
+      }[]
+    }>(GET_VOLTAGE_V3_TOKENS, {
+      from: now.subtract(numberOfDays, 'day').unix(),
+      first: numberOfDays,
+      tokenAddress
+    })
+
+    return response?.tokens[0] || []
+  }
+
+  private async getTokenPriceV2 (address: string): Promise<string> {
+    const fusePrice = await this.getFusePrice()
+    const tokenPrice = await this.getTokenV2Price(address)
+
+    const price = fusePrice * tokenPrice
+    return price.toString()
+  }
+
+  private async getTokenV2Price (address: string): Promise<number> {
+    const query = gql`
+      query getTokenPrice($address: ID!) {
+        token(id: $address) {
+          derivedETH
+        }
+      }
+    `
+
+    const response = await this.voltageDexGraphService.getVoltageV2Client().request<{
+      token: {
+        derivedETH: string
+      }
+    }>(query, { address: address.toLowerCase() })
+
+    return response?.token?.derivedETH ? Number(response.token.derivedETH) : 0
+  }
+
+  private bundleFields = gql`
+    fragment bundleFields on Bundle {
+      id
+      ethPrice
+    }
+  `
+
+  private fusePriceQuery = gql`
+    query ethPriceQuery($id: Int! = 1, $block: Block_height) {
+      bundles(id: $id, block: $block) {
+        ...bundleFields
+      }
+    }
+
+    ${this.bundleFields}
+  `
+
+  private async getFusePrice (): Promise<number> {
+    const result = await this.voltageDexGraphService.getVoltageV2Client().request<{
+      bundles: {
+        ethPrice: string
+      }[]
+    }>(this.fusePriceQuery, { id: 1 })
+
+    return result?.bundles?.[0]?.ethPrice ? Number(result.bundles[0].ethPrice) : 0
   }
 
   private async getBlocksFromTimestamp (timestamps: Array<number>, skipCount = 500) {

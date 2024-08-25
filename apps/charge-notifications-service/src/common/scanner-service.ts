@@ -1,7 +1,7 @@
-import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { BaseProvider } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
 import { ScannerStatusService } from './scanner-status.service'
+import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 
 export abstract class ScannerService {
   constructor (
@@ -43,7 +43,7 @@ export abstract class ScannerService {
         )
         await this.scannerStatusService.updateStatus(toBlockNumber)
       } catch (error) {
-        this.logger.error(`Failed to process blocks: ${error}`)
+        // this.logger.error(`Failed to process blocks: ${error}`)
       }
     }
   }

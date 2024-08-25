@@ -44,9 +44,9 @@ export class ERC20EventsScannerService extends EventsScannerService {
       try {
         await this.processEvent(log)
       } catch (error) {
-        this.logger.error('Failed to process log:')
-        this.logger.error({ log })
-        this.logger.error(error)
+        // this.logger.error('Failed to process log:')
+        // this.logger.error({ log })
+        // this.logger.error(error)
       }
     }
   }
@@ -69,7 +69,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
     try {
       [name, symbol, decimals] = await this.getTokenInfo(tokenAddress, abi, tokenType)
     } catch (err) {
-      this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
+      // this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
     const gasValues = await this.gasService.fetchTransactionGasCosts(

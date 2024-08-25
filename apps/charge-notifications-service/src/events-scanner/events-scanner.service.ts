@@ -1,10 +1,11 @@
-import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import { Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { BaseProvider, Log } from 'nestjs-ethers'
+import { Injectable, Logger } from '@nestjs/common'
+
+import { ConfigService } from '@nestjs/config'
+import { LogFilter } from './interfaces/logs-filter'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
-import { LogFilter } from './interfaces/logs-filter'
+import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
 @Injectable()
 export abstract class EventsScannerService extends ScannerService {
   constructor (
@@ -27,9 +28,9 @@ export abstract class EventsScannerService extends ScannerService {
       try {
         await this.processEvent(log)
       } catch (error) {
-        this.logger.error('Failed to process log:')
-        this.logger.error({ log })
-        this.logger.error(error)
+        // this.logger.error('Failed to process log:')
+        // this.logger.error({ log })
+        // this.logger.error(error)
       }
     }
   }

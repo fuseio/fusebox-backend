@@ -15,7 +15,7 @@ export function logPerformance (
       const result = await method.apply(this, args)
       const finish = performance.now()
 
-      console.log(`${logPrefix} Execution time: ${finish - start} ms`)
+      // console.log(`${logPrefix} Execution time: ${finish - start} ms`)
       return result
     }
   }

@@ -24,7 +24,8 @@ export class VoltageDexService {
   ) { }
 
   async getTokenPrice (tokenPriceDto: TokenPriceDto) {
-    const address = tokenPriceDto.tokenAddress.toLowerCase()
+    const normalizedAddress = tokenPriceDto.tokenAddress.toLowerCase()
+    const address = this.getTokenAddressFromTokenMap(normalizedAddress)
 
     // Try to get price from V3
     const v3Result = await this.voltageDexGraphService.getVoltageV3Client().request<{
@@ -59,7 +60,8 @@ export class VoltageDexService {
     const secondsInTimeFrame = currentTime.unix() - time
     const numberOfDays = Math.ceil(secondsInTimeFrame / (24 * 60 * 60))
     this.logger.log(`Fetching token price for ${tokenPriceChangeIntervalDto.tokenAddress} for ${numberOfDays} days`)
-    const address = tokenPriceChangeIntervalDto.tokenAddress.toLowerCase()
+    const normalizedAddress = tokenPriceChangeIntervalDto.tokenAddress.toLowerCase()
+    const address = this.getTokenAddressFromTokenMap(normalizedAddress)
 
     const [v2Token, v3Token] = await this.fetchToken(numberOfDays, address)
 
@@ -130,6 +132,7 @@ export class VoltageDexService {
 
   async getTokenStats (tokenHistoricalStatisticsDto: TokenHistoricalStatisticsDto) {
     const normalizedAddress = tokenHistoricalStatisticsDto.tokenAddress.toLowerCase()
+    const address = this.getTokenAddressFromTokenMap(normalizedAddress)
     const response = await this.voltageDexGraphService.getVoltageV3Client().request<{
       tokens: {
         tokenDayData: {
@@ -140,7 +143,7 @@ export class VoltageDexService {
       }[]
     }>(getTokenDataQuery, {
       first: tokenHistoricalStatisticsDto.limit ?? 30,
-      tokenAddress: normalizedAddress
+      tokenAddress: address
     })
 
     const data = response.tokens.map(({ tokenDayData }: { tokenDayData: { date: number; priceUSD: string; volumeUSD: string }[] }) =>

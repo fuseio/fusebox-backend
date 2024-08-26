@@ -2,6 +2,7 @@ import { Controller, Query, Get, Post, Body, Param, UseGuards } from '@nestjs/co
 import { ApiTags, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiBody } from '@nestjs/swagger'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { TradeApiService } from '@app/api-service/legacy-api/legacy-trade-api/trade-api.service'
+import { DurationDto } from '@app/network-service/voltage-dex/dto/duration.dto'
 
 @ApiTags('Trade V1')
 @UseGuards(IsValidPublicApiKeyGuard)
@@ -38,9 +39,9 @@ export class LegacyTradeApiController {
   @ApiResponse({ status: 200, description: 'Success response with price change data' })
   async getTokenPriceChangeOverTime (
     @Param('tokenAddress') tokenAddress: string,
-    @Body() duration: Record<string, number>
+    @Body() durationDto: DurationDto
   ) {
-    const priceChange = await this.tradeApiService.getTokenPriceChangeOverTime(tokenAddress, duration)
+    const priceChange = await this.tradeApiService.getTokenPriceChangeOverTime(tokenAddress, durationDto.duration)
     return {
       data: priceChange
     }

@@ -89,7 +89,7 @@ export class VoltageDexService {
   async getPreviousTokenPrice (tokenPriceDto: TokenPriceDto) {
     const address = this.getTokenAddressFromTokenMap(tokenPriceDto.tokenAddress.toLowerCase())
     const duration = tokenPriceDto.duration
-      ? dayjs.duration(tokenPriceDto.duration.duration)
+      ? dayjs.duration(tokenPriceDto.duration)
       : dayjs.duration(1, 'days')
     const previousTimestamp = await this.getPreviousBlock(duration)
     const oneDayHighBlock = await this.getTokenData(address, previousTimestamp)

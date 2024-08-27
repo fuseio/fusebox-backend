@@ -1,12 +1,12 @@
-import { Stat, TokenStat } from '../interfaces'
+import { Stat, TokenStat } from '@app/network-service/voltage-dex/interfaces'
 
 import { Injectable } from '@nestjs/common'
-import { TokenAddressMapper } from './token-address-mapper.service'
-import { TokenHistoricalStatisticsDto } from '../dto/token-stats.dto'
-import { TokenPriceChangeIntervalDto } from '../dto/token-price-change-interval.dto'
-import { VoltageV2Client } from './voltage-v2-client.service'
-import { VoltageV3Client } from './voltage-v3-client.service'
-import dayjs from 'dayjs'
+import { TokenAddressMapper } from '@app/network-service/voltage-dex/services/token-address-mapper.service'
+import { TokenHistoricalStatisticsDto } from '@app/network-service/voltage-dex/dto/token-stats.dto'
+import { TokenPriceChangeIntervalDto } from '@app/network-service/voltage-dex/dto/token-price-change-interval.dto'
+import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
+import { VoltageV3Client } from '@app/network-service/voltage-dex/services/voltage-v3-client.service'
+import dayjs from '@app/common/utils/dayjs'
 import { head } from 'lodash'
 
 @Injectable()

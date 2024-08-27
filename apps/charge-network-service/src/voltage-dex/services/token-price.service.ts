@@ -1,10 +1,10 @@
-import { BlocksClient } from './blocks-client.service'
+import { BlocksClient } from '@app/network-service/voltage-dex/services/blocks-client.service'
 import { Injectable } from '@nestjs/common'
-import { TokenAddressMapper } from './token-address-mapper.service'
-import { TokenPriceDto } from '../dto/token-price.dto'
-import { VoltageV2Client } from './voltage-v2-client.service'
-import { VoltageV3Client } from './voltage-v3-client.service'
-import dayjs from 'dayjs'
+import { TokenAddressMapper } from '@app/network-service/voltage-dex/services/token-address-mapper.service'
+import { TokenPriceDto } from '@app/network-service/voltage-dex/dto/token-price.dto'
+import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
+import { VoltageV3Client } from '@app/network-service/voltage-dex/services/voltage-v3-client.service'
+import dayjs from '@app/common/utils/dayjs'
 
 @Injectable()
 export class TokenPriceService {

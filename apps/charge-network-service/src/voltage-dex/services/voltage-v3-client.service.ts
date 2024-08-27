@@ -2,7 +2,7 @@ import { getTokenDataQuery, getTokenDayDataV3, getTokenUsdPrice } from '@app/net
 
 import { GraphQLClient } from 'graphql-request'
 import { Injectable } from '@nestjs/common'
-import dayjs from 'dayjs'
+import dayjs from '@app/common/utils/dayjs'
 
 @Injectable()
 export class VoltageV3Client {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { eventTypes } from '../schemas/webhook.schema'
+import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
 
 export class CreateWebhook {
   @ApiProperty({ example: '2233232', description: 'The project ID.' })

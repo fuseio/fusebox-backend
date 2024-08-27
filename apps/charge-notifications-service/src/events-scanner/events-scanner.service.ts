@@ -2,7 +2,7 @@ import { BaseProvider, Log } from 'nestjs-ethers'
 import { Injectable, Logger } from '@nestjs/common'
 
 import { ConfigService } from '@nestjs/config'
-import { LogFilter } from './interfaces/logs-filter'
+import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { TimeFrame } from '../interfaces'
+import { TimeFrame } from '@app/network-service/voltage-dex/interfaces'
 
 export class TokenPriceChangeInterval {
   @ApiProperty({

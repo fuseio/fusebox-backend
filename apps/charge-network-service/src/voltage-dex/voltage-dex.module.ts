@@ -1,6 +1,6 @@
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
-import { BlocksClient } from './services/blocks-client.service'
+import { BlocksClient } from '@app/network-service/voltage-dex/services/blocks-client.service'
 import { GraphQLClient } from 'graphql-request'
 import { Module } from '@nestjs/common'
 import { TokenAddressMapper } from '@app/network-service/voltage-dex/services/token-address-mapper.service'

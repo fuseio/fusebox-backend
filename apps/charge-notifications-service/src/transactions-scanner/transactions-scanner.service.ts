@@ -8,7 +8,7 @@ import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther, getAddre
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
-import { transactionsScannerStatusServiceString } from './transactions-scanner.constants'
+import { transactionsScannerStatusServiceString } from '@app/notifications-service/transactions-scanner/transactions-scanner.constants'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { GasService } from '@app/common/services/gas.service'
 

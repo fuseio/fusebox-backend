@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
 
-import { TokenHistoricalStatisticsDto } from './dto/token-stats.dto'
-import { TokenPriceChangeIntervalDto } from './dto/token-price-change-interval.dto'
-import { TokenPriceDto } from './dto/token-price.dto'
-import { TokenPriceService } from './services/token-price.service'
-import { TokenStatsService } from './services/token-stats.service'
+import { TokenHistoricalStatisticsDto } from '@app/network-service/voltage-dex/dto/token-stats.dto'
+import { TokenPriceChangeIntervalDto } from '@app/network-service/voltage-dex/dto/token-price-change-interval.dto'
+import { TokenPriceDto } from '@app/network-service/voltage-dex/dto/token-price.dto'
+import { TokenPriceService } from '@app/network-service/voltage-dex/services/token-price.service'
+import { TokenStatsService } from '@app/network-service/voltage-dex/services/token-stats.service'
 
 @Injectable()
 export class VoltageDexService {

@@ -1,18 +1,16 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ExecutionContext, HttpException, Injectable, Logger, NestInterceptor } from '@nestjs/common'
 import { catchError, map } from 'rxjs/operators'
-import { get, isEmpty } from 'lodash'
 
-import { ApiKeysService } from '@app/api-service/api-keys/api-keys.service'
 import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
+import { isEmpty } from 'lodash'
 
 @Injectable()
 export class TradeApiInterceptor implements NestInterceptor {
   private readonly logger = new Logger(TradeApiInterceptor.name)
 
   constructor (
-    private apiKeysService: ApiKeysService,
     private httpService: HttpService,
     private configService: ConfigService
   ) { }
@@ -52,32 +50,13 @@ export class TradeApiInterceptor implements NestInterceptor {
     const query = request.query
     const params = request.params
     const body = request.body || {}
-    const requestHeaders = request.headers
 
     // Get the configuration for the relevant API
     const config = this.configService.get<Record<string, any>>(ctxClassName)
 
     // Replace headers if needed based on the configuration
-    let headers: Record<string, any> = {
+    const headers: Record<string, any> = {
       'Content-Type': 'application/json'
-    }
-
-    if (config.replaceHeaders) {
-      const projectJwt = await this.apiKeysService.getProjectJwt({ publicKey: query?.apiKey })
-      headers = {
-        Authorization: `Bearer ${projectJwt}`
-      }
-    } else if (get(requestHeaders, 'authorization')) {
-      headers = {
-        Authorization: get(requestHeaders, 'authorization')
-      }
-    }
-
-    if (config.addCommunityAddressForPostRequests &&
-      ctxHandlerName === 'post' &&
-      isEmpty(body?.communityAddress)) {
-      const projectId = await this.apiKeysService.getProjectIdByPublicKey(query?.apiKey)
-      body.communityAddress = projectId
     }
 
     // Build the final request configuration

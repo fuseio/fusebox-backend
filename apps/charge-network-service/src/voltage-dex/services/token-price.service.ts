@@ -19,7 +19,7 @@ export class TokenPriceService {
     const address = this.tokenAddressMapper.getTokenAddress(tokenPriceDto.tokenAddress)
 
     const v3Price = await this.voltageV3Client.getTokenPrice(address)
-    if (v3Price && v3Price !== '0') {
+    if (v3Price) {
       return v3Price
     }
 

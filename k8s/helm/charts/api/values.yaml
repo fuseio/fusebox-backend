@@ -78,8 +78,6 @@ configMap:
   legacy_fuse_admin_api_url: ""
   # -- Legacy - Fuse wallet API URL
   legacy_fuse_wallet_api_url: ""
-  # -- Legacy - Fuse trade API URL
-  legacy_fuse_trade_api_url: ""
   # -- Voltage router API URL
   voltage_router_api_url: ""
 

@@ -63,8 +63,6 @@ configMap:
   legacy_fuse_wallet_api_url: ""
   # -- Charge - Base URL
   charge_base_url: ""
-  # -- Legacy - Fuse trade API URL
-  legacy_fuse_trade_api_url: ""
   # -- CoinGecko URL
   coin_gecko_url: ""
 

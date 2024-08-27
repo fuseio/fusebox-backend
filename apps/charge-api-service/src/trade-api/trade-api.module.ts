@@ -3,11 +3,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { ConfigModule } from '@nestjs/config'
 import { HttpModule } from '@nestjs/axios'
-import { LegacyAdminApiController } from '@app/api-service/legacy-api/legacy-admin-api/legacy-admin-api.controller'
-import { LegacyJobsApiController } from '@app/api-service/legacy-api/legacy-jobs-api/legacy-jobs-api.controller'
-import { LegacyWalletApiController } from '@app/api-service/legacy-api/legacy-wallet-api/legacy-wallet-api.controller'
 import { Module } from '@nestjs/common'
-import configuration from '@app/api-service/legacy-api/config/configuration'
+import { TradeApiController } from '@app/api-service/trade-api/trade-api.controller'
+import { TradeApiService } from '@app/api-service/trade-api/trade-api.service'
+import { TradeApiV2Controller } from '@app/api-service/trade-api/trade-api-v2.controller'
+import configuration from '@app/api-service/trade-api/config/configuration'
 import { networkService } from '@app/common/constants/microservices.constants'
 
 @Module({
@@ -27,9 +27,11 @@ import { networkService } from '@app/common/constants/microservices.constants'
     ])
   ],
   controllers: [
-    LegacyWalletApiController,
-    LegacyAdminApiController,
-    LegacyJobsApiController
+    TradeApiV2Controller,
+    TradeApiController
+  ],
+  providers: [
+    TradeApiService
   ]
 })
-export class LegacyApiModule { }
+export class TradeApiModule { }

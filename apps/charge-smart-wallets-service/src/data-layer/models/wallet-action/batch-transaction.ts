@@ -1,5 +1,5 @@
 import { ERC_20_TYPE, ERC_721_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
-import WalletAction from './base'
+import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 
 export default class BatchTransaction extends WalletAction {

@@ -10,7 +10,8 @@ const ercTransferMetadata = {
   value: { type: String, nullable: true },
   to: { type: String, nullable: true },
   from: { type: String, nullable: true },
-  tokenId: { type: String, nullable: true }
+  tokenId: { type: String, nullable: true },
+  actionName: { type: String, nullable: true }
 }
 
 export const WalletActionSchema = new mongoose.Schema(

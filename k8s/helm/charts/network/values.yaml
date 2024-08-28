@@ -55,8 +55,6 @@ autoscaling:
 
 # ConfigMap (non - sensitive information)
 configMap:
-  # -- Legacy - Fuse trade API URL
-  legacy_fuse_trade_api_url: ""
   # -- BlockScout API URL
   explorer_api_url: ""
   # -- Unmarshal - Base URL

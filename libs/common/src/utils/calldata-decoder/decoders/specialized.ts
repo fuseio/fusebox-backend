@@ -1,8 +1,9 @@
-import { ethers } from 'ethers'
-import { Logger } from '@nestjs/common'
-import { startHexWith0x } from '../utils'
 import { guessAbiEncodedData, guessFragment } from '@openchainxyz/abi-guesser'
+
+import { Logger } from '@nestjs/common'
+import { ethers } from 'ethers'
 import { hexToBigInt } from 'viem'
+import { startHexWith0x } from '@app/common/utils/calldata-decoder/utils'
 
 const logger = new Logger('SpecializedDecoders')
 

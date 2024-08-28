@@ -60,6 +60,7 @@
     "class-validator": "^0.14.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "ethereumjs-util": "^7.1.5",
     "ethereumjs-wallet": "^1.0.2",

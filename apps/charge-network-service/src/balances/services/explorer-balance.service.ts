@@ -1,12 +1,13 @@
-import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, map } from 'rxjs'
-import { BalanceService } from '../interfaces/balances.interface'
+
+import { BalanceService } from '@app/network-service/balances/interfaces/balances.interface'
+import { ConfigService } from '@nestjs/config'
 import GraphQLService from '@app/common/services/graphql.service'
-import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
-import { ethers } from 'ethers'
+import { HttpService } from '@nestjs/axios'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { ethers } from 'ethers'
+import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
 import { isEmpty } from 'lodash'
 
 @Injectable()

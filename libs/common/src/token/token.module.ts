@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common'
 import { CacheModule } from '@nestjs/cache-manager'
-import { HttpModule } from '@nestjs/axios'
 import { ConfigModule } from '@nestjs/config'
-import TradeService from './trade.service'
+import { HttpModule } from '@nestjs/axios'
+import { Module } from '@nestjs/common'
+import TradeService from '@app/common/token/trade.service'
 
 @Module({
   imports: [

@@ -1,8 +1,9 @@
-import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { lastValueFrom, map } from 'rxjs'
-import { BalanceService } from '../interfaces/balances.interface'
+
+import { BalanceService } from '@app/network-service/balances/interfaces/balances.interface'
+import { ConfigService } from '@nestjs/config'
+import { HttpService } from '@nestjs/axios'
 
 @Injectable()
 export class UnmarshalService implements BalanceService {

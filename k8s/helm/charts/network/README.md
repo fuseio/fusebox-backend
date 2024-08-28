@@ -11,7 +11,6 @@ A Helm chart for Kubernetes related network component
 | affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
 | autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
 | autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
-| configMap.legacy_fuse_trade_api_url | string | `""` | Legacy - Fuse trade API URL |
 | global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |

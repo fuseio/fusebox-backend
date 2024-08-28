@@ -14,3 +14,18 @@ export const getBlock = gql`
         }
     }
 `
+
+export const getBlocksQuery = (timestamps: number[]) => gql`
+    query blocks {
+        ${timestamps.map((timestamp) => `
+        t${timestamp}: blocks(
+            first: 1
+            orderBy: timestamp
+            orderDirection: desc
+            where: { timestamp_gt: ${timestamp}, timestamp_lt: ${timestamp + 600} }
+        ) {
+            number
+        }
+        `).join('')}
+    }
+`

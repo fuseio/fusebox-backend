@@ -15,7 +15,6 @@ A Helm chart for Kubernetes related api component
 | configMap.bundler_api_sandbox_url | string | `""` | Bundler - API Sandbox URL |
 | configMap.explorer_api_url | string | `""` | BlockScout API URL |
 | configMap.legacy_fuse_admin_api_url | string | `""` | Legacy - Fuse admin API URL |
-| configMap.legacy_fuse_trade_api_url | string | `""` | Legacy - Fuse trade API URL |
 | configMap.legacy_fuse_wallet_api_url | string | `""` | Legacy - Fuse wallet API URL |
 | configMap.qa_mode | string | `""` | QA mode ('true' or 'false') |
 | configMap.spark_rpc_url | string | `""` | RPC URL - Spark |

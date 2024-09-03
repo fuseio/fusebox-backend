@@ -4,6 +4,7 @@ import { lastValueFrom, map } from 'rxjs'
 import { BalanceService } from '@app/network-service/balances/interfaces/balances.interface'
 import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
+import { isEmpty } from 'lodash'
 
 @Injectable()
 export class UnmarshalService implements BalanceService {
@@ -68,6 +69,14 @@ export class UnmarshalService implements BalanceService {
   }
 
   private transformToExplorerFormat (unmarshalData: any) {
+    if (isEmpty(unmarshalData)) {
+      return {
+        message: 'No tokens found',
+        result: [],
+        status: '0'
+      }
+    }
+
     return {
       message: 'OK',
       result: unmarshalData.map(asset => ({

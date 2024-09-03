@@ -1,10 +1,11 @@
-import { ethers } from 'ethers'
-import { Logger } from '@nestjs/common'
 import {
   fetchContractAbiResponseSchema,
   fetchFunctionInterface4ByteSchema,
   fetchFunctionInterfaceOpenApiSchema
-} from './schemas'
+} from '@app/common/utils/calldata-decoder/schemas'
+
+import { Logger } from '@nestjs/common'
+import { ethers } from 'ethers'
 
 const logger = new Logger('CallDataAPI')
 

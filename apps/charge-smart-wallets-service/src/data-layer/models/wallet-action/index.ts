@@ -5,8 +5,8 @@ import NativeTransfer from '@app/smart-wallets-service/data-layer/models/wallet-
 import NftTransfer from '@app/smart-wallets-service/data-layer/models/wallet-action/nft-transfer'
 import StakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/stake'
 import UnstakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/unstake'
-import TokenSwapExecutor from './swap'
-// import BatchTransaction from './batch-transaction'
+import TokenSwapExecutor from '@app/smart-wallets-service/data-layer/models/wallet-action/swap'
+import BatchTransaction from '@app/smart-wallets-service/data-layer/models/wallet-action/batch-transaction'
 
 export {
   WalletAction,
@@ -16,6 +16,6 @@ export {
   NftTransfer,
   StakeTokens,
   UnstakeTokens,
-  TokenSwapExecutor
-  // BatchTransaction
+  TokenSwapExecutor,
+  BatchTransaction
 }

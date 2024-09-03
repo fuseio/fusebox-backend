@@ -11,7 +11,7 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build charge-accounts-service && nest build charge-api-service && nest build charge-notifications-service && nest build charge-network-service && nest build charge-apps-service && nest build charge-smart-wallets-service && nest build charge-relay-service",
+    "build": "nest build charge-accounts-service && nest build charge-api-service && nest build charge-notifications-service && nest build charge-network-service && nest build charge-apps-service && nest build charge-smart-wallets-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -60,6 +60,7 @@
     "class-validator": "^0.14.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "ethereumjs-util": "^7.1.5",
     "ethereumjs-wallet": "^1.0.2",

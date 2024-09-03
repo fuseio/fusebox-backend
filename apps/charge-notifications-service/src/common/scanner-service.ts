@@ -1,7 +1,7 @@
-import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { BaseProvider } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
-import { ScannerStatusService } from './scanner-status.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
+import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 
 export abstract class ScannerService {
   constructor (

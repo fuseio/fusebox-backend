@@ -64,7 +64,6 @@ services:
       - NETWORK_TCP_PORT
       - LEGACY_FUSE_ADMIN_API_URL
       - LEGACY_FUSE_WALLET_API_URL
-      - LEGACY_FUSE_TRADE_API_URL
       - VOLTAGE_ROUTER_API_URL
       - SMART_WALLETS_HOST
       - SMART_WALLETS_TCP_PORT
@@ -80,7 +79,7 @@ services:
     depends_on:
       - charge-notifications-service
       - charge-network-service
-      - charge-relay-service
+      # - charge-relay-service
       - charge-smart-wallets-service
     volumes:
       - .:/usr/src/app
@@ -130,7 +129,6 @@ services:
       - NETWORK_HOST
       - NETWORK_PORT
       - NETWORK_TCP_PORT
-      - LEGACY_FUSE_TRADE_API_URL
       - EXPLORER_API_URL
       - EXPLORER_API_KEY
       - UNMARSHAL_BASE_URL
@@ -210,7 +208,6 @@ services:
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
       - ACCOUNTS_HOST
       - ACCOUNTS_TCP_PORT
-      - LEGACY_FUSE_TRADE_API_URL
       - COIN_GECKO_API_KEY
       - COIN_GECKO_URL
     volumes:
@@ -221,25 +218,25 @@ services:
       - ${SMART_WALLETS_TCP_PORT}:${SMART_WALLETS_TCP_PORT}
     restart: always
 
-  charge-relay-service:
-    container_name: charge-relay-service
-    build:
-      context: .
-      dockerfile: ./apps/charge-relay-service/Dockerfile
-      target: development
-    command: npm run start:dev charge-relay-service
-    env_file:
-      - ./apps/charge-relay-service/.env
-    environment:
-      - RELAY_HOST
-      - RELAY_PORT
-      - MONGO_URI=${RELAY_MONGO_URI}
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - ${RELAY_PORT}:${RELAY_PORT}
-      - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
-    restart: always
+  # charge-relay-service:
+  #   container_name: charge-relay-service
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/charge-relay-service/Dockerfile
+  #     target: development
+  #   command: npm run start:dev charge-relay-service
+  #   env_file:
+  #     - ./apps/charge-relay-service/.env
+  #   environment:
+  #     - RELAY_HOST
+  #     - RELAY_PORT
+  #     - MONGO_URI=${RELAY_MONGO_URI}
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   ports:
+  #     - ${RELAY_PORT}:${RELAY_PORT}
+  #     - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
+  #   restart: always
 networks:
   chargenet:

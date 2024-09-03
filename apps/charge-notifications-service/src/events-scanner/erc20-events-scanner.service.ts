@@ -9,7 +9,7 @@ import { TokenEventData } from '@app/notifications-service/common/interfaces/eve
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
 import { TokenInfo } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
-import { EventsScannerService } from './events-scanner.service'
+import { EventsScannerService } from '@app/notifications-service/events-scanner/events-scanner.service'
 import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 import { GasService } from '@app/common/services/gas.service'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'

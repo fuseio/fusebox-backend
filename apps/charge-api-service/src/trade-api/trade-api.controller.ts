@@ -153,7 +153,7 @@ export class TradeApiController {
       DAY: 'WEEK',
       ALL: 'YEAR'
     }
-    const newTimeFrame = timeFrameMap[timeFrame]
+    const newTimeFrame = timeFrameMap[timeFrame] || timeFrame
     const priceChanges = await this.tradeApiService.getTokenPriceChangesOverInterval(tokenAddress, newTimeFrame)
     return {
       data: priceChanges

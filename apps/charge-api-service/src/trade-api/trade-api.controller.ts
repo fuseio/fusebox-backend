@@ -145,7 +145,16 @@ export class TradeApiController {
     @Param('tokenAddress') tokenAddress: string,
     @Param('timeFrame') timeFrame: string
   ) {
-    const priceChanges = await this.tradeApiService.getTokenPriceChangesOverInterval(tokenAddress, timeFrame)
+    // The old timeFrame values include `hour`, `day` & `all`.
+    // To make it backward compatible, we need to check if the timeFrame is one of these.
+    // If it is, we need to convert it to the new timeFrame values.
+    const timeFrameMap = {
+      HOUR: 'WEEK',
+      DAY: 'WEEK',
+      ALL: 'YEAR'
+    }
+    const newTimeFrame = timeFrameMap[timeFrame]
+    const priceChanges = await this.tradeApiService.getTokenPriceChangesOverInterval(tokenAddress, newTimeFrame)
     return {
       data: priceChanges
     }

@@ -1,2 +1,5 @@
 export const operatorJwtString = 'operator_jwt_strategy'
 export const operatorWalletModelString = 'OPERATOR_WALLET_MODEL'
+export const operatorInvoiceModelString = 'OPERATOR_INVOICE_MODEL'
+export const operatorPaymentMethodModelString = 'OPERATOR_PAYMENT_METHOD_MODEL'
+export const operatorPricingPlanModelString = 'OPERATOR_PRICING_PLAN_MODEL'

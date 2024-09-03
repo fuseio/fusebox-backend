@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorInvoiceModelString, operatorPaymentMethodModelString, operatorPricingPlanModelString, operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -20,6 +20,11 @@ import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/d
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpService } from '@nestjs/axios'
 import axios from 'axios'
+import { CreateOperatorInvoiceDto } from '@app/accounts-service/operators/dto/create-operator-invoice.dto'
+import { OperatorInvoice } from '@app/accounts-service/operators/interfaces/operator-invoice.interface'
+import { OperatorPaymentMethod } from '@app/accounts-service/operators/interfaces/operator-payment-method.interface'
+import { OperatorPricingPlan } from '@app/accounts-service/operators/interfaces/operator-pricing-plan.interface'
+import { ExplorerService } from '@app/network-service/balances/services/explorer-balance.service'
 
 @Injectable()
 export class OperatorsService {
@@ -37,7 +42,14 @@ export class OperatorsService {
     @Inject(notificationsService)
     private readonly notificationsClient: ClientProxy,
     private readonly analyticsService: AnalyticsService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    @Inject(operatorInvoiceModelString)
+    private operatorInvoiceModel: Model<OperatorInvoice>,
+    @Inject(operatorPaymentMethodModelString)
+    private operatorPaymentMethodModel: Model<OperatorPaymentMethod>,
+    @Inject(operatorPricingPlanModelString)
+    private operatorPricingPlanModel: Model<OperatorPricingPlan>,
+    private readonly explorerService: ExplorerService
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -438,6 +450,80 @@ export class OperatorsService {
         `Error sending data to Google Form: ${error.response?.statusText || 'Unknown Error'}: ${error.response?.data?.error || ''}`,
         error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
       )
+    }
+  }
+
+  async findLastOperatorInvoiceByOperatorId (operatorId: string): Promise<OperatorInvoice> {
+    return this.operatorInvoiceModel.findOne({ operatorId }).sort({ subscriptionEndedAt: -1 })
+  }
+
+  async findOperatorPaymentMethodById (id: string): Promise<OperatorPaymentMethod> {
+    return this.operatorPaymentMethodModel.findOne({ _id: id })
+  }
+
+  async findOperatorPricingPlanById (id: string): Promise<OperatorPricingPlan> {
+    return this.operatorPricingPlanModel.findOne({ _id: id })
+  }
+
+  async createOperatorInvoice (createOperatorInvoiceDto: CreateOperatorInvoiceDto, auth0Id: string) {
+    try {
+      const user = await this.usersService.findOneByAuth0Id(auth0Id)
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+      const wallet = await this.findWalletOwner(user._id)
+      if (!wallet) {
+        throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND)
+      }
+      const lastInvoice = await this.findLastOperatorInvoiceByOperatorId(wallet._id)
+      const paymentMethod = await this.findOperatorPaymentMethodById(createOperatorInvoiceDto.paymentMethodId)
+      if (!paymentMethod) {
+        throw new HttpException('Payment Method not found', HttpStatus.NOT_FOUND)
+      }
+      const pricingPlan = await this.findOperatorPricingPlanById(createOperatorInvoiceDto.pricingPlanId)
+      if (!pricingPlan) {
+        throw new HttpException('Pricing Plan not found', HttpStatus.NOT_FOUND)
+      }
+
+      const billingWalletAddress = this.configService.get('BILLING_WALLET_ADDRESS')
+      const transactionInfo = await this.explorerService.getTransactionInfo(createOperatorInvoiceDto.transactionHash.toLowerCase())
+      const confirmations = transactionInfo.confirmations
+      const toAddress = transactionInfo.token_transfers[0].to.hash
+      const tokenAddress = transactionInfo.token_transfers[0].token.address
+      const totalValue = transactionInfo.token_transfers[0].total.value
+      if (confirmations && confirmations < 1) {
+        throw new HttpException('Transaction not confirmed on blockchain', HttpStatus.BAD_REQUEST)
+      }
+      if (toAddress && toAddress.toLowerCase() !== billingWalletAddress.toLowerCase()) {
+        throw new HttpException('Transaction not sent to billing wallet address', HttpStatus.BAD_REQUEST)
+      }
+      if (tokenAddress && tokenAddress.toLowerCase() !== paymentMethod.tokenAddress.toLowerCase()) {
+        throw new HttpException('Transaction token does not match the payment method', HttpStatus.BAD_REQUEST)
+      }
+      if (totalValue && totalValue < pricingPlan.amount) {
+        throw new HttpException('Transaction amount does not match the pricing plan', HttpStatus.BAD_REQUEST)
+      }
+
+      const invoice = {
+        operatorId: wallet._id,
+        paymentMethodId: paymentMethod._id,
+        pricingPlanId: pricingPlan._id,
+        transactionHash: createOperatorInvoiceDto.transactionHash.toLowerCase(),
+        subscriptionStartedAt: lastInvoice ? lastInvoice.subscriptionEndedAt : new Date(),
+        subscriptionEndedAt: lastInvoice ? new Date(lastInvoice.subscriptionEndedAt.getTime() + pricingPlan.duration) : new Date(Date.now() + pricingPlan.duration)
+      }
+      const operatorInvoiceCreated = await this.operatorInvoiceModel.create(invoice)
+      if (!operatorInvoiceCreated) {
+        throw new HttpException('Failed to create operator invoice', HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+
+      this.analyticsService.trackEvent('Operator Invoice Created', { ...invoice }, { user_id: user?.auth0Id })
+
+      return {
+        invoiceId: operatorInvoiceCreated._id
+      }
+    } catch (error) {
+      this.errorHandler(error)
     }
   }
 }

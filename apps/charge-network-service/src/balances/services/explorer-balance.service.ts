@@ -97,4 +97,11 @@ export class ExplorerService implements BalanceService {
       ...data
     }
   }
+
+  async getTransactionInfo (transactionHash: string) {
+    const observable = this.httpService
+      .get(`${this.explorerBaseUrl}/v2/transactions/${transactionHash}`)
+      .pipe(map(res => res.data))
+    return lastValueFrom(observable)
+  }
 }

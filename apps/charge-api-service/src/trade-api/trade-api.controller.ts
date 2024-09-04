@@ -1,12 +1,14 @@
-import { Controller, Query, Get, Post, Body, Param, UseGuards } from '@nestjs/common'
+import { Controller, Query, Get, Post, Body, Param, UseGuards, UseInterceptors } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiParam, ApiQuery, ApiBody, ApiOkResponse } from '@nestjs/swagger'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { TradeApiService } from '@app/api-service/trade-api/trade-api.service'
 import { DurationDto } from '@app/network-service/voltage-dex/dto/duration.dto'
 import { DurationEntity } from '@app/network-service/voltage-dex/entities/duration.entity'
+import { CacheInterceptor } from '@nestjs/cache-manager'
 
 @ApiTags('Trade V1')
 @UseGuards(IsValidPublicApiKeyGuard)
+@UseInterceptors(CacheInterceptor)
 @Controller({ path: 'v0/trade' })
 export class TradeApiController {
   constructor (private readonly tradeApiService: TradeApiService) {}

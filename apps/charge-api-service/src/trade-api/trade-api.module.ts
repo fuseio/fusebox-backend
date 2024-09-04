@@ -1,6 +1,7 @@
 import { ClientsModule, Transport } from '@nestjs/microservices'
 
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
+import { CacheModule } from '@nestjs/cache-manager'
 import { ConfigModule } from '@nestjs/config'
 import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
@@ -12,6 +13,10 @@ import { networkService } from '@app/common/constants/microservices.constants'
 
 @Module({
   imports: [
+    CacheModule.register({
+      ttl: 600000, // in milliseconds
+      max: 1000
+    }),
     ApiKeyModule,
     HttpModule,
     ConfigModule.forFeature(configuration),

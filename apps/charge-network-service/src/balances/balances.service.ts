@@ -93,19 +93,37 @@ export default class BalancesService {
 
   private async getMultipleTokenBalances (address: string) {
     try {
-      return await this.primaryService.getERC20TokenBalances(address)
+      const result = await this.primaryService.getERC20TokenBalances(address)
+      this.logger.log(`Successfully fetched ERC20 token balances for address: ${address}`)
+      return result
     } catch (error) {
-      this.logger.error(`Primary service failed: ${error.message}. Falling back to secondary service.`)
-      return await this.fallbackService.getERC20TokenBalances(address)
+      this.logger.error(`Failed to fetch ERC20 token balances from primary service for address: ${address}. Error: ${error.message}`)
+      try {
+        const fallbackResult = await this.fallbackService.getERC20TokenBalances(address)
+        this.logger.log(`Successfully fetched ERC20 token balances from fallback service for address: ${address}`)
+        return fallbackResult
+      } catch (fallbackError) {
+        this.logger.error(`Fallback service also failed for ERC20 token balances. Address: ${address}. Error: ${fallbackError.message}`)
+        throw fallbackError
+      }
     }
   }
 
   async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
     try {
-      return await this.primaryService.getERC721TokenBalances(address, limit, cursor)
+      const result = await this.primaryService.getERC721TokenBalances(address, limit, cursor)
+      this.logger.log(`Successfully fetched ERC721 token balances for address: ${address}`)
+      return result
     } catch (error) {
-      this.logger.error(`Primary service failed: ${error.message}. Falling back to secondary service.`)
-      return await this.fallbackService.getERC721TokenBalances(address, limit, cursor)
+      this.logger.error(`Failed to fetch ERC721 token balances from primary service for address: ${address}. Error: ${error.message}`)
+      try {
+        const fallbackResult = await this.fallbackService.getERC721TokenBalances(address, limit, cursor)
+        this.logger.log(`Successfully fetched ERC721 token balances from fallback service for address: ${address}`)
+        return fallbackResult
+      } catch (fallbackError) {
+        this.logger.error(`Fallback service also failed for ERC721 token balances. Address: ${address}. Error: ${fallbackError.message}`)
+        throw fallbackError
+      }
     }
   }
 }

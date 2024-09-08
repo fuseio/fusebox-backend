@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -83,8 +34,8 @@
 
 
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">Modules</li>
-    <li class="breadcrumb-item" >UsersModule</li>
+    <li>Modules</li>
+    <li >UsersModule</li>
 </ol>
 
 <div class="text-center module-graph-container">
@@ -115,59 +66,59 @@
 <title>cluster_UsersModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="103,-70 103,-268 393,-268 393,-70 103,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_UsersModule_providers</title>
-<polygon fill="none" stroke="black" points="245,-78 245,-130 385,-130 385,-78 245,-78"/>
-</g>
 <g id="clust3" class="cluster">
 <title>cluster_UsersModule_imports</title>
-<polygon fill="none" stroke="black" points="111,-78 111,-130 237,-130 237,-78 111,-78"/>
+<polygon fill="none" stroke="black" points="259,-78 259,-130 385,-130 385,-78 259,-78"/>
 </g>
 <g id="clust4" class="cluster">
 <title>cluster_UsersModule_exports</title>
-<polygon fill="none" stroke="black" points="189,-208 189,-260 299,-260 299,-208 189,-208"/>
+<polygon fill="none" stroke="black" points="196,-208 196,-260 306,-260 306,-208 196,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_UsersModule_providers</title>
+<polygon fill="none" stroke="black" points="111,-78 111,-130 251,-130 251,-78 111,-78"/>
 </g>
 <!-- DatabaseModule -->
 <g id="node1" class="node">
 <title>DatabaseModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="229.35,-122 226.35,-126 205.35,-126 202.35,-122 118.65,-122 118.65,-86 229.35,-86 229.35,-122"/>
-<text text-anchor="middle" x="174" y="-99.8" font-family="Times,serif" font-size="14.00">DatabaseModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="377.35,-122 374.35,-126 353.35,-126 350.35,-122 266.65,-122 266.65,-86 377.35,-86 377.35,-122"/>
+<text text-anchor="middle" x="322" y="-99.8" font-family="Times,serif" font-size="14.00">DatabaseModule</text>
 </g>
 <!-- UsersModule -->
 <g id="node2" class="node">
 <title>UsersModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="289.92,-187 286.92,-191 265.92,-191 262.92,-187 198.08,-187 198.08,-151 289.92,-151 289.92,-187"/>
-<text text-anchor="middle" x="244" y="-164.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="296.92,-187 293.92,-191 272.92,-191 269.92,-187 205.08,-187 205.08,-151 296.92,-151 296.92,-187"/>
+<text text-anchor="middle" x="251" y="-164.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
 </g>
 <!-- DatabaseModule&#45;&gt;UsersModule -->
 <g id="edge1" class="edge">
 <title>DatabaseModule&#45;&gt;UsersModule</title>
-<path fill="none" stroke="black" d="M213.86,-122.11C213.86,-122.11 213.86,-140.99 213.86,-140.99"/>
-<polygon fill="black" stroke="black" points="210.36,-140.99 213.86,-150.99 217.36,-140.99 210.36,-140.99"/>
+<path fill="none" stroke="black" d="M281.64,-122.11C281.64,-122.11 281.64,-140.99 281.64,-140.99"/>
+<polygon fill="black" stroke="black" points="278.14,-140.99 281.64,-150.99 285.14,-140.99 278.14,-140.99"/>
 </g>
 <!-- UsersService  -->
 <g id="node3" class="node">
 <title>UsersService </title>
-<polygon fill="#fb8072" stroke="black" points="290.85,-252 197.15,-252 197.15,-216 290.85,-216 290.85,-252"/>
-<text text-anchor="middle" x="244" y="-229.8" font-family="Times,serif" font-size="14.00">UsersService </text>
+<polygon fill="#fb8072" stroke="black" points="297.85,-252 204.15,-252 204.15,-216 297.85,-216 297.85,-252"/>
+<text text-anchor="middle" x="251" y="-229.8" font-family="Times,serif" font-size="14.00">UsersService </text>
 </g>
 <!-- UsersModule&#45;&gt;UsersService  -->
 <g id="edge2" class="edge">
 <title>UsersModule&#45;&gt;UsersService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M244,-187.11C244,-187.11 244,-205.99 244,-205.99"/>
-<polygon fill="black" stroke="black" points="240.5,-205.99 244,-215.99 247.5,-205.99 240.5,-205.99"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M251,-187.11C251,-187.11 251,-205.99 251,-205.99"/>
+<polygon fill="black" stroke="black" points="247.5,-205.99 251,-215.99 254.5,-205.99 247.5,-205.99"/>
 </g>
 <!-- UsersService -->
 <g id="node4" class="node">
 <title>UsersService</title>
-<ellipse fill="#fdb462" stroke="black" cx="315" cy="-104" rx="61.95" ry="18"/>
-<text text-anchor="middle" x="315" y="-99.8" font-family="Times,serif" font-size="14.00">UsersService</text>
+<ellipse fill="#fdb462" stroke="black" cx="181" cy="-104" rx="61.95" ry="18"/>
+<text text-anchor="middle" x="181" y="-99.8" font-family="Times,serif" font-size="14.00">UsersService</text>
 </g>
 <!-- UsersService&#45;&gt;UsersModule -->
 <g id="edge3" class="edge">
 <title>UsersService&#45;&gt;UsersModule</title>
-<path fill="none" stroke="black" d="M271.37,-116.84C271.37,-116.84 271.37,-140.52 271.37,-140.52"/>
-<polygon fill="black" stroke="black" points="267.87,-140.52 271.37,-150.52 274.87,-140.52 267.87,-140.52"/>
+<path fill="none" stroke="black" d="M224.13,-117.15C224.13,-117.15 224.13,-140.69 224.13,-140.69"/>
+<polygon fill="black" stroke="black" points="220.63,-140.69 224.13,-150.69 227.63,-140.69 220.63,-140.69"/>
 </g>
 </g>
 </svg>
@@ -184,22 +135,16 @@
 <script src="../js/svg-pan-zoom.controls.js"></script>
 
 <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item">
-        <a href="#info" 
-            class="nav-link"
-            class="nav-link active"
-            role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+    <li  class="active" >
+        <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
     </li>
-    <li class="nav-item">
-        <a href="#source" 
-            class="nav-link"
-            
-            role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+    <li >
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
     </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
 
         <p class="comment">
             <h3>File</h3>
@@ -215,7 +160,7 @@
         <div class="container-fluid module">
             <div class="row">
                 <div class="col-sm-3">
-                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank" rel="noopener noreferrer"
+                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank"
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -224,8 +169,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Controllers<a href="https://docs.nestjs.com/controllers" target="_blank" rel="noopener noreferrer"
-                            title="Official documentation about module controllers"><span
+                    <h3>Controllers<a href="https://docs.nestjs.com/controllers" target="_blank" title="Official documentation about module controllers"><span
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -234,8 +178,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" rel="noopener noreferrer"
-                            title="Official documentation about module imports"><span
+                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" title="Official documentation about module imports"><span
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -244,12 +187,11 @@
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" rel="noopener noreferrer"
-                            title="Official documentation about module exports"><span
+                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" title="Official documentation about module exports"><span
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../injectables/UsersService.html">UsersService</a>
+                            <a href="../s/UsersService.html">UsersService</a>
                         </li>
                     </ul>
                 </div>
@@ -260,7 +202,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Module } from &#x27;@nestjs/common&#x27;
 import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
 import { UsersController } from &#x27;@app/accounts-service/users/users.controller&#x27;
@@ -278,8 +220,6 @@ export class UsersModule {}
 </code></pre>
     </div>
 </div>
-
-
 
 
 
@@ -324,19 +264,6 @@ export class UsersModule {}
             var COMPODOC_CURRENT_PAGE_URL = 'UsersModule.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

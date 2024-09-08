@@ -77,16 +77,15 @@ document.addEventListener('DOMContentLoaded', function () {
     processMenuLinks(entityLinks);
     var indexLinks = document.querySelectorAll('[data-type="index-link"]');
     processMenuLinks(indexLinks, true);
-    var compodocLogos = document.querySelectorAll('[data-type="compodoc-logo"]');
-    var customLogo = document.querySelectorAll('[data-type="custom-logo"]');
-    var processLogos = function (entityLogos) {
+    var entityLogos = document.querySelectorAll('[data-type="compodoc-logo"]');
+    var processLogos = function (entityLogo) {
         for (var i = 0; i < entityLogos.length; i++) {
             var entityLogo = entityLogos[i];
             if (entityLogo) {
                 var url = entityLogo.getAttribute('data-src');
                 // Dark mode + logo
                 let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (isDarkMode && url.indexOf('compodoc') !== -1) {
+                if (isDarkMode) {
                     url = 'images/compodoc-vectorise-inverted.png';
                 }
                 if (url.charAt(0) !== '.') {
@@ -116,8 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     };
-    processLogos(compodocLogos);
-    processLogos(customLogo);
+    processLogos(entityLogos);
 
     setTimeout(function () {
         document.getElementById('btn-menu').addEventListener('click', function () {
@@ -133,16 +131,12 @@ document.addEventListener('DOMContentLoaded', function () {
         /**
          * Native bootstrap doesn't wait DOMContentLoaded event to start his job, re do it here
          */
-        var Collapses = document.querySelectorAll('[data-bs-toggle="collapse"]');
+        var Collapses = document.querySelectorAll('[data-toggle="collapse"]');
         for (var o = 0, cll = Collapses.length; o < cll; o++) {
             var collapse = Collapses[o],
                 options = {};
             options.duration = collapse.getAttribute('data-duration');
-            const targetId = collapse.getAttribute('data-bs-target');
-            if (targetId !== '') {
-                options.parent = collapse;
-                const c = new BSN.Collapse(targetId, options);
-            }
+            var c = new Collapse(collapse, options);
         }
 
         // collapse menu
@@ -264,6 +258,53 @@ document.addEventListener('DOMContentLoaded', function () {
                         activeMenu.scrollTop = 0;
                     }
                 }, 300);
+            }
+        }
+        // Dark mode toggle button
+        var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+        var darkModeState = useDark.matches;
+        var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+        var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+
+        function checkToggle(check) {
+            for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                $darkModeToggleSwitchers[i].checked = check;
+            }
+        }
+
+        function toggleDarkMode(state) {
+            checkToggle(state);
+
+            const hasClass = document.body.classList.contains('dark');
+
+            if (state) {
+                for (var i = 0; i < $darkModeToggles.length; i++) {
+                    $darkModeToggles[i].classList.add('dark');
+                }
+                if (!hasClass) {
+                    document.body.classList.add('dark');
+                }
+            } else {
+                for (var i = 0; i < $darkModeToggles.length; i++) {
+                    $darkModeToggles[i].classList.remove('dark');
+                }
+                if (hasClass) {
+                    document.body.classList.remove('dark');
+                }
+            }
+        }
+
+        useDark.addEventListener('change', function (evt) {
+            toggleDarkMode(evt.matches);
+        });
+        toggleDarkMode(darkModeState);
+
+        if ($darkModeToggles.length > 0) {
+            for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                    darkModeState = !darkModeState;
+                    toggleDarkMode(darkModeState);
+                });
             }
         }
     }, 0);

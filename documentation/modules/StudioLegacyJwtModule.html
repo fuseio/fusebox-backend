@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -83,8 +34,8 @@
 
 
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">Modules</li>
-    <li class="breadcrumb-item" >StudioLegacyJwtModule</li>
+    <li>Modules</li>
+    <li >StudioLegacyJwtModule</li>
 </ol>
 
 <div class="text-center module-graph-container">
@@ -115,13 +66,13 @@
 <title>cluster_StudioLegacyJwtModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="125,-70 125,-268 371,-268 371,-70 125,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_StudioLegacyJwtModule_providers</title>
-<polygon fill="none" stroke="black" points="133,-78 133,-130 363,-130 363,-78 133,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_StudioLegacyJwtModule_exports</title>
 <polygon fill="none" stroke="black" points="161,-208 161,-260 335,-260 335,-208 161,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_StudioLegacyJwtModule_providers</title>
+<polygon fill="none" stroke="black" points="133,-78 133,-130 363,-130 363,-78 133,-78"/>
 </g>
 <!-- StudioLegacyJwtService  -->
 <g id="node1" class="node">
@@ -168,22 +119,16 @@
 <script src="../js/svg-pan-zoom.controls.js"></script>
 
 <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item">
-        <a href="#info" 
-            class="nav-link"
-            class="nav-link active"
-            role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+    <li  class="active" >
+        <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
     </li>
-    <li class="nav-item">
-        <a href="#source" 
-            class="nav-link"
-            
-            role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+    <li >
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
     </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
 
         <p class="comment">
             <h3>File</h3>
@@ -199,7 +144,7 @@
         <div class="container-fluid module">
             <div class="row">
                 <div class="col-sm-3">
-                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank" rel="noopener noreferrer"
+                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank"
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -208,12 +153,11 @@
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" rel="noopener noreferrer"
-                            title="Official documentation about module exports"><span
+                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" title="Official documentation about module exports"><span
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../injectables/StudioLegacyJwtService.html">StudioLegacyJwtService</a>
+                            <a href="../s/StudioLegacyJwtService.html">StudioLegacyJwtService</a>
                         </li>
                     </ul>
                 </div>
@@ -224,7 +168,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpModule } from &#x27;@nestjs/axios&#x27;
 import { Module } from &#x27;@nestjs/common&#x27;
 import { ConfigModule, ConfigService } from &#x27;@nestjs/config&#x27;
@@ -250,8 +194,6 @@ export class StudioLegacyJwtModule { }
 </code></pre>
     </div>
 </div>
-
-
 
 
 
@@ -296,19 +238,6 @@ export class StudioLegacyJwtModule { }
             var COMPODOC_CURRENT_PAGE_URL = 'StudioLegacyJwtModule.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

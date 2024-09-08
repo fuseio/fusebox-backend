@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -85,27 +36,21 @@
 
 
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >ApiKeysController</li>
+  <li>Controllers</li>
+  <li >ApiKeysController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -125,7 +70,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -139,23 +84,18 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#checkIfSecretExists" >checkIfSecretExists</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#createPublic" >createPublic</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#createSecret" >createSecret</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#getPublic" >getPublic</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#updateSecret" >updateSecret</a>
                             </li>
                         </ul>
@@ -170,7 +110,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -181,7 +121,6 @@
                 <td class="col-md-4">
                     <a name="checkIfSecretExists"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>checkIfSecretExists</b></span>
                         <a href="#checkIfSecretExists"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -189,8 +128,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>checkIfSecretExists(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+<code>checkIfSecretExists(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -202,54 +140,56 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:26</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:26</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Gets the api_key&#39;s for the given projectId</p>
+                    <div class="io-description"><p>Gets the api_key&#39;s for the given projectId</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>apiKeysDto</td>
-                                            <td>
-                                                            <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiKeysDto</td>
+                                    <td>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>an object consisting unsensitive fields of the api_keys of the project</p>
+                    </div>
+                    <div class="io-description">
+                        <p>an object consisting unsensitive fields of the api_keys of the project</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -260,7 +200,6 @@
                 <td class="col-md-4">
                     <a name="createPublic"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>createPublic</b></span>
                         <a href="#createPublic"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -268,8 +207,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createPublic(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+<code>createPublic(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -281,54 +219,56 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:46</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:46</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Creates the public API key associated with the project</p>
+                    <div class="io-description"><p>Creates the public API key associated with the project</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>apiKeysDto</td>
-                                            <td>
-                                                            <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiKeysDto</td>
+                                    <td>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the public API key associated with the given project</p>
+                    </div>
+                    <div class="io-description">
+                        <p>the public API key associated with the given project</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -339,7 +279,6 @@
                 <td class="col-md-4">
                     <a name="createSecret"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>createSecret</b></span>
                         <a href="#createSecret"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -347,8 +286,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createSecret(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+<code>createSecret(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -360,54 +298,56 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:16</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="16"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:16</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Creates an API key secret for the given project</p>
+                    <div class="io-description"><p>Creates an API key secret for the given project</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>apiKeysDto</td>
-                                            <td>
-                                                            <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiKeysDto</td>
+                                    <td>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the generated API key secret or error if secret already exists</p>
+                    </div>
+                    <div class="io-description">
+                        <p>the generated API key secret or error if secret already exists</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -418,7 +358,6 @@
                 <td class="col-md-4">
                     <a name="getPublic"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>getPublic</b></span>
                         <a href="#getPublic"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -426,8 +365,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPublic(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+<code>getPublic(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -439,54 +377,56 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:56</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:56</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Gets the public API key associated with the project</p>
+                    <div class="io-description"><p>Gets the public API key associated with the project</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>apiKeysDto</td>
-                                            <td>
-                                                            <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiKeysDto</td>
+                                    <td>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the public API key associated with the given project</p>
+                    </div>
+                    <div class="io-description">
+                        <p>the public API key associated with the given project</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -497,7 +437,6 @@
                 <td class="col-md-4">
                     <a name="updateSecret"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>updateSecret</b></span>
                         <a href="#updateSecret"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -505,8 +444,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateSecret(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+<code>updateSecret(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -518,54 +456,56 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="36"
-                                    class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:36</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:36</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Revokes the old API key secret and generates a new one for the given project</p>
+                    <div class="io-description"><p>Revokes the old API key secret and generates a new one for the given project</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>apiKeysDto</td>
-                                            <td>
-                                                            <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiKeysDto</td>
+                                    <td>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the new API key secret</p>
+                    </div>
+                    <div class="io-description">
+                        <p>the new API key secret</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -573,7 +513,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiKeysService } from &#x27;@app/apps-service/api-keys/api-keys.service&#x27;
 import { Controller } from &#x27;@nestjs/common&#x27;
 import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
@@ -650,8 +590,6 @@ export class ApiKeysController {
 
 
 
-
-
                    </div><div class="search-results">
     <div class="has-results">
         <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
@@ -681,19 +619,6 @@ export class ApiKeysController {
             var COMPODOC_CURRENT_PAGE_URL = 'ApiKeysController-1.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

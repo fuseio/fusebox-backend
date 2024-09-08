@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -85,27 +36,21 @@
 
 
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >ConsensusApiController</li>
+  <li>Controllers</li>
+  <li >ConsensusApiController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -125,7 +70,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -139,19 +84,15 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#delegate" >delegate</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#getDelegatedAmounts" >getDelegatedAmounts</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#getValidators" >getValidators</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#withdraw" >withdraw</a>
                             </li>
                         </ul>
@@ -166,7 +107,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -177,7 +118,6 @@
                 <td class="col-md-4">
                     <a name="delegate"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>delegate</b></span>
                         <a href="#delegate"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -185,8 +125,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delegate(data: literal type)</code>
+<code>delegate(delegatedAmountsDto: <a href="../classes/DelegatedAmountsDto.html" target="_self">DelegatedAmountsDto</a>)</code>
                 </td>
             </tr>
 
@@ -194,55 +133,57 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;delegate&#x27;)<br /></code>
+                    <code>@Post(&#x27;delegate&#x27;)<br />@ApiOperation({summary: &#x27;Delegate&#x27;, description: &#x27;Gets the data required for delegating to a validator.&#x27;})<br />@ApiBody({type: DelegatedAmounts, description: &#x27;Delegated amounts for the specified validators.&#x27;})<br />@ApiOkResponse({description: &#x27;Delegation data.&#x27;, content: undefined})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:30</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:85</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>data</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>delegatedAmountsDto</td>
+                                    <td>
+                                                <code><a href="../classes/DelegatedAmountsDto.html" target="_self" >DelegatedAmountsDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -253,7 +194,6 @@
                 <td class="col-md-4">
                     <a name="getDelegatedAmounts"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>getDelegatedAmounts</b></span>
                         <a href="#getDelegatedAmounts"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -261,8 +201,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDelegatedAmounts(delegatedAmountsDto: <a href="../classes/DelegatedAmountsDto.html" target="_self">DelegatedAmountsDto</a>)</code>
+<code>getDelegatedAmounts(delegatedAmountsDto: <a href="../classes/DelegatedAmountsDto.html" target="_self">DelegatedAmountsDto</a>)</code>
                 </td>
             </tr>
 
@@ -270,55 +209,57 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;delegated_amounts&#x27;)<br /></code>
+                    <code>@Post(&#x27;delegated_amounts&#x27;)<br />@ApiOperation({summary: &#x27;Get delegated amounts&#x27;, description: &#x27;Fetches the delegated amounts for the specified validators.&#x27;})<br />@ApiBody({type: DelegatedAmounts, description: &#x27;Delegated amounts for the specified validators.&#x27;})<br />@ApiOkResponse({description: &#x27;Delegated amounts for the specified validators.&#x27;, content: undefined})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:25</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:64</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>delegatedAmountsDto</td>
-                                            <td>
-                                                            <code><a href="../classes/DelegatedAmountsDto.html" target="_self" >DelegatedAmountsDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>delegatedAmountsDto</td>
+                                    <td>
+                                                <code><a href="../classes/DelegatedAmountsDto.html" target="_self" >DelegatedAmountsDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -329,7 +270,6 @@
                 <td class="col-md-4">
                     <a name="getValidators"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>getValidators</b></span>
                         <a href="#getValidators"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -337,8 +277,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getValidators()</code>
+<code>getValidators()</code>
                 </td>
             </tr>
 
@@ -346,25 +285,25 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;validators&#x27;)<br /></code>
+                    <code>@Get(&#x27;validators&#x27;)<br />@ApiOperation({summary: &#x27;Get validators&#x27;, description: &#x27;Fetches the list of validators in the network with their respective details.&#x27;})<br />@ApiOkResponse({description: &#x27;List of validators with their details.&#x27;, content: undefined})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="20"
-                                    class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:20</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:43</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -375,7 +314,6 @@
                 <td class="col-md-4">
                     <a name="withdraw"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>withdraw</b></span>
                         <a href="#withdraw"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -383,8 +321,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>withdraw(data: literal type)</code>
+<code>withdraw(withdrawAmountsDto: <a href="../classes/WithdrawAmountsDto.html" target="_self">WithdrawAmountsDto</a>)</code>
                 </td>
             </tr>
 
@@ -392,55 +329,57 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;withdraw&#x27;)<br /></code>
+                    <code>@Post(&#x27;withdraw&#x27;)<br />@ApiOperation({summary: &#x27;Withdraw&#x27;, description: &#x27;Gets the data required for withdrawing from a validator.&#x27;})<br />@ApiBody({type: WithdrawAmounts, description: &#x27;Withdrawal data for the specified validator.&#x27;})<br />@ApiOkResponse({description: &#x27;Withdrawal data.&#x27;, content: undefined})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:35</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts:106</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>data</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>withdrawAmountsDto</td>
+                                    <td>
+                                                <code><a href="../classes/WithdrawAmountsDto.html" target="_self" >WithdrawAmountsDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -448,7 +387,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
   Body,
   Controller,
@@ -456,10 +395,21 @@
   Post,
   UseInterceptors
 } from &#x27;@nestjs/common&#x27;
-import { ConsensusApiService } from &#x27;@app/api-service/consensus-api/consensus-api.service&#x27;
-import { DelegatedAmountsDto } from &#x27;@app/network-service/consensus/dto/consensus.dto&#x27;
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  getSchemaPath
+} from &#x27;@nestjs/swagger&#x27;
 import { CacheInterceptor } from &#x27;@nestjs/cache-manager&#x27;
+import { ConsensusApiService } from &#x27;@app/api-service/consensus-api/consensus-api.service&#x27;
+import { DelegatedAmountsDto } from &#x27;@app/network-service/consensus/dto/delegate.dto&#x27;
+import { DelegatedAmounts } from &#x27;@app/network-service/consensus/entities/delegate.entity&#x27;
+import { WithdrawAmountsDto } from &#x27;@app/network-service/consensus/dto/withdraw.dto&#x27;
+import { WithdrawAmounts } from &#x27;@app/network-service/consensus/entities/withdraw.entity&#x27;
 
+@ApiTags(&#x27;Consensus&#x27;)
 @Controller(&#x27;v0/consensus&#x27;)
 @UseInterceptors(CacheInterceptor)
 export class ConsensusApiController {
@@ -468,30 +418,88 @@ export class ConsensusApiController {
   ) { }
 
   @Get(&#x27;validators&#x27;)
+  @ApiOperation({
+    summary: &#x27;Get validators&#x27;,
+    description: &#x27;Fetches the list of validators in the network with their respective details.&#x27;
+  })
+  @ApiOkResponse({
+    description: &#x27;List of validators with their details.&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: { $ref: getSchemaPath(&#x27;ValidatorsResponse&#x27;) }
+      }
+    }
+  })
   getValidators () {
     return this.consensusApiService.getValidators()
   }
 
   @Post(&#x27;delegated_amounts&#x27;)
+  @ApiOperation({
+    summary: &#x27;Get delegated amounts&#x27;,
+    description: &#x27;Fetches the delegated amounts for the specified validators.&#x27;
+  })
+  @ApiBody({
+    type: DelegatedAmounts,
+    description: &#x27;Delegated amounts for the specified validators.&#x27;
+  })
+  @ApiOkResponse({
+    description: &#x27;Delegated amounts for the specified validators.&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: { $ref: getSchemaPath(&#x27;DelegatedAmountsByDelegatorsResponse&#x27;) }
+      }
+    }
+  })
   getDelegatedAmounts (@Body() delegatedAmountsDto: DelegatedAmountsDto) {
     return this.consensusApiService.getDelegatedAmounts(delegatedAmountsDto)
   }
 
   @Post(&#x27;delegate&#x27;)
-  delegate (@Body() data: { validator: string }) {
-    return this.consensusApiService.delegate(data.validator)
+  @ApiOperation({
+    summary: &#x27;Delegate&#x27;,
+    description: &#x27;Gets the data required for delegating to a validator.&#x27;
+  })
+  @ApiBody({
+    type: DelegatedAmounts,
+    description: &#x27;Delegated amounts for the specified validators.&#x27;
+  })
+  @ApiOkResponse({
+    description: &#x27;Delegation data.&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: { $ref: getSchemaPath(&#x27;TransactionRequest&#x27;) }
+      }
+    }
+  })
+  delegate (@Body() delegatedAmountsDto: DelegatedAmountsDto) {
+    return this.consensusApiService.delegate(delegatedAmountsDto.validator)
   }
 
   @Post(&#x27;withdraw&#x27;)
-  withdraw (@Body() data: { validator: string, amount: string }) {
-    return this.consensusApiService.withdraw(data.validator, data.amount)
+  @ApiOperation({
+    summary: &#x27;Withdraw&#x27;,
+    description: &#x27;Gets the data required for withdrawing from a validator.&#x27;
+  })
+  @ApiBody({
+    type: WithdrawAmounts,
+    description: &#x27;Withdrawal data for the specified validator.&#x27;
+  })
+  @ApiOkResponse({
+    description: &#x27;Withdrawal data.&#x27;,
+    content: {
+      &#x27;application/json&#x27;: {
+        schema: { $ref: getSchemaPath(&#x27;TransactionRequest&#x27;) }
+      }
+    }
+  })
+  withdraw (@Body() withdrawAmountsDto: WithdrawAmountsDto) {
+    return this.consensusApiService.withdraw(withdrawAmountsDto.validator, withdrawAmountsDto.amount)
   }
 }
 </code></pre>
     </div>
 </div>
-
-
 
 
 
@@ -535,19 +543,6 @@ export class ConsensusApiController {
             var COMPODOC_CURRENT_PAGE_URL = 'ConsensusApiController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

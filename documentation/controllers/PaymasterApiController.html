@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -85,27 +36,21 @@
 
 
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >PaymasterApiController</li>
+  <li>Controllers</li>
+  <li >PaymasterApiController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -119,7 +64,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -133,7 +78,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#jsonRpc" >jsonRpc</a>
                             </li>
                         </ul>
@@ -148,7 +93,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -159,7 +104,7 @@
                 <td class="col-md-4">
                     <a name="jsonRpc"></a>
                     <span class="name">
-                            <span class="modifier"></span>
+                        <span class="modifier">Async</span>
                         <span ><b>jsonRpc</b></span>
                         <a href="#jsonRpc"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -167,7 +112,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>jsonRpc(req, res)</code>
                 </td>
             </tr>
@@ -176,60 +121,62 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br /></code>
+                    <code>@Post()<br />@ApiOperation({summary: &#x27;JSON-RPC API&#x27;})<br />@ApiQuery({name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27;})<br />@ApiBody({description: &#x27;JSON-RPC Request&#x27;, type: Object, examples: undefined})<br />@ApiCreatedResponse({description: &#x27;JSON-RPC Response&#x27;, type: Object})<br />@ApiInternalServerErrorResponse({description: &#x27;Internal Server Error&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.controller.ts:30</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.controller.ts:79</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>req</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>req</td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>res</td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                </tr>
+                                <tr>
+                                    <td>res</td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -237,12 +184,14 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, UseGuards, Req, Post, Res } from &#x27;@nestjs/common&#x27;
 import { PaymasterApiService } from &#x27;@app/api-service/paymaster-api/paymaster-api.service&#x27;
 import { IsPrdOrSbxKeyGuard } from &#x27;@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard&#x27;
 import { JSONRPCServer } from &#x27;json-rpc-2.0&#x27;
+import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiQuery } from &#x27;@nestjs/swagger&#x27;
 
+@ApiTags(&#x27;Paymaster JSON-RPC API&#x27;)
 @UseGuards(IsPrdOrSbxKeyGuard)
 @Controller({ path: &#x27;v0/paymaster&#x27; })
 export class PaymasterApiController {
@@ -267,25 +216,72 @@ export class PaymasterApiController {
   }
 
   @Post()
-  jsonRpc (@Req() req, @Res() res) {
-    const jsonRPCRequest &#x3D; req.body
-    // server.receive takes a JSON-RPC request and returns a promise of a JSON-RPC response.
-    // It can also receive an array of requests, in which case it may return an array of responses.
-    // Alternatively, you can use server.receiveJSON, which takes JSON string as is (in this case req.body).
-    this.server.receive(jsonRPCRequest, req).then((jsonRPCResponse) &#x3D;&gt; {
+  @ApiOperation({ summary: &#x27;JSON-RPC API&#x27; })
+  @ApiQuery({ name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27; })
+  @ApiBody({
+    description: &#x27;JSON-RPC Request&#x27;,
+    type: Object,
+    examples: {
+      pm_sponsorUserOperation: {
+        summary: &#x27;Sponsor a user operation - Returns paymasterAndData and updated gas values&#x27;,
+        description: &#x27;This methods sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the paymasterAndData and updated gas values which can be appended to the UserOperation before signing.&#x27;,
+        value: {
+          jsonrpc: &#x27;2.0&#x27;,
+          id: 1,
+          method: &#x27;pm_sponsorUserOperation&#x27;,
+          params: [
+            {
+              sender: &#x27;0x&#x27;, // address
+              nonce: &#x27;0x&#x27;, // uint256
+              initCode: &#x27;0x&#x27;, // bytes
+              callData: &#x27;0x&#x27;, // bytes
+              callGasLimit: &#x27;0x&#x27;, // uint256
+              verificationGasLimit: &#x27;0x&#x27;, // uint256
+              preVerificationGas: &#x27;0x&#x27;, // uint256
+              maxFeePerGas: &#x27;0x&#x27;, // uint256
+              maxPriorityFeePerGas: &#x27;0x&#x27;, // uint256
+              paymasterAndData: &#x27;0x&#x27;, // bytes
+              signature: &#x27;0x&#x27; // Can be a valid dummy value
+            },
+            &#x27;0x&#x27;
+          ]
+        }
+      },
+      pm_accounts: {
+        summary: &#x27;Get all paymaster addresses associated with an EntryPoint&#x27;,
+        description: &#x27;This method allows clients to get all the paymaster addresses associated with an EntryPoint that\&#x27;s owned by this service. The first address in the returned array is the preferred paymaster contract.&#x27;,
+        value: {
+          jsonrpc: &#x27;2.0&#x27;,
+          id: 1,
+          method: &#x27;pm_accounts&#x27;,
+          params: [
+            &#x27;entryPoint&#x27; // string
+          ]
+        }
+      }
+    }
+  })
+  @ApiCreatedResponse({ description: &#x27;JSON-RPC Response&#x27;, type: Object })
+  @ApiInternalServerErrorResponse({ description: &#x27;Internal Server Error&#x27; })
+  async jsonRpc (@Req() req, @Res() res) {
+    try {
+      const jsonRPCRequest &#x3D; req.body
+      const jsonRPCResponse &#x3D; await this.server.receive(jsonRPCRequest, req)
       if (jsonRPCResponse) {
         res.json(jsonRPCResponse)
       } else {
         res.sendStatus(204)
       }
-    })
+    } catch (error) {
+      // Handle error here
+      console.error(error)
+      res.status(500).send(&#x27;An error occurred&#x27;)
+    }
   }
 }
 </code></pre>
     </div>
 </div>
-
-
 
 
 
@@ -329,19 +325,6 @@ export class PaymasterApiController {
             var COMPODOC_CURRENT_PAGE_URL = 'PaymasterApiController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

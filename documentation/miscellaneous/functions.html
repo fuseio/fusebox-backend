@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -95,23 +46,18 @@
 
 
 
-
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Miscellaneous</li>
-  <li class="breadcrumb-item">Functions</li>
+  <li>Miscellaneous</li>
+  <li>Functions</li>
 </ol>
 
-<section data-compodoc="block-index">
+<section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
             <tr>
                 <td class="col-md-4">
                     <ul class="index-list">
-                        <li>
-                            <a href="#abiValidator" title="libs/common/src/utils/dtools/validation/validators/abiValidator.ts" ><b>abiValidator</b>&nbsp;&nbsp;&nbsp;(libs/.../abiValidator.ts)</a>
-                        </li>
                         <li>
                             <a href="#aprToApy" title="apps/charge-network-service/src/common/utils/helper-functions.ts" ><b>aprToApy</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
                         </li>
@@ -140,37 +86,25 @@
                             <a href="#callMSFunction" title="libs/common/src/utils/client-proxy.ts" ><b>callMSFunction</b>&nbsp;&nbsp;&nbsp;(libs/.../client-proxy.ts)</a>
                         </li>
                         <li>
-                            <a href="#combinations" title="libs/common/src/utils/dtools/combinations.ts" ><b>combinations</b>&nbsp;&nbsp;&nbsp;(libs/.../combinations.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#combinationsMap" title="libs/common/src/utils/dtools/decodeEvent.ts" ><b>combinationsMap</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeEvent.ts)</a>
-                        </li>
-                        <li>
                             <a href="#confirmedUserOpToWalletAction" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>confirmedUserOpToWalletAction</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
                         </li>
                         <li>
-                            <a href="#decode4BytesData" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>decode4BytesData</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#decodeByCalldata" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>decodeByCalldata</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#decodeCalldata" title="libs/common/src/utils/dtools/decodeCalldata.ts" ><b>decodeCalldata</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeCalldata.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#decodeEvent" title="libs/common/src/utils/dtools/decodeEvent.ts" ><b>decodeEvent</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeEvent.ts)</a>
+                            <a href="#decodeAllPossibilities" title="libs/common/src/utils/calldata-decoder/decoders/abi.ts" ><b>decodeAllPossibilities</b>&nbsp;&nbsp;&nbsp;(libs/.../abi.ts)</a>
                         </li>
                         <li>
                             <a href="#decodePaymasterAndData" title="apps/charge-smart-wallets-service/src/common/utils/helper-functions.ts" ><b>decodePaymasterAndData</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
                         </li>
                         <li>
-                            <a href="#decodeWithCalldata" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>decodeWithCalldata</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#decodeRecursive" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeRecursive</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
                         </li>
                         <li>
-                            <a href="#decodeWithEventProps" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>decodeWithEventProps</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#decodeWithABI" title="libs/common/src/utils/calldata-decoder/decoders/abi.ts" ><b>decodeWithABI</b>&nbsp;&nbsp;&nbsp;(libs/.../abi.ts)</a>
                         </li>
                         <li>
-                            <a href="#doesContainNamedKeys" title="libs/common/src/utils/dtools/decodeEvent.ts" ><b>doesContainNamedKeys</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeEvent.ts)</a>
+                            <a href="#decodeWithAddress" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeWithAddress</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeWithSelector" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeWithSelector</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
                         </li>
                         <li>
                             <a href="#executeBatchAction" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>executeBatchAction</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
@@ -179,10 +113,16 @@
                             <a href="#executeSingleAction" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>executeSingleAction</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
                         </li>
                         <li>
-                            <a href="#fetch4Bytes" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>fetch4Bytes</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#fetchContractAbi" title="libs/common/src/utils/calldata-decoder/api.ts" ><b>fetchContractAbi</b>&nbsp;&nbsp;&nbsp;(libs/.../api.ts)</a>
                         </li>
                         <li>
-                            <a href="#findKeyword" title="libs/common/src/utils/dtools/parseAbi.ts" ><b>findKeyword</b>&nbsp;&nbsp;&nbsp;(libs/.../parseAbi.ts)</a>
+                            <a href="#fetchFunctionFrom4Bytes" title="libs/common/src/utils/calldata-decoder/api.ts" ><b>fetchFunctionFrom4Bytes</b>&nbsp;&nbsp;&nbsp;(libs/.../api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#fetchFunctionFromOpenchain" title="libs/common/src/utils/calldata-decoder/api.ts" ><b>fetchFunctionFromOpenchain</b>&nbsp;&nbsp;&nbsp;(libs/.../api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#fetchFunctionInterface" title="libs/common/src/utils/calldata-decoder/api.ts" ><b>fetchFunctionInterface</b>&nbsp;&nbsp;&nbsp;(libs/.../api.ts)</a>
                         </li>
                         <li>
                             <a href="#generateSalt" title="apps/charge-smart-wallets-service/src/common/utils/helper-functions.ts" ><b>generateSalt</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
@@ -206,31 +146,10 @@
                             <a href="#getWalletActionType" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>getWalletActionType</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
                         </li>
                         <li>
-                            <a href="#hexValidator" title="libs/common/src/utils/dtools/validation/validators/hexValidator.ts" ><b>hexValidator</b>&nbsp;&nbsp;&nbsp;(libs/.../hexValidator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#hexWithoutPrefixValidator" title="libs/common/src/utils/dtools/validation/validators/hexValidator.ts" ><b>hexWithoutPrefixValidator</b>&nbsp;&nbsp;&nbsp;(libs/.../hexValidator.ts)</a>
-                        </li>
-                        <li>
                             <a href="#isValidSignature" title="scripts/smartWalletsAuthTesting.ts" ><b>isValidSignature</b>&nbsp;&nbsp;&nbsp;(scripts/.../smartWalletsAuthTesting.ts)</a>
                         </li>
                         <li>
-                            <a href="#lastOne" title="libs/common/src/utils/dtools/parseAbi.ts" ><b>lastOne</b>&nbsp;&nbsp;&nbsp;(libs/.../parseAbi.ts)</a>
-                        </li>
-                        <li>
                             <a href="#logPerformance" title="apps/charge-notifications-service/src/common/decorators/log-performance.decorator.ts" ><b>logPerformance</b>&nbsp;&nbsp;&nbsp;(apps/.../log-performance.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#numberValidator" title="libs/common/src/utils/dtools/validation/validators/numberValidator.ts" ><b>numberValidator</b>&nbsp;&nbsp;&nbsp;(libs/.../numberValidator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#omitNonNamedKeys" title="libs/common/src/utils/dtools/decodeEvent.ts" ><b>omitNonNamedKeys</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeEvent.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#parse4BytesResToIfaces" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>parse4BytesResToIfaces</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#parseAbi" title="libs/common/src/utils/dtools/parseAbi.ts" ><b>parseAbi</b>&nbsp;&nbsp;&nbsp;(libs/.../parseAbi.ts)</a>
                         </li>
                         <li>
                             <a href="#parsedUserOpToWalletAction" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>parsedUserOpToWalletAction</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
@@ -239,25 +158,16 @@
                             <a href="#recoverPublicAddress" title="scripts/smartWalletsAuthTesting.ts" ><b>recoverPublicAddress</b>&nbsp;&nbsp;&nbsp;(scripts/.../smartWalletsAuthTesting.ts)</a>
                         </li>
                         <li>
-                            <a href="#safeFetch" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>safeFetch</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#setupSwagger" title="apps/charge-accounts-service/src/common/utils/swagger/setup-swagger.ts" ><b>setupSwagger</b>&nbsp;&nbsp;&nbsp;(apps/.../setup-swagger.ts)</a>
                         </li>
                         <li>
-                            <a href="#sigHashFromCalldata" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>sigHashFromCalldata</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#stringValidator" title="libs/common/src/utils/dtools/validation/validators/stringValiator.ts" ><b>stringValidator</b>&nbsp;&nbsp;&nbsp;(libs/.../stringValiator.ts)</a>
+                            <a href="#setupSwagger" title="apps/charge-api-service/src/common/utils/swagger/setup-swagger.ts" ><b>setupSwagger</b>&nbsp;&nbsp;&nbsp;(apps/.../setup-swagger.ts)</a>
                         </li>
                         <li>
                             <a href="#tokenReceiveToWalletAction" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>tokenReceiveToWalletAction</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
                         </li>
                         <li>
-                            <a href="#tryToDecodeEvent" title="libs/common/src/utils/dtools/decodeEvent.ts" ><b>tryToDecodeEvent</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeEvent.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#urlTo" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>urlTo</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#utcSchema" title="libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts" ><b>utcSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../utcSchemas.ts)</a>
+                            <a href="#ValidateDuration" title="apps/charge-network-service/src/voltage-dex/dto/duration.dto.ts" ><b>ValidateDuration</b>&nbsp;&nbsp;&nbsp;(apps/.../duration.dto.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -266,71 +176,8 @@
     </table>
 </section>
 
-    <h3>libs/common/src/utils/dtools/validation/validators/abiValidator.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="abiValidator"></a>
-                    <span class="name">
-                        <span ><b>abiValidator</b></span>
-                        <a href="#abiValidator"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>abiValidator(newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>newValue</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>ValidatorResult</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>apps/charge-network-service/src/common/utils/helper-functions.ts</h3>
-    <section data-compodoc="block-methods">
+    <h3>apps/charge-network-service/src/common/utils/helper-functions.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -354,51 +201,53 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>interest</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>interest</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>frequency</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                <tr>
+                                    <td>frequency</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>apps/charge-accounts-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -422,7 +271,7 @@
         </tbody>
     </table>
 </section>    <h3>apps/charge-api-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -446,7 +295,7 @@
         </tbody>
     </table>
 </section>    <h3>apps/charge-apps-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -470,7 +319,7 @@
         </tbody>
     </table>
 </section>    <h3>apps/charge-network-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -494,7 +343,7 @@
         </tbody>
     </table>
 </section>    <h3>apps/charge-notifications-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -518,7 +367,7 @@
         </tbody>
     </table>
 </section>    <h3>apps/charge-relay-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -542,7 +391,7 @@
         </tbody>
     </table>
 </section>    <h3>apps/charge-smart-wallets-service/src/main.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -566,7 +415,7 @@
         </tbody>
     </table>
 </section>    <h3>libs/common/src/utils/client-proxy.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -590,494 +439,65 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>client</td>
-                                            <td>
-                                                        <code>ClientProxy</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>pattern</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>data</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>libs/common/src/utils/dtools/combinations.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="combinations"></a>
-                    <span class="name">
-                        <span ><b>combinations</b></span>
-                        <a href="#combinations"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>combinations(length: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, count: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>length</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>count</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>[][]</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>libs/common/src/utils/dtools/decodeEvent.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="combinationsMap"></a>
-                    <span class="name">
-                        <span ><b>combinationsMap</b></span>
-                        <a href="#combinationsMap"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>combinationsMap(inputs, indexedArgsCount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, change)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>inputs</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>indexedArgsCount</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>change</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>[][]</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="decodeEvent"></a>
-                    <span class="name">
-                        <span ><b>decodeEvent</b></span>
-                        <a href="#decodeEvent"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>decodeEvent(iface: Interface, eventProps: <a href="../interfaces/EventProps.html" target="_self">EventProps</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>iface</td>
-                                            <td>
-                                                        <code>Interface</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>eventProps</td>
-                                            <td>
-                                                            <code><a href="../interfaces/EventProps.html" target="_self" >EventProps</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#DecodedEventResult" target="_self" >DecodedEventResult</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="doesContainNamedKeys"></a>
-                    <span class="name">
-                        <span ><b>doesContainNamedKeys</b></span>
-                        <a href="#doesContainNamedKeys"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>doesContainNamedKeys(object: T)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>object</td>
-                                            <td>
-                                                        <code>T</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="omitNonNamedKeys"></a>
-                    <span class="name">
-                        <span ><b>omitNonNamedKeys</b></span>
-                        <a href="#omitNonNamedKeys"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>omitNonNamedKeys(object: T)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>object</td>
-                                            <td>
-                                                        <code>T</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Record | T</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="tryToDecodeEvent"></a>
-                    <span class="name">
-                        <span ><b>tryToDecodeEvent</b></span>
-                        <a href="#tryToDecodeEvent"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>tryToDecodeEvent(iface: Interface, eventProps: <a href="../interfaces/EventProps.html" target="_self">EventProps</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-description"><p>We assume that we don&#39;t have partial indexing information.
-This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
-</div>
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>iface</td>
-                                            <td>
-                                                        <code>Interface</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>eventProps</td>
-                                            <td>
-                                                            <code><a href="../interfaces/EventProps.html" target="_self" >EventProps</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#DecodedEventResult" target="_self" >DecodedEventResult</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>client</td>
+                                    <td>
+                                            <code>ClientProxy</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pattern</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1101,33 +521,35 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>userOp</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userOp</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1155,29 +577,31 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>targetFunctions</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>targetFunctions</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1205,45 +629,47 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>name</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>targetAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                <tr>
+                                    <td>targetAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1271,36 +697,38 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>parsedUserOp</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>parsedUserOp</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/WalletAction.html" target="_self" >WalletAction</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/WalletAction.html" target="_self" >WalletAction</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1328,45 +756,47 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>parsedUserOp</td>
-                                            <td>
-                                                            <code><a href="../interfaces/UserOp.html" target="_self" >UserOp</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>parsedUserOp</td>
+                                    <td>
+                                                <code><a href="../interfaces/UserOp.html" target="_self" >UserOp</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>tokenService</td>
-                                            <td>
-                                                            <code><a href="../injectables/TokenService.html" target="_self" >TokenService</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                <tr>
+                                    <td>tokenService</td>
+                                    <td>
+                                                <code><a href="../injectables/TokenService.html" target="_self" >TokenService</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1394,169 +824,171 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>fromWalletAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>fromWalletAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>toWalletAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>txHash</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>toWalletAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>value</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>tokenType</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>txHash</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>name</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>symbol</td>
-                                            <td>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>address</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>decimals</td>
-                                            <td>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>tokenType</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>blockNumber</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>tokenId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                    </td>
 
-                                            <td>
-                                                    Yes
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                <tr>
+                                    <td>symbol</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>decimals</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>blockNumber</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>tokenId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>    <h3>libs/common/src/utils/dtools/decodeBySigHash.ts</h3>
-    <section data-compodoc="block-methods">
+</section>    <h3>libs/common/src/utils/calldata-decoder/decoders/abi.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="decode4BytesData"></a>
+                    <a name="decodeAllPossibilities"></a>
                     <span class="name">
-                        <span ><b>decode4BytesData</b></span>
-                        <a href="#decode4BytesData"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>decodeAllPossibilities</b></span>
+                        <a href="#decodeAllPossibilities"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>decode4BytesData(ifaces, data: T, decodeFn)</code>
+<code>decodeAllPossibilities(__namedParameters: {functionSignatures: string[], calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>})</code>
                 </td>
             </tr>
 
@@ -1566,62 +998,47 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>ifaces</td>
-                                            <td>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>functionSignatures</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>data</td>
-                                            <td>
-                                                        <code>T</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>decodeFn</td>
-                                            <td>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>calldata</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>R[]</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1630,16 +1047,16 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="decodeByCalldata"></a>
+                    <a name="decodeWithABI"></a>
                     <span class="name">
-                        <span ><b>decodeByCalldata</b></span>
-                        <a href="#decodeByCalldata"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>decodeWithABI</b></span>
+                        <a href="#decodeWithABI"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>decodeByCalldata(ifaces, calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>decodeWithABI(__namedParameters: {abi: ethers.utils.Fragment[] | string[], calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>})</code>
                 </td>
             </tr>
 
@@ -1649,632 +1066,60 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>ifaces</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>calldata</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/DecodeResult.html" target="_self" >DecodeResult[]</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="decodeWithCalldata"></a>
-                    <span class="name">
-                        <span ><b>decodeWithCalldata</b></span>
-                        <a href="#decodeWithCalldata"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>decodeWithCalldata(sigHash: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>sigHash</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>calldata</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;[] | undefined&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="decodeWithEventProps"></a>
-                    <span class="name">
-                        <span ><b>decodeWithEventProps</b></span>
-                        <a href="#decodeWithEventProps"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>decodeWithEventProps(sigHash: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, eventProps: <a href="../interfaces/EventProps.html" target="_self">EventProps</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>sigHash</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>eventProps</td>
-                                            <td>
-                                                            <code><a href="../interfaces/EventProps.html" target="_self" >EventProps</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;[] | undefined&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="fetch4Bytes"></a>
-                    <span class="name">
-                        <span ><b>fetch4Bytes</b></span>
-                        <a href="#fetch4Bytes"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>fetch4Bytes(hexSig: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, hexSigType: <a href="../undefineds/HexSigType.html" target="_self">HexSigType</a>, retries: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Default value</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>hexSig</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>hexSigType</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#HexSigType" target="_self" >HexSigType</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>retries</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>0</code>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;[] | undefined&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="parse4BytesResToIfaces"></a>
-                    <span class="name">
-                        <span ><b>parse4BytesResToIfaces</b></span>
-                        <a href="#parse4BytesResToIfaces"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>parse4BytesResToIfaces(data, defaultKeyword: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Default value</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>data</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>defaultKeyword</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>&#x27;function&#x27;</code>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Interface[]</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="safeFetch"></a>
-                    <span class="name">
-                        <span ><b>safeFetch</b></span>
-                        <a href="#safeFetch"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>safeFetch(...args: Parameters)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>args</td>
-                                            <td>
-                                                        <code>Parameters</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;T&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="sigHashFromCalldata"></a>
-                    <span class="name">
-                        <span ><b>sigHashFromCalldata</b></span>
-                        <a href="#sigHashFromCalldata"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>sigHashFromCalldata(calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>calldata</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>string | undefined</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="urlTo"></a>
-                    <span class="name">
-                        <span ><b>urlTo</b></span>
-                        <a href="#urlTo"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>urlTo(hexSigType: <a href="../undefineds/HexSigType.html" target="_self">HexSigType</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>hexSigType</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#HexSigType" target="_self" >HexSigType</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>libs/common/src/utils/dtools/decodeCalldata.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="decodeCalldata"></a>
-                    <span class="name">
-                        <span ><b>decodeCalldata</b></span>
-                        <a href="#decodeCalldata"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>decodeCalldata(iface: Interface, calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>iface</td>
-                                            <td>
-                                                        <code>Interface</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>calldata</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/DecodeResult.html" target="_self" >DecodeResult | undefined</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>abi</td>
+                                    <td>
+                                            <code>ethers.utils.Fragment[] | string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>calldata</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>ethers.utils.TransactionDescription | null</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>apps/charge-smart-wallets-service/src/common/utils/helper-functions.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2298,40 +1143,42 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>data</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -2381,49 +1228,51 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>data</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>    <h3>libs/common/src/utils/dtools/parseAbi.ts</h3>
-    <section data-compodoc="block-methods">
+</section>    <h3>libs/common/src/utils/calldata-decoder/decoder.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="findKeyword"></a>
+                    <a name="decodeRecursive"></a>
                     <span class="name">
-                        <span ><b>findKeyword</b></span>
-                        <a href="#findKeyword"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>decodeRecursive</b></span>
+                        <a href="#decodeRecursive"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>findKeyword(frag: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>decodeRecursive(__namedParameters: {calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, chainId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, abi: ethers.utils.Fragment[] | string[]})</code>
                 </td>
             </tr>
 
@@ -2433,40 +1282,71 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>frag</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>calldata</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                </tr>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>chainId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>abi</td>
+                                    <td>
+                                            <code>ethers.utils.Fragment[] | string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -2475,16 +1355,16 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="lastOne"></a>
+                    <a name="decodeWithAddress"></a>
                     <span class="name">
-                        <span ><b>lastOne</b></span>
-                        <a href="#lastOne"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>decodeWithAddress</b></span>
+                        <a href="#decodeWithAddress"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>lastOne(array)</code>
+<code>decodeWithAddress(__namedParameters: {calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, chainId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>})</code>
                 </td>
             </tr>
 
@@ -2494,36 +1374,66 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>array</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>calldata</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>T</code>
+                                </tr>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>chainId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;ethers.utils.TransactionDescription | null&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -2532,16 +1442,16 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="parseAbi"></a>
+                    <a name="decodeWithSelector"></a>
                     <span class="name">
-                        <span ><b>parseAbi</b></span>
-                        <a href="#parseAbi"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>decodeWithSelector</b></span>
+                        <a href="#decodeWithSelector"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>parseAbi(rawAbi: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, defaultKeyword: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>decodeWithSelector(__namedParameters: {calldata: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>})</code>
                 </td>
             </tr>
 
@@ -2551,64 +1461,293 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Default value</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>rawAbi</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>calldata</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
-                                            <td>
-                                            </td>
 
-                                        </tr>
-                                        <tr>
-                                                <td>defaultKeyword</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;ethers.utils.TransactionDescription | any | null&gt;</code>
 
-                                            <td>
-                                                    No
-                                            </td>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/common/src/utils/calldata-decoder/api.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchContractAbi"></a>
+                    <span class="name">
+                        <span ><b>fetchContractAbi</b></span>
+                        <a href="#fetchContractAbi"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchContractAbi(__namedParameters: {address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, chainId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>})</code>
+                </td>
+            </tr>
 
-                                            <td>
-                                                    <code>&#x27;function&#x27;</code>
-                                            </td>
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Interface | Error</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>chainId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchFunctionFrom4Bytes"></a>
+                    <span class="name">
+                        <span ><b>fetchFunctionFrom4Bytes</b></span>
+                        <a href="#fetchFunctionFrom4Bytes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchFunctionFrom4Bytes(__namedParameters: {selector: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>})</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selector</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchFunctionFromOpenchain"></a>
+                    <span class="name">
+                        <span ><b>fetchFunctionFromOpenchain</b></span>
+                        <a href="#fetchFunctionFromOpenchain"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchFunctionFromOpenchain(__namedParameters: {selector: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>})</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selector</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchFunctionInterface"></a>
+                    <span class="name">
+                        <span ><b>fetchFunctionInterface</b></span>
+                        <a href="#fetchFunctionInterface"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchFunctionInterface(__namedParameters: {selector: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>})</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selector</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string | null&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>libs/common/src/utils/set-functions.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2632,45 +1771,47 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>setA</td>
-                                            <td>
-                                                        <code>Set</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>setA</td>
+                                    <td>
+                                            <code>Set</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>setB</td>
-                                            <td>
-                                                        <code>Set</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                <tr>
+                                    <td>setB</td>
+                                    <td>
+                                            <code>Set</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -2698,51 +1839,53 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>setA</td>
-                                            <td>
-                                                        <code>Set</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>setA</td>
+                                    <td>
+                                            <code>Set</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>setB</td>
-                                            <td>
-                                                        <code>Set</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                <tr>
+                                    <td>setB</td>
+                                    <td>
+                                            <code>Set</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>libs/common/src/utils/env.helper.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2766,46 +1909,48 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>dest</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dest</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>scripts/smartWalletsAuthTesting.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2829,29 +1974,31 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>privateKey</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>privateKey</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -2879,54 +2026,56 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>signingAddress</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>signingAddress</td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>message</td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>signature</td>
+                                </tr>
+                                <tr>
+                                    <td>message</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+                                </tr>
+                                <tr>
+                                    <td>signature</td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -2954,168 +2103,46 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>hash</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>hash</td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>signature</td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>libs/common/src/utils/dtools/validation/validators/hexValidator.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="hexValidator"></a>
-                    <span class="name">
-                        <span ><b>hexValidator</b></span>
-                        <a href="#hexValidator"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>hexValidator(newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
+                                </tr>
+                                <tr>
+                                    <td>signature</td>
+
+                                    <td>
+                                        No
+                                    </td>
 
 
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>newValue</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>ValidatorResult</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="hexWithoutPrefixValidator"></a>
-                    <span class="name">
-                        <span ><b>hexWithoutPrefixValidator</b></span>
-                        <a href="#hexWithoutPrefixValidator"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>hexWithoutPrefixValidator(newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>newValue</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>ValidatorResult</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>    <h3>apps/charge-notifications-service/src/common/decorators/log-performance.decorator.ts</h3>
-    <section data-compodoc="block-methods">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -3139,60 +2166,62 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>logPrefix</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>logPrefix</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    Yes
-                                            </td>
+                                    <td>
+                                        Yes
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>MethodDecorator</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>MethodDecorator</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>    <h3>libs/common/src/utils/dtools/validation/validators/numberValidator.ts</h3>
-    <section data-compodoc="block-methods">
+</section>    <h3>apps/charge-accounts-service/src/common/utils/swagger/setup-swagger.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="numberValidator"></a>
+                    <a name="setupSwagger"></a>
                     <span class="name">
-                        <span ><b>numberValidator</b></span>
-                        <a href="#numberValidator"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>setupSwagger</b></span>
+                        <a href="#setupSwagger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>numberValidator(newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>setupSwagger(app: <a href="../interfaces/Application.html" target="_self">INestApplication</a>)</code>
                 </td>
             </tr>
 
@@ -3202,60 +2231,62 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>newValue</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>app</td>
+                                    <td>
+                                                <code><a href="../interfaces/Application.html" target="_self" >INestApplication</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>ValidatorResult</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>    <h3>libs/common/src/utils/dtools/validation/validators/stringValiator.ts</h3>
-    <section data-compodoc="block-methods">
+</section>    <h3>apps/charge-api-service/src/common/utils/swagger/setup-swagger.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="stringValidator"></a>
+                    <a name="setupSwagger"></a>
                     <span class="name">
-                        <span ><b>stringValidator</b></span>
-                        <a href="#stringValidator"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>setupSwagger</b></span>
+                        <a href="#setupSwagger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>stringValidator(newValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>setupSwagger(app: <a href="../interfaces/Application.html" target="_self">INestApplication</a>)</code>
                 </td>
             </tr>
 
@@ -3265,60 +2296,62 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>newValue</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>app</td>
+                                    <td>
+                                                <code><a href="../interfaces/Application.html" target="_self" >INestApplication</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>ValidatorResult</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>    <h3>libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts</h3>
-    <section data-compodoc="block-methods">
+</section>    <h3>apps/charge-network-service/src/voltage-dex/dto/duration.dto.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="utcSchema"></a>
+                    <a name="ValidateDuration"></a>
                     <span class="name">
-                        <span ><b>utcSchema</b></span>
-                        <a href="#utcSchema"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>ValidateDuration</b></span>
+                        <a href="#ValidateDuration"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>utcSchema(max: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, min: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>ValidateDuration(validationOptions?: ValidationOptions)</code>
                 </td>
             </tr>
 
@@ -3328,58 +2361,35 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Default value</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>max</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validationOptions</td>
+                                    <td>
+                                            <code>ValidationOptions</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        Yes
+                                    </td>
 
-                                            <td>
-                                            </td>
 
-                                        </tr>
-                                        <tr>
-                                                <td>min</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>0</code>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>ZodNumber</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -3416,19 +2426,6 @@ This may not be true, but it&#39;s an edge case and it&#39;s PITA to handle.</p>
             var COMPODOC_CURRENT_PAGE_URL = 'functions.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -85,27 +36,21 @@
 
 
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >OperatorsController</li>
+  <li>Controllers</li>
+  <li >OperatorsController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -119,7 +64,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -133,51 +78,38 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#checkOperatorExistence" >checkOperatorExistence</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#checkWalletActivationStatus" >checkWalletActivationStatus</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#createOperatorUserAndProjectAndWallet" >createOperatorUserAndProjectAndWallet</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#findOperatorByOwnerId" >findOperatorByOwnerId</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#findOperatorBySmartWallet" >findOperatorBySmartWallet</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getOperatorsUserAndProject" >getOperatorsUserAndProject</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getSponsoredTransactionsCount" >getSponsoredTransactionsCount</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#handleWebhookReceiveAndFundPaymaster" >handleWebhookReceiveAndFundPaymaster</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#validate" >validate</a>
                             </li>
                         </ul>
@@ -192,7 +124,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -203,8 +135,7 @@
                 <td class="col-md-4">
                     <a name="checkOperatorExistence"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>checkOperatorExistence</b></span>
                         <a href="#checkOperatorExistence"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -212,7 +143,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>checkOperatorExistence(address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, response: Response)</code>
                 </td>
             </tr>
@@ -221,69 +152,71 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Head(&#x27;/eoaAddress/:address&#x27;)<br /></code>
+                    <code>@Head(&#x27;/eoaAddress/:address&#x27;)<br />@ApiOperation({summary: &#x27;Check if operator exist&#x27;})<br />@ApiParam({name: &#x27;address&#x27;, type: String, required: true})<br />@ApiCreatedResponse({description: &#x27;Operator exist&#x27;})<br />@ApiNotFoundResponse({description: &#x27;Operator does not exist&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:23</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:31</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Check if operator exist</p>
+                    <div class="io-description"><p>Check if operator exist</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>address</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>response</td>
-                                            <td>
-                                                        <code>Response</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -294,9 +227,7 @@
                 <td class="col-md-4">
                     <a name="checkWalletActivationStatus"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>checkWalletActivationStatus</b></span>
                         <a href="#checkWalletActivationStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -304,7 +235,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>checkWalletActivationStatus(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, response: Response)</code>
                 </td>
             </tr>
@@ -313,70 +244,72 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/is-activated&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/is-activated&#x27;)<br />@ApiOperation({summary: &#x27;Check if operator wallet is activated&#x27;})<br />@ApiCreatedResponse({description: &#x27;Wallet is activated&#x27;})<br />@ApiNotFoundResponse({description: &#x27;Wallet not activated&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="74"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:74</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:95</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Check if operator wallet is activated</p>
+                    <div class="io-description"><p>Check if operator wallet is activated</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>auth0Id</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>response</td>
-                                            <td>
-                                                        <code>Response</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                <p>OK if operator wallet is activated, not found otherwise</p>
+                                    <td>
+                                        No
+                                    </td>
 
-                            </div>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>OK if operator wallet is activated, not found otherwise</p>
+
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -387,9 +320,7 @@
                 <td class="col-md-4">
                     <a name="createOperatorUserAndProjectAndWallet"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>createOperatorUserAndProjectAndWallet</b></span>
                         <a href="#createOperatorUserAndProjectAndWallet"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -397,8 +328,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createOperatorUserAndProjectAndWallet(createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createOperatorUserAndProjectAndWallet(createOperatorUserDto: <a href="../interfaces/User.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -406,70 +337,72 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/account&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/account&#x27;)<br />@ApiOperation({summary: &#x27;Create user, project and AA wallet for an operator&#x27;})<br />@ApiBody({type: CreateOperatorUser, required: true})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:56</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:72</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Create user, project and AA wallet for an operator</p>
+                    <div class="io-description"><p>Create user, project and AA wallet for an operator</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>createOperatorUserDto</td>
-                                            <td>
-                                                            <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>createOperatorUserDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/User.html" target="_self" >CreateOperatorUserDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>auth0Id</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the user, project and AA wallet with public key</p>
+                                    <td>
+                                        No
+                                    </td>
 
-                            </div>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the user, project and AA wallet with public key</p>
+
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -480,8 +413,7 @@
                 <td class="col-md-4">
                     <a name="findOperatorByOwnerId"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>findOperatorByOwnerId</b></span>
                         <a href="#findOperatorByOwnerId"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -489,7 +421,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>findOperatorByOwnerId(walletAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -502,51 +434,53 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="100"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:100</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:123</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>walletAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>walletAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -557,8 +491,7 @@
                 <td class="col-md-4">
                     <a name="findOperatorBySmartWallet"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>findOperatorBySmartWallet</b></span>
                         <a href="#findOperatorBySmartWallet"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -566,7 +499,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>findOperatorBySmartWallet(walletAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -579,51 +512,53 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="95"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:95</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:118</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>walletAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>walletAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -634,9 +569,7 @@
                 <td class="col-md-4">
                     <a name="getOperatorsUserAndProject"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getOperatorsUserAndProject</b></span>
                         <a href="#getOperatorsUserAndProject"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -644,7 +577,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getOperatorsUserAndProject(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -653,58 +586,60 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/account&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/account&#x27;)<br />@ApiOperation({summary: &#x27;Get current operator&#x27;})<br />@ApiCreatedResponse({description: &#x27;The operator has been successfully fetched.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:45</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:59</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Get current operator</p>
+                    <div class="io-description"><p>Get current operator</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>auth0Id</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the user and project with public key</p>
+                    </div>
+                    <div class="io-description">
+                        <p>the user and project with public key</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -715,9 +650,7 @@
                 <td class="col-md-4">
                     <a name="getSponsoredTransactionsCount"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getSponsoredTransactionsCount</b></span>
                         <a href="#getSponsoredTransactionsCount"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -725,7 +658,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getSponsoredTransactionsCount(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -734,58 +667,60 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/sponsored-transaction&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/sponsored-transaction&#x27;)<br />@ApiOperation({summary: &#x27;Get sponsored transactions count&#x27;})<br />@ApiCreatedResponse({description: &#x27;The sponsored transactions count has been successfully fetched.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:89</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="112"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:112</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Get sponsored transactions count</p>
+                    <div class="io-description"><p>Get sponsored transactions count</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>auth0Id</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>sponsored transactions count</p>
+                    </div>
+                    <div class="io-description">
+                        <p>sponsored transactions count</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -796,8 +731,7 @@
                 <td class="col-md-4">
                     <a name="handleWebhookReceiveAndFundPaymaster"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>handleWebhookReceiveAndFundPaymaster</b></span>
                         <a href="#handleWebhookReceiveAndFundPaymaster"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -805,7 +739,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>handleWebhookReceiveAndFundPaymaster(webhookEvent: <a href="../interfaces/WebhookEvent.html" target="_self">WebhookEvent</a>)</code>
                 </td>
             </tr>
@@ -814,57 +748,59 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;/webhook/fund&#x27;)<br /></code>
+                    <code>@Post(&#x27;/webhook/fund&#x27;)<br />@ApiOperation({summary: &#x27;Handle Webhook Receive And Fund Paymaster&#x27;})<br />@ApiCreatedResponse({description: &#x27;The webhook event has been successfully handled.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:64</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:82</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Handle Webhook Receive And Fund Paymaster</p>
+                    <div class="io-description"><p>Handle Webhook Receive And Fund Paymaster</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>webhookEvent</td>
-                                            <td>
-                                                            <code><a href="../interfaces/WebhookEvent.html" target="_self" >WebhookEvent</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>webhookEvent</td>
+                                    <td>
+                                                <code><a href="../interfaces/WebhookEvent.html" target="_self" >WebhookEvent</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -875,7 +811,6 @@
                 <td class="col-md-4">
                     <a name="validate"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>validate</b></span>
                         <a href="#validate"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -883,8 +818,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>validate(authOperatorDto: <a href="../classes/AuthOperatorDto.html" target="_self">AuthOperatorDto</a>)</code>
+<code>validate(authOperatorDto: <a href="../classes/AuthOperatorDto.html" target="_self">AuthOperatorDto</a>)</code>
                 </td>
             </tr>
 
@@ -892,58 +826,60 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;/validate&#x27;)<br /></code>
+                    <code>@Post(&#x27;/validate&#x27;)<br />@ApiOperation({summary: &#x27;Validate operator&#x27;})<br />@ApiBody({type: AuthOperator, required: true})<br />@ApiCreatedResponse({description: &#x27;The operator has been successfully validated.&#x27;})<br />@ApiUnauthorizedResponse({description: &#x27;Unauthorized.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:34</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:46</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Validate operator</p>
+                    <div class="io-description"><p>Validate operator</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>authOperatorDto</td>
-                                            <td>
-                                                            <code><a href="../classes/AuthOperatorDto.html" target="_self" >AuthOperatorDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>authOperatorDto</td>
+                                    <td>
+                                                <code><a href="../classes/AuthOperatorDto.html" target="_self" >AuthOperatorDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                <p>the new operator JWT</p>
+                    </div>
+                    <div class="io-description">
+                        <p>the new operator JWT</p>
 
-                            </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -951,7 +887,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Head, Logger, Param, Post, Res, UseGuards } from &#x27;@nestjs/common&#x27;
 import { User } from &#x27;@app/accounts-service/users/user.decorator&#x27;
 import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
@@ -961,7 +897,11 @@ import { AuthOperatorDto } from &#x27;@app/accounts-service/operators/dto/auth-o
 import { Response } from &#x27;express&#x27;
 import { WebhookEvent } from &#x27;@app/apps-service/payments/interfaces/webhook-event.interface&#x27;
 import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
+import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from &#x27;@nestjs/swagger&#x27;
+import { AuthOperator } from &#x27;@app/accounts-service/operators/entities/auth-operator.entity&#x27;
+import { CreateOperatorUser } from &#x27;@app/accounts-service/operators/entities/create-operator-user.entity&#x27;
 
+@ApiTags(&#x27;Operators&#x27;)
 @Controller({ path: &#x27;operators&#x27;, version: &#x27;1&#x27; })
 export class OperatorsController {
   private readonly logger &#x3D; new Logger(OperatorsController.name)
@@ -974,6 +914,10 @@ export class OperatorsController {
    * @param Address
    */
   @Head(&#x27;/eoaAddress/:address&#x27;)
+  @ApiOperation({ summary: &#x27;Check if operator exist&#x27; })
+  @ApiParam({ name: &#x27;address&#x27;, type: String, required: true })
+  @ApiCreatedResponse({ description: &#x27;Operator exist&#x27; })
+  @ApiNotFoundResponse({ description: &#x27;Operator does not exist&#x27; })
   async checkOperatorExistence (@Param(&#x27;address&#x27;) address: string, @Res() response: Response) {
     const statusCode &#x3D; await this.operatorsService.checkOperatorExistenceByEoaAddress(address)
     response.status(statusCode).send()
@@ -985,6 +929,10 @@ export class OperatorsController {
    * @returns the new operator JWT
    */
   @Post(&#x27;/validate&#x27;)
+  @ApiOperation({ summary: &#x27;Validate operator&#x27; })
+  @ApiBody({ type: AuthOperator, required: true })
+  @ApiCreatedResponse({ description: &#x27;The operator has been successfully validated.&#x27; })
+  @ApiUnauthorizedResponse({ description: &#x27;Unauthorized.&#x27; })
   validate (@Body() authOperatorDto: AuthOperatorDto) {
     return this.operatorsService.validate(authOperatorDto)
   }
@@ -996,6 +944,8 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get(&#x27;/account&#x27;)
+  @ApiOperation({ summary: &#x27;Get current operator&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The operator has been successfully fetched.&#x27; })
   async getOperatorsUserAndProject (@User(&#x27;sub&#x27;) auth0Id: string) {
     return this.operatorsService.getOperatorUserAndProject(auth0Id)
   }
@@ -1007,6 +957,8 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Post(&#x27;/account&#x27;)
+  @ApiOperation({ summary: &#x27;Create user, project and AA wallet for an operator&#x27; })
+  @ApiBody({ type: CreateOperatorUser, required: true })
   async createOperatorUserAndProjectAndWallet (@Body() createOperatorUserDto: CreateOperatorUserDto, @User(&#x27;sub&#x27;) auth0Id: string) {
     return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
   }
@@ -1015,6 +967,8 @@ export class OperatorsController {
    * Handle Webhook Receive And Fund Paymaster
    */
   @Post(&#x27;/webhook/fund&#x27;)
+  @ApiOperation({ summary: &#x27;Handle Webhook Receive And Fund Paymaster&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The webhook event has been successfully handled.&#x27; })
   async handleWebhookReceiveAndFundPaymaster (@Body() webhookEvent: WebhookEvent) {
     return await this.operatorsService.handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook(webhookEvent)
   }
@@ -1025,6 +979,9 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get(&#x27;/is-activated&#x27;)
+  @ApiOperation({ summary: &#x27;Check if operator wallet is activated&#x27; })
+  @ApiCreatedResponse({ description: &#x27;Wallet is activated&#x27; })
+  @ApiNotFoundResponse({ description: &#x27;Wallet not activated&#x27; })
   async checkWalletActivationStatus (@User(&#x27;sub&#x27;) auth0Id: string, @Res() response: Response) {
     const isActivated &#x3D; await this.operatorsService.checkWalletActivationStatus(auth0Id)
     if (!isActivated) {
@@ -1040,6 +997,8 @@ export class OperatorsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get(&#x27;/sponsored-transaction&#x27;)
+  @ApiOperation({ summary: &#x27;Get sponsored transactions count&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The sponsored transactions count has been successfully fetched.&#x27; })
   async getSponsoredTransactionsCount (@User(&#x27;sub&#x27;) auth0Id: string) {
     return this.operatorsService.getSponsoredTransactionsCount(auth0Id)
   }
@@ -1058,8 +1017,6 @@ export class OperatorsController {
 </code></pre>
     </div>
 </div>
-
-
 
 
 
@@ -1103,19 +1060,6 @@ export class OperatorsController {
             var COMPODOC_CURRENT_PAGE_URL = 'OperatorsController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

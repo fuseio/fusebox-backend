@@ -22,41 +22,53 @@
 <text text-anchor="start" x="429.73" y="-15.4" font-family="Times-12" font-size="14.00"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_ChargeSmartWalletsServiceModule</title>
-<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="96,-70 96,-195 400,-195 400,-70 96,-70"/>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="39,-70 39,-195 457,-195 457,-70 39,-70"/>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_ChargeSmartWalletsServiceModule_imports</title>
-<polygon fill="none" stroke="black" points="104,-78 104,-130 392,-130 392,-78 104,-78"/>
+<polygon fill="none" stroke="black" points="47,-78 47,-130 449,-130 449,-78 47,-78"/>
 </g>
 <!-- DataLayerModule -->
 <g id="node1" class="node">
 <title>DataLayerModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="384.12,-122 381.12,-126 360.12,-126 357.12,-122 265.88,-122 265.88,-86 384.12,-86 384.12,-122"/>
-<text text-anchor="middle" x="325" y="-99.8" font-family="Times,serif" font-size="14.00">DataLayerModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="441.12,-122 438.12,-126 417.12,-126 414.12,-122 322.88,-122 322.88,-86 441.12,-86 441.12,-122"/>
+<text text-anchor="middle" x="382" y="-99.8" font-family="Times,serif" font-size="14.00">DataLayerModule</text>
 </g>
 <!-- ChargeSmartWalletsServiceModule -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>ChargeSmartWalletsServiceModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="357.15,-187 354.15,-191 333.15,-191 330.15,-187 138.85,-187 138.85,-151 357.15,-151 357.15,-187"/>
-<text text-anchor="middle" x="248" y="-164.8" font-family="Times,serif" font-size="14.00">ChargeSmartWalletsServiceModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="346.15,-187 343.15,-191 322.15,-191 319.15,-187 127.85,-187 127.85,-151 346.15,-151 346.15,-187"/>
+<text text-anchor="middle" x="237" y="-164.8" font-family="Times,serif" font-size="14.00">ChargeSmartWalletsServiceModule</text>
 </g>
 <!-- DataLayerModule&#45;&gt;ChargeSmartWalletsServiceModule -->
 <g id="edge1" class="edge">
 <title>DataLayerModule&#45;&gt;ChargeSmartWalletsServiceModule</title>
-<path fill="none" stroke="black" d="M311.38,-122.11C311.38,-122.11 311.38,-140.99 311.38,-140.99"/>
-<polygon fill="black" stroke="black" points="307.88,-140.99 311.38,-150.99 314.88,-140.99 307.88,-140.99"/>
+<path fill="none" stroke="black" d="M334.38,-122.11C334.38,-122.11 334.38,-140.99 334.38,-140.99"/>
+<polygon fill="black" stroke="black" points="330.88,-140.99 334.38,-150.99 337.88,-140.99 330.88,-140.99"/>
 </g>
 <!-- SmartWalletsModule -->
 <g id="node2" class="node">
 <title>SmartWalletsModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="247.75,-122 244.75,-126 223.75,-126 220.75,-122 112.25,-122 112.25,-86 247.75,-86 247.75,-122"/>
-<text text-anchor="middle" x="180" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="304.75,-122 301.75,-126 280.75,-126 277.75,-122 169.25,-122 169.25,-86 304.75,-86 304.75,-122"/>
+<text text-anchor="middle" x="237" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsModule</text>
 </g>
 <!-- SmartWalletsModule&#45;&gt;ChargeSmartWalletsServiceModule -->
 <g id="edge2" class="edge">
 <title>SmartWalletsModule&#45;&gt;ChargeSmartWalletsServiceModule</title>
-<path fill="none" stroke="black" d="M193.4,-122.11C193.4,-122.11 193.4,-140.99 193.4,-140.99"/>
-<polygon fill="black" stroke="black" points="189.9,-140.99 193.4,-150.99 196.9,-140.99 189.9,-140.99"/>
+<path fill="none" stroke="black" d="M237,-122.11C237,-122.11 237,-140.99 237,-140.99"/>
+<polygon fill="black" stroke="black" points="233.5,-140.99 237,-150.99 240.5,-140.99 233.5,-140.99"/>
+</g>
+<!-- TokenModule -->
+<g id="node3" class="node">
+<title>TokenModule</title>
+<polygon fill="#8dd3c7" stroke="black" points="150.82,-122 147.82,-126 126.82,-126 123.82,-122 55.18,-122 55.18,-86 150.82,-86 150.82,-122"/>
+<text text-anchor="middle" x="103" y="-99.8" font-family="Times,serif" font-size="14.00">TokenModule</text>
+</g>
+<!-- TokenModule&#45;&gt;ChargeSmartWalletsServiceModule -->
+<g id="edge3" class="edge">
+<title>TokenModule&#45;&gt;ChargeSmartWalletsServiceModule</title>
+<path fill="none" stroke="black" d="M139.29,-122.11C139.29,-122.11 139.29,-140.99 139.29,-140.99"/>
+<polygon fill="black" stroke="black" points="135.79,-140.99 139.29,-150.99 142.79,-140.99 135.79,-140.99"/>
 </g>
 </g>
 </svg>

@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="./styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="./" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -80,7 +31,7 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h2>Description</h2>
+<h2 id="description">Description</h2>
 <p>Fusebox is a comprehensive development framework designed for constructing applications on the Fuse Network. It provides a set of APIs that cater to various functionalities:</p>
 <ol>
 <li>Account Abstraction API: This API enables the creation and administration of smart wallet accounts built on the ERC4337 standard.</li>
@@ -89,22 +40,22 @@
 <li>Notification API: Subscribing to the Notification API allows you to receive updates on wallet events and activities pertaining to your customers.</li>
 <li>Trading API: This API facilitates trading activities and provides access to trading-related data.</li>
 </ol>
-<h2>Tech Stack</h2>
+<h2 id="tech-stack">Tech Stack</h2>
 <p>Fusebox Backend API developed with <a href="https://github.com/nestjs/nest">Nest</a> framework TypeScript starter repository.</p>
-<h2>Installation</h2>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ npm install</code></pre></div><h2>Environment</h2>
+<h2 id="installation">Installation</h2>
+<div><pre class="line-numbers"><code class="language-bash">$ npm install</code></pre></div><h2 id="environment">Environment</h2>
 <p>Set the environment variables by running</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">cp .env.example .env
+<div><pre class="line-numbers"><code class="language-bash">cp .env.example .env
 cp apps/charge-api-service/.env.example apps/charge-api-service/.env
+cp apps/charge-app-service/.env.example apps/charge-app-service/.env
 cp apps/charge-network-service/.env.example apps/charge-network-service/.env
 cp apps/charge-relay-service/.env.example apps/charge-relay-service/.env
-</code></pre></div><p>Make sure you update the .env files with necessary variable values before proceeding to the next step.</p>
-<h2>Running the app</h2>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">#docker dev
-$ npm run docker:dev
-
-#docker debug
-$ npm run docker:debug
+cp apps/charge-accounts-service/.env.example apps/charge-accounts-service/.env
+cp apps/charge-notifications-service/.env.example apps/charge-notifications-service/.env
+cp apps/charge-smart-wallets-service/.env.example apps/charge-smart-wallets-service/.env</code></pre></div><p>Make sure you update the .env files with necessary variable values before proceeding to the next step.</p>
+<h2 id="running-the-app">Running the app</h2>
+<div><pre class="line-numbers"><code class="language-bash">#docker full debug
+$ npm run docker:full-debug
 
 &quot;Then run the &#39;Debug: Charge&#39; configuration in launch.json through the debugger in VS Code&quot;
 
@@ -116,8 +67,6 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod</code></pre></div>
-
-
 
 
 
@@ -165,19 +114,6 @@ $ npm run start:prod</code></pre></div>
             var COMPODOC_CURRENT_PAGE_URL = 'index.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>

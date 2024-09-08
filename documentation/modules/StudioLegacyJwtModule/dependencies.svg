@@ -24,13 +24,13 @@
 <title>cluster_StudioLegacyJwtModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="125,-70 125,-268 371,-268 371,-70 125,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_StudioLegacyJwtModule_providers</title>
-<polygon fill="none" stroke="black" points="133,-78 133,-130 363,-130 363,-78 133,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_StudioLegacyJwtModule_exports</title>
 <polygon fill="none" stroke="black" points="161,-208 161,-260 335,-260 335,-208 161,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_StudioLegacyJwtModule_providers</title>
+<polygon fill="none" stroke="black" points="133,-78 133,-130 363,-130 363,-78 133,-78"/>
 </g>
 <!-- StudioLegacyJwtService  -->
 <g id="node1" class="node">

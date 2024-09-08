@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -95,20 +46,21 @@
 
 
 
-
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Miscellaneous</li>
-  <li class="breadcrumb-item">Variables</li>
+  <li>Miscellaneous</li>
+  <li>Variables</li>
 </ol>
 
-<section data-compodoc="block-index">
+<section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
             <tr>
                 <td class="col-md-4">
                     <ul class="index-list">
+                        <li>
+                            <a href="#_decodeWithSelector" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>_decodeWithSelector</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
                         <li>
                             <a href="#ABI" title="scripts/fuseLegacySDK.ts" ><b>ABI</b>&nbsp;&nbsp;&nbsp;(scripts/.../fuseLegacySDK.ts)</a>
                         </li>
@@ -179,13 +131,19 @@
                             <a href="#BATCH_TRANSACTION_CALLDATA_ONLY_ERC20_TOKENS" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>BATCH_TRANSACTION_CALLDATA_ONLY_ERC20_TOKENS</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
                         </li>
                         <li>
-                            <a href="#binarySchema" title="libs/common/src/utils/dtools/validation/schemas/binarySchema.ts" ><b>binarySchema</b>&nbsp;&nbsp;&nbsp;(libs/.../binarySchema.ts)</a>
+                            <a href="#bundleFields" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts" ><b>bundleFields</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v2.ts)</a>
                         </li>
                         <li>
                             <a href="#bundlerService" title="libs/common/src/constants/microservices.constants.ts" ><b>bundlerService</b>&nbsp;&nbsp;&nbsp;(libs/.../microservices.constants.ts)</a>
                         </li>
                         <li>
-                            <a href="#bytes4Cache" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>bytes4Cache</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#calldataDecoderRecursiveRequestSchema" title="libs/common/src/utils/calldata-decoder/schemas.ts" ><b>calldataDecoderRecursiveRequestSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../schemas.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#calldataDecoderRequestSchema" title="libs/common/src/utils/calldata-decoder/schemas.ts" ><b>calldataDecoderRequestSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../schemas.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#calldataDecoderResponseSchema" title="libs/common/src/utils/calldata-decoder/schemas.ts" ><b>calldataDecoderResponseSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../schemas.ts)</a>
                         </li>
                         <li>
                             <a href="#CentrifugeClientProvider" title="libs/common/src/centrifuge/centrifugeClient.provider.ts" ><b>CentrifugeClientProvider</b>&nbsp;&nbsp;&nbsp;(libs/.../centrifugeClient.provider.ts)</a>
@@ -212,7 +170,31 @@
                             <a href="#daysInYear" title="apps/charge-network-service/src/common/constants/index.ts" ><b>daysInYear</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
                         </li>
                         <li>
-                            <a href="#decimalSchema" title="libs/common/src/utils/dtools/validation/schemas/decimalSchema.ts" ><b>decimalSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../decimalSchema.ts)</a>
+                            <a href="#decodeABIEncodedData" title="libs/common/src/utils/calldata-decoder/decoders/specialized.ts" ><b>decodeABIEncodedData</b>&nbsp;&nbsp;&nbsp;(libs/.../specialized.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeArrayParam" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeArrayParam</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeByGuessingFunctionFragment" title="libs/common/src/utils/calldata-decoder/decoders/specialized.ts" ><b>decodeByGuessingFunctionFragment</b>&nbsp;&nbsp;&nbsp;(libs/.../specialized.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeBytesParam" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeBytesParam</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeParamTypes" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeParamTypes</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeSafeMultiSendTransactionsParam" title="libs/common/src/utils/calldata-decoder/decoders/specialized.ts" ><b>decodeSafeMultiSendTransactionsParam</b>&nbsp;&nbsp;&nbsp;(libs/.../specialized.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeTupleParam" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>decodeTupleParam</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeUniversalRouterCommands" title="libs/common/src/utils/calldata-decoder/decoders/specialized.ts" ><b>decodeUniversalRouterCommands</b>&nbsp;&nbsp;&nbsp;(libs/.../specialized.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#decodeUniversalRouterPath" title="libs/common/src/utils/calldata-decoder/decoders/specialized.ts" ><b>decodeUniversalRouterPath</b>&nbsp;&nbsp;&nbsp;(libs/.../specialized.ts)</a>
                         </li>
                         <li>
                             <a href="#ENTRY_POINT_ADDRESS" title="apps/charge-notifications-service/src/common/constants/addresses.ts" ><b>ENTRY_POINT_ADDRESS</b>&nbsp;&nbsp;&nbsp;(apps/.../addresses.ts)</a>
@@ -293,10 +275,37 @@
                             <a href="#eventsScannerStatusModelString" title="apps/charge-notifications-service/src/events-scanner/events-scanner.constants.ts" ><b>eventsScannerStatusModelString</b>&nbsp;&nbsp;&nbsp;(apps/.../events-scanner.constants.ts)</a>
                         </li>
                         <li>
-                            <a href="#fetch4BytesBy" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>fetch4BytesBy</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#fetchContractAbiResponseSchema" title="libs/common/src/utils/calldata-decoder/schemas.ts" ><b>fetchContractAbiResponseSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../schemas.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#fetchFunctionInterface4ByteSchema" title="libs/common/src/utils/calldata-decoder/schemas.ts" ><b>fetchFunctionInterface4ByteSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../schemas.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#fetchFunctionInterfaceOpenApiSchema" title="libs/common/src/utils/calldata-decoder/schemas.ts" ><b>fetchFunctionInterfaceOpenApiSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../schemas.ts)</a>
                         </li>
                         <li>
                             <a href="#fuseLiquidStakingId" title="apps/charge-network-service/src/common/constants/index.ts" ><b>fuseLiquidStakingId</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#fusePriceQuery" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts" ><b>fusePriceQuery</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v2.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#generator" title="apps/charge-accounts-service/src/generate-metadata.ts" ><b>generator</b>&nbsp;&nbsp;&nbsp;(apps/.../generate-metadata.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#generator" title="apps/charge-api-service/src/generate-metadata.ts" ><b>generator</b>&nbsp;&nbsp;&nbsp;(apps/.../generate-metadata.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#generator" title="apps/charge-apps-service/src/generate-metadata.ts" ><b>generator</b>&nbsp;&nbsp;&nbsp;(apps/.../generate-metadata.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#generator" title="apps/charge-network-service/src/generate-metadata.ts" ><b>generator</b>&nbsp;&nbsp;&nbsp;(apps/.../generate-metadata.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#generator" title="apps/charge-notifications-service/src/generate-metadata.ts" ><b>generator</b>&nbsp;&nbsp;&nbsp;(apps/.../generate-metadata.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#generator" title="apps/charge-smart-wallets-service/src/generate-metadata.ts" ><b>generator</b>&nbsp;&nbsp;&nbsp;(apps/.../generate-metadata.ts)</a>
                         </li>
                         <li>
                             <a href="#getBar" title="apps/charge-network-service/src/common/constants/graph-queries/voltbar.ts" ><b>getBar</b>&nbsp;&nbsp;&nbsp;(apps/.../voltbar.ts)</a>
@@ -311,13 +320,40 @@
                             <a href="#getBlock" title="apps/charge-network-service/src/common/constants/graph-queries/fuse-blocks.ts" ><b>getBlock</b>&nbsp;&nbsp;&nbsp;(apps/.../fuse-blocks.ts)</a>
                         </li>
                         <li>
+                            <a href="#getBlockQuery" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts" ><b>getBlockQuery</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v3.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getBlocksQuery" title="apps/charge-network-service/src/common/constants/graph-queries/fuse-blocks.ts" ><b>getBlocksQuery</b>&nbsp;&nbsp;&nbsp;(apps/.../fuse-blocks.ts)</a>
+                        </li>
+                        <li>
                             <a href="#getCollectiblesByOwner" title="apps/charge-network-service/src/common/constants/graph-queries/nfts.ts" ><b>getCollectiblesByOwner</b>&nbsp;&nbsp;&nbsp;(apps/.../nfts.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getFactories" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts" ><b>getFactories</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v2.ts)</a>
                         </li>
                         <li>
                             <a href="#getFactories" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange.ts" ><b>getFactories</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange.ts)</a>
                         </li>
                         <li>
+                            <a href="#getSubgraphHealth" title="apps/charge-network-service/src/common/constants/graph-queries/health.ts" ><b>getSubgraphHealth</b>&nbsp;&nbsp;&nbsp;(apps/.../health.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getTokenDataQuery" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts" ><b>getTokenDataQuery</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v3.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getTokenDayDataV2" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts" ><b>getTokenDayDataV2</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v2.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getTokenDayDataV3" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts" ><b>getTokenDayDataV3</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v3.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getTokenPriceByBlock" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts" ><b>getTokenPriceByBlock</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v2.ts)</a>
+                        </li>
+                        <li>
                             <a href="#getTokenTypeAbi" title="apps/charge-notifications-service/src/common/utils/helper-functions.ts" ><b>getTokenTypeAbi</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getTokenUsdPrice" title="apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts" ><b>getTokenUsdPrice</b>&nbsp;&nbsp;&nbsp;(apps/.../voltage-exchange-v3.ts)</a>
                         </li>
                         <li>
                             <a href="#getTransferEventTokenType" title="apps/charge-notifications-service/src/common/utils/helper-functions.ts" ><b>getTransferEventTokenType</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
@@ -326,22 +362,19 @@
                             <a href="#getUserOpsBySender" title="apps/charge-network-service/src/common/constants/graph-queries/aa.ts" ><b>getUserOpsBySender</b>&nbsp;&nbsp;&nbsp;(apps/.../aa.ts)</a>
                         </li>
                         <li>
-                            <a href="#hexSchema" title="libs/common/src/utils/dtools/validation/schemas/hexSchema.ts" ><b>hexSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../hexSchema.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#hexSchemaWithoutPrefix" title="libs/common/src/utils/dtools/validation/schemas/hexSchema.ts" ><b>hexSchemaWithoutPrefix</b>&nbsp;&nbsp;&nbsp;(libs/.../hexSchema.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#keywords" title="libs/common/src/utils/dtools/parseAbi.ts" ><b>keywords</b>&nbsp;&nbsp;&nbsp;(libs/.../parseAbi.ts)</a>
-                        </li>
-                        <li>
                             <a href="#LIQUID_STAKING_CONTRACT_ADDRESS" title="apps/charge-smart-wallets-service/src/common/constants/addresess.ts" ><b>LIQUID_STAKING_CONTRACT_ADDRESS</b>&nbsp;&nbsp;&nbsp;(apps/.../addresess.ts)</a>
                         </li>
                         <li>
-                            <a href="#logger" title="libs/common/src/utils/dtools/decodeEvent.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeEvent.ts)</a>
+                            <a href="#logger" title="libs/common/src/utils/calldata-decoder/api.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(libs/.../api.ts)</a>
                         </li>
                         <li>
-                            <a href="#MAX_RETRY" title="libs/common/src/utils/dtools/decodeBySigHash.ts" ><b>MAX_RETRY</b>&nbsp;&nbsp;&nbsp;(libs/.../decodeBySigHash.ts)</a>
+                            <a href="#logger" title="libs/common/src/utils/calldata-decoder/decoder.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(libs/.../decoder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#logger" title="libs/common/src/utils/calldata-decoder/decoders/abi.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(libs/.../abi.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#logger" title="libs/common/src/utils/calldata-decoder/decoders/specialized.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(libs/.../specialized.ts)</a>
                         </li>
                         <li>
                             <a href="#MultiCallAbi" title="apps/charge-network-service/src/common/constants/abi/MultiCall.ts" ><b>MultiCallAbi</b>&nbsp;&nbsp;&nbsp;(apps/.../MultiCall.ts)</a>
@@ -375,9 +408,6 @@
                         </li>
                         <li>
                             <a href="#notificationsServiceLoggerContext" title="libs/common/src/constants/microservices.constants.ts" ><b>notificationsServiceLoggerContext</b>&nbsp;&nbsp;&nbsp;(libs/.../microservices.constants.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#octalSchema" title="libs/common/src/utils/dtools/validation/schemas/octalSchema.ts" ><b>octalSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../octalSchema.ts)</a>
                         </li>
                         <li>
                             <a href="#operatorJwtString" title="apps/charge-accounts-service/src/operators/operators.constants.ts" ><b>operatorJwtString</b>&nbsp;&nbsp;&nbsp;(apps/.../operators.constants.ts)</a>
@@ -434,6 +464,9 @@
                             <a href="#randomInteger" title="apps/charge-smart-wallets-service/src/common/utils/helper-functions.ts" ><b>randomInteger</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
                         </li>
                         <li>
+                            <a href="#RECEIVE_SKIP" title="apps/charge-smart-wallets-service/src/common/constants/tokenTypes.ts" ><b>RECEIVE_SKIP</b>&nbsp;&nbsp;&nbsp;(apps/.../tokenTypes.ts)</a>
+                        </li>
+                        <li>
                             <a href="#relayAccountModelString" title="apps/charge-relay-service/src/relay-accounts/relay-accounts.constants.ts" ><b>relayAccountModelString</b>&nbsp;&nbsp;&nbsp;(apps/.../relay-accounts.constants.ts)</a>
                         </li>
                         <li>
@@ -450,6 +483,9 @@
                         </li>
                         <li>
                             <a href="#singleActionMap" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>singleActionMap</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SKIP_ADDRESSES" title="apps/charge-smart-wallets-service/src/common/constants/receiveSkipAddresses.ts" ><b>SKIP_ADDRESSES</b>&nbsp;&nbsp;&nbsp;(apps/.../receiveSkipAddresses.ts)</a>
                         </li>
                         <li>
                             <a href="#sleep" title="apps/charge-notifications-service/src/common/utils/helper-functions.ts" ><b>sleep</b>&nbsp;&nbsp;&nbsp;(apps/.../helper-functions.ts)</a>
@@ -491,40 +527,37 @@
                             <a href="#STAKE_NATIVE_TOKENS_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>STAKE_NATIVE_TOKENS_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
                         </li>
                         <li>
-                            <a href="#stringSchema" title="libs/common/src/utils/dtools/validation/schemas/stringSchema.ts" ><b>stringSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../stringSchema.ts)</a>
+                            <a href="#startHexWith0x" title="libs/common/src/utils/calldata-decoder/utils.ts" ><b>startHexWith0x</b>&nbsp;&nbsp;&nbsp;(libs/.../utils.ts)</a>
                         </li>
                         <li>
-                            <a href="#SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
+                            <a href="#SWAGGER_SCHEMA_DEFINITIONS" title="apps/charge-api-service/src/common/constants/swagger-schemas/schemas.ts" ><b>SWAGGER_SCHEMA_DEFINITIONS</b>&nbsp;&nbsp;&nbsp;(apps/.../schemas.ts)</a>
                         </li>
                         <li>
                             <a href="#SWAP_ETH_FOR_EXACT_TOKENS_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_ETH_FOR_EXACT_TOKENS_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
                         </li>
                         <li>
-                            <a href="#SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
-                        </li>
-                        <li>
                             <a href="#SWAP_EXACT_ETH_FOR_TOKENS_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_EXACT_ETH_FOR_TOKENS_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
                         </li>
                         <li>
                             <a href="#SWAP_EXACT_TOKENS_FOR_ETH_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_EXACT_TOKENS_FOR_ETH_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
                         </li>
                         <li>
-                            <a href="#SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
-                        </li>
-                        <li>
                             <a href="#SWAP_EXACT_TOKENS_TO_TOKENS_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_EXACT_TOKENS_TO_TOKENS_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
                         </li>
                         <li>
-                            <a href="#SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
+                            <a href="#SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
                         </li>
                         <li>
                             <a href="#SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA" title="tests/libs/common/data-layer/constants/calldataExamples.ts" ><b>SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA</b>&nbsp;&nbsp;&nbsp;(tests/.../calldataExamples.ts)</a>
                         </li>
                         <li>
                             <a href="#targetActionMap" title="apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts" ><b>targetActionMap</b>&nbsp;&nbsp;&nbsp;(apps/.../wallet-action-factory.ts)</a>
@@ -617,22 +650,10 @@
                             <a href="#" title="apps/charge-smart-wallets-service/src/smart-wallets/schemas/smart-wallet.schema.ts" ><b></b>&nbsp;&nbsp;&nbsp;(apps/.../smart-wallet.schema.ts)</a>
                         </li>
                         <li>
-                            <a href="#unitSchema" title="libs/common/src/utils/dtools/validation/schemas/unitSchema.ts" ><b>unitSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../unitSchema.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#unixEpochSchema" title="libs/common/src/utils/dtools/validation/schemas/unixEpochSchema.ts" ><b>unixEpochSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../unixEpochSchema.ts)</a>
-                        </li>
-                        <li>
                             <a href="#UNSTAKE_NATIVE_TOKENS_WALLET_ACTION" title="tests/libs/common/data-layer/constants/walletActionsExamples.ts" ><b>UNSTAKE_NATIVE_TOKENS_WALLET_ACTION</b>&nbsp;&nbsp;&nbsp;(tests/.../walletActionsExamples.ts)</a>
                         </li>
                         <li>
                             <a href="#UserId" title="apps/charge-apps-service/src/common/config/decorators/user.decorator.ts" ><b>UserId</b>&nbsp;&nbsp;&nbsp;(apps/.../user.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#utcSchemas" title="libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts" ><b>utcSchemas</b>&nbsp;&nbsp;&nbsp;(libs/.../utcSchemas.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#utcUnitToZodSchema" title="libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts" ><b>utcUnitToZodSchema</b>&nbsp;&nbsp;&nbsp;(libs/.../utcSchemas.ts)</a>
                         </li>
                         <li>
                             <a href="#webhooksProviders" title="apps/charge-notifications-service/src/webhooks/webhooks.providers.ts" ><b>webhooksProviders</b>&nbsp;&nbsp;&nbsp;(apps/.../webhooks.providers.ts)</a>
@@ -644,8 +665,256 @@
     </table>
 </section>
 
+    <h3>libs/common/src/utils/calldata-decoder/decoder.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_decodeWithSelector"></a>
+                    <span class="name">
+                        <span ><b>_decodeWithSelector</b></span>
+                        <a href="#_decodeWithSelector"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async (calldata: string) &#x3D;&gt; {
+  const selector &#x3D; calldata.slice(0, 10)
+  try {
+    const fnInterface &#x3D; await fetchFunctionInterface({ selector })
+    if (!fnInterface) {
+      throw new Error(&#x27;No function interface found&#x27;)
+    }
+    const decodedTransactions &#x3D; decodeAllPossibilities({
+      functionSignatures: [fnInterface],
+      calldata
+    })
+
+    if (decodedTransactions.length &#x3D;&#x3D;&#x3D; 0) {
+      throw new Error(&#x27;Failed to decode calldata with function signature&#x27;)
+    }
+
+    const result &#x3D; decodedTransactions[0]
+    return result
+  } catch (error) {
+    logger.error(
+            &#x60;Failed to find function interface for selector ${selector}&#x60;,
+            error.stack
+    )
+    throw error
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeArrayParam"></a>
+                    <span class="name">
+                        <span ><b>decodeArrayParam</b></span>
+                        <a href="#decodeArrayParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async ({
+  value,
+  input,
+  address,
+  chainId
+}: {
+    value: any;
+    input: ethers.utils.ParamType;
+    address?: string;
+    chainId?: number;
+}) &#x3D;&gt; {
+  if (!Array.isArray(value) || value.length &#x3D;&#x3D;&#x3D; 0) {
+    return []
+  }
+  return await Promise.all(
+    value.map(async (v: any) &#x3D;&gt; {
+      return {
+        name: input.arrayChildren!.name,
+        baseType: input.arrayChildren!.baseType,
+        type: input.arrayChildren!.type,
+        rawValue: v,
+        value: await decodeParamTypes({
+          input: input.arrayChildren!,
+          value: v,
+          address,
+          chainId
+        })
+      }
+    })
+  )
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeBytesParam"></a>
+                    <span class="name">
+                        <span ><b>decodeBytesParam</b></span>
+                        <a href="#decodeBytesParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async ({
+  value,
+  address,
+  chainId
+}: {
+    value: any;
+    address?: string;
+    chainId?: number;
+}) &#x3D;&gt; {
+  return {
+    decoded: await decodeRecursive({ calldata: value, address, chainId })
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeParamTypes"></a>
+                    <span class="name">
+                        <span ><b>decodeParamTypes</b></span>
+                        <a href="#decodeParamTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async ({
+  input,
+  value,
+  address,
+  chainId
+}: {
+    input: ethers.utils.ParamType;
+    value: any;
+    address?: string;
+    chainId?: number;
+}): Promise&lt;any&gt; &#x3D;&gt; {
+  if (input.baseType.includes(&#x27;int&#x27;)) {
+    return ethers.BigNumber.from(value).toString()
+  } else if (input.baseType &#x3D;&#x3D;&#x3D; &#x27;address&#x27;) {
+    return value
+  } else if (input.baseType.includes(&#x27;bytes&#x27;)) {
+    return await decodeBytesParam({ value, address, chainId })
+  } else if (input.baseType &#x3D;&#x3D;&#x3D; &#x27;tuple&#x27;) {
+    return await decodeTupleParam({ input, value, address, chainId })
+  } else if (input.baseType &#x3D;&#x3D;&#x3D; &#x27;array&#x27;) {
+    return await decodeArrayParam({ value, input, address, chainId })
+  } else {
+    return value
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeTupleParam"></a>
+                    <span class="name">
+                        <span ><b>decodeTupleParam</b></span>
+                        <a href="#decodeTupleParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async ({
+  input,
+  value,
+  address,
+  chainId
+}: {
+    input: ethers.utils.ParamType;
+    value: any;
+    address?: string;
+    chainId?: number;
+}): Promise&lt;any&gt; &#x3D;&gt; {
+  if (!input.components) {
+    return null
+  }
+  if (input.components.length &#x3D;&#x3D;&#x3D; 0) {
+    return null
+  }
+
+  return await Promise.all(
+    input.components.map(async (component, i) &#x3D;&gt; {
+      return {
+        name: component.name,
+        baseType: component.baseType,
+        type: component.type,
+        rawValue: value[i],
+        value: await decodeParamTypes({
+          input: component,
+          value: value[i],
+          address,
+          chainId
+        })
+      }
+    })
+  )
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(&#x27;CallDataDecoder&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>scripts/fuseLegacySDK.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -733,7 +1002,7 @@
     </table>
 </section>
     <h3>libs/common/src/constants/microservices.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1100,7 +1369,7 @@
     </table>
 </section>
     <h3>apps/charge-api-service/src/api-keys/api-keys.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1129,7 +1398,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/api-keys/api-keys.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1158,7 +1427,7 @@
     </table>
 </section>
     <h3>apps/charge-api-service/src/api-keys/schemas/api-key.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1199,7 +1468,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/api-keys/schemas/api-key.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1238,7 +1507,7 @@
     </table>
 </section>
     <h3>apps/charge-api-service/src/api-keys/api-keys.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1274,7 +1543,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/api-keys/api-keys.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1310,7 +1579,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/app-store/constants/app-store.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1339,7 +1608,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/app-store/schemas/application.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1375,7 +1644,7 @@
     </table>
 </section>
     <h3>tests/libs/common/data-layer/constants/calldataExamples.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1588,10 +1857,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA"></a>
+                    <a name="SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA"></a>
                     <span class="name">
-                        <span ><b>SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA</b></span>
-                        <a href="#SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA</b></span>
+                        <a href="#SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -1603,7 +1872,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;0xb61d27f6000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb5000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e4fb3bdb41000000000000000000000000000000000000000000000000000e35fa931a00000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000df5ba6044f17ec46b1f00c580916843e25996db90000000000000000000000000000000000000000000000000000000065153b3c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000be9e53fd7edac9f859882afdda116645287c6290000000000000000000000006a5f6a8121592becd6747a38d67451b310f7f15600000000000000000000000000000000000000000000000000000000&#x27;</code>
+                        <i>Default value : </i><code>&#x27;0x47e1da2a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000000200000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd4000000000000000000000000eca6055ac01e717cef70b8c6fc5f9ca32cb4118a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044095ea7b3000000000000000000000000eca6055ac01e717cef70b8c6fc5f9ca32cb4118a0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000648415565b000000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd4000000000000000000000000620fd5fa44be6af63715ef4e65ddfa0387ad13f50000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000005700000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000221000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000003600000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd4000000000000000000000000620fd5fa44be6af63715ef4e65ddfa0387ad13f500000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000320000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000002e00000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000002566f6c744465780000000000000000000000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000000000000000057000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000300000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd40000000000000000000000000be9e53fd7edac9f859882afdda116645287c629000000000000000000000000620fd5fa44be6af63715ef4e65ddfa0387ad13f5000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd4000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000000000000000000869584cd00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a9f75bb35e66c3184f000000000000000000000000000000000000000000000000&#x27;</code>
                     </td>
                 </tr>
 
@@ -1614,10 +1883,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA"></a>
+                    <a name="SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA"></a>
                     <span class="name">
-                        <span ><b>SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA</b></span>
-                        <a href="#SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA</b></span>
+                        <a href="#SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -1629,111 +1898,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;0xb61d27f6000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb5000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e47ff36ab500000000000000000000000000000000000000000000000000000000000000e900000000000000000000000000000000000000000000000000000000000000800000000000000000000000005bbea139c1b1b32cf7b5c7fd1d1ff802de0061170000000000000000000000000000000000000000000000000000000064edf90300000000000000000000000000000000000000000000000000000000000000020000000000000000000000000be9e53fd7edac9f859882afdda116645287c629000000000000000000000000495d133b938596c9984d462f007b676bdc57ecec00000000000000000000000000000000000000000000000000000000&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA"></a>
-                    <span class="name">
-                        <span ><b>SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA</b></span>
-                        <a href="#SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;0x47e1da2a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000000200000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd4000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044095ea7b3000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010418cbafe50000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000b6ab96da36aa000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000e65513fe95f52f4350d2184c2fd722c37e6fd9950000000000000000000000000000000000000000000000000000000065156338000000000000000000000000000000000000000000000000000000000000000200000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd40000000000000000000000000be9e53fd7edac9f859882afdda116645287c62900000000000000000000000000000000000000000000000000000000&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA"></a>
-                    <span class="name">
-                        <span ><b>SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA</b></span>
-                        <a href="#SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;0x47e1da2a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000495d133b938596c9984d462f007b676bdc57ecec000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044095ea7b3000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb5000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012438ed17390000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000002bc51d6510171d00000000000000000000000000000000000000000000000000000000000000a00000000000000000000000005bbea139c1b1b32cf7b5c7fd1d1ff802de0061170000000000000000000000000000000000000000000000000000000064f70a150000000000000000000000000000000000000000000000000000000000000003000000000000000000000000495d133b938596c9984d462f007b676bdc57ecec0000000000000000000000000be9e53fd7edac9f859882afdda116645287c629000000000000000000000000588e24ded8f850b14bb2e62e9c50a7cd5ee13da900000000000000000000000000000000000000000000000000000000&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA"></a>
-                    <span class="name">
-                        <span ><b>SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA</b></span>
-                        <a href="#SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;0x47e1da2a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000000200000000000000000000000034ef2cc892a88415e9f02b91bfa9c91fc0be6bd4000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044095ea7b3000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001044a25d94a00000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000000026e096d03c0400000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000df5ba6044f17ec46b1f00c580916843e25996db9000000000000000000000000000000000000000000000000000000006515640e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000006a5f6a8121592becd6747a38d67451b310f7f1560000000000000000000000000be9e53fd7edac9f859882afdda116645287c62900000000000000000000000000000000000000000000000000000000&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA"></a>
-                    <span class="name">
-                        <span ><b>SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA</b></span>
-                        <a href="#SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;0x47e1da2a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000495d133b938596c9984d462f007b676bdc57ecec000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb50000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044095ea7b3000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb500000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001248803dbee00000000000000000000000000000000000000000000000000071afd498d000000000000000000000000000000000000000000000000000000004dc044a1e0ee00000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000df5ba6044f17ec46b1f00c580916843e25996db90000000000000000000000000000000000000000000000000000000065158b8000000000000000000000000000000000000000000000000000000000000000020000000000000000000000006a5f6a8121592becd6747a38d67451b310f7f1560000000000000000000000000be9e53fd7edac9f859882afdda116645287c62900000000000000000000000000000000000000000000000000000000&#x27;</code>
+                        <i>Default value : </i><code>&#x27;0xb61d27f6000000000000000000000000eca6055ac01e717cef70b8c6fc5f9ca32cb4118a000000000000000000000000000000000000000000000000002386f26fc1000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000708415565b0000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000620fd5fa44be6af63715ef4e65ddfa0387ad13f5000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000014d00000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000004c0000000000000000000000000000000000000000000000000000000000000021e00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000040000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000022100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000360000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000be9e53fd7edac9f859882afdda116645287c629000000000000000000000000620fd5fa44be6af63715ef4e65ddfa0387ad13f500000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000320000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000002e0000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000002566f6c74446578000000000000000000000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000014d000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000e3f85aad0c8dd7337427b9df5d0fb741d65eeeb5000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000030000000000000000000000000be9e53fd7edac9f859882afdda116645287c629000000000000000000000000fadbbf8ce7d5b7041be672561bba99f79c532e10000000000000000000000000620fd5fa44be6af63715ef4e65ddfa0387ad13f5000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000be9e53fd7edac9f859882afdda116645287c629000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0000000000000000000000000000000000000000000000000000000000000000869584cd00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e1af59d56466c306f6000000000000000000000000000000000000000000000000&#x27;</code>
                     </td>
                 </tr>
 
@@ -1794,7 +1959,7 @@
     </table>
 </section>
     <h3>tests/libs/common/data-layer/constants/walletActionsExamples.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2371,6 +2536,118 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION"></a>
+                    <span class="name">
+                        <span ><b>SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION</b></span>
+                        <a href="#SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  walletAddress: &#x27;0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117&#x27;,
+  name: &#x27;swapTokens&#x27;,
+  status: &#x27;pending&#x27;,
+  received: [
+    {
+      name: &#x27;USD Coin on Fuse&#x27;,
+      symbol: &#x27;USDC&#x27;,
+      address: &#x27;0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5&#x27;,
+      decimals: 6,
+      type: &#x27;ERC-20&#x27;,
+      value: &#x27;87&#x27;,
+      to: &#x27;0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117&#x27;
+    }
+  ],
+  sent: [
+    {
+      name: &#x27;VoltToken&#x27;,
+      symbol: &#x27;VOLT&#x27;,
+      address: &#x27;0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4&#x27;,
+      decimals: 18,
+      type: &#x27;ERC-20&#x27;,
+      value: &#x27;1000000000000000000&#x27;,
+      to: &#x27;0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117&#x27;
+    }
+  ],
+  userOpHash: &#x27;0x111&#x27;,
+  txHash: &#x27;&#x27;,
+  blockNumber: 0,
+  description: &#x27;1.0 VOLT was swapped to 0.000087 USDC&#x27;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION"></a>
+                    <span class="name">
+                        <span ><b>SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION</b></span>
+                        <a href="#SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  walletAddress: &#x27;0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117&#x27;,
+  name: &#x27;swapTokens&#x27;,
+  status: &#x27;pending&#x27;,
+  received: [
+    {
+      name: &#x27;USD Coin on Fuse&#x27;,
+      symbol: &#x27;USDC&#x27;,
+      address: &#x27;0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5&#x27;,
+      decimals: 6,
+      type: &#x27;ERC-20&#x27;,
+      value: &#x27;333&#x27;,
+      to: &#x27;0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117&#x27;
+    }
+  ],
+  sent: [
+    {
+      name: &#x27;Fuse Token&#x27;,
+      symbol: &#x27;FUSE&#x27;,
+      address: &#x27;0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE&#x27;,
+      decimals: 18,
+      type: &#x27;native&#x27;,
+      value: &#x27;10000000000000000&#x27;,
+      to: &#x27;0x5bbea139c1b1b32cf7b5c7fd1d1ff802de006117&#x27;
+    }
+  ],
+  userOpHash: &#x27;0x111&#x27;,
+  txHash: &#x27;&#x27;,
+  blockNumber: 0,
+  description: &#x27;0.01 FUSE was swapped to 0.000333 USDC&#x27;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION"></a>
                     <span class="name">
                         <span ><b>SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION</b></span>
@@ -2481,7 +2758,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/app-store/app-store.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2517,7 +2794,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/charge-api/backend-wallet.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2546,7 +2823,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/charge-api/backend-wallet.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2582,7 +2859,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/charge-api/schemas/backend-wallet.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2615,23 +2892,331 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/binarySchema.ts</h3>
-    <section data-compodoc="block-properties">
+    <h3>apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="binarySchema"></a>
+                    <a name="bundleFields"></a>
                     <span class="name">
-                        <span ><b>binarySchema</b></span>
-                        <a href="#binarySchema"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>bundleFields</b></span>
+                        <a href="#bundleFields"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>z.string().regex(/^[01]*$/, {
-  message: &#x27;The value must be a valid, binary number&#x27;
+                        <i>Default value : </i><code>gql&#x60;
+    fragment bundleFields on Bundle {
+        id
+        ethPrice
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fusePriceQuery"></a>
+                    <span class="name">
+                        <span ><b>fusePriceQuery</b></span>
+                        <a href="#fusePriceQuery"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query ethPriceQuery($id: Int! &#x3D; 1, $block: Block_height) {
+        bundles(id: $id, block: $block) {
+            ...bundleFields
+        }
+    }
+
+    ${bundleFields}
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFactories"></a>
+                    <span class="name">
+                        <span ><b>getFactories</b></span>
+                        <a href="#getFactories"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query Factories($blockNumber: Int!) {
+        historicalFactory: uniswapFactories(first: 1, block: { number: $blockNumber }) {
+            id
+            totalVolumeUSD
+            totalLiquidityUSD
+        }
+        latestFactory: uniswapFactories(first: 1) {
+            id
+            totalVolumeUSD
+            totalLiquidityUSD
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTokenDayDataV2"></a>
+                    <span class="name">
+                        <span ><b>getTokenDayDataV2</b></span>
+                        <a href="#getTokenDayDataV2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query ($id: String!, $from: Int!, $first: Int!) {
+        tokens(where: { id: $id, liquidity_gt: 0 }) {
+            id
+            liquidity
+            dayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
+                date
+                priceUSD
+                volumeUSD
+            }
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTokenPriceByBlock"></a>
+                    <span class="name">
+                        <span ><b>getTokenPriceByBlock</b></span>
+                        <a href="#getTokenPriceByBlock"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query getTokenPrice($address: ID!) {
+        token(id: $address) {
+            derivedETH
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>libs/common/src/utils/calldata-decoder/schemas.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calldataDecoderRecursiveRequestSchema"></a>
+                    <span class="name">
+                        <span ><b>calldataDecoderRecursiveRequestSchema</b></span>
+                        <a href="#calldataDecoderRecursiveRequestSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  calldata: z.string().optional(),
+  address: z
+    .string()
+    .length(42, &#x27;Address must be 42 characters long&#x27;)
+    .optional(),
+  chainId: z.number().int().positive().optional(),
+  tx: z.string().optional()
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calldataDecoderRequestSchema"></a>
+                    <span class="name">
+                        <span ><b>calldataDecoderRequestSchema</b></span>
+                        <a href="#calldataDecoderRequestSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  calldata: z.string(),
+  address: z
+    .string()
+    .length(42, &#x27;Address must be 42 characters long&#x27;)
+    .optional(),
+  chainId: z.number().int().positive().optional()
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calldataDecoderResponseSchema"></a>
+                    <span class="name">
+                        <span ><b>calldataDecoderResponseSchema</b></span>
+                        <a href="#calldataDecoderResponseSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  functionName: z.string(),
+  params: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+        type: z.string(),
+        value: z.string()
+      })
+    )
+    .optional()
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchContractAbiResponseSchema"></a>
+                    <span class="name">
+                        <span ><b>fetchContractAbiResponseSchema</b></span>
+                        <a href="#fetchContractAbiResponseSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  abi: z.array(z.unknown()),
+  name: z.string()
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchFunctionInterface4ByteSchema"></a>
+                    <span class="name">
+                        <span ><b>fetchFunctionInterface4ByteSchema</b></span>
+                        <a href="#fetchFunctionInterface4ByteSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  count: z.number(),
+  results: z.array(
+    z.object({
+      id: z.number(),
+      created_at: z.string(),
+      text_signature: z.string(),
+      hex_signature: z.string()
+    })
+  )
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchFunctionInterfaceOpenApiSchema"></a>
+                    <span class="name">
+                        <span ><b>fetchFunctionInterfaceOpenApiSchema</b></span>
+                        <a href="#fetchFunctionInterfaceOpenApiSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  ok: z.boolean(),
+  result: z.object({
+    function: z.record(
+      z
+        .array(
+          z.object({
+            name: z.string(),
+            filtered: z.boolean()
+          })
+        )
+        .optional()
+    ),
+    event: z.record(
+      z
+        .array(
+          z.object({
+            name: z.string(),
+            filtered: z.boolean()
+          })
+        )
+        .optional()
+    )
+  })
 })</code>
                     </td>
                 </tr>
@@ -2640,99 +3225,8 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/decodeBySigHash.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="bytes4Cache"></a>
-                    <span class="name">
-                        <span ><b>bytes4Cache</b></span>
-                        <a href="#bytes4Cache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#Bytes4Cache" target="_self" >Bytes4Cache</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  signatures: {},
-  &#x27;event-signatures&#x27;: {}
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="fetch4BytesBy"></a>
-                    <span class="name">
-                        <span ><b>fetch4BytesBy</b></span>
-                        <a href="#fetch4BytesBy"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  EventSignatures: async (sigHash: string) &#x3D;&gt; {
-    return fetch4Bytes(sigHash, &#x27;event-signatures&#x27;)
-  },
-  Signatures: async (sigHash: string) &#x3D;&gt; {
-    return fetch4Bytes(sigHash, &#x27;signatures&#x27;)
-  }
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="MAX_RETRY"></a>
-                    <span class="name">
-                        <span ><b>MAX_RETRY</b></span>
-                        <a href="#MAX_RETRY"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>30</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>libs/common/src/centrifuge/centrifugeClient.provider.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2746,7 +3240,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Provider</code>
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/Provider" target="_blank" >Provider</a></code>
 
                     </td>
                 </tr>
@@ -2767,7 +3261,7 @@
     </table>
 </section>
     <h3>libs/common/src/centrifuge/centrifuge.provider.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2781,7 +3275,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Provider</code>
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/Provider" target="_blank" >Provider</a></code>
 
                     </td>
                 </tr>
@@ -2803,7 +3297,7 @@
     </table>
 </section>
     <h3>jest.config.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -2866,7 +3360,7 @@
     </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/abi/Consensus.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -3934,7 +4428,7 @@
     </table>
 </section>
     <h3>libs/common/src/constants/database.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -3963,7 +4457,7 @@
     </table>
 </section>
     <h3>libs/common/src/database/database.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4000,7 +4494,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/data-layer/data-layer.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4052,7 +4546,7 @@
     </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/index.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4158,33 +4652,466 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/decimalSchema.ts</h3>
-    <section data-compodoc="block-properties">
+    <h3>libs/common/src/utils/calldata-decoder/decoders/specialized.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="decimalSchema"></a>
+                    <a name="decodeABIEncodedData"></a>
                     <span class="name">
-                        <span ><b>decimalSchema</b></span>
-                        <a href="#decimalSchema"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>decodeABIEncodedData</b></span>
+                        <a href="#decodeABIEncodedData"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>z
-  .number()
-  .or(
-    z
-      .string()
-      .regex(/^\d*$/, {
-        message:
-          &#x27;The value must be a hexadecimal number, 0x-prefix is required&#x27;
-      })
-      .transform(Number)
-  )
-  .refine((n) &#x3D;&gt; n &gt;&#x3D; 0 &amp;&amp; n &lt;&#x3D; 128)</code>
+                        <i>Default value : </i><code>(calldata: string) &#x3D;&gt; {
+  try {
+    const decoded &#x3D; guessAbiEncodedData(calldata)
+    if (!decoded) {
+      throw new Error(&#x27;Failed to decode ABI encoded data&#x27;)
+    }
+    const result &#x3D; {
+      name: &#x27;&#x27;,
+      args: ethers.utils.defaultAbiCoder.encode(
+        decoded.map(d &#x3D;&gt; d.type),
+        decoded
+      ),
+      signature: &#x60;abi.encode${decoded.map((d) &#x3D;&gt; d.type).join(&#x27;,&#x27;)}&#x60;,
+      selector: &#x27;&#x27;,
+      value: ethers.BigNumber.from(0),
+      fragment: {
+        name: &#x27;&#x27;,
+        type: &#x27;function&#x27;,
+        stateMutability: &#x27;nonpayable&#x27;,
+        inputs: decoded.map((d, i) &#x3D;&gt; ({
+          name: &#x60;arg${i}&#x60;,
+          type: d.type,
+          baseType: d.type,
+          indexed: null,
+          components: null,
+          arrayLength: null,
+          arrayChildren: null
+        })),
+        outputs: []
+      }
+    }
+
+    return result
+  } catch (error) {
+    logger.error(&#x60;Failed to decode ABI encoded data ${calldata}&#x60;, error.stack)
+    throw error
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeByGuessingFunctionFragment"></a>
+                    <span class="name">
+                        <span ><b>decodeByGuessingFunctionFragment</b></span>
+                        <a href="#decodeByGuessingFunctionFragment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(calldata: string) &#x3D;&gt; {
+  const selector &#x3D; calldata.slice(0, 10)
+  try {
+    const frag &#x3D; guessFragment(calldata)
+    if (!frag) {
+      throw new Error(&#x27;Failed to guess function fragment&#x27;)
+    }
+    const paramTypes &#x3D; frag.format()
+    const fragment &#x3D; ethers.utils.FunctionFragment.from(paramTypes)
+    const abiCoder &#x3D; ethers.utils.defaultAbiCoder
+    const decoded &#x3D; abiCoder.decode(
+      fragment.inputs,
+      &#x27;0x&#x27; + calldata.substring(10)
+    )
+    const result: ethers.utils.TransactionDescription &#x3D; {
+      name: fragment.name,
+      args: decoded,
+      signature: fragment.format(),
+      sighash: selector,
+      value: ethers.BigNumber.from(0),
+      functionFragment: fragment
+    }
+    return result
+  } catch (error) {
+    logger.error(
+            &#x60;Failed to decode using guessed function fragment for calldata ${calldata}&#x60;,
+            error.stack
+    )
+    throw error
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeSafeMultiSendTransactionsParam"></a>
+                    <span class="name">
+                        <span ><b>decodeSafeMultiSendTransactionsParam</b></span>
+                        <a href="#decodeSafeMultiSendTransactionsParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(bytes: string) &#x3D;&gt; {
+  try {
+    const transactionsParam &#x3D; bytes.slice(2)
+    const txs: any[] &#x3D; []
+    let i &#x3D; 0
+    for (; i &lt; transactionsParam.length;) {
+      const operationEnd &#x3D; i + 1 * 2
+      const operation &#x3D; transactionsParam.slice(i, operationEnd)
+      if (operation &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        throw new Error(
+          &#x27;Failed to decode operation in SafeMultiSend transactions param&#x27;
+        )
+      }
+
+      const toEnd &#x3D; operationEnd + 20 * 2
+      const _to &#x3D; transactionsParam.slice(operationEnd, toEnd)
+      if (_to &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        throw new Error(
+          &#x27;Failed to decode to in SafeMultiSend transactions param&#x27;
+        )
+      }
+      const to &#x3D; &#x27;0x&#x27; + _to
+
+      const valueEnd &#x3D; toEnd + 32 * 2
+      const _value &#x3D; transactionsParam.slice(toEnd, valueEnd)
+      if (_value &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        throw new Error(
+          &#x27;Failed to decode value in SafeMultiSend transactions param&#x27;
+        )
+      }
+      const value &#x3D; hexToBigInt(startHexWith0x(_value)).toString()
+
+      const dataLengthEnd &#x3D; valueEnd + 32 * 2
+      const _dataLength &#x3D; transactionsParam.slice(valueEnd, dataLengthEnd)
+      if (_dataLength &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        throw new Error(
+          &#x27;Failed to decode dataLength in SafeMultiSend transactions param&#x27;
+        )
+      }
+      const dataLength &#x3D; hexToBigInt(startHexWith0x(_dataLength)).toString()
+
+      const dataEnd &#x3D; dataLengthEnd + parseInt(dataLength) * 2
+      const _data &#x3D; transactionsParam.slice(dataLengthEnd, dataEnd)
+      if (parseInt(dataLength) !&#x3D;&#x3D; 0 &amp;&amp; _data &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+        throw new Error(
+          &#x27;Failed to decode data in SafeMultiSend transactions param&#x27;
+        )
+      }
+      const data &#x3D; &#x27;0x&#x27; + _data
+
+      txs.push([operation, to, value, dataLength, data])
+
+      i &#x3D; dataEnd
+    }
+
+    if (i &#x3D;&#x3D;&#x3D; 0 || i !&#x3D;&#x3D; transactionsParam.length) {
+      throw new Error(
+        &#x27;Failed to decode calldata as SafeMultiSend transactions param&#x27;
+      )
+    }
+
+    const result &#x3D; {
+      name: &#x27;&#x27;,
+      args: ethers.utils.defaultAbiCoder.encode([&#x27;tuple(uint256,address,uint256,uint256,bytes)[]&#x27;], [txs]),
+      signature: &#x27;transactions(tuple(uint256,address,uint256,uint256,bytes)[])&#x27;,
+      selector: &#x27;&#x27;,
+      value: ethers.BigNumber.from(0),
+      fragment: {
+        name: &#x27;transactions&#x27;,
+        type: &#x27;function&#x27;,
+        stateMutability: &#x27;nonpayable&#x27;,
+        inputs: [
+          {
+            name: &#x27;&#x27;,
+            type: &#x27;tuple(uint256,address,uint256,uint256,bytes)[]&#x27;,
+            baseType: &#x27;array&#x27;,
+            arrayLength: -1,
+            arrayChildren: {
+              name: &#x27;&#x27;,
+              type: &#x27;tuple(uint256,address,uint256,uint256,bytes)&#x27;,
+              baseType: &#x27;tuple&#x27;,
+              components: [
+                {
+                  name: &#x27;operation&#x27;,
+                  type: &#x27;uint256&#x27;,
+                  baseType: &#x27;uint256&#x27;,
+                  indexed: null,
+                  components: null,
+                  arrayLength: null,
+                  arrayChildren: null
+                },
+                {
+                  name: &#x27;to&#x27;,
+                  type: &#x27;address&#x27;,
+                  indexed: null,
+                  components: null,
+                  arrayLength: null,
+                  arrayChildren: null,
+                  baseType: &#x27;address&#x27;
+                },
+                {
+                  name: &#x27;value&#x27;,
+                  type: &#x27;uint256&#x27;,
+                  indexed: null,
+                  components: null,
+                  arrayLength: null,
+                  arrayChildren: null,
+                  baseType: &#x27;uint256&#x27;
+                },
+                {
+                  name: &#x27;dataLength&#x27;,
+                  type: &#x27;uint256&#x27;,
+                  indexed: null,
+                  components: null,
+                  arrayLength: null,
+                  arrayChildren: null,
+                  baseType: &#x27;uint256&#x27;
+                },
+                {
+                  name: &#x27;data&#x27;,
+                  type: &#x27;bytes&#x27;,
+                  indexed: null,
+                  components: null,
+                  arrayLength: null,
+                  arrayChildren: null,
+                  baseType: &#x27;bytes&#x27;
+                }
+              ]
+            }
+          }
+        ],
+        outputs: []
+      }
+    }
+
+    return result
+  } catch (error) {
+    logger.error(&#x27;Failed to decode calldata as SafeMultiSend transactions param&#x27;, error.stack)
+    throw error
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeUniversalRouterCommands"></a>
+                    <span class="name">
+                        <span ><b>decodeUniversalRouterCommands</b></span>
+                        <a href="#decodeUniversalRouterCommands"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(calldata: string) &#x3D;&gt; {
+  try {
+    const commandByteToString: { [command: string]: string } &#x3D; {
+      &#x27;00&#x27;: &#x27;V3_SWAP_EXACT_IN&#x27;,
+      &#x27;01&#x27;: &#x27;V3_SWAP_EXACT_OUT&#x27;,
+      &#x27;02&#x27;: &#x27;PERMIT2_TRANSFER_FROM&#x27;,
+      &#x27;03&#x27;: &#x27;PERMIT2_PERMIT_BATCH&#x27;,
+      &#x27;04&#x27;: &#x27;SWEEP&#x27;,
+      &#x27;05&#x27;: &#x27;TRANSFER&#x27;,
+      &#x27;06&#x27;: &#x27;PAY_PORTION&#x27;,
+      &#x27;08&#x27;: &#x27;V2_SWAP_EXACT_IN&#x27;,
+      &#x27;09&#x27;: &#x27;V2_SWAP_EXACT_OUT&#x27;,
+      &#x27;0a&#x27;: &#x27;PERMIT2_PERMIT&#x27;,
+      &#x27;0b&#x27;: &#x27;WRAP_ETH&#x27;,
+      &#x27;0c&#x27;: &#x27;UNWRAP_WETH&#x27;,
+      &#x27;0d&#x27;: &#x27;PERMIT2_TRANSFER_FROM_BATCH&#x27;,
+      &#x27;0e&#x27;: &#x27;BALANCE_CHECK_ERC20&#x27;,
+      10: &#x27;SEAPORT_V1_5&#x27;,
+      11: &#x27;LOOKS_RARE_V2&#x27;,
+      12: &#x27;NFTX&#x27;,
+      13: &#x27;CRYPTOPUNKS&#x27;,
+      15: &#x27;OWNER_CHECK_721&#x27;,
+      16: &#x27;OWNER_CHECK_1155&#x27;,
+      17: &#x27;SWEEP_ERC721&#x27;,
+      18: &#x27;X2Y2_721&#x27;,
+      19: &#x27;SUDOSWAP&#x27;,
+      &#x27;1a&#x27;: &#x27;NFT20&#x27;,
+      &#x27;1b&#x27;: &#x27;X2Y2_1155&#x27;,
+      &#x27;1c&#x27;: &#x27;FOUNDATION&#x27;,
+      &#x27;1d&#x27;: &#x27;SWEEP_ERC1155&#x27;,
+      &#x27;1e&#x27;: &#x27;ELEMENT_MARKET&#x27;,
+      20: &#x27;SEAPORT_V1_4&#x27;,
+      21: &#x27;EXECUTE_SUB_PLAN&#x27;,
+      22: &#x27;APPROVE_ERC20&#x27;
+    }
+
+    const commands &#x3D; calldata.slice(2).match(/.{1,2}/g) || []
+    const decodedCommands &#x3D; commands.map((command) &#x3D;&gt; commandByteToString[command] || command)
+
+    const result &#x3D; {
+      name: &#x27;&#x27;,
+      args: ethers.utils.defaultAbiCoder.encode([&#x27;string[]&#x27;], [decodedCommands]),
+      signature: &#x27;commands(string[])&#x27;,
+      selector: &#x27;&#x27;,
+      value: ethers.BigNumber.from(0),
+      fragment: {
+        name: &#x27;&#x27;,
+        type: &#x27;function&#x27;,
+        stateMutability: &#x27;nonpayable&#x27;,
+        inputs: [
+          {
+            name: &#x27;commands&#x27;,
+            type: &#x27;string[]&#x27;,
+            indexed: null,
+            components: null,
+            arrayLength: -1,
+            arrayChildren: {
+              name: null,
+              type: &#x27;string&#x27;,
+              indexed: null,
+              components: null,
+              arrayLength: null,
+              arrayChildren: null,
+              baseType: &#x27;string&#x27;,
+              _isParamType: true
+            },
+            baseType: &#x27;array&#x27;,
+            _isParamType: true
+          }
+        ],
+        outputs: []
+      }
+    }
+
+    return result
+  } catch (error) {
+    logger.error(&#x27;Failed to decode calldata as UniversalRouter commands&#x27;, error.stack)
+    throw error
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decodeUniversalRouterPath"></a>
+                    <span class="name">
+                        <span ><b>decodeUniversalRouterPath</b></span>
+                        <a href="#decodeUniversalRouterPath"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(calldata: string) &#x3D;&gt; {
+  try {
+    const path &#x3D; calldata.slice(2)
+    const tokenA &#x3D; &#x27;0x&#x27; + path.slice(0, 40)
+    const fee &#x3D; parseInt(path.slice(40, 46), 16)
+    const tokenB &#x3D; &#x27;0x&#x27; + path.slice(46, 86)
+
+    const result &#x3D; {
+      name: &#x27;&#x27;,
+      args: ethers.utils.defaultAbiCoder.encode([&#x27;address&#x27;, &#x27;uint24&#x27;, &#x27;address&#x27;], [tokenA, fee, tokenB]),
+      value: ethers.BigNumber.from(0),
+      signature: &#x27;path(address,uint24,address)&#x27;,
+      selector: &#x27;&#x27;,
+      fragment: {
+        name: &#x27;path&#x27;,
+        type: &#x27;function&#x27;,
+        stateMutability: &#x27;nonpayable&#x27;,
+        inputs: [
+          {
+            name: &#x27;tokenA&#x27;,
+            type: &#x27;address&#x27;,
+            indexed: null,
+            components: null,
+            arrayLength: null,
+            arrayChildren: null,
+            baseType: &#x27;address&#x27;,
+            _isParamType: true
+          },
+          {
+            name: &#x27;fee&#x27;,
+            type: &#x27;uint24&#x27;,
+            indexed: null,
+            components: null,
+            arrayLength: null,
+            arrayChildren: null,
+            baseType: &#x27;uint24&#x27;,
+            _isParamType: true
+          },
+          {
+            name: &#x27;tokenB&#x27;,
+            type: &#x27;address&#x27;,
+            indexed: null,
+            components: null,
+            arrayLength: null,
+            arrayChildren: null,
+            baseType: &#x27;address&#x27;,
+            _isParamType: true
+          }
+        ],
+        outputs: []
+      }
+    }
+
+    return result
+  } catch (error) {
+    logger.error(&#x27;Failed to decode calldata as UniversalRouter path&#x27;, error.stack)
+    throw error
+  }
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(&#x27;SpecializedDecoders&#x27;)</code>
                     </td>
                 </tr>
 
@@ -4193,7 +5120,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/common/constants/addresses.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4248,7 +5175,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/common/constants/events.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4343,7 +5270,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/common/constants/tokenTypes.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4422,9 +5349,35 @@
 
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RECEIVE_SKIP"></a>
+                    <span class="name">
+                        <span ><b>RECEIVE_SKIP</b></span>
+                        <a href="#RECEIVE_SKIP"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;RECEIVE_SKIP&#x27;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
 </section>
     <h3>scripts/smartWalletsAuthTesting.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4455,7 +5408,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/events-scanner/events-scanner.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4588,7 +5541,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/data-layer/schemas/wallet-action.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4617,7 +5570,8 @@
   value: { type: String, nullable: true },
   to: { type: String, nullable: true },
   from: { type: String, nullable: true },
-  tokenId: { type: String, nullable: true }
+  tokenId: { type: String, nullable: true },
+  actionName: { type: String, nullable: true }
 }</code>
                     </td>
                 </tr>
@@ -4663,7 +5617,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/ethereum-backend-wallet.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4692,7 +5646,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/schemas/ethereum-backend-wallet.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4724,7 +5678,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/ethereum-payments.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4779,7 +5733,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/schemas/ethereum-payment-account.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4818,7 +5772,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/schemas/ethereum-payment-link.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4870,7 +5824,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/ethereum-payments.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4918,7 +5872,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/events-scanner/events-scanner.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -4982,8 +5936,146 @@
         </tbody>
     </table>
 </section>
+    <h3>apps/charge-accounts-service/src/generate-metadata.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generator"></a>
+                    <span class="name">
+                        <span ><b>generator</b></span>
+                        <a href="#generator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PluginMetadataGenerator()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-api-service/src/generate-metadata.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generator"></a>
+                    <span class="name">
+                        <span ><b>generator</b></span>
+                        <a href="#generator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PluginMetadataGenerator()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-apps-service/src/generate-metadata.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generator"></a>
+                    <span class="name">
+                        <span ><b>generator</b></span>
+                        <a href="#generator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PluginMetadataGenerator()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-network-service/src/generate-metadata.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generator"></a>
+                    <span class="name">
+                        <span ><b>generator</b></span>
+                        <a href="#generator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PluginMetadataGenerator()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-notifications-service/src/generate-metadata.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generator"></a>
+                    <span class="name">
+                        <span ><b>generator</b></span>
+                        <a href="#generator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PluginMetadataGenerator()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-smart-wallets-service/src/generate-metadata.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generator"></a>
+                    <span class="name">
+                        <span ><b>generator</b></span>
+                        <a href="#generator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new PluginMetadataGenerator()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>apps/charge-network-service/src/common/constants/graph-queries/voltbar.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5080,7 +6172,7 @@
     </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/graph-queries/fuse-blocks.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5114,9 +6206,165 @@
 
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBlocksQuery"></a>
+                    <span class="name">
+                        <span ><b>getBlocksQuery</b></span>
+                        <a href="#getBlocksQuery"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(timestamps: number[]) &#x3D;&gt; gql&#x60;
+    query blocks {
+        ${timestamps.map((timestamp) &#x3D;&gt; &#x60;
+        t${timestamp}: blocks(
+            first: 1
+            orderBy: timestamp
+            orderDirection: desc
+            where: { timestamp_gt: ${timestamp}, timestamp_lt: ${timestamp + 600} }
+        ) {
+            number
+        }
+        &#x60;).join(&#x27;&#x27;)}
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBlockQuery"></a>
+                    <span class="name">
+                        <span ><b>getBlockQuery</b></span>
+                        <a href="#getBlockQuery"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query blocks($timestampFrom: Int!, $timestampTo: Int!) {
+        blocks(
+            first: 1
+            orderBy: timestamp
+            orderDirection: asc
+            where: { timestamp_gt: $timestampFrom, timestamp_lt: $timestampTo }
+        ) {
+            id
+            number
+            timestamp
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTokenDataQuery"></a>
+                    <span class="name">
+                        <span ><b>getTokenDataQuery</b></span>
+                        <a href="#getTokenDataQuery"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query getTokenDayData($tokenAddress: String!, $first: Int!) {
+        tokens(where: { id: $tokenAddress, totalValueLockedUSD_gt: 0 }) {
+            tokenDayData(orderBy: date, orderDirection: desc, first: $first) {
+                date
+                priceUSD
+                volumeUSD
+            }
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTokenDayDataV3"></a>
+                    <span class="name">
+                        <span ><b>getTokenDayDataV3</b></span>
+                        <a href="#getTokenDayDataV3"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query ($from: Int!, $first: Int!, $tokenAddress: String!) {
+        tokens(where: { id: $tokenAddress, totalValueLockedUSD_gt: 0 }) {
+            totalValueLockedUSD
+            tokenDayData(orderBy: date, orderDirection: desc, first: $first, where: { date_gte: $from }) {
+                date
+                priceUSD
+                volumeUSD
+            }
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTokenUsdPrice"></a>
+                    <span class="name">
+                        <span ><b>getTokenUsdPrice</b></span>
+                        <a href="#getTokenUsdPrice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+    query getTokenUsdPrice ($address: String) {
+        token(id: $address) {
+            derivedUSD
+        }
+    }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/graph-queries/nfts.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5131,11 +6379,11 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>gql&#x60;
-    query getCollectiblesByOwner($address: String!) {
-            account(id: $address) {
-                id
-                address
-                collectibles {
+    query getCollectiblesByOwner($address: String!, $first: Int, $skip: Int, $orderBy: String!, $orderDirection: String!) {
+        account(id: $address) {
+            id
+            address
+            collectibles(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
                 id
                 created
                 tokenId
@@ -5166,7 +6414,7 @@
     </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5201,8 +6449,46 @@
         </tbody>
     </table>
 </section>
+    <h3>apps/charge-network-service/src/common/constants/graph-queries/health.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSubgraphHealth"></a>
+                    <span class="name">
+                        <span ><b>getSubgraphHealth</b></span>
+                        <a href="#getSubgraphHealth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>gql&#x60;
+  query health {
+    indexingStatuses(subgraphs: [&quot;QmXo78rB6cYMbogVgibmbYsD2FLE2haXWXv28RhjSYz3A8&quot;]) {
+      synced
+      health
+      chains {
+        chainHeadBlock {
+          number
+        }
+        latestBlock {
+          number
+        }
+      }
+    }
+  }
+&#x60;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>apps/charge-notifications-service/src/common/utils/helper-functions.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5304,7 +6590,7 @@
     </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/graph-queries/aa.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5384,96 +6670,8 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/hexSchema.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="hexSchema"></a>
-                    <span class="name">
-                        <span ><b>hexSchema</b></span>
-                        <a href="#hexSchema"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>z
-  .string()
-  .regex(/^0[xX][0-9a-fA-F]+$/, {
-    message: &#x27;The value must be a hexadecimal number, 0x-prefix is required&#x27;
-  })
-  .min(2, { message: &#x27;The value must be longer than 2 digit&#x27; })</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="hexSchemaWithoutPrefix"></a>
-                    <span class="name">
-                        <span ><b>hexSchemaWithoutPrefix</b></span>
-                        <a href="#hexSchemaWithoutPrefix"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>z.string().regex(/^[0-9a-fA-F]+$/, {
-  message:
-    &#x27;The value must be a hexadecimal number, 0x-prefix is added automatically&#x27;
-})</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>libs/common/src/utils/dtools/parseAbi.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="keywords"></a>
-                    <span class="name">
-                        <span ><b>keywords</b></span>
-                        <a href="#keywords"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>[
-  &#x27;function&#x27;,
-  &#x27;modifier&#x27;,
-  &#x27;event&#x27;,
-  &#x27;error&#x27;,
-  &#x27;constructor&#x27;,
-  &#x27;fallback&#x27;,
-  &#x27;receive&#x27;
-]</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>apps/charge-smart-wallets-service/src/common/constants/addresess.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5501,8 +6699,8 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/decodeEvent.ts</h3>
-    <section data-compodoc="block-properties">
+    <h3>libs/common/src/utils/calldata-decoder/api.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5516,7 +6714,30 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>new Logger(version)</code>
+                        <i>Default value : </i><code>new Logger(&#x27;CallDataAPI&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>libs/common/src/utils/calldata-decoder/decoders/abi.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(&#x27;ABIDecoder&#x27;)</code>
                     </td>
                 </tr>
 
@@ -5525,7 +6746,7 @@
     </table>
 </section>
     <h3>apps/charge-network-service/src/common/constants/abi/MultiCall.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5690,7 +6911,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/common/constants/fuseTokenInfo.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5723,36 +6944,8 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/octalSchema.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="octalSchema"></a>
-                    <span class="name">
-                        <span ><b>octalSchema</b></span>
-                        <a href="#octalSchema"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>z
-  .string()
-  .regex(/^0[1-7][0-7]*$/, {
-    message: &#x27;The value must be a valid, octal number, 0-prefix is required&#x27;
-  })
-  .min(2, { message: &#x27;The value must be longer than 2 digit&#x27; })</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>apps/charge-accounts-service/src/operators/operators.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5807,7 +7000,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/operators/operators.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5843,7 +7036,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/operators/schemas/operator-wallet.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5879,7 +7072,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/paymaster/paymaster.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5908,7 +7101,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/paymaster/schemas/paymaster.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5948,7 +7141,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/paymaster/paymaster.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -5984,7 +7177,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/payments/payments.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6039,7 +7232,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/payments/schemas/payment-account.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6078,7 +7271,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/payments/schemas/payment-link.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6128,7 +7321,7 @@
     </table>
 </section>
     <h3>apps/charge-apps-service/src/payments/payments.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6170,7 +7363,7 @@
     </table>
 </section>
     <h3>libs/common/src/decorators/project.decorator.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6200,7 +7393,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/projects/projects.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6229,7 +7422,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/projects/schemas/project.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6265,7 +7458,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/projects/projects.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6301,7 +7494,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/common/utils/helper-functions.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6327,7 +7520,7 @@
     </table>
 </section>
     <h3>apps/charge-relay-service/src/relay-accounts/relay-accounts.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6356,7 +7549,7 @@
     </table>
 </section>
     <h3>apps/charge-relay-service/src/relay-accounts/schemas/relay-accounts.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6422,7 +7615,7 @@
     </table>
 </section>
     <h3>apps/charge-relay-service/src/relay-accounts/relay-accounts.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6458,7 +7651,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/common/schemas/scanner-status.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6494,7 +7687,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/common/utils/wallet-action-factory.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6549,21 +7742,17 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  &#x27;0xe3f85aad0c8dd7337427b9df5d0fb741d65eeeb5&#x27;: {
-    swapTokensForExactTokens: SwapTokens,
-    swapExactTokensForTokens: SwapTokens,
-    swapExactETHForTokens: SwapTokens,
-    swapTokensForExactETH: SwapTokens,
-    swapExactTokensForETH: SwapTokens,
-    swapETHForExactTokens: SwapTokens
+
+  &#x27;0xeca6055ac01e717cef70b8c6fc5f9ca32cb4118a&#x27;: {
+    transformERC20: TokenSwapExecutor
   },
   &#x27;0x0be9e53fd7edac9f859882afdda116645287c629&#x27;: {
-    withdraw: SwapTokens,
-    deposit: SwapTokens
+    withdraw: TokenSwapExecutor,
+    deposit: TokenSwapExecutor
   },
   &#x27;0xa3dc222ec847aac61fb6910496295bf344ea46be&#x27;: {
     deposit: StakeTokens,
-    withdraw: (name) &#x3D;&gt; name &#x3D;&#x3D;&#x3D; &#x27;approve&#x27; ? UnstakeTokens : SwapTokens
+    withdraw: (name) &#x3D;&gt; name &#x3D;&#x3D;&#x3D; &#x27;approve&#x27; ? UnstakeTokens : TokenSwapExecutor
   },
   &#x27;0x97a6e78c9208c21afada67e7e61d7ad27688efd1&#x27;: {
     leave: UnstakeTokens,
@@ -6577,8 +7766,41 @@
         </tbody>
     </table>
 </section>
+    <h3>apps/charge-smart-wallets-service/src/common/constants/receiveSkipAddresses.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SKIP_ADDRESSES"></a>
+                    <span class="name">
+                        <span ><b>SKIP_ADDRESSES</b></span>
+                        <a href="#SKIP_ADDRESSES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+  &#x27;0x63ed5bBa94D397616aD482BB26bB21E0feceF1a5&#x27;, // SWAP_ROUTER
+  &#x27;0xa3dc222ec847aac61fb6910496295bf344ea46be&#x27;, // S_FUSE
+  &#x27;0x0be9e53fd7edac9f859882afdda116645287c629&#x27; // W_FUSE
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/schemas/smart-contract-wallet.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6634,7 +7856,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/smart-wallets.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6715,7 +7937,7 @@
     </table>
 </section>
     <h3>libs/common/src/decorators/smart-wallet-owner.decorator.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6744,7 +7966,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/schemas/smart-wallet.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6811,7 +8033,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/smart-wallets.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6859,7 +8081,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/schemas/smart-wallet-upgrade.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6913,22 +8135,787 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/stringSchema.ts</h3>
-    <section data-compodoc="block-properties">
+    <h3>libs/common/src/utils/calldata-decoder/utils.ts</h3>
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="stringSchema"></a>
+                    <a name="startHexWith0x"></a>
                     <span class="name">
-                        <span ><b>stringSchema</b></span>
-                        <a href="#stringSchema"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>startHexWith0x</b></span>
+                        <a href="#startHexWith0x"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>z.string()</code>
+                        <i>Default value : </i><code>(hexValue?: string): Hex &#x3D;&gt; {
+  return hexValue
+    ? hexValue.startsWith(&#x27;0x&#x27;)
+      ? hexValue &#x3D;&#x3D;&#x3D; &#x27;0x&#x27;
+        ? &#x27;0x&#x27;
+        : (hexValue as Hex)
+      : &#x60;0x${hexValue}&#x60;
+    : &#x27;0x&#x27;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/charge-api-service/src/common/constants/swagger-schemas/schemas.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SWAGGER_SCHEMA_DEFINITIONS"></a>
+                    <span class="name">
+                        <span ><b>SWAGGER_SCHEMA_DEFINITIONS</b></span>
+                        <a href="#SWAGGER_SCHEMA_DEFINITIONS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  schemas: {
+    TransactionRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        to: {
+          type: &#x27;string&#x27;
+        },
+        data: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    DelegatedAmountsByDelegatorsResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        delegatedAmountsByDelegators: {
+          type: &#x27;object&#x27;,
+          additionalProperties: {
+            type: &#x27;object&#x27;,
+            properties: {
+              address: {
+                type: &#x27;string&#x27;
+              },
+              amountFormatted: {
+                type: &#x27;string&#x27;
+              },
+              amount: {
+                type: &#x27;string&#x27;
+              }
+            }
+          }
+        }
+      }
+    },
+    ValidatorsResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        totalStakeAmount: {
+          type: &#x27;string&#x27;
+        },
+        totalSupply: {
+          type: &#x27;number&#x27;
+        },
+        maxStake: {
+          type: &#x27;string&#x27;
+        },
+        minStake: {
+          type: &#x27;string&#x27;
+        },
+        totalDelegators: {
+          type: &#x27;integer&#x27;
+        },
+        allValidators: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;string&#x27;
+          }
+        },
+        activeValidators: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;string&#x27;
+          }
+        },
+        jailedValidators: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;string&#x27;
+          }
+        },
+        pendingValidators: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;string&#x27;
+          }
+        },
+        validatorsMetadata: {
+          type: &#x27;object&#x27;,
+          additionalProperties: {
+            type: &#x27;object&#x27;,
+            properties: {
+              address: {
+                type: &#x27;string&#x27;
+              },
+              name: {
+                type: &#x27;string&#x27;
+              },
+              status: {
+                type: &#x27;string&#x27;
+              },
+              isPending: {
+                type: &#x27;boolean&#x27;
+              },
+              stakeAmount: {
+                type: &#x27;string&#x27;
+              },
+              fee: {
+                type: &#x27;string&#x27;
+              },
+              delegatorsLength: {
+                type: &#x27;string&#x27;
+              },
+              delegators: {
+                type: &#x27;object&#x27;,
+                additionalProperties: {
+                  type: &#x27;object&#x27;,
+                  properties: {
+                    address: {
+                      type: &#x27;string&#x27;
+                    },
+                    amount: {
+                      type: &#x27;string&#x27;
+                    },
+                    amountFormatted: {
+                      type: &#x27;string&#x27;
+                    }
+                  }
+                }
+              },
+              isJailed: {
+                type: &#x27;boolean&#x27;
+              },
+              firstSeen: {
+                type: &#x27;number&#x27;
+              },
+              forDelegation: {
+                type: &#x27;integer&#x27;
+              },
+              totalValidated: {
+                type: &#x27;integer&#x27;
+              },
+              uptime: {
+                type: &#x27;integer&#x27;
+              },
+              apy: {
+                type: &#x27;string&#x27;
+              }
+            }
+          }
+        }
+      }
+    },
+    StakingOptionsResponse: {
+      type: &#x27;array&#x27;,
+      items: {
+        $ref: &#x27;#/components/schemas/StakingOption&#x27;
+      }
+    },
+    StakingOption: {
+      type: &#x27;object&#x27;,
+      properties: {
+        tokenAddress: {
+          type: &#x27;string&#x27;
+        },
+        tokenSymbol: {
+          type: &#x27;string&#x27;
+        },
+        tokenName: {
+          type: &#x27;string&#x27;
+        },
+        tokenLogoURI: {
+          type: &#x27;string&#x27;
+        },
+        unStakeTokenAddress: {
+          type: &#x27;string&#x27;
+        },
+        stakingProviderId: {
+          type: &#x27;string&#x27;
+        },
+        expired: {
+          type: &#x27;boolean&#x27;
+        },
+        stakingApr: {
+          type: &#x27;number&#x27;
+        },
+        tvl: {
+          type: &#x27;number&#x27;
+        }
+      }
+    },
+    StakeRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        accountAddress: {
+          type: &#x27;string&#x27;
+        },
+        tokenAmount: {
+          type: &#x27;string&#x27;
+        },
+        tokenAddress: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    StakeResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        contractAddress: {
+          type: &#x27;string&#x27;
+        },
+        encodedABI: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    UnstakeRequest: {
+      $ref: &#x27;#/components/schemas/StakeRequest&#x27;
+    },
+    UnstakeResponse: {
+      $ref: &#x27;#/components/schemas/StakeResponse&#x27;
+    },
+    StakedTokensResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        totalStakedAmountUSD: {
+          type: &#x27;number&#x27;
+        },
+        totalEarnedAmountUSD: {
+          type: &#x27;number&#x27;
+        },
+        stakedTokens: {
+          type: &#x27;array&#x27;,
+          items: {
+            $ref: &#x27;#/components/schemas/StakingOption&#x27;
+          }
+        }
+      }
+    },
+    WebhookCreateRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        projectId: {
+          type: &#x27;string&#x27;
+        },
+        webhookUrl: {
+          type: &#x27;string&#x27;
+        },
+        eventType: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    WebhookUpdateRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        webhookId: {
+          type: &#x27;string&#x27;
+        },
+        webhookUrl: {
+          type: &#x27;string&#x27;
+        },
+        eventType: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    WebhookAddAddressesRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        webhookId: {
+          type: &#x27;string&#x27;
+        },
+        addresses: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;string&#x27;
+          }
+        }
+      }
+    },
+    WebhookDeleteAddressesRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        webhookId: {
+          type: &#x27;string&#x27;
+        },
+        addresses: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;string&#x27;
+          }
+        }
+      }
+    },
+    NFTsResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        data: {
+          type: &#x27;object&#x27;,
+          properties: {
+            account: {
+              type: &#x27;object&#x27;,
+              properties: {
+                id: {
+                  type: &#x27;string&#x27;
+                },
+                address: {
+                  type: &#x27;string&#x27;
+                },
+                collectibles: {
+                  type: &#x27;array&#x27;,
+                  items: {
+                    $ref: &#x27;#/components/schemas/Collectible&#x27;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    Collectible: {
+      type: &#x27;object&#x27;,
+      properties: {
+        id: {
+          type: &#x27;string&#x27;
+        },
+        created: {
+          type: &#x27;string&#x27;
+        },
+        tokenId: {
+          type: &#x27;string&#x27;
+        },
+        description: {
+          type: &#x27;string&#x27;
+        },
+        descriptorUri: {
+          type: &#x27;string&#x27;
+        },
+        name: {
+          type: &#x27;string&#x27;
+        },
+        imageURL: {
+          type: &#x27;string&#x27;
+        },
+        creator: {
+          $ref: &#x27;#/components/schemas/Account&#x27;
+        },
+        owner: {
+          $ref: &#x27;#/components/schemas/Account&#x27;
+        },
+        collection: {
+          type: &#x27;object&#x27;,
+          properties: {
+            collectionName: {
+              type: &#x27;string&#x27;
+            },
+            collectionSymbol: {
+              type: &#x27;string&#x27;
+            },
+            collectionAddress: {
+              type: &#x27;string&#x27;
+            }
+          }
+        }
+      }
+    },
+    UserOpsResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        data: {
+          type: &#x27;object&#x27;,
+          properties: {
+            userOps: {
+              type: &#x27;array&#x27;,
+              items: {
+                $ref: &#x27;#/components/schemas/UserOp&#x27;
+              }
+            }
+          }
+        }
+      }
+    },
+    UserOp: {
+      type: &#x27;object&#x27;,
+      properties: {
+        id: {
+          type: &#x27;string&#x27;
+        },
+        transactionHash: {
+          type: &#x27;string&#x27;
+        },
+        userOpHash: {
+          type: &#x27;string&#x27;
+        },
+        sender: {
+          type: &#x27;string&#x27;
+        },
+        entryPoint: {
+          type: &#x27;string&#x27;
+        },
+        paymaster: {
+          type: &#x27;string&#x27;
+        },
+        paymasterAndData: {
+          type: &#x27;string&#x27;
+        },
+        bundler: {
+          type: &#x27;string&#x27;
+        },
+        nonce: {
+          type: &#x27;string&#x27;
+        },
+        initCode: {
+          type: &#x27;string&#x27;
+        },
+        actualGasCost: {
+          type: &#x27;string&#x27;
+        },
+        actualGasUsed: {
+          type: &#x27;string&#x27;
+        },
+        callGasLimit: {
+          type: &#x27;string&#x27;
+        },
+        verificationGasLimit: {
+          type: &#x27;string&#x27;
+        },
+        preVerificationGas: {
+          type: &#x27;string&#x27;
+        },
+        maxFeePerGas: {
+          type: &#x27;string&#x27;
+        },
+        maxPriorityFeePerGas: {
+          type: &#x27;string&#x27;
+        },
+        baseFeePerGas: {
+          type: &#x27;string&#x27;
+        },
+        gasPrice: {
+          type: &#x27;string&#x27;
+        },
+        gasLimit: {
+          type: &#x27;string&#x27;
+        },
+        signature: {
+          type: &#x27;string&#x27;
+        },
+        success: {
+          type: &#x27;boolean&#x27;
+        },
+        revertReason: {
+          type: &#x27;string&#x27;
+        },
+        blockTime: {
+          type: &#x27;string&#x27;
+        },
+        blockNumber: {
+          type: &#x27;string&#x27;
+        },
+        network: {
+          type: &#x27;string&#x27;
+        },
+        target: {
+          type: &#x27;string&#x27;
+        },
+        accountTarget: {
+          type: &#x27;object&#x27;,
+          properties: {
+            id: {
+              type: &#x27;string&#x27;
+            },
+            userOpsCount: {
+              type: &#x27;string&#x27;
+            }
+          }
+        },
+        callData: {
+          type: &#x27;string&#x27;
+        },
+        beneficiary: {
+          type: &#x27;string&#x27;
+        },
+        factory: {
+          type: &#x27;string&#x27;
+        },
+        erc721Transfers: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;object&#x27;,
+            properties: {
+              from: {
+                type: &#x27;string&#x27;
+              },
+              to: {
+                type: &#x27;string&#x27;
+              },
+              tokenId: {
+                type: &#x27;string&#x27;
+              },
+              contractAddress: {
+                type: &#x27;string&#x27;
+              },
+              name: {
+                type: &#x27;string&#x27;
+              },
+              symbol: {
+                type: &#x27;string&#x27;
+              }
+            }
+          }
+        },
+        erc20Transfers: {
+          type: &#x27;array&#x27;,
+          items: {
+            type: &#x27;object&#x27;,
+            properties: {
+              from: {
+                type: &#x27;string&#x27;
+              },
+              to: {
+                type: &#x27;string&#x27;
+              },
+              value: {
+                type: &#x27;string&#x27;
+              },
+              contractAddress: {
+                type: &#x27;string&#x27;
+              },
+              name: {
+                type: &#x27;string&#x27;
+              },
+              symbol: {
+                type: &#x27;string&#x27;
+              },
+              decimals: {
+                type: &#x27;string&#x27;
+              }
+            }
+          }
+        }
+      }
+    },
+    Account: {
+      type: &#x27;object&#x27;,
+      properties: {
+        id: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    CollectiblesResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        data: {
+          type: &#x27;object&#x27;,
+          properties: {
+            account: {
+              type: &#x27;object&#x27;,
+              properties: {
+                address: {
+                  type: &#x27;string&#x27;
+                },
+                id: {
+                  type: &#x27;string&#x27;
+                },
+                collectibles: {
+                  type: &#x27;array&#x27;,
+                  items: {
+                    type: &#x27;object&#x27;,
+                    properties: {
+                      collection: {
+                        type: &#x27;object&#x27;,
+                        properties: {
+                          collectionName: {
+                            type: &#x27;string&#x27;
+                          },
+                          collectionSymbol: {
+                            type: &#x27;string&#x27;
+                          },
+                          collectionAddress: {
+                            type: &#x27;string&#x27;
+                          }
+                        }
+                      },
+                      id: {
+                        type: &#x27;string&#x27;
+                      },
+                      tokenId: {
+                        type: &#x27;string&#x27;
+                      },
+                      description: {
+                        type: &#x27;string&#x27;
+                      },
+                      descriptionUrl: {
+                        type: &#x27;string&#x27;
+                      },
+                      name: {
+                        type: &#x27;string&#x27;
+                      },
+                      imageURL: {
+                        type: &#x27;string&#x27;
+                      },
+                      creator: {
+                        type: &#x27;object&#x27;,
+                        properties: {
+                          id: {
+                            type: &#x27;string&#x27;
+                          }
+                        }
+                      },
+                      owner: {
+                        type: &#x27;object&#x27;,
+                        properties: {
+                          id: {
+                            type: &#x27;string&#x27;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    ErrorResponse: {
+      type: &#x27;object&#x27;,
+      properties: {
+        statusCode: {
+          type: &#x27;integer&#x27;
+        },
+        errorMessage: {
+          type: &#x27;string&#x27;
+        },
+        path: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    AuthRequest: {
+      type: &#x27;object&#x27;,
+      properties: {
+        hash: {
+          type: &#x27;string&#x27;
+        },
+        signature: {
+          type: &#x27;string&#x27;
+        },
+        ownerAddress: {
+          type: &#x27;string&#x27;
+        },
+        smartWalletAddress: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    ActionResponseItems: {
+      type: &#x27;object&#x27;,
+      properties: {
+        docs: {
+          type: &#x27;array&#x27;,
+          items: {
+            $ref: &#x27;#/components/schemas/ActionResponseItem&#x27;
+          }
+        }
+      }
+    },
+    ActionResponseItem: {
+      type: &#x27;object&#x27;,
+      properties: {
+        _id: {
+          type: &#x27;string&#x27;
+        },
+        walletAddress: {
+          type: &#x27;string&#x27;
+        },
+        name: {
+          type: &#x27;string&#x27;
+        },
+        status: {
+          type: &#x27;string&#x27;
+        },
+        received: {
+          type: &#x27;array&#x27;,
+          items: {
+            $ref: &#x27;#/components/schemas/TokenTransaction&#x27;
+          }
+        },
+        sent: {
+          type: &#x27;array&#x27;,
+          items: {
+            $ref: &#x27;#/components/schemas/TokenTransaction&#x27;
+          }
+        },
+        userOpHash: {
+          type: &#x27;string&#x27;
+        },
+        txHash: {
+          type: &#x27;string&#x27;
+        }
+      }
+    },
+    TokenTransaction: {
+      type: &#x27;object&#x27;,
+      properties: {
+        name: {
+          type: &#x27;string&#x27;
+        },
+        symbol: {
+          type: &#x27;string&#x27;
+        },
+        address: {
+          type: &#x27;string&#x27;
+        },
+        decimals: {
+          type: &#x27;integer&#x27;
+        },
+        value: {
+          type: &#x27;string&#x27;
+        },
+        type: {
+          type: &#x27;string&#x27;
+        },
+        _id: {
+          type: &#x27;string&#x27;
+        },
+        to: {
+          type: &#x27;string&#x27;,
+          nullable: true
+        }
+      }
+    }
+  }
+}</code>
                     </td>
                 </tr>
 
@@ -6937,7 +8924,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -6979,7 +8966,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7034,7 +9021,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/users/user.decorator.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7064,7 +9051,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/users/users.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7093,7 +9080,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/data-layer/schemas/user-op.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7144,7 +9131,7 @@
     </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/data-layer/data-layer.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7199,7 +9186,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/users/schemas/user.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7232,7 +9219,7 @@
     </table>
 </section>
     <h3>apps/charge-accounts-service/src/users/users.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7268,7 +9255,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/webhooks/webhooks.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7323,7 +9310,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/webhooks/schemas/webhook-address.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7360,7 +9347,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/common/constants/webhook-event.constants.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7389,7 +9376,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/common/providers/webhook-event.provider.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7425,7 +9412,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/common/schemas/webhook-event.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7492,7 +9479,7 @@
     </table>
 </section>
     <h3>apps/charge-notifications-service/src/webhooks/schemas/webhook.schema.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7523,68 +9510,8 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/unitSchema.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="unitSchema"></a>
-                    <span class="name">
-                        <span ><b>unitSchema</b></span>
-                        <a href="#unitSchema"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>z.preprocess(
-  (value) &#x3D;&gt; String(value).trim(),
-  z
-    .string()
-    .regex(/^[.0-9]*$/, {
-      message:
-        &quot;The value mustn&#x27;t contain letters or any special signs except dot&quot;
-    })
-    .min(1, { message: &#x27;The value must be longer than 1 digit&#x27; })
-)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/unixEpochSchema.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="unixEpochSchema"></a>
-                    <span class="name">
-                        <span ><b>unixEpochSchema</b></span>
-                        <a href="#unixEpochSchema"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>z
-  .string()
-  .regex(/^[.0-9]*$/, {
-    message: &quot;The value mustn&#x27;t contain letters or any special signs&quot;
-  })
-  .min(1, { message: &#x27;The value length must be more than 1&#x27; })</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>apps/charge-apps-service/src/common/config/decorators/user.decorator.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7613,77 +9540,8 @@
         </tbody>
     </table>
 </section>
-    <h3>libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="utcSchemas"></a>
-                    <span class="name">
-                        <span ><b>utcSchemas</b></span>
-                        <a href="#utcSchemas"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  secondSchema: utcSchema(59, 1),
-  minuteSchema: utcSchema(59, 1),
-  hourSchema: utcSchema(23, 0),
-  daySchema: utcSchema(31, 1),
-  monthSchema: utcSchema(12, 1),
-  yearSchema: utcSchema(9999, 1970)
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="utcUnitToZodSchema"></a>
-                    <span class="name">
-                        <span ><b>utcUnitToZodSchema</b></span>
-                        <a href="#utcUnitToZodSchema"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>Record&lt;UtcUnit, ZodNumber&gt;</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  sec: utcSchemas.secondSchema,
-  min: utcSchemas.minuteSchema,
-  hr: utcSchemas.hourSchema,
-  day: utcSchemas.daySchema,
-  mon: utcSchemas.monthSchema,
-  year: utcSchemas.yearSchema
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>apps/charge-notifications-service/src/webhooks/webhooks.providers.ts</h3>
-    <section data-compodoc="block-properties">
+    <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -7756,19 +9614,6 @@
             var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

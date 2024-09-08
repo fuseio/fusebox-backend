@@ -28,13 +28,13 @@
 <title>cluster_NotificationsModule_imports</title>
 <polygon fill="none" stroke="black" points="290,-78 290,-130 410,-130 410,-78 290,-78"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_NotificationsModule_exports</title>
-<polygon fill="none" stroke="black" points="184,-208 184,-260 334,-260 334,-208 184,-208"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_NotificationsModule_providers</title>
 <polygon fill="none" stroke="black" points="86,-78 86,-130 282,-130 282,-78 86,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_NotificationsModule_exports</title>
+<polygon fill="none" stroke="black" points="184,-208 184,-260 334,-260 334,-208 184,-208"/>
 </g>
 <!-- ApiKeyModule -->
 <g id="node1" class="node">

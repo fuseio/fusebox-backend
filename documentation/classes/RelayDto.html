@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -90,29 +41,22 @@
 
 
 
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >RelayDto</li>
+  <li>Classes</li>
+  <li >RelayDto</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -125,7 +69,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -138,57 +82,39 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#data" >data</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#externalId" >externalId</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#gasLimit" >gasLimit</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#gasPrice" >gasPrice</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#methodName" >methodName</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#network" >network</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#nonce" >nonce</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#ownerAddress" >ownerAddress</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#signature" >signature</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#transactionBody" >transactionBody</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#walletAddress" >walletAddress</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#walletModule" >walletModule</a>
                             </li>
                         </ul>
@@ -205,7 +131,7 @@
 </section>
 
 
-            <section data-compodoc="block-properties">
+            <section>
     
     <h3 id="inputs">
         Properties
@@ -216,7 +142,6 @@
                 <td class="col-md-4">
                     <a name="data"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>data</b></span>
                         <a href="#data"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -252,8 +177,6 @@
                 <td class="col-md-4">
                     <a name="externalId"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>externalId</b></span>
                         <a href="#externalId"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -289,8 +212,6 @@
                 <td class="col-md-4">
                     <a name="gasLimit"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>gasLimit</b></span>
                         <a href="#gasLimit"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -326,8 +247,6 @@
                 <td class="col-md-4">
                     <a name="gasPrice"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>gasPrice</b></span>
                         <a href="#gasPrice"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -363,7 +282,6 @@
                 <td class="col-md-4">
                     <a name="methodName"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>methodName</b></span>
                         <a href="#methodName"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -399,8 +317,6 @@
                 <td class="col-md-4">
                     <a name="network"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>network</b></span>
                         <a href="#network"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -436,7 +352,6 @@
                 <td class="col-md-4">
                     <a name="nonce"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>nonce</b></span>
                         <a href="#nonce"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -472,8 +387,6 @@
                 <td class="col-md-4">
                     <a name="ownerAddress"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>ownerAddress</b></span>
                         <a href="#ownerAddress"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -509,7 +422,6 @@
                 <td class="col-md-4">
                     <a name="signature"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>signature</b></span>
                         <a href="#signature"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -545,8 +457,6 @@
                 <td class="col-md-4">
                     <a name="transactionBody"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>transactionBody</b></span>
                         <a href="#transactionBody"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -582,7 +492,6 @@
                 <td class="col-md-4">
                     <a name="walletAddress"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>walletAddress</b></span>
                         <a href="#walletAddress"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -618,7 +527,6 @@
                 <td class="col-md-4">
                     <a name="walletModule"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>walletModule</b></span>
                         <a href="#walletModule"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -659,7 +567,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsEthereumAddress, IsInt, IsObject, IsOptional, IsString } from &#x27;class-validator&#x27;
 
 export class RelayDto {
@@ -716,7 +624,6 @@ export class RelayDto {
 
 
 
-
                    </div><div class="search-results">
     <div class="has-results">
         <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
@@ -746,19 +653,6 @@ export class RelayDto {
             var COMPODOC_CURRENT_PAGE_URL = 'RelayDto.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

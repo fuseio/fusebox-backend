@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -86,29 +37,22 @@
 
 
 
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >ConsensusService</li>
+  <li>Injectables</li>
+  <li >ConsensusService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -120,7 +64,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -155,13 +99,26 @@
                                 <a href="#aggregateCalls" >aggregateCalls</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#buildValidatorMetadata" >buildValidatorMetadata</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#cacheDuration" >cacheDuration</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#calculateEstimatedApy" >calculateEstimatedApy</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
                                 <a href="#calculateReward" >calculateReward</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createBaseMetadata" >createBaseMetadata</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -176,12 +133,20 @@
                                 <a href="#encodeFunctionData" >encodeFunctionData</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                <a href="#extendActiveMetadata" >extendActiveMetadata</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#fetchValidatorDatas" >fetchValidatorDatas</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#fetchValidatorsMap" >fetchValidatorsMap</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#fetchValidatorsTimeout" >fetchValidatorsTimeout</a>
                             </li>
@@ -196,44 +161,99 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#getConsensusMethods" >getConsensusMethods</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCacheOrFetch" >getCacheOrFetch</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getDelegatedAmounts" >getDelegatedAmounts</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getNodeByAddress" >getNodeByAddress</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getTotalSupply" >getTotalSupply</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getValidatorData" >getValidatorData</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getValidatorFee" >getValidatorFee</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getValidators" >getValidators</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getValidatorsMetadata" >getValidatorsMetadata</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#handleValidatorsUpdate" >handleValidatorsUpdate</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#httpProxyGet" >httpProxyGet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#isJailed" >isJailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#mapValidatorsMetadata" >mapValidatorsMetadata</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readDelegators" >readDelegators</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readJailedValidators" >readJailedValidators</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readMaxStake" >readMaxStake</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readMinStake" >readMinStake</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readPendingValidators" >readPendingValidators</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readStakeAmount" >readStakeAmount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readTotalStakeAmount" >readTotalStakeAmount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#readValidators" >readValidators</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -277,7 +297,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
+            <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -288,7 +308,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:38</a></div>
                             </td>
                         </tr>
 
@@ -362,7 +382,7 @@
         </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -373,8 +393,8 @@
                 <td class="col-md-4">
                     <a name="aggregateCalls"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>aggregateCalls</b></span>
                         <a href="#aggregateCalls"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -382,57 +402,262 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>aggregateCalls(calls: literal type[])</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="357"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:357</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="558"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:558</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>calls</td>
-                                            <td>
-                                                        <code>literal type[]</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>calls</td>
+                                    <td>
+                                            <code>literal type[]</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buildValidatorMetadata"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>buildValidatorMetadata</b></span>
+                        <a href="#buildValidatorMetadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>buildValidatorMetadata(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, metadata: <a href="../interfaces/IValidator.html" target="_self">Partial&lt;IValidator&gt;</a>, validatorsMap: Record<string | any>, pendingValidators: string[], totalSupply: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, totalStakeAmount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="221"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:221</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>metadata</td>
+                                    <td>
+                                                <code><a href="../interfaces/IValidator.html" target="_self" >Partial&lt;IValidator&gt;</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validatorsMap</td>
+                                    <td>
+                                            <code>Record&lt;string | any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pendingValidators</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>totalSupply</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>totalStakeAmount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/IValidator.html" target="_self" >Promise&lt;IValidator&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cacheDuration"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>cacheDuration</b></span>
+                        <a href="#cacheDuration"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cacheDuration(volatility: "high" | "medium" | "low")</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="615"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:615</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>volatility</td>
+                                    <td>
+                                            <code>&quot;high&quot; | &quot;medium&quot; | &quot;low&quot;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -443,8 +668,8 @@
                 <td class="col-md-4">
                     <a name="calculateEstimatedApy"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>calculateEstimatedApy</b></span>
                         <a href="#calculateEstimatedApy"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -452,7 +677,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>calculateEstimatedApy(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, totalSupply: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, totalStakeAmount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -465,75 +690,77 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="84"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:84</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="279"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:279</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>validator</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>totalSupply</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>totalStakeAmount</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>totalSupply</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>totalStakeAmount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -544,7 +771,7 @@
                 <td class="col-md-4">
                     <a name="calculateReward"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                        <span class="modifier">Private</span>
                         <span ><b>calculateReward</b></span>
                         <a href="#calculateReward"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -552,81 +779,190 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>calculateReward(totalSupply: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, totalStakeAmount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, feePercentage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="121"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:121</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="311"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:311</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>totalSupply</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>totalSupply</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>totalStakeAmount</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>feePercentage</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>totalStakeAmount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                </tr>
+                                <tr>
+                                    <td>feePercentage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createBaseMetadata"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>createBaseMetadata</b></span>
+                        <a href="#createBaseMetadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createBaseMetadata(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, metadata: <a href="../interfaces/IValidator.html" target="_self">Partial&lt;IValidator&gt;</a>, validatorsMap: Record<string | any>, pendingValidators: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:196</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>metadata</td>
+                                    <td>
+                                                <code><a href="../interfaces/IValidator.html" target="_self" >Partial&lt;IValidator&gt;</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validatorsMap</td>
+                                    <td>
+                                            <code>Record&lt;string | any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pendingValidators</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/IValidator.html" target="_self" >IValidator</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -637,7 +973,7 @@
                 <td class="col-md-4">
                     <a name="createTransactionObject"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                        <span class="modifier">Private</span>
                         <span ><b>createTransactionObject</b></span>
                         <a href="#createTransactionObject"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -645,57 +981,71 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createTransactionObject(encodedABI: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createTransactionObject(method: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, params: any[])</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="406"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:406</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="632"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:632</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>encodedABI</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>method</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>{ to: any; data: string; }</code>
+                                </tr>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{ to: string; data: string; }</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -706,7 +1056,7 @@
                 <td class="col-md-4">
                     <a name="delegate"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>delegate</b></span>
                         <a href="#delegate"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -714,57 +1064,59 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>delegate(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:77</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:90</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>validator</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -775,7 +1127,7 @@
                 <td class="col-md-4">
                     <a name="encodeFunctionData"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                        <span class="modifier">Private</span>
                         <span ><b>encodeFunctionData</b></span>
                         <a href="#encodeFunctionData"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -783,69 +1135,214 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>encodeFunctionData(method: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, params: any[])</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="402"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:402</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="628"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:628</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>method</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>method</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>params</td>
-                                            <td>
-                                                        <code>any[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="extendActiveMetadata"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>extendActiveMetadata</b></span>
+                        <a href="#extendActiveMetadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>extendActiveMetadata(nodeMetadata: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="260"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:260</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nodeMetadata</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{ firstSeen: any; forDelegation: any; totalValidated: any; uptime: any; }</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchValidatorDatas"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>fetchValidatorDatas</b></span>
+                        <a href="#fetchValidatorDatas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fetchValidatorDatas(validators: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="188"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:188</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validators</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Partial[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -856,8 +1353,8 @@
                 <td class="col-md-4">
                     <a name="fetchValidatorsMap"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>fetchValidatorsMap</b></span>
                         <a href="#fetchValidatorsMap"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -865,7 +1362,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>fetchValidatorsMap()</code>
                 </td>
             </tr>
@@ -878,21 +1375,21 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="414"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:414</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="640"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:640</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -903,8 +1400,7 @@
                 <td class="col-md-4">
                     <a name="fetchValidatorsTimeout"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>fetchValidatorsTimeout</b></span>
                         <a href="#fetchValidatorsTimeout"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -912,7 +1408,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>fetchValidatorsTimeout()</code>
                 </td>
             </tr>
@@ -925,21 +1421,21 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:42</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:57</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -950,8 +1446,8 @@
                 <td class="col-md-4">
                     <a name="formatConsensusResults"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>formatConsensusResults</b></span>
                         <a href="#formatConsensusResults"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -959,62 +1455,59 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>formatConsensusResults(results, totalSupply)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>formatConsensusResults(results: any[])</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="161"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:161</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="117"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:117</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>results</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>results</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>totalSupply</td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1025,7 +1518,7 @@
                 <td class="col-md-4">
                     <a name="getCachedValidatorsInfo"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getCachedValidatorsInfo</b></span>
                         <a href="#getCachedValidatorsInfo"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1033,27 +1526,27 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getCachedValidatorsInfo()</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="130"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:130</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:94</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1062,37 +1555,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getConsensusMethods"></a>
+                    <a name="getCacheOrFetch"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>getConsensusMethods</b></span>
-                        <a href="#getConsensusMethods"><span class="icon ion-ios-link"></span></a>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getCacheOrFetch</b></span>
+                        <a href="#getCacheOrFetch"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getConsensusMethods()</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCacheOrFetch(undefined: <a href="../interfaces/CacheOptions.html" target="_self">CacheOptions&lt;T&gt;</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="139"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:139</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="655"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:655</a></div>
+                </td>
+            </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Type parameters :</b>
+                    <ul class="type-parameters">
+                        <li>T</li>
+                    </ul>
+                </td>
+            </tr>
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/CacheOptions.html" target="_self" >CacheOptions&lt;T&gt;</a></code>
+                                    </td>
 
-                        </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;T&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1103,7 +1636,7 @@
                 <td class="col-md-4">
                     <a name="getDelegatedAmounts"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getDelegatedAmounts</b></span>
                         <a href="#getDelegatedAmounts"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1111,57 +1644,59 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getDelegatedAmounts(delegatedAmountsDto: <a href="../classes/DelegatedAmountsDto.html" target="_self">DelegatedAmountsDto</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="333"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:333</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="534"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:534</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>delegatedAmountsDto</td>
-                                            <td>
-                                                            <code><a href="../classes/DelegatedAmountsDto.html" target="_self" >DelegatedAmountsDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>delegatedAmountsDto</td>
+                                    <td>
+                                                <code><a href="../classes/DelegatedAmountsDto.html" target="_self" >DelegatedAmountsDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1172,7 +1707,8 @@
                 <td class="col-md-4">
                     <a name="getNodeByAddress"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getNodeByAddress</b></span>
                         <a href="#getNodeByAddress"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1180,57 +1716,59 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getNodeByAddress(nodeAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="368"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:368</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="569"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:569</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>nodeAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>nodeAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1241,8 +1779,7 @@
                 <td class="col-md-4">
                     <a name="getTotalSupply"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getTotalSupply</b></span>
                         <a href="#getTotalSupply"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1250,7 +1787,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getTotalSupply()</code>
                 </td>
             </tr>
@@ -1263,21 +1800,21 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="375"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:375</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="582"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:582</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1288,8 +1825,8 @@
                 <td class="col-md-4">
                     <a name="getValidatorData"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getValidatorData</b></span>
                         <a href="#getValidatorData"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1297,7 +1834,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getValidatorData(validatorAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1310,51 +1847,132 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="277"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:277</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="490"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:490</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>validatorAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validatorAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/IValidator.html" target="_self" >Promise&lt;Partial&lt;IValidator&gt;&gt;</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/IValidator.html" target="_self" >Promise&lt;Partial&lt;IValidator&gt;&gt;</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getValidatorFee"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getValidatorFee</b></span>
+                        <a href="#getValidatorFee"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getValidatorFee(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::GetValidatorFee&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="321"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:321</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1365,8 +1983,8 @@
                 <td class="col-md-4">
                     <a name="getValidators"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getValidators</b></span>
                         <a href="#getValidators"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1374,7 +1992,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getValidators()</code>
                 </td>
             </tr>
@@ -1387,21 +2005,21 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="151"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:151</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="103"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:103</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1412,8 +2030,8 @@
                 <td class="col-md-4">
                     <a name="getValidatorsMetadata"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getValidatorsMetadata</b></span>
                         <a href="#getValidatorsMetadata"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1421,7 +2039,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getValidatorsMetadata(validators: string[], pendingValidators: string[], totalSupply: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, totalStakeAmount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
@@ -1434,87 +2052,89 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="200"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:200</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="154"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:154</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>validators</td>
-                                            <td>
-                                                        <code>string[]</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validators</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>pendingValidators</td>
-                                            <td>
-                                                        <code>string[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>totalSupply</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>pendingValidators</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>totalStakeAmount</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>totalSupply</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>totalStakeAmount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1525,8 +2145,7 @@
                 <td class="col-md-4">
                     <a name="handleValidatorsUpdate"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>handleValidatorsUpdate</b></span>
                         <a href="#handleValidatorsUpdate"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1534,7 +2153,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>handleValidatorsUpdate()</code>
                 </td>
             </tr>
@@ -1543,25 +2162,25 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Cron(CronExpression.EVERY_10_MINUTES)<br /></code>
+                    <code>@Cron(CronExpression.EVERY_5_MINUTES)<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:34</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:49</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1572,7 +2191,8 @@
                 <td class="col-md-4">
                     <a name="httpProxyGet"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>httpProxyGet</b></span>
                         <a href="#httpProxyGet"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1580,57 +2200,628 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>httpProxyGet(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="381"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:381</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="587"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:587</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>url</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isJailed"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>isJailed</b></span>
+                        <a href="#isJailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isJailed(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="338"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:338</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapValidatorsMetadata"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>mapValidatorsMetadata</b></span>
+                        <a href="#mapValidatorsMetadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>mapValidatorsMetadata(validatorsMetadata: <a href="../interfaces/IValidator.html" target="_self">IValidator[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="269"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:269</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validatorsMetadata</td>
+                                    <td>
+                                                <code><a href="../interfaces/IValidator.html" target="_self" >IValidator[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/IValidator.html" target="_self" >Record&lt;string, IValidator&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readDelegators"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readDelegators</b></span>
+                        <a href="#readDelegators"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readDelegators(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="457"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:457</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readJailedValidators"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readJailedValidators</b></span>
+                        <a href="#readJailedValidators"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readJailedValidators()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::ReadJailedValidators&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="390"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:390</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readMaxStake"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readMaxStake</b></span>
+                        <a href="#readMaxStake"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readMaxStake()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::ReadMaxStake&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="407"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:407</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readMinStake"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readMinStake</b></span>
+                        <a href="#readMinStake"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readMinStake()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::ReadMinStake&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="424"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:424</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readPendingValidators"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readPendingValidators</b></span>
+                        <a href="#readPendingValidators"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readPendingValidators()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::ReadPendingValidators&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="441"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:441</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readStakeAmount"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readStakeAmount</b></span>
+                        <a href="#readStakeAmount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readStakeAmount(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="473"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:473</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readTotalStakeAmount"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readTotalStakeAmount</b></span>
+                        <a href="#readTotalStakeAmount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readTotalStakeAmount()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::ReadTotalStakeAmount&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="356"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:356</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readValidators"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>readValidators</b></span>
+                        <a href="#readValidators"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>readValidators()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@logPerformance(&#x27;ConsensusService::ReadValidators&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="373"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:373</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1641,7 +2832,7 @@
                 <td class="col-md-4">
                     <a name="withdraw"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>withdraw</b></span>
                         <a href="#withdraw"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1649,75 +2840,77 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>withdraw(validator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, amount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:71</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:86</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>validator</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>validator</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>amount</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>amount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
-            <section data-compodoc="block-properties">
+            <section>
     
     <h3 id="inputs">
         Properties
@@ -1742,7 +2935,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -1751,7 +2944,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-accessors">
+            <section>
     <h3 id="accessors">
         Accessors
     </h3>
@@ -1771,7 +2964,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:47</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:62</a></div>
                                 </td>
                             </tr>
 
@@ -1793,7 +2986,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:51</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:66</a></div>
                                 </td>
                             </tr>
 
@@ -1815,7 +3008,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:70</a></div>
                                 </td>
                             </tr>
 
@@ -1837,7 +3030,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:59</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:74</a></div>
                                 </td>
                             </tr>
 
@@ -1859,7 +3052,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:63</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">apps/charge-network-service/src/consensus/consensus.service.ts:78</a></div>
                                 </td>
                             </tr>
 
@@ -1869,8 +3062,13 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpException, Injectable, Logger, Inject } from &#x27;@nestjs/common&#x27;
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  HttpException,
+  Injectable,
+  Logger,
+  Inject
+} from &#x27;@nestjs/common&#x27;
 import { ConfigService } from &#x27;@nestjs/config&#x27;
 import {
   Contract,
@@ -1883,26 +3081,36 @@ import {
 import { Cron, CronExpression, Timeout } from &#x27;@nestjs/schedule&#x27;
 import { CACHE_MANAGER } from &#x27;@nestjs/cache-manager&#x27;
 import { Cache } from &#x27;cache-manager&#x27;
+import { isEmpty, isUndefined } from &#x27;lodash&#x27;
 import MultiCallAbi from &#x27;@app/network-service/common/constants/abi/MultiCall&#x27;
 import ConsensusAbi from &#x27;@app/network-service/common/constants/abi/Consensus&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { catchError, lastValueFrom, map } from &#x27;rxjs&#x27;
-import { DelegatedAmountsDto } from &#x27;@app/network-service/consensus/dto/consensus.dto&#x27;
+import { DelegatedAmountsDto } from &#x27;@app/network-service/consensus/dto/delegate.dto&#x27;
 import { IValidator } from &#x27;@app/network-service/consensus/interfaces&#x27;
 import { logPerformance } from &#x27;@app/notifications-service/common/decorators/log-performance.decorator&#x27;
+
+interface CacheOptions&lt;T&gt; {
+  cacheKey: string;
+  volatility: &#x27;high&#x27; | &#x27;medium&#x27; | &#x27;low&#x27;;
+  fetchFunction: () &#x3D;&gt; Promise&lt;T&gt;;
+  forceRefresh?: boolean;
+  refreshCondition?: (cachedValue: T) &#x3D;&gt; boolean;
+}
 
 @Injectable()
 export class ConsensusService {
   private readonly logger &#x3D; new Logger(ConsensusService.name)
+
   constructor (
-    private httpService: HttpService,
+    private readonly httpService: HttpService,
     @InjectEthersProvider(&#x27;regular-node&#x27;)
     private readonly provider: JsonRpcProvider,
     private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
-  ) { }
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
+  ) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async handleValidatorsUpdate () {
     const validatorsInfo &#x3D; await this.getValidators()
     await this.cacheManager.set(&#x27;validatorsInfo&#x27;, validatorsInfo)
@@ -1916,23 +3124,23 @@ export class ConsensusService {
     await this.handleValidatorsUpdate()
   }
 
-  get multiCallAddress () {
+  private get multiCallAddress (): string {
     return this.configService.getOrThrow(&#x27;multiCallAddress&#x27;)
   }
 
-  get botApi () {
+  private get botApi (): string {
     return this.configService.getOrThrow(&#x27;botApi&#x27;)
   }
 
-  get consensusAddress () {
+  private get consensusAddress (): string {
     return this.configService.getOrThrow(&#x27;consensusAddress&#x27;)
   }
 
-  get consensusInterface (): Interface {
+  private get consensusInterface (): Interface {
     return new Interface(ConsensusAbi)
   }
 
-  get multiCallContract () {
+  private get multiCallContract (): Contract {
     return new Contract(
       this.multiCallAddress,
       MultiCallAbi,
@@ -1941,19 +3149,199 @@ export class ConsensusService {
   }
 
   async withdraw (validator: string, amount: string) {
-    return this.createTransactionObject(
-      this.encodeFunctionData(&#x27;withdraw&#x27;, [validator, amount])
-    )
+    return this.createTransactionObject(&#x27;withdraw&#x27;, [validator, amount])
   }
 
   async delegate (validator: string) {
-    return this.createTransactionObject(
-      this.encodeFunctionData(&#x27;delegate&#x27;, [validator])
+    return this.createTransactionObject(&#x27;delegate&#x27;, [validator])
+  }
+
+  async getCachedValidatorsInfo () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;validatorsInfo&#x27;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: () &#x3D;&gt; this.handleValidatorsUpdate()
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::GetValidators&#x27;)
+  private async getValidators () {
+    const results &#x3D; await Promise.all([
+      this.readTotalStakeAmount(),
+      this.readValidators(),
+      this.readJailedValidators(),
+      this.readMaxStake(),
+      this.readMinStake(),
+      this.readPendingValidators(),
+      this.getTotalSupply()
+    ])
+
+    return this.formatConsensusResults(results)
+  }
+
+  private async formatConsensusResults (results: any[]) {
+    const [
+      totalStakeAmount,
+      validators,
+      jailedValidators,
+      maxStake,
+      minStake,
+      pendingValidators,
+      totalSupply
+    ] &#x3D; results
+
+    const combinedValidators &#x3D; [...validators, ...jailedValidators]
+    const {
+      totalDelegators,
+      validatorsMetadata
+    } &#x3D; await this.getValidatorsMetadata(
+      combinedValidators,
+      pendingValidators,
+      totalSupply,
+      formatEther(totalStakeAmount)
+    )
+
+    return {
+      totalStakeAmount: formatEther(totalStakeAmount),
+      totalSupply,
+      maxStake: formatEther(maxStake),
+      minStake: formatEther(minStake),
+      totalDelegators,
+      allValidators: combinedValidators,
+      activeValidators: validators,
+      jailedValidators,
+      pendingValidators,
+      validatorsMetadata
+    }
+  }
+
+  @logPerformance(&#x27;ConsensusService::GetValidatorsMetadata&#x27;)
+  private async getValidatorsMetadata (
+    validators: string[],
+    pendingValidators: string[],
+    totalSupply: number,
+    totalStakeAmount: string
+  ) {
+    const validatorDatas &#x3D; await this.fetchValidatorDatas(validators)
+    const validatorsMap &#x3D; await this.fetchValidatorsMap()
+
+    const validatorsMetadata &#x3D; await Promise.all(
+      validators.map((validator, index) &#x3D;&gt;
+        this.buildValidatorMetadata(
+          validator,
+          validatorDatas[index],
+          validatorsMap,
+          pendingValidators,
+          totalSupply,
+          totalStakeAmount
+        )
+      )
+    )
+
+    const totalDelegators &#x3D; validatorsMetadata.reduce(
+      (sum, meta) &#x3D;&gt; sum + parseInt(meta.delegatorsLength, 10),
+      0
+    )
+
+    return {
+      totalDelegators,
+      pendingValidators,
+      validatorsMetadata: this.mapValidatorsMetadata(validatorsMetadata)
+    }
+  }
+
+  private async fetchValidatorDatas (
+    validators: string[]
+  ): Promise&lt;Partial&lt;IValidator&gt;[]&gt; {
+    return Promise.all(
+      validators.map(validator &#x3D;&gt; this.getValidatorData(validator))
     )
   }
 
+  private createBaseMetadata (
+    validator: string,
+    metadata: Partial&lt;IValidator&gt;,
+    validatorsMap: Record&lt;string, any&gt;,
+    pendingValidators: string[]
+  ): IValidator {
+    const validatorData &#x3D; validatorsMap[validator.toLowerCase()] || {}
+
+    return {
+      ...metadata,
+      address: validator,
+      name: validatorData.name || validator,
+      website: validatorData.website,
+      image: validatorData.image,
+      status: metadata.isJailed ? &#x27;inactive&#x27; : &#x27;active&#x27;,
+      isPending: pendingValidators.includes(validator.toLowerCase()),
+      description: validatorData.description,
+      stakeAmount: metadata.stakeAmount,
+      fee: metadata.fee,
+      delegatorsLength: metadata.delegatorsLength || &#x27;0&#x27;,
+      delegators: metadata.delegators,
+      isJailed: metadata.isJailed
+    }
+  }
+
+  private async buildValidatorMetadata (
+    validator: string,
+    metadata: Partial&lt;IValidator&gt;,
+    validatorsMap: Record&lt;string, any&gt;,
+    pendingValidators: string[],
+    totalSupply: number,
+    totalStakeAmount: string
+  ): Promise&lt;IValidator&gt; {
+    const baseMetadata &#x3D; this.createBaseMetadata(
+      validator,
+      metadata,
+      validatorsMap,
+      pendingValidators
+    )
+
+    if (!metadata.isJailed) {
+      try {
+        const [nodeMetadata, apy] &#x3D; await Promise.all([
+          this.getNodeByAddress(validator),
+          this.calculateEstimatedApy(
+            validator,
+            totalSupply,
+            totalStakeAmount
+          )
+        ])
+
+        return {
+          ...baseMetadata,
+          ...this.extendActiveMetadata(nodeMetadata),
+          apy
+        }
+      } catch (error) {
+        this.logger.error(&#x60;Error extending metadata for ${validator}: ${error}&#x60;)
+      }
+    }
+
+    return baseMetadata
+  }
+
+  private extendActiveMetadata (nodeMetadata: any) {
+    return {
+      firstSeen: nodeMetadata?.firstSeen,
+      forDelegation: nodeMetadata?.forDelegation,
+      totalValidated: nodeMetadata?.totalValidated,
+      uptime: nodeMetadata?.upTime
+    }
+  }
+
+  private mapValidatorsMetadata (
+    validatorsMetadata: IValidator[]
+  ): Record&lt;string, IValidator&gt; {
+    return validatorsMetadata.reduce((acc, obj) &#x3D;&gt; {
+      acc[obj.address] &#x3D; obj
+      return acc
+    }, {})
+  }
+
   @logPerformance(&#x27;ConsensusService::CalculateEstimatedApy&#x27;)
-  async calculateEstimatedApy (
+  private async calculateEstimatedApy (
     validator: string,
     totalSupply: number,
     totalStakeAmount: string
@@ -1963,12 +3351,7 @@ export class ConsensusService {
     }
 
     try {
-      const [fee] &#x3D; await this.aggregateCalls([
-        {
-          method: &#x27;validatorFee&#x27;,
-          params: [validator]
-        }
-      ])
+      const fee &#x3D; await this.getValidatorFee(validator)
 
       const totalStake &#x3D; parseFloat(totalStakeAmount)
       const feePercentage &#x3D; parseFloat(formatUnits(fee, 16)) / 100
@@ -1999,178 +3382,189 @@ export class ConsensusService {
     return (totalSupply / totalStakeAmount) * baseRewardRate * (1 - feePercentage) * 100
   }
 
-  async getCachedValidatorsInfo () {
-    const cachedInfo &#x3D; await this.cacheManager.get(&#x27;validatorsInfo&#x27;)
-    if (!cachedInfo) {
-      return this.handleValidatorsUpdate()
-    }
-
-    return cachedInfo
-  }
-
-  private getConsensusMethods () {
-    return [
-      &#x27;totalStakeAmount&#x27;,
-      &#x27;getValidators&#x27;,
-      &#x27;jailedValidators&#x27;,
-      &#x27;getMaxStake&#x27;,
-      &#x27;getMinStake&#x27;,
-      &#x27;pendingValidators&#x27;
-    ].map(method &#x3D;&gt; ({ method, params: [] }))
-  }
-
-  @logPerformance(&#x27;ConsensusService::GetValidators&#x27;)
-  async getValidators () {
-    const consensusMethods &#x3D; this.getConsensusMethods()
-    const [results, totalSupply] &#x3D; await Promise.all([
-      this.aggregateCalls(consensusMethods),
-      this.getTotalSupply()
-    ])
-
-    return this.formatConsensusResults(results, totalSupply)
-  }
-
-  private async formatConsensusResults (
-    results,
-    totalSupply
-  ) {
-    const [
-      totalStakeAmount,
-      validators,
-      jailedValidators,
-      maxStake,
-      minStake,
-      pendingValidators
-    ] &#x3D; results
-
-    const combinedValidators &#x3D; validators.concat(jailedValidators)
-    const {
-      totalDelegators,
-      validatorsMetadata
-    } &#x3D; await this.getValidatorsMetadata(
-      combinedValidators,
-      pendingValidators,
-      totalSupply,
-      formatEther(totalStakeAmount)
-    )
-
-    return {
-      totalStakeAmount: formatEther(totalStakeAmount),
-      totalSupply,
-      maxStake: formatEther(maxStake),
-      minStake: formatEther(minStake),
-      totalDelegators,
-      allValidators: combinedValidators,
-      activeValidators: validators,
-      jailedValidators,
-      pendingValidators,
-      validatorsMetadata
-    }
-  }
-
-  @logPerformance(&#x27;ConsensusService::GetValidatorsMetadata&#x27;)
-  async getValidatorsMetadata (
-    validators: string[],
-    pendingValidators: string[],
-    totalSupply: number,
-    totalStakeAmount: string
-  ) {
-    const validatorDataPromises &#x3D; validators.map((validator) &#x3D;&gt;
-      this.getValidatorData(validator)
-    )
-    const validatorDatas: Partial&lt;IValidator&gt;[] &#x3D; await Promise.all(
-      validatorDataPromises
-    )
-    const validatorsMap &#x3D; await this.fetchValidatorsMap()
-
-    let totalDelegators &#x3D; 0
-    const validatorsMetadata: IValidator[] &#x3D; await Promise.all(
-      validators.map(async (validator, index) &#x3D;&gt; {
-        const metadata: Partial&lt;IValidator&gt; &#x3D; validatorDatas[index]
-        const validatorMetadataData &#x3D; validators[validator.toLowerCase()]
-        totalDelegators +&#x3D; parseInt(metadata.delegatorsLength, 10)
-        const validatorData &#x3D; validatorsMap[validator.toLowerCase()]
-
-        const baseMetadata: IValidator &#x3D; {
-          ...validatorMetadataData,
-          address: validator,
-          name: validatorData?.name || validator,
-          website: validatorData?.website,
-          image: validatorData?.image,
-          status: metadata.isJailed ? &#x27;inactive&#x27; : &#x27;active&#x27;,
-          isPending: pendingValidators.includes(validator.toLowerCase()),
-          description: validatorData?.description,
-          stakeAmount: metadata.stakeAmount,
-          fee: metadata.fee,
-          delegatorsLength: metadata?.delegatorsLength || &#x27;0&#x27;,
-          delegators: metadata.delegators,
-          isJailed: metadata.isJailed
-        }
-
-        if (!metadata.isJailed) {
-          try {
-            const [{ Node }, apy] &#x3D; await Promise.all([
-              this.getNodeByAddress(validator),
-              this.calculateEstimatedApy(
-                validator,
-                totalSupply,
-                totalStakeAmount
-              )
-            ])
-
-            return {
-              ...baseMetadata,
-              firstSeen: Node?.firstSeen,
-              forDelegation: Node?.forDelegation,
-              totalValidated: Node?.totalValidated,
-              uptime: Node?.upTime,
-              apy
-            }
-          } catch (error) {
-            return baseMetadata
+  @logPerformance(&#x27;ConsensusService::GetValidatorFee&#x27;)
+  private async getValidatorFee (validator: string) {
+    return this.getCacheOrFetch({
+      cacheKey: &#x60;validatorFee-${validator}&#x60;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [validatorFee] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;validatorFee&#x27;,
+            params: [validator]
           }
-        } else {
-          return baseMetadata
-        }
-      })
-    )
+        ])
+        return validatorFee
+      },
+      refreshCondition: cachedValue &#x3D;&gt; isUndefined(cachedValue)
+    })
+  }
 
-    return {
-      totalDelegators,
-      pendingValidators,
-      validatorsMetadata: validatorsMetadata.reduce((acc, obj) &#x3D;&gt; {
-        acc[obj.address] &#x3D; obj
-        return acc
-      }, {})
-    }
+  private async isJailed (validator: string): Promise&lt;boolean&gt; {
+    return this.getCacheOrFetch({
+      cacheKey: &#x60;isJailed-${validator}&#x60;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [isJailed] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;isJailed&#x27;,
+            params: [validator]
+          }
+        ])
+        return isJailed
+      },
+      refreshCondition: cachedValue &#x3D;&gt; isUndefined(cachedValue)
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::ReadTotalStakeAmount&#x27;)
+  private async readTotalStakeAmount () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;totalStakeAmount&#x27;,
+      volatility: &#x27;high&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [totalStakeAmountResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;totalStakeAmount&#x27;,
+            params: []
+          }
+        ])
+        return totalStakeAmountResult
+      }
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::ReadValidators&#x27;)
+  private async readValidators () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;validators&#x27;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [validatorsResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;getValidators&#x27;,
+            params: []
+          }
+        ])
+        return validatorsResult
+      }
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::ReadJailedValidators&#x27;)
+  private async readJailedValidators () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;jailedValidators&#x27;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [jailedValidatorsResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;jailedValidators&#x27;,
+            params: []
+          }
+        ])
+        return jailedValidatorsResult
+      }
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::ReadMaxStake&#x27;)
+  private async readMaxStake () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;maxStake&#x27;,
+      volatility: &#x27;high&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [maxStakeResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;getMaxStake&#x27;,
+            params: []
+          }
+        ])
+        return maxStakeResult
+      }
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::ReadMinStake&#x27;)
+  private async readMinStake () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;minStake&#x27;,
+      volatility: &#x27;high&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [minStakeResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;getMinStake&#x27;,
+            params: []
+          }
+        ])
+        return minStakeResult
+      }
+    })
+  }
+
+  @logPerformance(&#x27;ConsensusService::ReadPendingValidators&#x27;)
+  private async readPendingValidators () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;pendingValidators&#x27;,
+      volatility: &#x27;low&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [pendingValidatorsResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;pendingValidators&#x27;,
+            params: []
+          }
+        ])
+        return pendingValidatorsResult
+      }
+    })
+  }
+
+  private async readDelegators (validator: string) {
+    return this.getCacheOrFetch({
+      cacheKey: &#x60;delegators-${validator}&#x60;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [delegatorsResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;delegators&#x27;,
+            params: [validator]
+          }
+        ])
+        return delegatorsResult
+      }
+    })
+  }
+
+  private async readStakeAmount (validator: string) {
+    return this.getCacheOrFetch({
+      cacheKey: &#x60;stakeAmount-${validator}&#x60;,
+      volatility: &#x27;medium&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const [stakeAmountResult] &#x3D; await this.aggregateCalls([
+          {
+            method: &#x27;stakeAmount&#x27;,
+            params: [validator]
+          }
+        ])
+        return stakeAmountResult
+      }
+    })
   }
 
   @logPerformance(&#x27;ConsensusService::GetValidatorData&#x27;)
-  async getValidatorData (validatorAddress: string): Promise&lt;Partial&lt;IValidator&gt;&gt; {
+  private async getValidatorData (validatorAddress: string): Promise&lt;Partial&lt;IValidator&gt;&gt; {
     try {
-      const validatorDataMethods &#x3D; [
-        &#x27;stakeAmount&#x27;,
-        &#x27;validatorFee&#x27;,
-        &#x27;delegators&#x27;,
-        &#x27;isJailed&#x27;
-      ]
-
-      const results &#x3D; await this.aggregateCalls(
-        validatorDataMethods
-          .map(
-            method &#x3D;&gt; ({
-              method,
-              params: [validatorAddress]
-            })
-          )
-      )
-
       const [
         stakeAmount,
         validatorFee,
         delegatorsMap,
         isJailed
-      ] &#x3D; results
+      ] &#x3D; await Promise.all([
+        this.readStakeAmount(validatorAddress),
+        this.getValidatorFee(validatorAddress),
+        this.readDelegators(validatorAddress),
+        this.isJailed(validatorAddress)
+      ])
 
       const delegatedAmounts &#x3D; await this.aggregateCalls(
         delegatorsMap
@@ -2237,67 +3631,115 @@ export class ConsensusService {
     )
   }
 
-  async getNodeByAddress (nodeAddress: string) {
-    const url &#x3D; &#x60;${this.botApi}/node&#x3D;${nodeAddress}&#x60;
-    const responseData &#x3D; await this.httpProxyGet(url)
-    return responseData
+  private async getNodeByAddress (nodeAddress: string) {
+    return this.getCacheOrFetch({
+      cacheKey: &#x60;nodeData-${nodeAddress}&#x60;,
+      volatility: &#x27;low&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const url &#x3D; &#x60;${this.botApi}/node&#x3D;${nodeAddress}&#x60;
+        const { Node } &#x3D; await this.httpProxyGet(url)
+        return Node
+      }
+    })
   }
 
   @logPerformance(&#x27;ConsensusService::GetTotalSupply&#x27;)
   async getTotalSupply () {
     const url &#x3D; &#x60;${this.botApi}/stats/total_supply_simple&#x60;
-    const responseData &#x3D; await this.httpProxyGet(url)
-    return responseData
+    return this.httpProxyGet(url)
   }
 
-  async httpProxyGet (url: string) {
-    const responseData &#x3D; await lastValueFrom(
-      this.httpService.get(url)
-        .pipe(
-          map((response) &#x3D;&gt; {
-            return response.data
-          })
-        )
-        .pipe(
-          catchError(e &#x3D;&gt; {
-            throw new HttpException(
-              &#x60;${e?.response?.statusText}: ${e?.response?.data?.error}&#x60;,
-              e?.response?.status
-            )
-          })
-        )
-    )
+  private async httpProxyGet (url: string) {
+    const maxRetries &#x3D; 5 // Maximum retries
+    let retryCount &#x3D; 0
+    let delay &#x3D; 100 // Initial delay in milliseconds
 
-    return responseData
+    while (retryCount &lt; maxRetries) {
+      try {
+        const responseData &#x3D; await lastValueFrom(
+          this.httpService.get(url).pipe(
+            map(response &#x3D;&gt; response.data),
+            catchError(e &#x3D;&gt; {
+              throw new HttpException(
+                &#x60;${e?.response?.statusText}: ${e?.response?.data?.error}&#x60;,
+                e?.response?.status
+              )
+            })
+          )
+        )
+        return responseData
+      } catch (error) {
+        if (retryCount &#x3D;&#x3D;&#x3D; maxRetries - 1) throw error // Throw error on last retry
+        await new Promise(resolve &#x3D;&gt; setTimeout(resolve, delay))
+        delay *&#x3D; 2 // Exponential increase of the delay
+        retryCount++
+      }
+    }
   }
 
-  private encodeFunctionData (method: string, params: any[]) {
+  private cacheDuration (volatility: &#x27;high&#x27; | &#x27;medium&#x27; | &#x27;low&#x27;): number {
+    switch (volatility) {
+      case &#x27;high&#x27;:
+        return 1000 * 60 * 5 // 5 minutes
+      case &#x27;medium&#x27;:
+        return 1000 * 60 * 30 // 30 minutes
+      case &#x27;low&#x27;:
+        return 1000 * 60 * 60 * 24 // 24 hours
+      default:
+        return 1000 * 60 * 30 // Default to 30 minutes
+    }
+  }
+
+  private encodeFunctionData (method: string, params: any[]): string {
     return this.consensusInterface.encodeFunctionData(method, params)
   }
 
-  private createTransactionObject (encodedABI: string) {
+  private createTransactionObject (method: string, params: any[]) {
     return {
       to: this.consensusAddress,
-      data: encodedABI
+      data: this.encodeFunctionData(method, params)
     }
   }
 
   @logPerformance(&#x27;ConsensusService::FetchValidatorsMap&#x27;)
-  async fetchValidatorsMap () {
-    const url &#x3D; &#x27;https://raw.githubusercontent.com/fuseio/console-dapp/master/validators/validators.json&#x27;
-    const responseData &#x3D; await this.httpProxyGet(url)
+  private async fetchValidatorsMap () {
+    return this.getCacheOrFetch({
+      cacheKey: &#x27;validatorsMap&#x27;,
+      volatility: &#x27;low&#x27;,
+      fetchFunction: async () &#x3D;&gt; {
+        const url &#x3D; &#x27;https://raw.githubusercontent.com/fuseio/console-dapp/master/validators/validators.json&#x27;
+        const responseData &#x3D; await this.httpProxyGet(url)
+        return Object.entries(responseData).reduce((acc, [key, value]) &#x3D;&gt; {
+          acc[key.toLowerCase()] &#x3D; value
+          return acc
+        }, {})
+      }
+    })
+  }
 
-    return Object.entries(responseData).reduce((acc, [key, value]) &#x3D;&gt; {
-      acc[key.toLowerCase()] &#x3D; value
-      return acc
-    }, {})
+  private async getCacheOrFetch&lt;T&gt; ({
+    cacheKey,
+    volatility,
+    fetchFunction,
+    forceRefresh &#x3D; false,
+    refreshCondition
+  }: CacheOptions&lt;T&gt;): Promise&lt;T&gt; {
+    let cachedValue &#x3D; await this.cacheManager.get&lt;T&gt;(cacheKey)
+
+    const shouldRefresh &#x3D; forceRefresh || (refreshCondition &amp;&amp; refreshCondition(cachedValue))
+
+    if (isEmpty(cachedValue) || shouldRefresh) {
+      cachedValue &#x3D; await fetchFunction()
+      await this.cacheManager.set(cacheKey, cachedValue, this.cacheDuration(volatility))
+    }
+
+    return cachedValue
   }
 }
 </code></pre>
     </div>
 
 </div>
-
 
 
 
@@ -2339,19 +3781,6 @@ export class ConsensusService {
             var COMPODOC_CURRENT_PAGE_URL = 'ConsensusService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

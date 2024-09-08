@@ -24,55 +24,55 @@
 <title>cluster_AppStoreModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="33,-70 33,-195 463,-195 463,-70 33,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_AppStoreModule_providers</title>
-<polygon fill="none" stroke="black" points="285,-78 285,-130 455,-130 455,-78 285,-78"/>
-</g>
 <g id="clust3" class="cluster">
 <title>cluster_AppStoreModule_imports</title>
-<polygon fill="none" stroke="black" points="41,-78 41,-130 277,-130 277,-78 41,-78"/>
+<polygon fill="none" stroke="black" points="219,-78 219,-130 455,-130 455,-78 219,-78"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_AppStoreModule_providers</title>
+<polygon fill="none" stroke="black" points="41,-78 41,-130 211,-130 211,-78 41,-78"/>
 </g>
 <!-- DatabaseModule -->
 <g id="node1" class="node">
 <title>DatabaseModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="269.35,-122 266.35,-126 245.35,-126 242.35,-122 158.65,-122 158.65,-86 269.35,-86 269.35,-122"/>
-<text text-anchor="middle" x="214" y="-99.8" font-family="Times,serif" font-size="14.00">DatabaseModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="447.35,-122 444.35,-126 423.35,-126 420.35,-122 336.65,-122 336.65,-86 447.35,-86 447.35,-122"/>
+<text text-anchor="middle" x="392" y="-99.8" font-family="Times,serif" font-size="14.00">DatabaseModule</text>
 </g>
 <!-- AppStoreModule -->
 <g id="node3" class="node">
 <title>AppStoreModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="270.7,-187 267.7,-191 246.7,-191 243.7,-187 157.3,-187 157.3,-151 270.7,-151 270.7,-187"/>
-<text text-anchor="middle" x="214" y="-164.8" font-family="Times,serif" font-size="14.00">AppStoreModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="329.7,-187 326.7,-191 305.7,-191 302.7,-187 216.3,-187 216.3,-151 329.7,-151 329.7,-187"/>
+<text text-anchor="middle" x="273" y="-164.8" font-family="Times,serif" font-size="14.00">AppStoreModule</text>
 </g>
 <!-- DatabaseModule&#45;&gt;AppStoreModule -->
 <g id="edge1" class="edge">
 <title>DatabaseModule&#45;&gt;AppStoreModule</title>
-<path fill="none" stroke="black" d="M214,-122.11C214,-122.11 214,-140.99 214,-140.99"/>
-<polygon fill="black" stroke="black" points="210.5,-140.99 214,-150.99 217.5,-140.99 210.5,-140.99"/>
+<path fill="none" stroke="black" d="M336.6,-104C329.23,-104 324.16,-104 324.16,-104 324.16,-104 324.16,-140.89 324.16,-140.89"/>
+<polygon fill="black" stroke="black" points="320.66,-140.89 324.16,-150.89 327.66,-140.89 320.66,-140.89"/>
 </g>
 <!-- UsersModule -->
 <g id="node2" class="node">
 <title>UsersModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="140.92,-122 137.92,-126 116.92,-126 113.92,-122 49.08,-122 49.08,-86 140.92,-86 140.92,-122"/>
-<text text-anchor="middle" x="95" y="-99.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="318.92,-122 315.92,-126 294.92,-126 291.92,-122 227.08,-122 227.08,-86 318.92,-86 318.92,-122"/>
+<text text-anchor="middle" x="273" y="-99.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
 </g>
 <!-- UsersModule&#45;&gt;AppStoreModule -->
 <g id="edge2" class="edge">
 <title>UsersModule&#45;&gt;AppStoreModule</title>
-<path fill="none" stroke="black" d="M95,-122.11C95,-141.34 95,-169 95,-169 95,-169 147.29,-169 147.29,-169"/>
-<polygon fill="black" stroke="black" points="147.29,-172.5 157.29,-169 147.29,-165.5 147.29,-172.5"/>
+<path fill="none" stroke="black" d="M273,-122.11C273,-122.11 273,-140.99 273,-140.99"/>
+<polygon fill="black" stroke="black" points="269.5,-140.99 273,-150.99 276.5,-140.99 269.5,-140.99"/>
 </g>
 <!-- AppStoreService -->
 <g id="node4" class="node">
 <title>AppStoreService</title>
-<ellipse fill="#fdb462" stroke="black" cx="370" cy="-104" rx="77" ry="18"/>
-<text text-anchor="middle" x="370" y="-99.8" font-family="Times,serif" font-size="14.00">AppStoreService</text>
+<ellipse fill="#fdb462" stroke="black" cx="126" cy="-104" rx="77" ry="18"/>
+<text text-anchor="middle" x="126" y="-99.8" font-family="Times,serif" font-size="14.00">AppStoreService</text>
 </g>
 <!-- AppStoreService&#45;&gt;AppStoreModule -->
 <g id="edge3" class="edge">
 <title>AppStoreService&#45;&gt;AppStoreModule</title>
-<path fill="none" stroke="black" d="M370,-122.11C370,-141.34 370,-169 370,-169 370,-169 280.76,-169 280.76,-169"/>
-<polygon fill="black" stroke="black" points="280.76,-165.5 270.76,-169 280.76,-172.5 280.76,-165.5"/>
+<path fill="none" stroke="black" d="M203.36,-104C214.26,-104 221.84,-104 221.84,-104 221.84,-104 221.84,-140.89 221.84,-140.89"/>
+<polygon fill="black" stroke="black" points="218.34,-140.89 221.84,-150.89 225.34,-140.89 218.34,-140.89"/>
 </g>
 </g>
 </svg>

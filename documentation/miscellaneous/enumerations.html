@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -95,14 +46,12 @@
 
 
 
-
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Miscellaneous</li>
-  <li class="breadcrumb-item">Enumerations</li>
+  <li>Miscellaneous</li>
+  <li>Enumerations</li>
 </ol>
 
-<section data-compodoc="block-index">
+<section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -120,6 +69,9 @@
                         </li>
                         <li>
                             <a href="#status" title="apps/charge-apps-service/src/payments/schemas/payment-link.schema.ts" ><b>status</b>&nbsp;&nbsp;&nbsp;(apps/.../payment-link.schema.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TimeFrame" title="apps/charge-network-service/src/voltage-dex/interfaces/index.ts" ><b>TimeFrame</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
                         </li>
                         <li>
                             <a href="#TokenType" title="apps/charge-notifications-service/src/common/constants/token-types.ts" ><b>TokenType</b>&nbsp;&nbsp;&nbsp;(apps/.../token-types.ts)</a>
@@ -144,7 +96,7 @@
 </section>
 
     <h3>apps/charge-notifications-service/src/common/schemas/webhook-event.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -177,7 +129,7 @@
         </table>
 </section>
     <h3>apps/charge-notifications-service/src/webhooks/schemas/webhook.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -230,7 +182,7 @@
         </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/schemas/ethereum-payment-link.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -293,7 +245,7 @@
         </table>
 </section>
     <h3>apps/charge-apps-service/src/payments/schemas/payment-link.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -355,8 +307,51 @@
             </tbody>
         </table>
 </section>
+    <h3>apps/charge-network-service/src/voltage-dex/interfaces/index.ts</h3>
+    <section>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="TimeFrame"></a>
+                        <span class="name "><b>TimeFrame</b><a href="#TimeFrame"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;YEAR
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>YEAR</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;MONTH
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>MONTH</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;WEEK
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>WEEK</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
     <h3>apps/charge-notifications-service/src/common/constants/token-types.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -399,7 +394,7 @@
         </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/schemas/smart-wallet.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -432,7 +427,7 @@
         </table>
 </section>
     <h3>apps/charge-apps-service/src/charge-api/schemas/backend-wallet.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -465,7 +460,7 @@
         </table>
 </section>
     <h3>apps/charge-apps-service/src/ethereum-payments/schemas/ethereum-backend-wallet.schema.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -498,7 +493,7 @@
         </table>
 </section>
     <h3>apps/charge-smart-wallets-service/src/smart-wallets/constants/smart-wallets.constants.ts</h3>
-    <section data-compodoc="block-enums">
+    <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -612,19 +607,6 @@
             var COMPODOC_CURRENT_PAGE_URL = 'enumerations.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

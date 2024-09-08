@@ -51,9 +51,11 @@ export class UnmarshalService implements BalanceService {
       .pipe(map(res => res.data))
     const unmarshalData = await lastValueFrom(observable)
 
-    const transformedCollectibles = await Promise.all(
-      unmarshalData.nft_assets.map(asset => this.transformCollectible(asset))
-    )
+    const transformedCollectibles = isEmpty(unmarshalData.nft_assets)
+      ? []
+      : await Promise.all(
+        unmarshalData.nft_assets.map(asset => this.transformCollectible(asset))
+      )
 
     const data = {
       data: {
@@ -65,7 +67,9 @@ export class UnmarshalService implements BalanceService {
       }
     }
 
-    await this.fetchAndApplyMetadata(data.data.account.collectibles)
+    if (!isEmpty(transformedCollectibles)) {
+      await this.fetchAndApplyMetadata(data.data.account.collectibles)
+    }
 
     const nextCursor = unmarshalData.next_offset
       ? Buffer.from(unmarshalData.next_offset + '').toString('base64')

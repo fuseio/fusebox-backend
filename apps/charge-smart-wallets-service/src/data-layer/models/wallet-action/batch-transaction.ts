@@ -1,6 +1,7 @@
 import { ERC_20_TYPE, ERC_721_TYPE, NATIVE_TOKEN_TYPE } from '@app/smart-wallets-service/common/constants/tokenTypes'
 import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
+import { ethers } from 'ethers'
 
 export default class BatchTransaction extends WalletAction {
   descGenerator (data: any) {
@@ -21,14 +22,18 @@ export default class BatchTransaction extends WalletAction {
 
     const tokenData = await this.tokenService.fetchTokenDetails(functionDetail.targetAddress)
     if (tokenData.decimals === 0) {
+      const tokenIdObject = functionDetail.callData.find(item =>
+        typeof item === 'object' && item._isBigNumber
+      )
+      const tokenId = tokenIdObject ? ethers.BigNumber.from(tokenIdObject._hex).toString() : '0'
       return {
         type: ERC_721_TYPE,
         name: tokenData.name,
         symbol: tokenData.symbol,
-        decimals: '1',
+        decimals: 0,
         address: functionDetail.targetAddress,
         to: functionDetail.callData[0],
-        tokenId: functionDetail.callData[2],
+        tokenId,
         value: '0',
         actionName
       }

@@ -1,7 +1,6 @@
-import { Document } from 'mongoose'
-
-export interface OperatorPricingPlan extends Document {
+export interface OperatorPricingPlanInterface {
+  readonly id: string;
   readonly name: string;
-  readonly amount: number;
+  readonly priceInUsd: number;
   readonly duration: number;
 }

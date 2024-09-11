@@ -3,19 +3,18 @@ import * as mongoose from 'mongoose'
 export const OperatorInvoiceSchema = new mongoose.Schema(
   {
     operatorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'OperatorWallet',
+      type: String,
       required: true
     },
-    paymentMethodId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'OperatorPaymentMethod',
-      required: true
+    paymentMethod: {
+      id: { type: String, required: true },
+      symbol: { type: String, required: true },
+      tokenAddress: { type: String, required: true }
     },
-    pricingPlanId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'OperatorPricingPlan',
-      required: true
+    pricingPlan: {
+      id: { type: String, required: true },
+      name: { type: String, required: true },
+      priceInUsd: { type: Number, required: true }
     },
     transactionHash: { type: String, required: true, unique: true, index: true },
     subscriptionStartedAt: { type: Date, required: true },

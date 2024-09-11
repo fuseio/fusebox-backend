@@ -1,7 +1,6 @@
-import { Document } from 'mongoose'
-
-export interface OperatorPaymentMethod extends Document {
-  readonly name: string;
+export interface OperatorPaymentMethodInterface {
+  readonly id: string;
+  readonly symbol: string;
   readonly tokenAddress: string;
   readonly tokenDecimal: number;
 }

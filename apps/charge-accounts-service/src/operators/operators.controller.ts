@@ -138,4 +138,20 @@ export class OperatorsController {
   async createOperatorInvoice (@Body() createOperatorInvoiceDto: CreateOperatorInvoiceDto, @User('sub') auth0Id: string) {
     return this.operatorsService.createOperatorInvoice(createOperatorInvoiceDto, auth0Id)
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/invoice')
+  async getOperatorInvoices (@User('sub') auth0Id: string) {
+    return this.operatorsService.getOperatorInvoices(auth0Id)
+  }
+
+  @Get('billing-plans')
+  async getBillingPlans () {
+    return this.operatorsService.getBillingPlans()
+  }
+
+  @Get('payment-methods')
+  async getPaymentMethods () {
+    return this.operatorsService.getPaymentMethods()
+  }
 }

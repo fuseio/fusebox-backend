@@ -1,7 +1,7 @@
-import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
-import { notificationsService, smartWalletsService } from '@app/common/constants/microservices.constants'
+import { networkService, notificationsService, smartWalletsService } from '@app/common/constants/microservices.constants'
 import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.service'
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorInvoiceModelString, operatorPaymentMethodModelString, operatorPricingPlanModelString, operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorInvoiceModelString, operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -18,13 +18,12 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import { HttpService } from '@nestjs/axios'
 import axios from 'axios'
 import { CreateOperatorInvoiceDto } from '@app/accounts-service/operators/dto/create-operator-invoice.dto'
+import { OPERATOR_PLANS } from '@app/accounts-service/operators/config/operators-plans'
+import { OPERATOR_PAYMENT_METHODS } from '@app/accounts-service/operators/config/operators-payment-methods'
+import BigNumber from 'bignumber.js'
 import { OperatorInvoice } from '@app/accounts-service/operators/interfaces/operator-invoice.interface'
-import { OperatorPaymentMethod } from '@app/accounts-service/operators/interfaces/operator-payment-method.interface'
-import { OperatorPricingPlan } from '@app/accounts-service/operators/interfaces/operator-pricing-plan.interface'
-import { ExplorerService } from '@app/network-service/balances/services/explorer-balance.service'
 
 @Injectable()
 export class OperatorsService {
@@ -41,15 +40,11 @@ export class OperatorsService {
     private readonly dataLayerClient: ClientProxy,
     @Inject(notificationsService)
     private readonly notificationsClient: ClientProxy,
+    @Inject(networkService)
+    private readonly networkClient: ClientProxy,
     private readonly analyticsService: AnalyticsService,
-    private httpService: HttpService,
     @Inject(operatorInvoiceModelString)
-    private operatorInvoiceModel: Model<OperatorInvoice>,
-    @Inject(operatorPaymentMethodModelString)
-    private operatorPaymentMethodModel: Model<OperatorPaymentMethod>,
-    @Inject(operatorPricingPlanModelString)
-    private operatorPricingPlanModel: Model<OperatorPricingPlan>,
-    private readonly explorerService: ExplorerService
+    private operatorInvoiceModel: Model<OperatorInvoice>
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -198,10 +193,10 @@ export class OperatorsService {
   private errorHandler (error: any) {
     // Improved error handling, distinguishing between different error types
     if (error instanceof HttpException) {
-      this.logger.error(`Failed to create operator: ${error.getResponse()}`)
+      this.logger.error(`Operator service error: ${error.getResponse()}`)
       throw new InternalServerErrorException(error.message)
     } else {
-      this.logger.error(`Failed to create operator: ${error.message}`)
+      this.logger.error(`Operator service error: ${error.message}`)
       throw new InternalServerErrorException(error.message)
     }
   }
@@ -453,77 +448,120 @@ export class OperatorsService {
     }
   }
 
+  private async getUserOrThrow (auth0Id: string) {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    return user
+  }
+
+  private async getWalletOrThrow (userId: string) {
+    const wallet = await this.findWalletOwner(userId)
+    if (!wallet) throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND)
+    return wallet
+  }
+
+  private async getPaymentMethodOrThrow (paymentMethodId: string) {
+    const paymentMethod = OPERATOR_PAYMENT_METHODS.find(method => method.id === paymentMethodId)
+    if (!paymentMethod) throw new HttpException('Payment Method not found', HttpStatus.NOT_FOUND)
+    return paymentMethod
+  }
+
+  private async getPricingPlanOrThrow (pricingPlanId: string) {
+    const pricingPlan = OPERATOR_PLANS.find(plan => plan.id === pricingPlanId)
+    if (!pricingPlan) throw new HttpException('Pricing Plan not found', HttpStatus.NOT_FOUND)
+    return pricingPlan
+  }
+
   async findLastOperatorInvoiceByOperatorId (operatorId: string): Promise<OperatorInvoice> {
     return this.operatorInvoiceModel.findOne({ operatorId }).sort({ subscriptionEndedAt: -1 })
   }
 
-  async findOperatorPaymentMethodById (id: string): Promise<OperatorPaymentMethod> {
-    return this.operatorPaymentMethodModel.findOne({ _id: id })
-  }
-
-  async findOperatorPricingPlanById (id: string): Promise<OperatorPricingPlan> {
-    return this.operatorPricingPlanModel.findOne({ _id: id })
+  private async getTransactionInfo (transactionHash: string) {
+    return callMSFunction(this.networkClient, 'get_transaction_info', transactionHash.toLowerCase())
   }
 
   async createOperatorInvoice (createOperatorInvoiceDto: CreateOperatorInvoiceDto, auth0Id: string) {
     try {
-      const user = await this.usersService.findOneByAuth0Id(auth0Id)
-      if (!user) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
-      }
-      const wallet = await this.findWalletOwner(user._id)
-      if (!wallet) {
-        throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND)
-      }
-      const lastInvoice = await this.findLastOperatorInvoiceByOperatorId(wallet._id)
-      const paymentMethod = await this.findOperatorPaymentMethodById(createOperatorInvoiceDto.paymentMethodId)
-      if (!paymentMethod) {
-        throw new HttpException('Payment Method not found', HttpStatus.NOT_FOUND)
-      }
-      const pricingPlan = await this.findOperatorPricingPlanById(createOperatorInvoiceDto.pricingPlanId)
-      if (!pricingPlan) {
-        throw new HttpException('Pricing Plan not found', HttpStatus.NOT_FOUND)
-      }
+      const user = await this.getUserOrThrow(auth0Id)
+      const wallet = await this.getWalletOrThrow(user._id)
+      const lastInvoice = await this.findLastOperatorInvoiceByOperatorId(wallet.ownerId)
 
-      const billingWalletAddress = this.configService.get('BILLING_WALLET_ADDRESS')
-      const transactionInfo = await this.explorerService.getTransactionInfo(createOperatorInvoiceDto.transactionHash.toLowerCase())
-      const confirmations = transactionInfo.confirmations
-      const toAddress = transactionInfo.token_transfers[0].to.hash
-      const tokenAddress = transactionInfo.token_transfers[0].token.address
-      const totalValue = transactionInfo.token_transfers[0].total.value
-      if (confirmations && confirmations < 1) {
-        throw new HttpException('Transaction not confirmed on blockchain', HttpStatus.BAD_REQUEST)
-      }
-      if (toAddress && toAddress.toLowerCase() !== billingWalletAddress.toLowerCase()) {
-        throw new HttpException('Transaction not sent to billing wallet address', HttpStatus.BAD_REQUEST)
-      }
-      if (tokenAddress && tokenAddress.toLowerCase() !== paymentMethod.tokenAddress.toLowerCase()) {
-        throw new HttpException('Transaction token does not match the payment method', HttpStatus.BAD_REQUEST)
-      }
-      if (totalValue && totalValue < pricingPlan.amount) {
-        throw new HttpException('Transaction amount does not match the pricing plan', HttpStatus.BAD_REQUEST)
-      }
+      const paymentMethod = await this.getPaymentMethodOrThrow(createOperatorInvoiceDto.paymentMethodId)
+      const pricingPlan = await this.getPricingPlanOrThrow(createOperatorInvoiceDto.pricingPlanId)
 
-      const invoice = {
-        operatorId: wallet._id,
-        paymentMethodId: paymentMethod._id,
-        pricingPlanId: pricingPlan._id,
-        transactionHash: createOperatorInvoiceDto.transactionHash.toLowerCase(),
-        subscriptionStartedAt: lastInvoice ? lastInvoice.subscriptionEndedAt : new Date(),
-        subscriptionEndedAt: lastInvoice ? new Date(lastInvoice.subscriptionEndedAt.getTime() + pricingPlan.duration) : new Date(Date.now() + pricingPlan.duration)
-      }
-      const operatorInvoiceCreated = await this.operatorInvoiceModel.create(invoice)
-      if (!operatorInvoiceCreated) {
-        throw new HttpException('Failed to create operator invoice', HttpStatus.INTERNAL_SERVER_ERROR)
-      }
+      const transactionInfo = await this.getTransactionInfo(createOperatorInvoiceDto.transactionHash)
 
-      this.analyticsService.trackEvent('Operator Invoice Created', { ...invoice }, { user_id: user?.auth0Id })
+      await this.validateTransaction(transactionInfo, paymentMethod, pricingPlan)
 
-      return {
-        invoiceId: operatorInvoiceCreated._id
-      }
+      const invoice = this.createInvoiceObject(wallet, paymentMethod, pricingPlan, createOperatorInvoiceDto, lastInvoice)
+
+      await this.saveInvoice(invoice)
+
+      this.trackInvoiceCreation(invoice, user)
+
+      return invoice
     } catch (error) {
       this.errorHandler(error)
     }
+  }
+
+  private async validateTransaction (transactionInfo: any, paymentMethod: any, pricingPlan: any) {
+    if (transactionInfo.confirmations && transactionInfo.confirmations < 1) {
+      throw new HttpException('Transaction not confirmed on blockchain', HttpStatus.BAD_REQUEST)
+    }
+
+    const tokenAddress = transactionInfo.token_transfers?.[0]?.token?.address || '0x0000000000000000000000000000000000000000'
+    if (tokenAddress.toLowerCase() !== paymentMethod.tokenAddress.toLowerCase()) {
+      throw new HttpException('Transaction token does not match the payment method', HttpStatus.BAD_REQUEST)
+    }
+    const rawValue = transactionInfo.token_transfers?.[0]?.total?.value || transactionInfo.value
+    const decimals = paymentMethod.tokenDecimal || 18
+    const totalValue = new BigNumber(rawValue).dividedBy(10 ** decimals).toNumber()
+    if (totalValue < pricingPlan.priceInUsd) {
+      throw new HttpException('Transaction amount does not match the pricing plan', HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  private createInvoiceObject (wallet: any, paymentMethod: any, pricingPlan: any, createOperatorInvoiceDto: CreateOperatorInvoiceDto, lastInvoice: any) {
+    const subscriptionStartedAt = lastInvoice ? lastInvoice.subscriptionEndedAt : new Date()
+    const subscriptionEndedAt = new Date(subscriptionStartedAt.getTime() + pricingPlan.duration)
+
+    return {
+      operatorId: wallet.ownerId,
+      paymentMethod,
+      pricingPlan,
+      transactionHash: createOperatorInvoiceDto.transactionHash.toLowerCase(),
+      subscriptionStartedAt,
+      subscriptionEndedAt
+    }
+  }
+
+  private async saveInvoice (invoice: any) {
+    const operatorInvoiceCreated = await this.operatorInvoiceModel.create(invoice)
+    if (!operatorInvoiceCreated) {
+      throw new HttpException('Failed to create operator invoice', HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+    return operatorInvoiceCreated
+  }
+
+  private trackInvoiceCreation (invoice: any, user: any) {
+    this.analyticsService.trackEvent('Operator Invoice Created', { ...invoice }, { user_id: user?.auth0Id })
+  }
+
+  async getOperatorInvoices (auth0Id: string): Promise<OperatorInvoice[]> {
+    const user = await this.getUserOrThrow(auth0Id)
+    const invoices = await this.operatorInvoiceModel.find({ operatorId: user._id }).sort({ createdAt: -1 }).exec()
+    if (!invoices || invoices.length === 0) {
+      throw new NotFoundException(`No invoices found for operator ${user._id}`)
+    }
+    return invoices
+  }
+
+  async getBillingPlans () {
+    return OPERATOR_PLANS
+  }
+
+  async getPaymentMethods () {
+    return OPERATOR_PAYMENT_METHODS
   }
 }

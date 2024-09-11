@@ -17,7 +17,7 @@ export class ExplorerService implements BalanceService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly graphQLService: GraphQLService
-  ) {}
+  ) { }
 
   get explorerBaseUrl () {
     return this.configService.get('explorer.baseUrl')

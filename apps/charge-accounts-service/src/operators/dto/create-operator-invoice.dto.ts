@@ -1,12 +1,12 @@
-import { IsString, IsEthereumAddress } from 'class-validator'
+import { IsString } from 'class-validator'
 
 export class CreateOperatorInvoiceDto {
-  @IsEthereumAddress()
-    transactionHash: string
+  @IsString()
+  transactionHash: string
 
   @IsString()
-    paymentMethodId: string
+  paymentMethodId: string
 
   @IsString()
-    pricingPlanId: string
+  pricingPlanId: string
 }

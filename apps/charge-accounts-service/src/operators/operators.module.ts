@@ -12,10 +12,10 @@ import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
 import { ClientsModule, Transport } from '@nestjs/microservices'
-import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
+import { smartWalletsService, notificationsService, networkService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpModule } from '@nestjs/axios'
-import { ExplorerService } from 'apps/charge-network-service/src/balances/services/explorer-balance.service'
+import GraphQLService from '@app/common/services/graphql.service'
 
 @Module({
   imports: [
@@ -40,6 +40,14 @@ import { ExplorerService } from 'apps/charge-network-service/src/balances/servic
           host: process.env.NOTIFICATIONS_HOST,
           port: parseInt(process.env.NOTIFICATIONS_TCP_PORT)
         }
+      },
+      {
+        name: networkService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.NETWORK_HOST,
+          port: parseInt(process.env.NETWORK_TCP_PORT)
+        }
       }
     ]),
     ConfigModule.forFeature(configuration),
@@ -50,7 +58,7 @@ import { ExplorerService } from 'apps/charge-network-service/src/balances/servic
     OperatorJwtStrategy,
     AnalyticsService,
     OperatorsService,
-    ExplorerService,
+    GraphQLService,
     ...operatorsProviders
   ],
   exports: [OperatorsService]

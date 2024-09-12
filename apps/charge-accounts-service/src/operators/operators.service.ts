@@ -472,6 +472,14 @@ export class OperatorsService {
     return pricingPlan
   }
 
+  async getBillingPlans () {
+    return OPERATOR_PLANS
+  }
+
+  async getPaymentMethods () {
+    return OPERATOR_PAYMENT_METHODS
+  }
+
   async findLastOperatorInvoiceByOperatorId (operatorId: string): Promise<OperatorInvoice> {
     return this.operatorInvoiceModel.findOne({ operatorId }).sort({ subscriptionEndedAt: -1 })
   }
@@ -491,9 +499,9 @@ export class OperatorsService {
 
       const transactionInfo = await this.getTransactionInfo(createOperatorInvoiceDto.transactionHash)
 
-      await this.validateTransaction(transactionInfo, paymentMethod, pricingPlan)
+      const tokenValue = await this.validateTransaction(transactionInfo, paymentMethod, pricingPlan, createOperatorInvoiceDto.monthAmount)
 
-      const invoice = this.createInvoiceObject(wallet, paymentMethod, pricingPlan, createOperatorInvoiceDto, lastInvoice)
+      const invoice = this.createInvoiceObject(wallet, paymentMethod, pricingPlan, createOperatorInvoiceDto, lastInvoice, tokenValue)
 
       await this.saveInvoice(invoice)
 
@@ -505,7 +513,7 @@ export class OperatorsService {
     }
   }
 
-  private async validateTransaction (transactionInfo: any, paymentMethod: any, pricingPlan: any) {
+  private async validateTransaction (transactionInfo: any, paymentMethod: any, pricingPlan: any, monthAmount: any) {
     if (transactionInfo.confirmations && transactionInfo.confirmations < 1) {
       throw new HttpException('Transaction not confirmed on blockchain', HttpStatus.BAD_REQUEST)
     }
@@ -517,20 +525,27 @@ export class OperatorsService {
     const rawValue = transactionInfo.token_transfers?.[0]?.total?.value || transactionInfo.value
     const decimals = paymentMethod.tokenDecimal || 18
     const totalValue = new BigNumber(rawValue).dividedBy(10 ** decimals).toNumber()
-    if (totalValue < pricingPlan.priceInUsd) {
-      throw new HttpException('Transaction amount does not match the pricing plan', HttpStatus.BAD_REQUEST)
+    if (totalValue < pricingPlan.priceInUsd * monthAmount) {
+      throw new HttpException('Transaction amount is less than expected in pricing plan', HttpStatus.BAD_REQUEST)
     }
+    if (totalValue > pricingPlan.priceInUsd * monthAmount) {
+      this.logger.warn(`Transaction amount is more than expected in pricing plan, TxHash:${transactionInfo.hash.toLowerCase()}`)
+    }
+    return totalValue
   }
 
-  private createInvoiceObject (wallet: any, paymentMethod: any, pricingPlan: any, createOperatorInvoiceDto: CreateOperatorInvoiceDto, lastInvoice: any) {
+  private createInvoiceObject (wallet: any, paymentMethod: any, pricingPlan: any, createOperatorInvoiceDto: CreateOperatorInvoiceDto, lastInvoice: any, tokenValue: any) {
     const subscriptionStartedAt = lastInvoice ? lastInvoice.subscriptionEndedAt : new Date()
-    const subscriptionEndedAt = new Date(subscriptionStartedAt.getTime() + pricingPlan.duration)
+    const subscriptionEndedAt = new Date(subscriptionStartedAt.getTime() + pricingPlan.duration * createOperatorInvoiceDto.monthAmount)
+    console.log(tokenValue)
 
     return {
       operatorId: wallet.ownerId,
       paymentMethod,
       pricingPlan,
       transactionHash: createOperatorInvoiceDto.transactionHash.toLowerCase(),
+      usdValue: tokenValue,
+      monthAmount: createOperatorInvoiceDto.monthAmount,
       subscriptionStartedAt,
       subscriptionEndedAt
     }
@@ -555,13 +570,5 @@ export class OperatorsService {
       throw new NotFoundException(`No invoices found for operator ${user._id}`)
     }
     return invoices
-  }
-
-  async getBillingPlans () {
-    return OPERATOR_PLANS
-  }
-
-  async getPaymentMethods () {
-    return OPERATOR_PAYMENT_METHODS
   }
 }

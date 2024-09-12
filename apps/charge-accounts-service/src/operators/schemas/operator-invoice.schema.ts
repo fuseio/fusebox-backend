@@ -16,6 +16,7 @@ export const OperatorInvoiceSchema = new mongoose.Schema(
       name: { type: String, required: true },
       priceInUsd: { type: Number, required: true }
     },
+    usdValue: { type: Number, required: true },
     transactionHash: { type: String, required: true, unique: true, index: true },
     subscriptionStartedAt: { type: Date, required: true },
     subscriptionEndedAt: { type: Date, required: true }

@@ -1,12 +1,15 @@
-import { IsString } from 'class-validator'
+import { IsNumber, IsString } from 'class-validator'
 
 export class CreateOperatorInvoiceDto {
   @IsString()
-  transactionHash: string
+    transactionHash: string
 
   @IsString()
-  paymentMethodId: string
+    paymentMethodId: string
 
   @IsString()
-  pricingPlanId: string
+    pricingPlanId: string
+
+  @IsNumber()
+    monthAmount: number
 }

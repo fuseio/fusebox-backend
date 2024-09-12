@@ -6,6 +6,7 @@ export interface OperatorInvoice extends Document {
   readonly operatorId: string;
   readonly paymentMethod: OperatorPaymentMethodInterface;
   readonly pricingPlan: OperatorPricingPlanInterface;
+  readonly usdValue: number;
   readonly transactionHash: string;
   readonly subscriptionStartedAt: Date;
   readonly subscriptionEndedAt: Date;

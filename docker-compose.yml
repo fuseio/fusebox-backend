@@ -33,8 +33,7 @@ services:
       - AMPLITUDE_API_KEY
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
       - GOOGLE_OPERATOR_FORM_URL
-      - NETWORK_TCP_PORT
-      - NETWORK_HOST
+      
 
     depends_on:
       - charge-api-service

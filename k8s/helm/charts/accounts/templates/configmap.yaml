@@ -20,8 +20,6 @@ data:
   smart_wallets_tcp_port: "8881"
   notifications_host: "notifications"
   notifications_tcp_port: "8878"
-  network_host: "network"
-  network_tcp_port: "8879"
   
   # User - defined
 {{- range $key, $val := .Values.configMap }}

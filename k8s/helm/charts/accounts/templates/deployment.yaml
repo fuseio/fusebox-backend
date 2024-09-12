@@ -89,12 +89,6 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: notifications_tcp_port
-            - name: NETWORK_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: network_host
-            - name: NETWORK_TCP_PORT
               valueFrom:
                 configMapKeyRef:
                   name: api

@@ -2,7 +2,7 @@ import { IsNumber, IsString } from 'class-validator'
 
 export class CreateOperatorInvoiceDto {
   @IsString()
-    transactionHash: string
+    userOpHash: string
 
   @IsString()
     paymentMethodId: string

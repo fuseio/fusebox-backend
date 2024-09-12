@@ -89,10 +89,6 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: notifications_tcp_port
-              valueFrom:
-                configMapKeyRef:
-                  name: api
-                  key: network_tcp_port
             {{- range $key, $value := .Values.configMap }}
             - name: {{ $key | upper }}
               valueFrom:

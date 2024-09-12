@@ -10,4 +10,5 @@ export interface OperatorInvoice extends Document {
   readonly transactionHash: string;
   readonly subscriptionStartedAt: Date;
   readonly subscriptionEndedAt: Date;
+  readonly monthAmount: number;
 }

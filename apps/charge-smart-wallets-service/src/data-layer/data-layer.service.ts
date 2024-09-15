@@ -124,6 +124,10 @@ export class DataLayerService {
     }
   }
 
+  async findWalletActionByUserOpHash (userOpHash: string) {
+    return this.paginatedWalletActionModel.findOne({ userOpHash })
+  }
+
   async handleTokenTransferWebhook (
     tokenTransferWebhookDto: TokenTransferWebhookDto
   ) {

@@ -10,6 +10,8 @@ import { MessagePattern } from '@nestjs/microservices'
 import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { AuthOperator } from '@app/accounts-service/operators/entities/auth-operator.entity'
 import { CreateOperatorUser } from '@app/accounts-service/operators/entities/create-operator-user.entity'
+import { CreateOperatorInvoice } from '@app/accounts-service/operators/entities/create-operator-invoice.entity'
+import { CreateOperatorInvoiceDto } from '@app/accounts-service/operators/dto/create-operator-invoice.dto'
 
 @ApiTags('Operators')
 @Controller({ path: 'operators', version: '1' })
@@ -122,5 +124,34 @@ export class OperatorsController {
   @MessagePattern('find-operator-by-owner-id')
   async findOperatorByOwnerId (walletAddress: string) {
     return this.operatorsService.findWalletOwner(walletAddress)
+  }
+
+  /**
+   * Create invoice for an operator
+   * @param createOperatorInvoiceDto
+   * @returns invoice id
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/invoice')
+  @ApiOperation({ summary: 'Create invoice for an operator' })
+  @ApiBody({ type: CreateOperatorInvoice, required: true })
+  async createOperatorInvoice (@Body() createOperatorInvoiceDto: CreateOperatorInvoiceDto, @User('sub') auth0Id: string) {
+    return this.operatorsService.createOperatorInvoice(createOperatorInvoiceDto, auth0Id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/invoice')
+  async getOperatorInvoices (@User('sub') auth0Id: string) {
+    return this.operatorsService.getOperatorInvoices(auth0Id)
+  }
+
+  @Get('billing-plans')
+  async getBillingPlans () {
+    return this.operatorsService.getBillingPlans()
+  }
+
+  @Get('payment-methods')
+  async getPaymentMethods () {
+    return this.operatorsService.getPaymentMethods()
   }
 }

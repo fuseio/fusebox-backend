@@ -15,6 +15,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpModule } from '@nestjs/axios'
+import GraphQLService from '@app/common/services/graphql.service'
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { HttpModule } from '@nestjs/axios'
     OperatorJwtStrategy,
     AnalyticsService,
     OperatorsService,
+    GraphQLService,
     ...operatorsProviders
   ],
   exports: [OperatorsService]

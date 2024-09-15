@@ -18,6 +18,11 @@ export class DataLayerController {
     return this.dataLayerService.updateUserOp(userOp)
   }
 
+  @MessagePattern('get-wallet-action-by-user-op-hash')
+  findWalletActionByUserOpHash (@Body() userOpHash: any) {
+    return this.dataLayerService.findWalletActionByUserOpHash(userOpHash)
+  }
+
   @MessagePattern('get-all-wallet-actions')
   get (@Body() data: any) {
     return this.dataLayerService.getPaginatedWalletActions(data.page, data.walletAddress, data.limit, data.tokenAddress)

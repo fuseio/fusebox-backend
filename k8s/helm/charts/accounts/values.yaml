@@ -84,6 +84,8 @@ configMap:
   paymaster_funder_api_key: ""
   # -- Paymaster Funder Webhook ID
   paymaster_funder_webhook_id: ""
+  # -- Billing Wallet Address
+  billing_wallet_address: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:

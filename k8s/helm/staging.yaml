@@ -143,6 +143,7 @@ api:
     - paymaster_production_signer_private_key_v_0_1_0
     - paymaster_sandbox_signer_private_key_v_0_1_0
     - explorer_api_key
+    - bundler_api_prd_url
 
 apps:
   enabled: false # [DEPRECATED]

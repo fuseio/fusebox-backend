@@ -68,8 +68,6 @@ configMap:
   explorer_api_url: ""
   # -- QA mode ('true' or 'false')
   qa_mode: ""
-  # -- Bundler - API Production URL
-  bundler_api_prd_url: ""
   # -- Bundler - API Sandbox URL
   bundler_api_sandbox_url: ""
   # -- RPC URL - Spark
@@ -91,3 +89,4 @@ secret:
   - paymaster_production_signer_private_key_v_0_1_0
   - paymaster_sandbox_signer_private_key_v_0_1_0
   - explorer_api_key
+  - bundler_api_prd_url

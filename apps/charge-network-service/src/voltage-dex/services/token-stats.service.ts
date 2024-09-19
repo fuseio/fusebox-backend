@@ -1,6 +1,6 @@
 import { Stat, TokenStat } from '@app/network-service/voltage-dex/interfaces'
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { TokenAddressMapper } from '@app/network-service/voltage-dex/services/token-address-mapper.service'
 import { TokenHistoricalStatisticsDto } from '@app/network-service/voltage-dex/dto/token-stats.dto'
 import { TokenPriceChangeIntervalDto } from '@app/network-service/voltage-dex/dto/token-price-change-interval.dto'
@@ -11,6 +11,8 @@ import { head } from 'lodash'
 
 @Injectable()
 export class TokenStatsService {
+  private readonly logger = new Logger(TokenStatsService.name)
+
   constructor (
     private voltageV2Client: VoltageV2Client,
     private voltageV3Client: VoltageV3Client,
@@ -18,29 +20,45 @@ export class TokenStatsService {
   ) {}
 
   async getTokenStats (dto: TokenHistoricalStatisticsDto) {
-    const address = this.tokenAddressMapper.getTokenAddress(dto.tokenAddress)
-    const stats = await this.voltageV3Client.getTokenStats(address, dto.limit ?? 30)
-    return this.mapTokenStats(stats, dto.tokenAddress)
+    this.logger.log(`Getting token stats for ${dto.tokenAddress}`)
+    try {
+      const address = this.tokenAddressMapper.getTokenAddress(dto.tokenAddress)
+      const stats = await this.voltageV3Client.getTokenStats(address, dto.limit ?? 30)
+      const mappedStats = this.mapTokenStats(stats, dto.tokenAddress)
+      this.logger.log(`Got token stats for ${dto.tokenAddress}`)
+      return mappedStats
+    } catch (error) {
+      this.logger.error(`Error getting token stats for ${dto.tokenAddress}`, error)
+      return []
+    }
   }
 
   async getTokenPriceChangeInterval (dto: TokenPriceChangeIntervalDto) {
-    const currentTime = dayjs.utc()
-    const windowSize: any = dto.timeFrame.toLowerCase()
-    const time = currentTime.subtract(1, windowSize).startOf('hour').unix()
-    const secondsInTimeFrame = currentTime.unix() - time
-    const numberOfDays = Math.ceil(secondsInTimeFrame / (24 * 60 * 60))
+    this.logger.log(`Getting token price change interval for ${dto.tokenAddress}`)
+    try {
+      const currentTime = dayjs.utc()
+      const windowSize: any = dto.timeFrame.toLowerCase()
+      const time = currentTime.subtract(1, windowSize).startOf('hour').unix()
+      const secondsInTimeFrame = currentTime.unix() - time
+      const numberOfDays = Math.ceil(secondsInTimeFrame / (24 * 60 * 60))
 
-    const address = this.tokenAddressMapper.getTokenAddress(dto.tokenAddress)
-    const [v2Token, v3Token] = await this.fetchToken(numberOfDays, address)
+      const address = this.tokenAddressMapper.getTokenAddress(dto.tokenAddress)
+      const [v2Token, v3Token] = await this.fetchToken(numberOfDays, address)
 
-    if (!v2Token && !v3Token) {
+      if (!v2Token && !v3Token) {
+        return []
+      }
+
+      const tokenDayData = this.selectBestTokenData(v2Token, v3Token)
+      const parsedTokenDayData = this.parseTokenDayData(tokenDayData)
+      const priceChangeHistory = this.formatPriceChangeHistory(parsedTokenDayData)
+      this.logger.log(`Got token price change interval for ${dto.tokenAddress}`)
+
+      return priceChangeHistory
+    } catch (error) {
+      this.logger.error(`Error getting token price change interval for ${dto.tokenAddress}`, error)
       return []
     }
-
-    const tokenDayData = this.selectBestTokenData(v2Token, v3Token)
-    const parsedTokenDayData = this.parseTokenDayData(tokenDayData)
-
-    return this.formatPriceChangeHistory(parsedTokenDayData)
   }
 
   private mapTokenStats (stats: any, tokenAddress: string) {

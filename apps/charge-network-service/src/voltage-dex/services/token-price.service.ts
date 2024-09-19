@@ -1,5 +1,5 @@
 import { BlocksClient } from '@app/network-service/voltage-dex/services/blocks-client.service'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { TokenAddressMapper } from '@app/network-service/voltage-dex/services/token-address-mapper.service'
 import { TokenPriceDto } from '@app/network-service/voltage-dex/dto/token-price.dto'
 import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
@@ -8,6 +8,8 @@ import dayjs from '@app/common/utils/dayjs'
 
 @Injectable()
 export class TokenPriceService {
+  private readonly logger = new Logger(TokenPriceService.name)
+
   constructor (
     private voltageV2Client: VoltageV2Client,
     private voltageV3Client: VoltageV3Client,
@@ -16,23 +18,40 @@ export class TokenPriceService {
   ) {}
 
   async getTokenPrice (tokenPriceDto: TokenPriceDto): Promise<string> {
-    const address = this.tokenAddressMapper.getTokenAddress(tokenPriceDto.tokenAddress)
+    this.logger.log(`Getting token price for ${tokenPriceDto.tokenAddress}`)
+    try {
+      const address = this.tokenAddressMapper.getTokenAddress(tokenPriceDto.tokenAddress)
 
-    const v3Price = await this.voltageV3Client.getTokenPrice(address)
-    if (v3Price) {
-      return v3Price
+      const v3Price = await this.voltageV3Client.getTokenPrice(address)
+      if (v3Price) {
+        this.logger.log(`Got token price for ${tokenPriceDto.tokenAddress} from V3`)
+        return v3Price
+      }
+
+      const v2Price = await this.voltageV2Client.getTokenPrice(address)
+      this.logger.log(`Got token price for ${tokenPriceDto.tokenAddress} from V2`)
+
+      return v2Price
+    } catch (error) {
+      this.logger.error(`Error getting token price for ${tokenPriceDto.tokenAddress}`, error)
+      return '0'
     }
-
-    return this.voltageV2Client.getTokenPrice(address)
   }
 
   async getTokenPriceChange (tokenPriceDto: TokenPriceDto) {
-    const [currentPrice, previousPrice] = await Promise.all([
-      this.getTokenPrice(tokenPriceDto),
-      this.getPreviousTokenPrice(tokenPriceDto)
-    ])
-    const priceChange = this.calculatePercentChange(currentPrice, previousPrice)
-    return { priceChange: priceChange.toString(), currentPrice, previousPrice }
+    this.logger.log(`Getting token price change for ${tokenPriceDto.tokenAddress}`)
+    try {
+      const [currentPrice, previousPrice] = await Promise.all([
+        this.getTokenPrice(tokenPriceDto),
+        this.getPreviousTokenPrice(tokenPriceDto)
+      ])
+      const priceChange = this.calculatePercentChange(currentPrice, previousPrice)
+      this.logger.log(`Got token price change for ${tokenPriceDto.tokenAddress}`)
+      return { priceChange: priceChange.toString(), currentPrice, previousPrice }
+    } catch (error) {
+      this.logger.error(`Error getting token price change for ${tokenPriceDto.tokenAddress}`, error)
+      return { priceChange: '0', currentPrice: '0', previousPrice: '0' }
+    }
   }
 
   private async getPreviousTokenPrice (tokenPriceDto: TokenPriceDto): Promise<string> {

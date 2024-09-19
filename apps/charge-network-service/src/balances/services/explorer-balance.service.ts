@@ -17,7 +17,7 @@ export class ExplorerService implements BalanceService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly graphQLService: GraphQLService
-  ) { }
+  ) {}
 
   get explorerBaseUrl () {
     return this.configService.get('explorer.baseUrl')
@@ -96,12 +96,5 @@ export class ExplorerService implements BalanceService {
       nextCursor,
       ...data
     }
-  }
-
-  async getTransactionInfo (transactionHash: string) {
-    const observable = this.httpService
-      .get(`${this.explorerBaseUrl}/v2/transactions/${transactionHash}`)
-      .pipe(map(res => res.data))
-    return lastValueFrom(observable)
   }
 }

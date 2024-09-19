@@ -62,7 +62,6 @@ accounts:
     etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
     paymaster_funder_api_key: "pk_u_RbFw7NQBB7ZQIFJtziLE_S"
     paymaster_funder_webhook_id: "65bbbc63fc2f925de8e1a561"
-    billing_wallet_address: ""
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

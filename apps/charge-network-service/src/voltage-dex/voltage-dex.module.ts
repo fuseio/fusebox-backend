@@ -10,6 +10,7 @@ import { VoltageDexController } from '@app/network-service/voltage-dex/voltage-d
 import { VoltageDexService } from '@app/network-service/voltage-dex/voltage-dex.service'
 import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
 import { VoltageV3Client } from '@app/network-service/voltage-dex/services/voltage-v3-client.service'
+import { VoltBarClient } from '@app/network-service/voltage-dex/services/volt-bar-client.service'
 import configuration from 'apps/charge-network-service/src/common/config/configuration'
 
 @Module({
@@ -34,6 +35,11 @@ import configuration from 'apps/charge-network-service/src/common/config/configu
       inject: [ConfigService]
     },
     {
+      provide: 'VOLT_BAR_GRAPH_CLIENT',
+      useFactory: (configService: ConfigService) => new GraphQLClient(configService.get<string>('voltBarGraphUrl')),
+      inject: [ConfigService]
+    },
+    {
       provide: VoltageV2Client,
       useFactory: (client: GraphQLClient) => new VoltageV2Client(client),
       inject: ['VOLTAGE_V2_GRAPH_CLIENT']
@@ -47,6 +53,11 @@ import configuration from 'apps/charge-network-service/src/common/config/configu
       provide: BlocksClient,
       useFactory: (client: GraphQLClient) => new BlocksClient(client),
       inject: ['BLOCKS_GRAPH_CLIENT']
+    },
+    {
+      provide: VoltBarClient,
+      useFactory: (client: GraphQLClient) => new VoltBarClient(client),
+      inject: ['VOLT_BAR_GRAPH_CLIENT']
     },
     TokenPriceService,
     TokenStatsService,

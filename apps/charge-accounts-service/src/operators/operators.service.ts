@@ -62,6 +62,11 @@ export class OperatorsService {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND)
       }
 
+      const wallet = await this.findWalletOwner(user._id)
+      if (!wallet) {
+        throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND)
+      }
+
       const projectObject = await this.projectsService.findOneByOwnerId(user._id)
       if (!projectObject) {
         throw new HttpException('Project not found', HttpStatus.NOT_FOUND)
@@ -89,7 +94,7 @@ export class OperatorsService {
         sponsorId: paymasters[0].sponsorId
       }
 
-      return { user, project }
+      return this.constructUserProjectResponse(user, project, wallet)
     } catch (error) {
       this.errorHandler(error)
     }
@@ -101,20 +106,31 @@ export class OperatorsService {
     try {
       const user = await this.createUser(createOperatorUserDto, auth0Id)
       const projectObject = await this.createProject(user, createOperatorUserDto)
-      const publicKey = await this.projectsService.getPublic(projectObject._id)
       const secretKey = await this.createProjectSecret(projectObject)
+      const apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
       const sponsorId = await this.createPaymasters(projectObject)
       const predictedWallet = await this.predictWallet(auth0Id, 0, '0_1_0', 'production')
       const eventData = {
         email: user.email,
-        apiKey: publicKey
+        apiKey: apiKeyInfo.publicKey
       }
-      await this.createOperatorWallet(user, predictedWallet)
+      const wallet = await this.createOperatorWallet(user, predictedWallet)
       await this.addAddressToOperatorsWebhook(predictedWallet)
       await this.addAddressToTokenReceiveWebhook(predictedWallet)
       this.googleFormSubmit(createOperatorUserDto)
       this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
-      return this.constructUserProjectResponse(user, projectObject, publicKey.publicKey, secretKey, sponsorId)
+      const project = {
+        id: projectObject._id,
+        ownerId: projectObject.ownerId,
+        name: projectObject.name,
+        description: projectObject.description,
+        publicKey: apiKeyInfo.publicKey,
+        sandboxKey: apiKeyInfo.sandboxKey,
+        secretPrefix: apiKeyInfo.secretPrefix,
+        secretLastFourChars: apiKeyInfo.secretLastFourChars,
+        sponsorId
+      }
+      return this.constructUserProjectResponse(user, project, wallet, secretKey)
     } catch (error) {
       this.errorHandler(error)
     }
@@ -160,25 +176,30 @@ export class OperatorsService {
     if (!operatorWalletCreationResult) {
       throw new HttpException('Failed to create operator wallet', HttpStatus.INTERNAL_SERVER_ERROR)
     }
+    return operatorWalletCreationResult
   }
 
-  private constructUserProjectResponse (user: any, projectObject: any, publicKey: string, secretKey: string, sponsorId: string) {
-    // Constructs the response object from the created entities
+  private constructUserProjectResponse (user: any, project: any, wallet: any, secretKey?: string) {
+    // Constructs the response object from the entities
     return {
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        auth0Id: user.auth0Id
+        auth0Id: user.auth0Id,
+        smartWalletAddress: wallet.smartWalletAddress
       },
       project: {
-        id: projectObject._id,
-        ownerId: projectObject.ownerId,
-        name: projectObject.name,
-        description: projectObject.description,
-        publicKey,
-        secretKey,
-        sponsorId
+        id: project._id,
+        ownerId: project.ownerId,
+        name: project.name,
+        description: project.description,
+        publicKey: project.publicKey,
+        sandboxKey: project.sandboxKey,
+        secretPrefix: project.secretPrefix,
+        secretLastFourChars: project.secretLastFourChars,
+        sponsorId: project.sponsorId,
+        secretKey
       }
     }
   }

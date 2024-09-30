@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="./styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="./" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -96,10 +47,8 @@
 
 
 
-
-
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">Documentation coverage</li>
+    <li>Documentation coverage</li>
 </ol>
 
 <div>
@@ -263,6 +212,30 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/functions.html#setupSwagger">apps/charge-accounts-service/src/common/utils/swagger/setup-swagger.ts</a>
+            </td>
+            <td>function</td>
+            <td>setupSwagger</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#generator">apps/charge-accounts-service/src/generate-metadata.ts</a>
+            </td>
+            <td>variable</td>
+            <td>generator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/functions.html#bootstrap">apps/charge-accounts-service/src/main.ts</a>
             </td>
             <td>function</td>
@@ -303,6 +276,42 @@
             </td>
             <td>class</td>
             <td>CreateOperatorWalletDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/AuthOperator.html">apps/charge-accounts-service/src/operators/entities/auth-operator.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>AuthOperator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/CreateOperatorUser.html">apps/charge-accounts-service/src/operators/entities/create-operator-user.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>CreateOperatorUser</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/CreateOperatorWallet.html">apps/charge-accounts-service/src/operators/entities/create-operator-wallet.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>CreateOperatorWallet</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/4)</span>
@@ -863,6 +872,30 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./controllers/BalancesAPIController.html">apps/charge-api-service/src/balances-api/balances-api.controller.ts</a>
+            </td>
+            <td>controller</td>
+            <td>BalancesAPIController</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/BalancesAPIService.html">apps/charge-api-service/src/balances-api/balances-api.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>BalancesAPIService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./controllers/BundlerApiController.html">apps/charge-api-service/src/bundler-api/bundler-api.controller.ts</a>
             </td>
             <td>controller</td>
@@ -911,6 +944,30 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#SWAGGER_SCHEMA_DEFINITIONS">apps/charge-api-service/src/common/constants/swagger-schemas/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>SWAGGER_SCHEMA_DEFINITIONS</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/functions.html#setupSwagger">apps/charge-api-service/src/common/utils/swagger/setup-swagger.ts</a>
+            </td>
+            <td>function</td>
+            <td>setupSwagger</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./controllers/ConsensusApiController.html">apps/charge-api-service/src/consensus-api/consensus-api.controller.ts</a>
             </td>
             <td>controller</td>
@@ -954,6 +1011,18 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#generator">apps/charge-api-service/src/generate-metadata.ts</a>
+            </td>
+            <td>variable</td>
+            <td>generator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
             </td>
         </tr>
         <tr class="low">
@@ -1011,30 +1080,6 @@
             </td>
             <td>controller</td>
             <td>LegacyJobsApiController</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/3)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./controllers/TradeApiController.html">apps/charge-api-service/src/legacy-api/legacy-trade-api/legacy-trade-api-v2.controller.ts</a>
-            </td>
-            <td>controller</td>
-            <td>TradeApiController</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/3)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./controllers/LegacyTradeApiController.html">apps/charge-api-service/src/legacy-api/legacy-trade-api/legacy-trade-api.controller.ts</a>
-            </td>
-            <td>controller</td>
-            <td>LegacyTradeApiController</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/3)</span>
@@ -1110,6 +1155,18 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/11)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./interfaces/GasDetails.html">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts</a>
+            </td>
+            <td>interface</td>
+            <td>GasDetails</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/8)</span>
             </td>
         </tr>
         <tr class="low">
@@ -1194,6 +1251,54 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./controllers/TradeApiV2Controller.html">apps/charge-api-service/src/trade-api/trade-api-v2.controller.ts</a>
+            </td>
+            <td>controller</td>
+            <td>TradeApiV2Controller</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./controllers/TradeApiController.html">apps/charge-api-service/src/trade-api/trade-api.controller.ts</a>
+            </td>
+            <td>controller</td>
+            <td>TradeApiController</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/TradeApiInterceptor.html">apps/charge-api-service/src/trade-api/trade-api.interceptor.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>TradeApiInterceptor</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/5)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/TradeApiService.html">apps/charge-api-service/src/trade-api/trade-api.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>TradeApiService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/7)</span>
             </td>
         </tr>
         <tr class="low">
@@ -1571,6 +1676,18 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#generator">apps/charge-apps-service/src/generate-metadata.ts</a>
+            </td>
+            <td>variable</td>
+            <td>generator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/functions.html#bootstrap">apps/charge-apps-service/src/main.ts</a>
             </td>
             <td>function</td>
@@ -1727,6 +1844,66 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./controllers/BalancesController.html">apps/charge-network-service/src/balances/balances.controller.ts</a>
+            </td>
+            <td>controller</td>
+            <td>BalancesController</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/BalancesService.html">apps/charge-network-service/src/balances/balances.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>BalancesService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/10)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./interfaces/BalanceService.html">apps/charge-network-service/src/balances/interfaces/balances.interface.ts</a>
+            </td>
+            <td>interface</td>
+            <td>BalanceService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/ExplorerService.html">apps/charge-network-service/src/balances/services/explorer-balance.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>ExplorerService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/UnmarshalService.html">apps/charge-network-service/src/balances/services/unmarshal-balance.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>UnmarshalService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/12)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./controllers/ChargeNetworkServiceController.html">apps/charge-network-service/src/charge-network-service.controller.ts</a>
             </td>
             <td>controller</td>
@@ -1787,10 +1964,142 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getBlocksQuery">apps/charge-network-service/src/common/constants/graph-queries/fuse-blocks.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getBlocksQuery</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getSubgraphHealth">apps/charge-network-service/src/common/constants/graph-queries/health.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getSubgraphHealth</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/variables.html#getCollectiblesByOwner">apps/charge-network-service/src/common/constants/graph-queries/nfts.ts</a>
             </td>
             <td>variable</td>
             <td>getCollectiblesByOwner</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#bundleFields">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts</a>
+            </td>
+            <td>variable</td>
+            <td>bundleFields</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#fusePriceQuery">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts</a>
+            </td>
+            <td>variable</td>
+            <td>fusePriceQuery</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getFactories">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getFactories</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getTokenDayDataV2">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getTokenDayDataV2</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getTokenPriceByBlock">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v2.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getTokenPriceByBlock</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getBlockQuery">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getBlockQuery</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getTokenDataQuery">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getTokenDataQuery</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getTokenDayDataV3">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getTokenDayDataV3</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#getTokenUsdPrice">apps/charge-network-service/src/common/constants/graph-queries/voltage-exchange-v3.ts</a>
+            </td>
+            <td>variable</td>
+            <td>getTokenUsdPrice</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -1925,16 +2234,64 @@
             <td>ConsensusService</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/23)</span>
+                <span class="coverage-count">(0/39)</span>
             </td>
         </tr>
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./classes/DelegatedAmountsDto.html">apps/charge-network-service/src/consensus/dto/consensus.dto.ts</a>
+                <a href="./interfaces/CacheOptions.html">apps/charge-network-service/src/consensus/consensus.service.ts</a>
+            </td>
+            <td>interface</td>
+            <td>CacheOptions</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/DelegatedAmountsDto.html">apps/charge-network-service/src/consensus/dto/delegate.dto.ts</a>
             </td>
             <td>class</td>
             <td>DelegatedAmountsDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/WithdrawAmountsDto.html">apps/charge-network-service/src/consensus/dto/withdraw.dto.ts</a>
+            </td>
+            <td>class</td>
+            <td>WithdrawAmountsDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/DelegatedAmounts.html">apps/charge-network-service/src/consensus/entities/delegate.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>DelegatedAmounts</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/WithdrawAmounts.html">apps/charge-network-service/src/consensus/entities/withdraw.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>WithdrawAmounts</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/3)</span>
@@ -1950,6 +2307,18 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/18)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#generator">apps/charge-network-service/src/generate-metadata.ts</a>
+            </td>
+            <td>variable</td>
+            <td>generator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
             </td>
         </tr>
         <tr class="low">
@@ -1995,6 +2364,30 @@
             </td>
             <td>class</td>
             <td>UnstakeDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/Stake.html">apps/charge-network-service/src/staking/entities/stake.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>Stake</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/Unstake.html">apps/charge-network-service/src/staking/entities/unstake.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>Unstake</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/4)</span>
@@ -2118,6 +2511,234 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/9)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/DurationDto.html">apps/charge-network-service/src/voltage-dex/dto/duration.dto.ts</a>
+            </td>
+            <td>class</td>
+            <td>DurationDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/2)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/functions.html#ValidateDuration">apps/charge-network-service/src/voltage-dex/dto/duration.dto.ts</a>
+            </td>
+            <td>function</td>
+            <td>ValidateDuration</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenPriceChangeIntervalDto.html">apps/charge-network-service/src/voltage-dex/dto/token-price-change-interval.dto.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenPriceChangeIntervalDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenPriceDto.html">apps/charge-network-service/src/voltage-dex/dto/token-price.dto.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenPriceDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenHistoricalStatisticsDto.html">apps/charge-network-service/src/voltage-dex/dto/token-stats.dto.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenHistoricalStatisticsDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/DurationEntity.html">apps/charge-network-service/src/voltage-dex/entities/duration.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>DurationEntity</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/2)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenPriceChangeInterval.html">apps/charge-network-service/src/voltage-dex/entities/token-price-change-interval.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenPriceChangeInterval</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenPrice.html">apps/charge-network-service/src/voltage-dex/entities/token-price.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenPrice</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenHistoricalStatistics.html">apps/charge-network-service/src/voltage-dex/entities/token-stats.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenHistoricalStatistics</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenStat.html">apps/charge-network-service/src/voltage-dex/interfaces/index.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenStat</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/7)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./interfaces/Stat.html">apps/charge-network-service/src/voltage-dex/interfaces/index.ts</a>
+            </td>
+            <td>interface</td>
+            <td>Stat</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/BlocksClient.html">apps/charge-network-service/src/voltage-dex/services/blocks-client.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>BlocksClient</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/TokenAddressMapper.html">apps/charge-network-service/src/voltage-dex/services/token-address-mapper.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>TokenAddressMapper</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/2)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/TokenPriceService.html">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>TokenPriceService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/7)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/TokenStatsService.html">apps/charge-network-service/src/voltage-dex/services/token-stats.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>TokenStatsService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/10)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/VoltageV2Client.html">apps/charge-network-service/src/voltage-dex/services/voltage-v2-client.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>VoltageV2Client</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/7)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/VoltageV3Client.html">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>VoltageV3Client</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./controllers/VoltageDexController.html">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts</a>
+            </td>
+            <td>controller</td>
+            <td>VoltageDexController</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./injectables/VoltageDexService.html">apps/charge-network-service/src/voltage-dex/voltage-dex.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>VoltageDexService</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/7)</span>
             </td>
         </tr>
         <tr class="low">
@@ -2417,7 +3038,7 @@
             <td>ERC20EventsScannerService</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/8)</span>
+                <span class="coverage-count">(0/9)</span>
             </td>
         </tr>
         <tr class="low">
@@ -2555,6 +3176,18 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#generator">apps/charge-notifications-service/src/generate-metadata.ts</a>
+            </td>
+            <td>variable</td>
+            <td>generator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/functions.html#bootstrap">apps/charge-notifications-service/src/main.ts</a>
             </td>
             <td>function</td>
@@ -2562,6 +3195,18 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./interfaces/BlockTrace.html">apps/charge-notifications-service/src/transactions-scanner/interfaces/block-trace.interface.ts</a>
+            </td>
+            <td>interface</td>
+            <td>BlockTrace</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/9)</span>
             </td>
         </tr>
         <tr class="low">
@@ -2609,7 +3254,7 @@
             <td>TransactionsScannerService</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/8)</span>
+                <span class="coverage-count">(0/9)</span>
             </td>
         </tr>
         <tr class="low">
@@ -2643,6 +3288,42 @@
             </td>
             <td>class</td>
             <td>UpdateWebhookDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/2)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/CreateWebhookAddresses.html">apps/charge-notifications-service/src/webhooks/entities/create-webhook-addresses.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>CreateWebhookAddresses</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/CreateWebhook.html">apps/charge-notifications-service/src/webhooks/entities/create-webhook.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>CreateWebhook</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/UpdateWebhook.html">apps/charge-notifications-service/src/webhooks/entities/update-webhook.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>UpdateWebhook</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/2)</span>
@@ -2915,6 +3596,18 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#SKIP_ADDRESSES">apps/charge-smart-wallets-service/src/common/constants/receiveSkipAddresses.ts</a>
+            </td>
+            <td>variable</td>
+            <td>SKIP_ADDRESSES</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/variables.html#ERC_20_TYPE">apps/charge-smart-wallets-service/src/common/constants/tokenTypes.ts</a>
             </td>
             <td>variable</td>
@@ -2943,6 +3636,18 @@
             </td>
             <td>variable</td>
             <td>NATIVE_TOKEN_TYPE</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#RECEIVE_SKIP">apps/charge-smart-wallets-service/src/common/constants/tokenTypes.ts</a>
+            </td>
+            <td>variable</td>
+            <td>RECEIVE_SKIP</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -2982,18 +3687,6 @@
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/3)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./injectables/UserOpParser.html">apps/charge-smart-wallets-service/src/common/services/user-op-parser.service.ts</a>
-            </td>
-            <td>injectable</td>
-            <td>UserOpParser</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/5)</span>
             </td>
         </tr>
         <tr class="low">
@@ -3299,6 +3992,18 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./classes/BatchTransaction.html">apps/charge-smart-wallets-service/src/data-layer/models/wallet-action/batch-transaction.ts</a>
+            </td>
+            <td>class</td>
+            <td>BatchTransaction</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/7)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./classes/ERC20Transfer.html">apps/charge-smart-wallets-service/src/data-layer/models/wallet-action/erc20-transfer.ts</a>
             </td>
             <td>class</td>
@@ -3347,13 +4052,13 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./classes/SwapTokens.html">apps/charge-smart-wallets-service/src/data-layer/models/wallet-action/swap.ts</a>
+                <a href="./classes/TokenSwapExecutor.html">apps/charge-smart-wallets-service/src/data-layer/models/wallet-action/swap.ts</a>
             </td>
             <td>class</td>
-            <td>SwapTokens</td>
+            <td>TokenSwapExecutor</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/6)</span>
+                <span class="coverage-count">(0/12)</span>
             </td>
         </tr>
         <tr class="low">
@@ -3443,6 +4148,30 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./classes/SmartWalletsAuth.html">apps/charge-smart-wallets-service/src/entities/smart-wallets-auth.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>SmartWalletsAuth</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/5)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#generator">apps/charge-smart-wallets-service/src/generate-metadata.ts</a>
+            </td>
+            <td>variable</td>
+            <td>generator</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/functions.html#bootstrap">apps/charge-smart-wallets-service/src/main.ts</a>
             </td>
             <td>function</td>
@@ -3471,6 +4200,18 @@
             </td>
             <td>class</td>
             <td>TokenTransferWebhookDto</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/13)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./classes/TokenTransferWebhook.html">apps/charge-smart-wallets-service/src/smart-wallets/entities/token-transfer-webhook.entity.ts</a>
+            </td>
+            <td>class</td>
+            <td>TokenTransferWebhook</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/13)</span>
@@ -4007,18 +4748,6 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./injectables/TradeService.html">libs/common/src/services/trade.service.ts</a>
-            </td>
-            <td>injectable</td>
-            <td>TradeService</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/3)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
                 <a href="./injectables/UserOpParser.html">libs/common/src/services/user-op-parser.service.ts</a>
             </td>
             <td>injectable</td>
@@ -4043,250 +4772,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#callMSFunction">libs/common/src/utils/client-proxy.ts</a>
+                <a href="./injectables/TradeService.html">libs/common/src/token/trade.service.ts</a>
             </td>
-            <td>function</td>
-            <td>callMSFunction</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#combinations">libs/common/src/utils/dtools/combinations.ts</a>
-            </td>
-            <td>function</td>
-            <td>combinations</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/FourBytesReponseEntry.html">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>interface</td>
-            <td>FourBytesReponseEntry</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/6)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/FourBytesResponse.html">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>interface</td>
-            <td>FourBytesResponse</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/5)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#decode4BytesData">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>decode4BytesData</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#decodeByCalldata">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>decodeByCalldata</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#decodeWithCalldata">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>decodeWithCalldata</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#decodeWithEventProps">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>decodeWithEventProps</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#fetch4Bytes">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>fetch4Bytes</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#parse4BytesResToIfaces">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>parse4BytesResToIfaces</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#safeFetch">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>safeFetch</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#sigHashFromCalldata">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>sigHashFromCalldata</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#urlTo">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>function</td>
-            <td>urlTo</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#bytes4Cache">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>variable</td>
-            <td>bytes4Cache</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#fetch4BytesBy">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>variable</td>
-            <td>fetch4BytesBy</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#MAX_RETRY">libs/common/src/utils/dtools/decodeBySigHash.ts</a>
-            </td>
-            <td>variable</td>
-            <td>MAX_RETRY</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/Decoded.html">libs/common/src/utils/dtools/decodeCalldata.ts</a>
-            </td>
-            <td>interface</td>
-            <td>Decoded</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/DecodeResult.html">libs/common/src/utils/dtools/decodeCalldata.ts</a>
-            </td>
-            <td>interface</td>
-            <td>DecodeResult</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/4)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#decodeCalldata">libs/common/src/utils/dtools/decodeCalldata.ts</a>
-            </td>
-            <td>function</td>
-            <td>decodeCalldata</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/AbstractDecodedEventResult.html">libs/common/src/utils/dtools/decodeEvent.ts</a>
-            </td>
-            <td>interface</td>
-            <td>AbstractDecodedEventResult</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/5)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/DecodedEventResultWithArgNames.html">libs/common/src/utils/dtools/decodeEvent.ts</a>
-            </td>
-            <td>interface</td>
-            <td>DecodedEventResultWithArgNames</td>
+            <td>injectable</td>
+            <td>TradeService</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/3)</span>
@@ -4295,34 +4784,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./interfaces/DecodedEventResultWithoutArgNames.html">libs/common/src/utils/dtools/decodeEvent.ts</a>
-            </td>
-            <td>interface</td>
-            <td>DecodedEventResultWithoutArgNames</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/3)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./interfaces/EventProps.html">libs/common/src/utils/dtools/decodeEvent.ts</a>
-            </td>
-            <td>interface</td>
-            <td>EventProps</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/3)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#combinationsMap">libs/common/src/utils/dtools/decodeEvent.ts</a>
+                <a href="./miscellaneous/functions.html#fetchContractAbi">libs/common/src/utils/calldata-decoder/api.ts</a>
             </td>
             <td>function</td>
-            <td>combinationsMap</td>
+            <td>fetchContractAbi</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4331,10 +4796,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#decodeEvent">libs/common/src/utils/dtools/decodeEvent.ts</a>
+                <a href="./miscellaneous/functions.html#fetchFunctionFrom4Bytes">libs/common/src/utils/calldata-decoder/api.ts</a>
             </td>
             <td>function</td>
-            <td>decodeEvent</td>
+            <td>fetchFunctionFrom4Bytes</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4343,10 +4808,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#doesContainNamedKeys">libs/common/src/utils/dtools/decodeEvent.ts</a>
+                <a href="./miscellaneous/functions.html#fetchFunctionFromOpenchain">libs/common/src/utils/calldata-decoder/api.ts</a>
             </td>
             <td>function</td>
-            <td>doesContainNamedKeys</td>
+            <td>fetchFunctionFromOpenchain</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4355,31 +4820,19 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#omitNonNamedKeys">libs/common/src/utils/dtools/decodeEvent.ts</a>
+                <a href="./miscellaneous/functions.html#fetchFunctionInterface">libs/common/src/utils/calldata-decoder/api.ts</a>
             </td>
             <td>function</td>
-            <td>omitNonNamedKeys</td>
+            <td>fetchFunctionInterface</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
             </td>
         </tr>
-        <tr class="very-good">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#tryToDecodeEvent">libs/common/src/utils/dtools/decodeEvent.ts</a>
-            </td>
-            <td>function</td>
-            <td>tryToDecodeEvent</td>
-            <td align="right" data-sort="100">
-                <span class="coverage-percent">100 %</span>
-                <span class="coverage-count">(1/1)</span>
-            </td>
-        </tr>
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#logger">libs/common/src/utils/dtools/decodeEvent.ts</a>
+                <a href="./miscellaneous/variables.html#logger">libs/common/src/utils/calldata-decoder/api.ts</a>
             </td>
             <td>variable</td>
             <td>logger</td>
@@ -4391,10 +4844,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#findKeyword">libs/common/src/utils/dtools/parseAbi.ts</a>
+                <a href="./miscellaneous/functions.html#decodeRecursive">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>function</td>
-            <td>findKeyword</td>
+            <td>decodeRecursive</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4403,10 +4856,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#lastOne">libs/common/src/utils/dtools/parseAbi.ts</a>
+                <a href="./miscellaneous/functions.html#decodeWithAddress">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>function</td>
-            <td>lastOne</td>
+            <td>decodeWithAddress</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4415,10 +4868,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#parseAbi">libs/common/src/utils/dtools/parseAbi.ts</a>
+                <a href="./miscellaneous/functions.html#decodeWithSelector">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>function</td>
-            <td>parseAbi</td>
+            <td>decodeWithSelector</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4427,10 +4880,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#keywords">libs/common/src/utils/dtools/parseAbi.ts</a>
+                <a href="./miscellaneous/variables.html#_decodeWithSelector">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>variable</td>
-            <td>keywords</td>
+            <td>_decodeWithSelector</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4439,10 +4892,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#binarySchema">libs/common/src/utils/dtools/validation/schemas/binarySchema.ts</a>
+                <a href="./miscellaneous/variables.html#decodeArrayParam">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>variable</td>
-            <td>binarySchema</td>
+            <td>decodeArrayParam</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4451,10 +4904,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#decimalSchema">libs/common/src/utils/dtools/validation/schemas/decimalSchema.ts</a>
+                <a href="./miscellaneous/variables.html#decodeBytesParam">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>variable</td>
-            <td>decimalSchema</td>
+            <td>decodeBytesParam</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4463,10 +4916,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#hexSchema">libs/common/src/utils/dtools/validation/schemas/hexSchema.ts</a>
+                <a href="./miscellaneous/variables.html#decodeParamTypes">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>variable</td>
-            <td>hexSchema</td>
+            <td>decodeParamTypes</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4475,10 +4928,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#hexSchemaWithoutPrefix">libs/common/src/utils/dtools/validation/schemas/hexSchema.ts</a>
+                <a href="./miscellaneous/variables.html#decodeTupleParam">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>variable</td>
-            <td>hexSchemaWithoutPrefix</td>
+            <td>decodeTupleParam</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4487,10 +4940,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#octalSchema">libs/common/src/utils/dtools/validation/schemas/octalSchema.ts</a>
+                <a href="./miscellaneous/variables.html#logger">libs/common/src/utils/calldata-decoder/decoder.ts</a>
             </td>
             <td>variable</td>
-            <td>octalSchema</td>
+            <td>logger</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4499,46 +4952,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#stringSchema">libs/common/src/utils/dtools/validation/schemas/stringSchema.ts</a>
-            </td>
-            <td>variable</td>
-            <td>stringSchema</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#unitSchema">libs/common/src/utils/dtools/validation/schemas/unitSchema.ts</a>
-            </td>
-            <td>variable</td>
-            <td>unitSchema</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#unixEpochSchema">libs/common/src/utils/dtools/validation/schemas/unixEpochSchema.ts</a>
-            </td>
-            <td>variable</td>
-            <td>unixEpochSchema</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#utcSchema">libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts</a>
+                <a href="./miscellaneous/functions.html#decodeAllPossibilities">libs/common/src/utils/calldata-decoder/decoders/abi.ts</a>
             </td>
             <td>function</td>
-            <td>utcSchema</td>
+            <td>decodeAllPossibilities</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4547,10 +4964,22 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#utcSchemas">libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts</a>
+                <a href="./miscellaneous/functions.html#decodeWithABI">libs/common/src/utils/calldata-decoder/decoders/abi.ts</a>
+            </td>
+            <td>function</td>
+            <td>decodeWithABI</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#logger">libs/common/src/utils/calldata-decoder/decoders/abi.ts</a>
             </td>
             <td>variable</td>
-            <td>utcSchemas</td>
+            <td>logger</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4559,10 +4988,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#utcUnitToZodSchema">libs/common/src/utils/dtools/validation/schemas/utcSchemas.ts</a>
+                <a href="./miscellaneous/variables.html#decodeABIEncodedData">libs/common/src/utils/calldata-decoder/decoders/specialized.ts</a>
             </td>
             <td>variable</td>
-            <td>utcUnitToZodSchema</td>
+            <td>decodeABIEncodedData</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4571,10 +5000,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#abiValidator">libs/common/src/utils/dtools/validation/validators/abiValidator.ts</a>
+                <a href="./miscellaneous/variables.html#decodeByGuessingFunctionFragment">libs/common/src/utils/calldata-decoder/decoders/specialized.ts</a>
             </td>
-            <td>function</td>
-            <td>abiValidator</td>
+            <td>variable</td>
+            <td>decodeByGuessingFunctionFragment</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4583,10 +5012,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#hexValidator">libs/common/src/utils/dtools/validation/validators/hexValidator.ts</a>
+                <a href="./miscellaneous/variables.html#decodeSafeMultiSendTransactionsParam">libs/common/src/utils/calldata-decoder/decoders/specialized.ts</a>
             </td>
-            <td>function</td>
-            <td>hexValidator</td>
+            <td>variable</td>
+            <td>decodeSafeMultiSendTransactionsParam</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4595,10 +5024,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#hexWithoutPrefixValidator">libs/common/src/utils/dtools/validation/validators/hexValidator.ts</a>
+                <a href="./miscellaneous/variables.html#decodeUniversalRouterCommands">libs/common/src/utils/calldata-decoder/decoders/specialized.ts</a>
             </td>
-            <td>function</td>
-            <td>hexWithoutPrefixValidator</td>
+            <td>variable</td>
+            <td>decodeUniversalRouterCommands</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4607,10 +5036,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#numberValidator">libs/common/src/utils/dtools/validation/validators/numberValidator.ts</a>
+                <a href="./miscellaneous/variables.html#decodeUniversalRouterPath">libs/common/src/utils/calldata-decoder/decoders/specialized.ts</a>
             </td>
-            <td>function</td>
-            <td>numberValidator</td>
+            <td>variable</td>
+            <td>decodeUniversalRouterPath</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4619,10 +5048,106 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/functions.html#stringValidator">libs/common/src/utils/dtools/validation/validators/stringValiator.ts</a>
+                <a href="./miscellaneous/variables.html#logger">libs/common/src/utils/calldata-decoder/decoders/specialized.ts</a>
+            </td>
+            <td>variable</td>
+            <td>logger</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#calldataDecoderRecursiveRequestSchema">libs/common/src/utils/calldata-decoder/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>calldataDecoderRecursiveRequestSchema</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#calldataDecoderRequestSchema">libs/common/src/utils/calldata-decoder/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>calldataDecoderRequestSchema</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#calldataDecoderResponseSchema">libs/common/src/utils/calldata-decoder/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>calldataDecoderResponseSchema</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#fetchContractAbiResponseSchema">libs/common/src/utils/calldata-decoder/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>fetchContractAbiResponseSchema</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#fetchFunctionInterface4ByteSchema">libs/common/src/utils/calldata-decoder/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>fetchFunctionInterface4ByteSchema</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#fetchFunctionInterfaceOpenApiSchema">libs/common/src/utils/calldata-decoder/schemas.ts</a>
+            </td>
+            <td>variable</td>
+            <td>fetchFunctionInterfaceOpenApiSchema</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#startHexWith0x">libs/common/src/utils/calldata-decoder/utils.ts</a>
+            </td>
+            <td>variable</td>
+            <td>startHexWith0x</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/functions.html#callMSFunction">libs/common/src/utils/client-proxy.ts</a>
             </td>
             <td>function</td>
-            <td>stringValidator</td>
+            <td>callMSFunction</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4871,10 +5396,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
+                <a href="./miscellaneous/variables.html#SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
             </td>
             <td>variable</td>
-            <td>SWAP_ETH_FOR_EXACT_TOKENS_CALLDATA</td>
+            <td>SWAP_ROUTER_ERC20_TO_ERC20_CALLDATA</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -4883,58 +5408,10 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
+                <a href="./miscellaneous/variables.html#SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
             </td>
             <td>variable</td>
-            <td>SWAP_EXACT_ETH_FOR_TOKENS_CALLDATA</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
-            </td>
-            <td>variable</td>
-            <td>SWAP_EXACT_TOKENS_FOR_ETH_CALLDATA</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
-            </td>
-            <td>variable</td>
-            <td>SWAP_EXACT_TOKENS_TO_TOKENS_CALLDATA</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
-            </td>
-            <td>variable</td>
-            <td>SWAP_TOKENS_FOR_EXACT_ETH_CALLDATA</td>
-            <td align="right" data-sort="0">
-                <span class="coverage-percent">0 %</span>
-                <span class="coverage-count">(0/1)</span>
-            </td>
-        </tr>
-        <tr class="low">
-            <td>
-                <!-- miscellaneous -->
-                <a href="./miscellaneous/variables.html#SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA">tests/libs/common/data-layer/constants/calldataExamples.ts</a>
-            </td>
-            <td>variable</td>
-            <td>SWAP_TOKENS_TO_EXACT_TOKENS_CALLDATA</td>
+            <td>SWAP_ROUTER_NATIVE_TO_ERC20_CALLDATA</td>
             <td align="right" data-sort="0">
                 <span class="coverage-percent">0 %</span>
                 <span class="coverage-count">(0/1)</span>
@@ -5099,6 +5576,30 @@
         <tr class="low">
             <td>
                 <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION">tests/libs/common/data-layer/constants/walletActionsExamples.ts</a>
+            </td>
+            <td>variable</td>
+            <td>SWAP_ROUTER_ERC20_TO_ERC20_WALLET_ACTION</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                <a href="./miscellaneous/variables.html#SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION">tests/libs/common/data-layer/constants/walletActionsExamples.ts</a>
+            </td>
+            <td>variable</td>
+            <td>SWAP_ROUTER_NATIVE_TO_ERC20_WALLET_ACTION</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
                 <a href="./miscellaneous/variables.html#SWAP_TOKENS_FOR_EXACT_ETH_WALLET_ACTION">tests/libs/common/data-layer/constants/walletActionsExamples.ts</a>
             </td>
             <td>variable</td>
@@ -5158,19 +5659,6 @@
             var COMPODOC_CURRENT_PAGE_URL = 'coverage.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>

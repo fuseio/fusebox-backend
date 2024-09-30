@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -85,27 +36,21 @@
 
 
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >EthereumPaymentsController</li>
+  <li>Controllers</li>
+  <li >EthereumPaymentsController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -125,7 +70,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -139,31 +84,21 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#createPaymentAccount" >createPaymentAccount</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#createPaymentLink" >createPaymentLink</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getAllowedTokens" >getAllowedTokens</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#getPaymentLink" >getPaymentLink</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getPaymentLinks" >getPaymentLinks</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#webhook" >webhook</a>
                             </li>
                         </ul>
@@ -178,7 +113,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -189,8 +124,6 @@
                 <td class="col-md-4">
                     <a name="createPaymentAccount"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>createPaymentAccount</b></span>
                         <a href="#createPaymentAccount"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -198,8 +131,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createPaymentAccount(ownerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>createPaymentAccount(ownerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -211,51 +143,53 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:19</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:19</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>ownerId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ownerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -266,8 +200,6 @@
                 <td class="col-md-4">
                     <a name="createPaymentLink"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>createPaymentLink</b></span>
                         <a href="#createPaymentLink"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -275,8 +207,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createPaymentLink(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, createPaymentLinkDto: <a href="../classes/CreatePaymentLinkDto.html" target="_self">CreatePaymentLinkDto</a>)</code>
+<code>createPaymentLink(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, createPaymentLinkDto: <a href="../interfaces/PaymentLink.html" target="_self">CreatePaymentLinkDto</a>)</code>
                 </td>
             </tr>
 
@@ -288,63 +219,65 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:25</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:25</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>userId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>createPaymentLinkDto</td>
-                                            <td>
-                                                            <code><a href="../classes/CreatePaymentLinkDto.html" target="_self" >CreatePaymentLinkDto</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>createPaymentLinkDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/PaymentLink.html" target="_self" >CreatePaymentLinkDto</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -355,8 +288,6 @@
                 <td class="col-md-4">
                     <a name="getAllowedTokens"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getAllowedTokens</b></span>
                         <a href="#getAllowedTokens"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -364,8 +295,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllowedTokens()</code>
+<code>getAllowedTokens()</code>
                 </td>
             </tr>
 
@@ -377,21 +307,21 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="13"
-                                    class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:13</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="13"
+                            class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:13</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -402,7 +332,6 @@
                 <td class="col-md-4">
                     <a name="getPaymentLink"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>getPaymentLink</b></span>
                         <a href="#getPaymentLink"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -410,8 +339,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPaymentLink(paymentLinkId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>getPaymentLink(paymentLinkId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -423,51 +351,53 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:30</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:30</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>paymentLinkId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>paymentLinkId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -478,8 +408,6 @@
                 <td class="col-md-4">
                     <a name="getPaymentLinks"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getPaymentLinks</b></span>
                         <a href="#getPaymentLinks"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -487,8 +415,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPaymentLinks(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ownerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>getPaymentLinks(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ownerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -500,63 +427,65 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="36"
-                                    class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:36</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:36</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>userId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>ownerId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>ownerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -567,7 +496,6 @@
                 <td class="col-md-4">
                     <a name="webhook"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>webhook</b></span>
                         <a href="#webhook"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -575,8 +503,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>webhook(webhookEvent: <a href="../interfaces/WebhookEvent.html" target="_self">WebhookEvent</a>)</code>
+<code>webhook(webhookEvent: <a href="../interfaces/WebhookEvent.html" target="_self">WebhookEvent</a>)</code>
                 </td>
             </tr>
 
@@ -588,51 +515,53 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:41</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">apps/charge-apps-service/src/ethereum-payments/ethereum-payments.controller.ts:41</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>webhookEvent</td>
-                                            <td>
-                                                            <code><a href="../interfaces/WebhookEvent.html" target="_self" >WebhookEvent</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>webhookEvent</td>
+                                    <td>
+                                                <code><a href="../interfaces/WebhookEvent.html" target="_self" >WebhookEvent</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -640,7 +569,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Param, Post, UseGuards } from &#x27;@nestjs/common&#x27;
 import { CreatePaymentLinkDto } from &#x27;@app/apps-service/payments/dto/create-payment-link.dto&#x27;
 import { EthereumPaymentsService } from &#x27;@app/apps-service/ethereum-payments/ethereum-payments.service&#x27;
@@ -702,8 +631,6 @@ export class EthereumPaymentsController {
 
 
 
-
-
                    </div><div class="search-results">
     <div class="has-results">
         <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
@@ -733,19 +660,6 @@ export class EthereumPaymentsController {
             var COMPODOC_CURRENT_PAGE_URL = 'EthereumPaymentsController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

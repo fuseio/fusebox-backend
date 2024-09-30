@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -85,27 +36,21 @@
 
 
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >SmartWalletsAPIController</li>
+  <li>Controllers</li>
+  <li >SmartWalletsAPIController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -119,7 +64,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -133,27 +78,18 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                 <a href="#auth" >auth</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#createWallet" >createWallet</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getHistoricalTxs" >getHistoricalTxs</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getWallet" >getWallet</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#relay" >relay</a>
                             </li>
                         </ul>
@@ -168,7 +104,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -179,7 +115,6 @@
                 <td class="col-md-4">
                     <a name="auth"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                         <span ><b>auth</b></span>
                         <a href="#auth"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -187,8 +122,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>auth(smartWalletsAuthDto: <a href="../classes/SmartWalletsAuthDto.html" target="_self">SmartWalletsAuthDto</a>)</code>
+<code>auth(smartWalletsAuthDto: <a href="../interfaces/SmartWallet.html" target="_self">SmartWalletsAuthDto</a>)</code>
                 </td>
             </tr>
 
@@ -196,55 +130,57 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;auth&#x27;)<br /></code>
+                    <code>@Post(&#x27;auth&#x27;)<br />@ApiOperation({summary: &#x27;Authenticate user&#x27;, description: &#x27;Authenticate user using signed data standard EIP-191.&#x27;, deprecated: true})<br />@ApiQuery({name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27;})<br />@ApiBody({type: SmartWalletsAuth, required: true})<br />@ApiCreatedResponse({description: &#x27;The response object.&#x27;, type: Object})<br />@ApiForbiddenResponse({description: &#x27;Access to the resource is forbidden.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="16"
-                                    class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:16</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:28</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>smartWalletsAuthDto</td>
-                                            <td>
-                                                            <code><a href="../classes/SmartWalletsAuthDto.html" target="_self" >SmartWalletsAuthDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>smartWalletsAuthDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/SmartWallet.html" target="_self" >SmartWalletsAuthDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -255,8 +191,6 @@
                 <td class="col-md-4">
                     <a name="createWallet"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>createWallet</b></span>
                         <a href="#createWallet"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -264,8 +198,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createWallet(user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+<code>createWallet(user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
                 </td>
             </tr>
 
@@ -273,55 +206,57 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(undefined)<br />@Post(&#x27;create&#x27;)<br /></code>
+                    <code>@UseGuards(undefined)<br />@Post(&#x27;create&#x27;)<br />@ApiOperation({summary: &#x27;Create a wallet&#x27;, description: &#x27;Create a wallet for the user.&#x27;, deprecated: true})<br />@ApiQuery({name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:28</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:52</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>user</td>
-                                            <td>
-                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -332,8 +267,6 @@
                 <td class="col-md-4">
                     <a name="getHistoricalTxs"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getHistoricalTxs</b></span>
                         <a href="#getHistoricalTxs"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -341,8 +274,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getHistoricalTxs(query, user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+<code>getHistoricalTxs(query, user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
                 </td>
             </tr>
 
@@ -350,66 +282,68 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(undefined)<br />@Get(&#x27;historical_txs&#x27;)<br /></code>
+                    <code>@UseGuards(undefined)<br />@Get(&#x27;historical_txs&#x27;)<br />@ApiOperation({summary: &#x27;Get historical transactions&#x27;, description: &#x27;Get historical transactions for the wallet.&#x27;, deprecated: true})<br />@ApiQuery({name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:41</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:77</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>query</td>
-                                            <td>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>user</td>
-                                            <td>
-                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -420,8 +354,6 @@
                 <td class="col-md-4">
                     <a name="getWallet"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getWallet</b></span>
                         <a href="#getWallet"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -429,8 +361,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getWallet(user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+<code>getWallet(user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
                 </td>
             </tr>
 
@@ -438,55 +369,57 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(undefined)<br />@Get()<br /></code>
+                    <code>@UseGuards(undefined)<br />@Get()<br />@ApiOperation({summary: &#x27;Get wallet&#x27;, description: &#x27;Get wallet by owner address.&#x27;, deprecated: true})<br />@ApiQuery({name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:22</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:40</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>user</td>
-                                            <td>
-                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -497,8 +430,6 @@
                 <td class="col-md-4">
                     <a name="relay"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>relay</b></span>
                         <a href="#relay"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -506,8 +437,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>relay(relayDto: <a href="../classes/RelayDto.html" target="_self">RelayDto</a>, user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
+<code>relay(relayDto: <a href="../classes/RelayDto.html" target="_self">RelayDto</a>, user: <a href="../interfaces/ISmartWalletUser.html" target="_self">ISmartWalletUser</a>)</code>
                 </td>
             </tr>
 
@@ -515,67 +445,69 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(undefined)<br />@Post(&#x27;relay&#x27;)<br /></code>
+                    <code>@UseGuards(undefined)<br />@Post(&#x27;relay&#x27;)<br />@ApiOperation({summary: &#x27;Relay transaction&#x27;, description: &#x27;Relay transaction to the network.&#x27;, deprecated: true})<br />@ApiQuery({name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27;})<br /></code>
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:34</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">apps/charge-api-service/src/smart-wallets-api/smart-wallets-api.controller.ts:64</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>relayDto</td>
-                                            <td>
-                                                            <code><a href="../classes/RelayDto.html" target="_self" >RelayDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>relayDto</td>
+                                    <td>
+                                                <code><a href="../classes/RelayDto.html" target="_self" >RelayDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>user</td>
-                                            <td>
-                                                            <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/ISmartWalletUser.html" target="_self" >ISmartWalletUser</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -583,7 +515,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AuthGuard } from &#x27;@nestjs/passport&#x27;
 import { Controller, Post, Body, UseGuards, Get, Query } from &#x27;@nestjs/common&#x27;
 import { IsValidPublicApiKeyGuard } from &#x27;@app/api-service/api-keys/guards/is-valid-public-api-key.guard&#x27;
@@ -592,31 +524,61 @@ import { SmartWalletsAPIService } from &#x27;@app/api-service/smart-wallets-api/
 import { RelayDto } from &#x27;@app/smart-wallets-service/smart-wallets/dto/relay.dto&#x27;
 import { SmartWalletOwner } from &#x27;@app/common/decorators/smart-wallet-owner.decorator&#x27;
 import { ISmartWalletUser } from &#x27;@app/common/interfaces/smart-wallet.interface&#x27;
+import { ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiQuery, ApiTags } from &#x27;@nestjs/swagger&#x27;
+import { SmartWalletsAuth } from &#x27;@app/smart-wallets-service/entities/smart-wallets-auth.entity&#x27;
 
+@ApiTags(&#x27;Smart Wallets V1 API&#x27;)
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: &#x27;smart-wallets&#x27;, version: &#x27;1&#x27; })
 export class SmartWalletsAPIController {
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
   @Post(&#x27;auth&#x27;)
+  @ApiOperation({
+    summary: &#x27;Authenticate user&#x27;,
+    description: &#x27;Authenticate user using signed data standard EIP-191.&#x27;,
+    deprecated: true
+  })
+  @ApiQuery({ name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27; })
+  @ApiBody({ type: SmartWalletsAuth, required: true })
+  @ApiCreatedResponse({ description: &#x27;The response object.&#x27;, type: Object })
+  @ApiForbiddenResponse({ description: &#x27;Access to the resource is forbidden.&#x27; })
   auth (@Body() smartWalletsAuthDto: SmartWalletsAuthDto) {
     return this.smartWalletsAPIService.auth(smartWalletsAuthDto)
   }
 
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get()
+  @ApiOperation({
+    summary: &#x27;Get wallet&#x27;,
+    description: &#x27;Get wallet by owner address.&#x27;,
+    deprecated: true
+  })
+  @ApiQuery({ name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27; })
   getWallet (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.getWallet(user)
   }
 
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Post(&#x27;create&#x27;)
+  @ApiOperation({
+    summary: &#x27;Create a wallet&#x27;,
+    description: &#x27;Create a wallet for the user.&#x27;,
+    deprecated: true
+  })
+  @ApiQuery({ name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27; })
   createWallet (@SmartWalletOwner() user: ISmartWalletUser) {
     return this.smartWalletsAPIService.createWallet(user)
   }
 
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Post(&#x27;relay&#x27;)
+  @ApiOperation({
+    summary: &#x27;Relay transaction&#x27;,
+    description: &#x27;Relay transaction to the network.&#x27;,
+    deprecated: true
+  })
+  @ApiQuery({ name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27; })
   relay (@Body() relayDto: RelayDto, @SmartWalletOwner() user: ISmartWalletUser) {
     relayDto.ownerAddress &#x3D; user.ownerAddress
     return this.smartWalletsAPIService.relay(relayDto)
@@ -624,6 +586,12 @@ export class SmartWalletsAPIController {
 
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;historical_txs&#x27;)
+  @ApiOperation({
+    summary: &#x27;Get historical transactions&#x27;,
+    description: &#x27;Get historical transactions for the wallet.&#x27;,
+    deprecated: true
+  })
+  @ApiQuery({ name: &#x27;apiKey&#x27;, type: String, required: true, description: &#x27;Your API key to authenticate requests.&#x27; })
   getHistoricalTxs (@Query() query, @SmartWalletOwner() user: ISmartWalletUser) {
     user.query &#x3D; query
     return this.smartWalletsAPIService.getHistoricalTxs(user)
@@ -632,8 +600,6 @@ export class SmartWalletsAPIController {
 </code></pre>
     </div>
 </div>
-
-
 
 
 
@@ -677,19 +643,6 @@ export class SmartWalletsAPIController {
             var COMPODOC_CURRENT_PAGE_URL = 'SmartWalletsAPIController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

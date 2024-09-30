@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -86,29 +37,22 @@
 
 
 
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >TransactionsScannerService</li>
+  <li>Injectables</li>
+  <li >TransactionsScannerService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -122,11 +66,11 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                            <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
+                        <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
             </p>
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -156,19 +100,20 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#processBlocks" >processBlocks</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#processBlockTraces" >processBlockTraces</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#processTrace" >processTrace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#processTraceWithRetry" >processTraceWithRetry</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -190,7 +135,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
+            <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -201,7 +146,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -287,7 +232,7 @@
         </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -298,8 +243,7 @@
                 <td class="col-md-4">
                     <a name="processBlocks"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>processBlocks</b></span>
                         <a href="#processBlocks"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -307,7 +251,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>processBlocks(fromBlock: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, toBlock: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
@@ -320,69 +264,71 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Inherited from         <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
 </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ScannerService.html#source" target="_self" >ScannerService:32</a></code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/ScannerService.html#source" target="_self" >ScannerService:33</a></code>
 </div>
-                        </td>
-                    </tr>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>fromBlock</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>fromBlock</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>toBlock</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>toBlock</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -393,8 +339,7 @@
                 <td class="col-md-4">
                     <a name="processBlockTraces"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>processBlockTraces</b></span>
                         <a href="#processBlockTraces"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -402,7 +347,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>processBlockTraces(blockNumber: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
@@ -415,51 +360,53 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:42</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="47"
+                            class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:47</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>blockNumber</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>blockNumber</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -470,8 +417,7 @@
                 <td class="col-md-4">
                     <a name="processTrace"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>processTrace</b></span>
                         <a href="#processTrace"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -479,8 +425,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>processTrace(trace: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processTrace(trace: <a href="../interfaces/BlockTrace.html" target="_self">BlockTrace</a>)</code>
                 </td>
             </tr>
 
@@ -492,51 +438,142 @@
                 </td>
             </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:64</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="80"
+                            class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:80</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>trace</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>trace</td>
+                                    <td>
+                                                <code><a href="../interfaces/BlockTrace.html" target="_self" >BlockTrace</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processTraceWithRetry"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>processTraceWithRetry</b></span>
+                        <a href="#processTraceWithRetry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processTraceWithRetry(trace: <a href="../interfaces/BlockTrace.html" target="_self">BlockTrace</a>, retries: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:65</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>trace</td>
+                                    <td>
+                                                <code><a href="../interfaces/BlockTrace.html" target="_self" >BlockTrace</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>retries</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>3</code>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -547,7 +584,7 @@
                 <td class="col-md-4">
                     <a name="onModuleInit"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>onModuleInit</b></span>
                         <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -555,33 +592,33 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>onModuleInit()</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Inherited from         <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
 </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ScannerService.html#source" target="_self" >ScannerService:16</a></code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/ScannerService.html#source" target="_self" >ScannerService:16</a></code>
 </div>
-                        </td>
-                    </tr>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -592,7 +629,7 @@
                 <td class="col-md-4">
                     <a name="start"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>start</b></span>
                         <a href="#start"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -600,39 +637,39 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>start()</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Inherited from         <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/ScannerService.html" target="_self" >ScannerService</a></code>
 </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ScannerService.html#source" target="_self" >ScannerService:20</a></code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/ScannerService.html#source" target="_self" >ScannerService:20</a></code>
 </div>
-                        </td>
-                    </tr>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
-            <section data-compodoc="block-properties">
+            <section>
     
     <h3 id="inputs">
         Properties
@@ -663,7 +700,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">apps/charge-notifications-service/src/transactions-scanner/transactions-scanner.service.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -675,20 +712,21 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NATIVE_FUSE_ADDRESS } from &#x27;@app/notifications-service/common/constants/addresses&#x27;
 import { TokenType } from &#x27;@app/notifications-service/common/constants/token-types&#x27;
 import { logPerformance } from &#x27;@app/notifications-service/common/decorators/log-performance.decorator&#x27;
 import { Inject, Injectable, Logger } from &#x27;@nestjs/common&#x27;
 import { ConfigService } from &#x27;@nestjs/config&#x27;
-import { isEmpty } from &#x27;lodash&#x27;
+import { chunk, isEmpty } from &#x27;lodash&#x27;
 import { BigNumber, InjectEthersProvider, JsonRpcProvider, formatEther, getAddress } from &#x27;nestjs-ethers&#x27;
 import { TokenEventData } from &#x27;@app/notifications-service/common/interfaces/event-data.interface&#x27;
 import { WebhooksService } from &#x27;@app/notifications-service/webhooks/webhooks.service&#x27;
 import { ScannerService } from &#x27;@app/notifications-service/common/scanner-service&#x27;
-import { transactionsScannerStatusServiceString } from &#x27;./transactions-scanner.constants&#x27;
+import { transactionsScannerStatusServiceString } from &#x27;@app/notifications-service/transactions-scanner/transactions-scanner.constants&#x27;
 import { ScannerStatusService } from &#x27;@app/notifications-service/common/scanner-status.service&#x27;
 import { GasService } from &#x27;@app/common/services/gas.service&#x27;
+import { BlockTrace } from &#x27;@app/notifications-service/transactions-scanner/interfaces/block-trace.interface&#x27;
 
 @Injectable()
 export class TransactionsScannerService extends ScannerService {
@@ -711,8 +749,12 @@ export class TransactionsScannerService extends ScannerService {
     if (fromBlock &gt; toBlock) return
 
     for (let i &#x3D; fromBlock; i &lt;&#x3D; toBlock; i++) {
-      await this.processBlockTraces(i)
-      await this.scannerStatusService.updateStatus(i)
+      try {
+        await this.processBlockTraces(i)
+        await this.scannerStatusService.updateStatus(i)
+      } catch (error) {
+        this.logger.error(&#x60;Failed to process block ${i}: ${error.message}&#x60;)
+      }
     }
   }
 
@@ -723,23 +765,34 @@ export class TransactionsScannerService extends ScannerService {
 
     if (!isEmpty(blockTraces)) {
       const filteredBlockTraces &#x3D; blockTraces.filter(
-        (blockTrace) &#x3D;&gt; blockTrace.action.callType &#x3D;&#x3D;&#x3D; &#x27;call&#x27; &amp;&amp;
-          BigNumber.from(blockTrace.action.value).gt(0))
+        (blockTrace: BlockTrace) &#x3D;&gt;
+          blockTrace.action.callType &#x3D;&#x3D;&#x3D; &#x27;call&#x27; &amp;&amp;
+          BigNumber.from(blockTrace.action.value).gt(0)
+      )
 
-      for (const trace of filteredBlockTraces) {
-        try {
-          await this.processTrace(trace)
-        } catch (error) {
-          this.logger.error(&#x27;Failed to process transaction:&#x27;)
+      const chunks &#x3D; chunk(filteredBlockTraces, 10) // Process in batches of 10
+      for (const traceChunk of chunks) {
+        await Promise.all(traceChunk.map((trace: BlockTrace) &#x3D;&gt; this.processTraceWithRetry(trace)))
+      }
+    }
+  }
+
+  async processTraceWithRetry (trace: BlockTrace, retries &#x3D; 3) {
+    for (let i &#x3D; 0; i &lt; retries; i++) {
+      try {
+        await this.processTrace(trace)
+        return
+      } catch (error) {
+        if (i &#x3D;&#x3D;&#x3D; retries - 1) {
+          this.logger.error(&#x60;Failed to process trace after ${retries} attempts:&#x60;, error)
           this.logger.error({ trace })
-          this.logger.error(error)
         }
       }
     }
   }
 
   @logPerformance(&#x27;TransactionsScanner::ProcessTrace&#x27;)
-  async processTrace (trace: any) {
+  async processTrace (trace: BlockTrace) {
     const gasValues &#x3D; await this.gasService.fetchTransactionGasCosts(
       trace.transactionHash,
       this.rpcProvider
@@ -756,19 +809,15 @@ export class TransactionsScannerService extends ScannerService {
       tokenType: TokenType.FUSE,
       tokenSymbol: &#x27;FUSE&#x27;,
       tokenAddress: NATIVE_FUSE_ADDRESS,
-      isInternalTransaction: false,
+      isInternalTransaction: trace.subtraces &gt; 0 || trace.traceAddress.length &gt; 0,
       tokenName: &#x27;FUSE&#x27;,
       tokenDecimals: 18,
       tokenId: null,
       ...gasValues
     }
 
-    if (trace.subtraces &gt; 0 || trace.traceAddress.length &gt; 0) {
-      eventData.isInternalTransaction &#x3D; true
-    }
-
-    this.webhooksService.processWebhookTokenEvents(eventData).catch((error) &#x3D;&gt; {
-      this.logger.error(&#x60;Failed to process webhook events for event data :${eventData} - Error: ${error}&#x60;)
+    await this.webhooksService.processWebhookTokenEvents(eventData).catch((error) &#x3D;&gt; {
+      this.logger.error(&#x60;Failed to process webhook events for event data: ${JSON.stringify(eventData)} - Error: ${error.message}&#x60;)
     })
   }
 }
@@ -776,7 +825,6 @@ export class TransactionsScannerService extends ScannerService {
     </div>
 
 </div>
-
 
 
 
@@ -818,19 +866,6 @@ export class TransactionsScannerService extends ScannerService {
             var COMPODOC_CURRENT_PAGE_URL = 'TransactionsScannerService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

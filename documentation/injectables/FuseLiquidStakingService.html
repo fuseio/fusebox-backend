@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -86,29 +37,22 @@
 
 
 
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >FuseLiquidStakingService</li>
+  <li>Injectables</li>
+  <li >FuseLiquidStakingService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -120,7 +64,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -211,7 +155,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
+            <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -284,7 +228,7 @@
         </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -307,21 +251,21 @@
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:59</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:59</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -332,7 +276,7 @@
                 <td class="col-md-4">
                     <a name="stakedToken"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>stakedToken</b></span>
                         <a href="#stakedToken"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -340,68 +284,70 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>stakedToken(accountAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, undefined: <a href="../interfaces/StakingOption.html" target="_self">StakingOption</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:67</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:67</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>accountAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>accountAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                            <code><a href="../interfaces/StakingOption.html" target="_self" >StakingOption</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/StakingOption.html" target="_self" >StakingOption</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -412,7 +358,7 @@
                 <td class="col-md-4">
                     <a name="stakingApr"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>stakingApr</b></span>
                         <a href="#stakingApr"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -420,27 +366,27 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>stakingApr()</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:102</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:102</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -451,7 +397,7 @@
                 <td class="col-md-4">
                     <a name="tvl"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>tvl</b></span>
                         <a href="#tvl"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -459,27 +405,27 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>tvl()</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="119"
-                                    class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:119</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:119</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
 
-                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -502,56 +448,58 @@
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:63</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking-providers/fuse-liquid-staking.service.ts:63</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                            <code><a href="../classes/UnstakeDto.html" target="_self" >UnstakeDto</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../classes/UnstakeDto.html" target="_self" >UnstakeDto</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
-            <section data-compodoc="block-properties">
+            <section>
     
     <h3 id="inputs">
         Properties
@@ -585,7 +533,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-accessors">
+            <section>
     <h3 id="accessors">
         Accessors
     </h3>
@@ -747,12 +695,12 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import LiquidStakingABI from &#x27;@app/network-service/common/constants/abi/FuseLiquidStaking.json&#x27;
 import Erc20ABI from &#x27;@app/network-service/common/constants/abi/Erc20.json&#x27;
 import ConsensusABI from &#x27;@app/network-service/common/constants/abi/Consensus&#x27;
 import BlockRewardABI from &#x27;@app/network-service/common/constants/abi/BlockReward.json&#x27;
-import TradeService from &#x27;@app/common/services/trade.service&#x27;
+import TradeService from &#x27;@app/common/token/trade.service&#x27;
 import {
   Contract,
   InjectEthersProvider,
@@ -776,7 +724,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     private readonly provider: JsonRpcProvider,
     private readonly configService: ConfigService,
     private readonly tradeService: TradeService
-  ) {}
+  ) { }
 
   get address () {
     return this.configService.get(&#x27;fuseLiquidStakingAddress&#x27;)
@@ -830,7 +778,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     const sfBalance &#x3D; await sfContract.balanceOf(accountAddress)
 
     const stakedAmount &#x3D; Number(formatEther(sfBalance.toString())) * Number(formatEther(priceRatio.toString()))
-    const fusePrice &#x3D; await this.tradeService.getTokenPrice(this.wfuseAddress)
+    const fusePrice &#x3D; await this.tradeService.getTokenPriceByAddress(this.wfuseAddress)
     const stakedAmountUSD &#x3D; stakedAmount * fusePrice
     const earnedAmountUSD &#x3D; 0
 
@@ -870,7 +818,7 @@ export default class FuseLiquidStakingService implements StakingProvider {
     try {
       const liquidStakingContract &#x3D; new Contract(this.address, LiquidStakingABI, this.provider)
       const totalStaked &#x3D; await liquidStakingContract.systemTotalStaked()
-      const fusePrice &#x3D; await this.tradeService.getTokenPrice(this.wfuseAddress)
+      const fusePrice &#x3D; await this.tradeService.getTokenPriceByAddress(this.wfuseAddress)
 
       return Number(formatEther(totalStaked.toString())) * fusePrice
     } catch (error) {
@@ -882,7 +830,6 @@ export default class FuseLiquidStakingService implements StakingProvider {
     </div>
 
 </div>
-
 
 
 
@@ -924,19 +871,6 @@ export default class FuseLiquidStakingService implements StakingProvider {
             var COMPODOC_CURRENT_PAGE_URL = 'FuseLiquidStakingService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

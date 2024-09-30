@@ -12,57 +12,8 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
-          <script>
-               // Blocking script to avaoid flickering dark mode
-               // Dark mode toggle button
-               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
-               var darkModeState = useDark.matches;
-               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
-               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
 
-               function checkToggle(check) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].checked = check;
-                    }
-               }
-
-               function toggleDarkMode(state) {
-                    if (window.localStorage) {
-                         localStorage.setItem('compodoc_darkmode-state', state);
-                    }
-
-                    checkToggle(state);
-
-                    const hasClass = document.body.classList.contains('dark');
-
-                    if (state) {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.add('dark');
-                         }
-                         if (!hasClass) {
-                              document.body.classList.add('dark');
-                         }
-                    } else {
-                         for (var i = 0; i < $darkModeToggles.length; i++) {
-                              $darkModeToggles[i].classList.remove('dark');
-                         }
-                         if (hasClass) {
-                              document.body.classList.remove('dark');
-                         }
-                    }
-               }
-
-               useDark.addEventListener('change', function (evt) {
-                    toggleDarkMode(evt.matches);
-               });
-               if (darkModeStateLocal) {
-                    darkModeState = darkModeStateLocal === 'true';
-               }
-               toggleDarkMode(darkModeState);
-          </script>
-
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
             <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -86,29 +37,22 @@
 
 
 
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >PaymasterApiService</li>
+  <li>Injectables</li>
+  <li >PaymasterApiService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a href="#info" 
-                class="nav-link"
-                class="nav-link active"
-                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
-        <li class="nav-item">
-            <a href="#source" 
-                class="nav-link"
-                
-                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
+    <div class="tab-pane fade active in" id="c-info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -120,7 +64,7 @@
 
 
 
-            <section data-compodoc="block-index">
+            <section>
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -195,7 +139,7 @@
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
+            <section>
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -206,7 +150,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:32</a></div>
                             </td>
                         </tr>
 
@@ -292,7 +236,7 @@
         </table>
 </section>
 
-            <section data-compodoc="block-methods">
+            <section>
     
     <h3 id="methods">
         Methods
@@ -303,7 +247,7 @@
                 <td class="col-md-4">
                     <a name="buildPaymasterAndData"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                        <span class="modifier">Private</span>
                         <span ><b>buildPaymasterAndData</b></span>
                         <a href="#buildPaymasterAndData"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -311,105 +255,107 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>buildPaymasterAndData(paymasterAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, validUntil: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, validAfter: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, signature: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="113"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:113</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:123</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>paymasterAddress</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>paymasterAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>validUntil</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>validAfter</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>validUntil</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>sponsorId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>signature</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>validAfter</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                                <tr>
+                                    <td>sponsorId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>signature</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -420,7 +366,7 @@
                 <td class="col-md-4">
                     <a name="estimateUserOpGas"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>estimateUserOpGas</b></span>
                         <a href="#estimateUserOpGas"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -428,71 +374,73 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>estimateUserOpGas(op, requestEnvironment, entrypointAddress)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="124"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:124</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:134</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>op</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>op</td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>requestEnvironment</td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>entrypointAddress</td>
+                                </tr>
+                                <tr>
+                                    <td>requestEnvironment</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>entrypointAddress</td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/GasDetails.html" target="_self" >Promise&lt;GasDetails&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -503,8 +451,8 @@
                 <td class="col-md-4">
                     <a name="getHash"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>getHash</b></span>
                         <a href="#getHash"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -512,105 +460,107 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getHash(paymasterContract: Contract, op: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, validUntil: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, validAfter: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:90</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:100</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>paymasterContract</td>
-                                            <td>
-                                                        <code>Contract</code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>paymasterContract</td>
+                                    <td>
+                                            <code>Contract</code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>op</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>validUntil</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>op</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>validAfter</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>sponsorId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>validUntil</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>validAfter</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>sponsorId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -621,7 +571,7 @@
                 <td class="col-md-4">
                     <a name="getProviderByEnv"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                        <span class="modifier">Private</span>
                         <span ><b>getProviderByEnv</b></span>
                         <a href="#getProviderByEnv"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -629,57 +579,59 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>getProviderByEnv(env: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="216"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:216</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:226</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>env</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>env</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>JsonRpcProvider</code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>JsonRpcProvider</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -690,7 +642,7 @@
                 <td class="col-md-4">
                     <a name="pm_accounts"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>pm_accounts</b></span>
                         <a href="#pm_accounts"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -698,80 +650,82 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>pm_accounts(body, env: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="208"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:208</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="218"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:218</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>body</td>
-                                            <td>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>env</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>projectId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>env</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -782,7 +736,7 @@
                 <td class="col-md-4">
                     <a name="pm_sponsorUserOperation"></a>
                     <span class="name">
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Async</span>
                         <span ><b>pm_sponsorUserOperation</b></span>
                         <a href="#pm_sponsorUserOperation"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -790,81 +744,83 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>pm_sponsorUserOperation(body: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, env: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="33"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:33</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:43</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>body</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>env</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                        <tr>
-                                                <td>projectId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>env</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -875,7 +831,7 @@
                 <td class="col-md-4">
                     <a name="prepareUrl"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                        <span class="modifier">Private</span>
                         <span ><b>prepareUrl</b></span>
                         <a href="#prepareUrl"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -883,53 +839,55 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>prepareUrl(environment)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="197"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:197</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="207"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:207</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>environment</td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>environment</td>
 
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -940,8 +898,8 @@
                 <td class="col-md-4">
                     <a name="signHash"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
                         <span ><b>signHash</b></span>
                         <a href="#signHash"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -949,75 +907,77 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>signHash(hash: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, paymasterInfo: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="105"
-                                    class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:105</a></div>
-                        </td>
-                    </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:115</a></div>
+                </td>
+            </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>hash</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>hash</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>paymasterInfo</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                                </tr>
+                                <tr>
+                                    <td>paymasterInfo</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
-            <section data-compodoc="block-properties">
+            <section>
     
     <h3 id="inputs">
         Properties
@@ -1042,7 +1002,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -1054,7 +1014,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
+    <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { accountsService } from &#x27;@app/common/constants/microservices.constants&#x27;
 import { ClientProxy, RpcException } from &#x27;@nestjs/microservices&#x27;
 import {
@@ -1073,6 +1033,16 @@ import { capitalize, isEmpty, has, get } from &#x27;lodash&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { catchError, lastValueFrom, map } from &#x27;rxjs&#x27;
 import { AxiosRequestConfig, AxiosResponse } from &#x27;axios&#x27;
+
+interface GasDetails {
+  preVerificationGas: string;
+  verificationGasLimit: string;
+  verificationGas: string;
+  validUntil: string;
+  callGasLimit: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
+}
 
 @Injectable()
 export class PaymasterApiService {
@@ -1117,7 +1087,7 @@ export class PaymasterApiService {
 
       op.paymasterAndData &#x3D; paymasterAndDataForEstimateUserOpGasCall
 
-      const gases &#x3D; await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
+      const gases: GasDetails &#x3D; await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
 
       const actualVerificationGasLimit &#x3D; Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
 
@@ -1178,7 +1148,7 @@ export class PaymasterApiService {
     ])
   }
 
-  async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {
+  async estimateUserOpGas (op, requestEnvironment, entrypointAddress): Promise&lt;GasDetails&gt; {
     const data &#x3D; {
       jsonrpc: &#x27;2.0&#x27;,
       method: &#x27;eth_estimateUserOperationGas&#x27;,
@@ -1240,7 +1210,7 @@ export class PaymasterApiService {
       throw new InternalServerErrorException(&#x27;Error getting gas estimation from paymaster&#x27;)
     }
 
-    const result &#x3D; get(response, &#x27;result&#x27;)
+    const result &#x3D; get(response, &#x27;result&#x27;) as GasDetails
     this.logger.log(&#x60;Gas estimation received: ${JSON.stringify(result)}&#x60;)
 
     const callGasLimit &#x3D; BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
@@ -1295,7 +1265,6 @@ export class PaymasterApiService {
 
 
 
-
                    </div><div class="search-results">
     <div class="has-results">
         <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
@@ -1325,19 +1294,6 @@ export class PaymasterApiService {
             var COMPODOC_CURRENT_PAGE_URL = 'PaymasterApiService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
-
-       <script>
-               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
-               checkToggle(darkModeState);
-               if ($darkModeToggleSwitchers.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
-          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

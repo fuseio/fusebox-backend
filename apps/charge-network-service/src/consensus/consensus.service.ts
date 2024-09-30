@@ -260,7 +260,7 @@ export class ConsensusService {
   private extendActiveMetadata (nodeMetadata: any) {
     return {
       firstSeen: nodeMetadata?.firstSeen,
-      forDelegation: nodeMetadata?.forDelegation,
+      forDelegation: true,
       totalValidated: nodeMetadata?.totalValidated,
       uptime: nodeMetadata?.upTime
     }

@@ -20,6 +20,9 @@ import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/d
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpService } from '@nestjs/axios'
 import axios from 'axios'
+import { User } from '@app/accounts-service/users/interfaces/user.interface'
+import { OperatorProject } from '@app/accounts-service/operators/interfaces/operator-project.interface'
+import { OperatorUserProjectResponse } from '@app/accounts-service/operators/interfaces/operator-user-project-response.interface'
 
 @Injectable()
 export class OperatorsService {
@@ -82,7 +85,7 @@ export class OperatorsService {
         throw new HttpException('No active paymasters found', HttpStatus.NOT_FOUND)
       }
 
-      const project = {
+      const project: OperatorProject = {
         id: projectObject._id,
         ownerId: projectObject.ownerId,
         name: projectObject.name,
@@ -119,7 +122,7 @@ export class OperatorsService {
       await this.addAddressToTokenReceiveWebhook(predictedWallet)
       this.googleFormSubmit(createOperatorUserDto)
       this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
-      const project = {
+      const project: OperatorProject = {
         id: projectObject._id,
         ownerId: projectObject.ownerId,
         name: projectObject.name,
@@ -179,7 +182,7 @@ export class OperatorsService {
     return operatorWalletCreationResult
   }
 
-  private constructUserProjectResponse (user: any, project: any, wallet: any, secretKey?: string) {
+  private constructUserProjectResponse (user: User, project: OperatorProject, wallet: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
     // Constructs the response object from the entities
     return {
       user: {
@@ -190,7 +193,7 @@ export class OperatorsService {
         smartWalletAddress: wallet.smartWalletAddress
       },
       project: {
-        id: project._id,
+        id: project.id,
         ownerId: project.ownerId,
         name: project.name,
         description: project.description,

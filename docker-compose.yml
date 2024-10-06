@@ -32,6 +32,7 @@ services:
       - AMPLITUDE_API_KEY
       - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
       - GOOGLE_OPERATOR_FORM_URL
+      - CONSOLE_DAPP_URL
 
     depends_on:
       - charge-api-service

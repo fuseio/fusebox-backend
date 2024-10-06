@@ -7,9 +7,11 @@ import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filte
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 import { setupSwagger } from '@app/accounts-service/common/utils/swagger/setup-swagger'
 import cookieParser from 'cookie-parser'
+import { ConfigService } from '@nestjs/config'
 
 async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
+  const configService = app.get(ConfigService)
 
   const microServiceOptions: TcpOptions = {
     transport: Transport.TCP,
@@ -25,7 +27,7 @@ async function bootstrap () {
   app.use(cookieParser())
   app.setGlobalPrefix('accounts')
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://console.fuse.io' : 'https://console-staging.fuse.io',
+    origin: configService.get('CONSOLE_DAPP_URL'),
     credentials: true
   })
   app.useGlobalPipes(

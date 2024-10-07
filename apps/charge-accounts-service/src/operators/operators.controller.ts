@@ -43,8 +43,13 @@ export class OperatorsController {
   @ApiBody({ type: AuthOperator, required: true })
   @ApiCreatedResponse({ description: 'The operator has been successfully validated.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
-  validate (@Body() authOperatorDto: AuthOperatorDto) {
-    return this.operatorsService.validate(authOperatorDto)
+  validate (@Body() authOperatorDto: AuthOperatorDto, @Res({ passthrough: true }) response: Response) {
+    const token = this.operatorsService.validate(authOperatorDto)
+    response.cookie('operator_access_token', token, {
+      httpOnly: true,
+      secure: true
+    })
+    response.status(200).send()
   }
 
   /**

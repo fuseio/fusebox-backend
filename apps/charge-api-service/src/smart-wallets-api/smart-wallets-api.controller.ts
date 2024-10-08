@@ -13,7 +13,6 @@ import { SmartWalletsAuth } from '@app/smart-wallets-service/entities/smart-wall
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '1' })
 export class SmartWalletsAPIController {
-  private readonly logger = new Logger(SmartWalletsAPIController.name)
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
   @Post('auth')
@@ -39,7 +38,6 @@ export class SmartWalletsAPIController {
   })
   @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   getWallet (@SmartWalletOwner() user: ISmartWalletUser) {
-    this.logger.log(`Fetching wallet for owner address: ${user.ownerAddress}`)
     return this.smartWalletsAPIService.getWallet(user)
   }
 

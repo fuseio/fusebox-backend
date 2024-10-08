@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorWalletModelString, operatorRefreshTokenModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -18,11 +18,13 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import { HttpService } from '@nestjs/axios'
 import axios from 'axios'
 import { User } from '@app/accounts-service/users/interfaces/user.interface'
 import { OperatorProject } from '@app/accounts-service/operators/interfaces/operator-project.interface'
 import { OperatorUserProjectResponse } from '@app/accounts-service/operators/interfaces/operator-user-project-response.interface'
+import { OperatorRefreshToken } from '@app/accounts-service/operators/interfaces/operator-refresh-token.interface'
+import { Response } from 'express'
+import * as bcrypt from 'bcryptjs'
 
 @Injectable()
 export class OperatorsService {
@@ -40,7 +42,8 @@ export class OperatorsService {
     @Inject(notificationsService)
     private readonly notificationsClient: ClientProxy,
     private readonly analyticsService: AnalyticsService,
-    private httpService: HttpService
+    @Inject(operatorRefreshTokenModelString)
+    private operatorRefreshTokenModel: Model<OperatorRefreshToken>
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -48,14 +51,18 @@ export class OperatorsService {
     return operator ? 200 : 404
   }
 
-  validate (authOperatorDto: AuthOperatorDto): string {
-    const recoveredAddress = ethers.utils.verifyMessage(authOperatorDto.message, authOperatorDto.signature)
-    if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
-      throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN)
+  async validate (authOperatorDto: AuthOperatorDto, response: Response) {
+    try {
+      const recoveredAddress = ethers.utils.verifyMessage(authOperatorDto.message, authOperatorDto.signature)
+      if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
+        throw new HttpException('Wallet ownership verification failed', HttpStatus.FORBIDDEN)
+      }
+      await this.createOperatorJwtTokens(recoveredAddress, response)
+      response.status(200).send()
+    } catch (error) {
+      this.logger.error(`Failed to validate operator: ${error.message}`)
+      throw error
     }
-    return this.jwtService.sign({
-      sub: recoveredAddress
-    })
   }
 
   async getOperatorUserAndProject (auth0Id: string) {
@@ -463,5 +470,106 @@ export class OperatorsService {
         error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
       )
     }
+  }
+
+  async findRefreshToken (auth0Id: string): Promise<OperatorRefreshToken> {
+    return this.operatorRefreshTokenModel.findOne({ auth0Id }).sort({ created_at: -1 })
+  }
+
+  async createRefreshToken (auth0Id: string, refreshToken: string): Promise<OperatorRefreshToken> {
+    return this.operatorRefreshTokenModel.create({ auth0Id, refreshToken })
+  }
+
+  async markRefreshTokenAsUsed (refreshToken: string) {
+    return this.operatorRefreshTokenModel.updateOne(
+      { refreshToken, used_at: null },
+      { used_at: new Date() }
+    )
+  }
+
+  async invalidateRefreshTokens (auth0Id: string) {
+    return this.operatorRefreshTokenModel.updateMany(
+      { auth0Id, invalid_at: null },
+      { invalid_at: new Date() }
+    )
+  }
+
+  async hashRefreshToken (token: string) {
+    const salt = await bcrypt.genSalt()
+    return bcrypt.hash(token, salt)
+  }
+
+  async compareRefreshToken (plainToken: string, hashedToken: string) {
+    return bcrypt.compare(plainToken, hashedToken)
+  }
+
+  async validateRefreshToken (token: string, auth0Id: string, response: Response) {
+    try {
+      const refreshToken = await this.findRefreshToken(auth0Id)
+      if (!refreshToken) {
+        throw new HttpException('Refresh token does not exist', HttpStatus.NOT_FOUND)
+      }
+
+      const hashedRefreshToken = refreshToken.refreshToken
+      const comparedRefreshToken = await this.compareRefreshToken(token, hashedRefreshToken)
+      if (!comparedRefreshToken) {
+        throw new HttpException('Refresh token comparison failed', HttpStatus.UNAUTHORIZED)
+      }
+
+      if (refreshToken.invalid_at) {
+        throw new HttpException('Refresh token invalidated', HttpStatus.FORBIDDEN)
+      }
+      if (refreshToken.used_at) {
+        await this.invalidateRefreshTokens(auth0Id)
+        throw new HttpException('Refresh token used', HttpStatus.FORBIDDEN)
+      }
+
+      await this.markRefreshTokenAsUsed(hashedRefreshToken)
+      await this.createOperatorJwtTokens(auth0Id, response)
+
+      response.status(200).send()
+    } catch (error) {
+      this.logger.error(`Failed to validate operator refresh token: ${error.message}`)
+      throw error
+    }
+  }
+
+  async createOperatorJwtTokens (auth0Id: string, response: Response) {
+    const tenMinutesInSeconds = 10 * 60
+    const oneDayInSeconds = 24 * 60 * 60
+    const milliseconds = 1000
+
+    const accessToken = this.jwtService.sign(
+      {
+        sub: auth0Id
+      },
+      {
+        secret: this.configService.get('SMART_WALLETS_JWT_SECRET'),
+        expiresIn: tenMinutesInSeconds
+      }
+    )
+    const refreshToken = this.jwtService.sign(
+      {
+        sub: auth0Id
+      },
+      {
+        secret: this.configService.get('OPERATOR_REFRESH_JWT_SECRET'),
+        expiresIn: oneDayInSeconds
+      }
+    )
+
+    response.cookie('operator_access_token', accessToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: tenMinutesInSeconds * milliseconds
+    })
+    response.cookie('operator_refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: oneDayInSeconds * milliseconds
+    })
+
+    const hashedRefreshToken = await this.hashRefreshToken(refreshToken)
+    return this.createRefreshToken(auth0Id, hashedRefreshToken)
   }
 }

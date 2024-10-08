@@ -57,43 +57,52 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   }
 
   async getWallet (smartWalletUser: ISmartWalletUser) {
-    const { ownerAddress } = smartWalletUser
-    const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
-    if (!smartWallet) {
-      throw new Error('Not found')
-    }
-    if (!smartWallet.isContractDeployed) {
-      const transactionId = generateTransactionId(smartWallet.salt)
-      const walletModules = this.sharedAddresses.walletModules
-      this.relayAPIService.createWallet({
-        v2: true,
-        salt: smartWallet.salt,
-        transactionId,
-        smartWalletUser,
-        owner: ownerAddress,
+    try {
+      const { ownerAddress } = smartWalletUser
+      this.logger.log(`Fetching Smart Wallet for owner address: ${ownerAddress}`)
+      const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
+      if (!smartWallet) {
+        this.logger.warn(`Smart Wallet not found for owner address: ${ownerAddress}`)
+        throw new Error('Not found')
+      }
+      if (!smartWallet.isContractDeployed) {
+        this.logger.log(`Smart Wallet not deployed for owner address: ${ownerAddress}, deploying...`)
+        const transactionId = generateTransactionId(smartWallet.salt)
+        const walletModules = this.sharedAddresses.walletModules
+        this.relayAPIService.createWallet({
+          v2: true,
+          salt: smartWallet.salt,
+          transactionId,
+          smartWalletUser,
+          owner: ownerAddress,
+          walletModules,
+          walletFactoryAddress: this.sharedAddresses.WalletFactory
+        }).catch(err => {
+          const errorMessage = `Retry wallet creation failed: ${err}`
+          this.logger.error(errorMessage)
+        })
+      }
+
+      const {
+        smartWalletAddress,
         walletModules,
-        walletFactoryAddress: this.sharedAddresses.WalletFactory
-      }).catch(err => {
-        const errorMessage = `Retry wallet creation failed: ${err}`
-        this.logger.error(errorMessage)
-      })
-    }
+        networks,
+        version,
+        paddedVersion
+      } = smartWallet
 
-    const {
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
-    } = smartWallet
-
-    return {
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion,
-      ownerAddress
+      this.logger.log(`Smart Wallet found for owner address: ${ownerAddress}`)
+      return {
+        smartWalletAddress,
+        walletModules,
+        networks,
+        version,
+        paddedVersion,
+        ownerAddress
+      }
+    } catch (err) {
+      this.logger.error(`An error occurred during fetching Legacy Smart Wallet. ${err}`)
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
     }
   }
 

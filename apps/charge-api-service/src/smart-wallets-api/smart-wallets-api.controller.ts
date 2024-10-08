@@ -1,5 +1,5 @@
 import { AuthGuard } from '@nestjs/passport'
-import { Controller, Post, Body, UseGuards, Get, Query } from '@nestjs/common'
+import { Controller, Post, Body, UseGuards, Get, Query, Logger } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart-wallets-api.service'
@@ -13,6 +13,7 @@ import { SmartWalletsAuth } from '@app/smart-wallets-service/entities/smart-wall
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'smart-wallets', version: '1' })
 export class SmartWalletsAPIController {
+  private readonly logger = new Logger(SmartWalletsAPIController.name)
   constructor (private readonly smartWalletsAPIService: SmartWalletsAPIService) { }
 
   @Post('auth')
@@ -38,6 +39,7 @@ export class SmartWalletsAPIController {
   })
   @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
   getWallet (@SmartWalletOwner() user: ISmartWalletUser) {
+    this.logger.log(`Fetching wallet for owner address: ${user.ownerAddress}`)
     return this.smartWalletsAPIService.getWallet(user)
   }
 

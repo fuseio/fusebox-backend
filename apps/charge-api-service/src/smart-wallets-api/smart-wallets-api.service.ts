@@ -20,6 +20,7 @@ export class SmartWalletsAPIService {
   }
 
   async getWallet (user: ISmartWalletUser): Promise<any> {
+    this.logger.log(`Fetching wallet for owner address: ${user.ownerAddress}`)
     return callMSFunction(this.smartWalletsClient, 'get_wallet', user)
   }
 

@@ -62,6 +62,7 @@ accounts:
     etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
     paymaster_funder_api_key: "pk_yWkBe0hnObJmMkYjq4Ggce1g"
     paymaster_funder_webhook_id: "65c4ba66394c8d9c3e4801ff"
+    console_dapp_url: "https://console.fuse.io"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

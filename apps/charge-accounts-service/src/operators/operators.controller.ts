@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Head, Logger, Param, Post, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Head, Logger, Param, Post, Req, Res, UseGuards } from '@nestjs/common'
 import { User } from '@app/accounts-service/users/user.decorator'
 import { JwtAuthGuard } from '@app/accounts-service/auth/guards/jwt-auth.guard'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { MessagePattern } from '@nestjs/microservices'
 import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
@@ -44,12 +44,7 @@ export class OperatorsController {
   @ApiCreatedResponse({ description: 'The operator has been successfully validated.' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
   validate (@Body() authOperatorDto: AuthOperatorDto, @Res({ passthrough: true }) response: Response) {
-    const token = this.operatorsService.validate(authOperatorDto)
-    response.cookie('operator_access_token', token, {
-      httpOnly: true,
-      secure: true
-    })
-    response.status(200).send()
+    return this.operatorsService.validate(authOperatorDto, response)
   }
 
   /**
@@ -127,5 +122,15 @@ export class OperatorsController {
   @MessagePattern('find-operator-by-owner-id')
   async findOperatorByOwnerId (walletAddress: string) {
     return this.operatorsService.findWalletOwner(walletAddress)
+  }
+
+  /**
+   * Refresh operator token
+   * @returns new access and refresh JWTs of the operator
+   */
+  @Post('/refresh-token')
+  @ApiOperation({ summary: 'Refresh operator token' })
+  refreshToken (@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    return this.operatorsService.validateRefreshToken(request.cookies?.operator_refresh_token, response)
   }
 }

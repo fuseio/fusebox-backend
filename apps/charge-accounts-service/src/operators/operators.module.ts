@@ -15,7 +15,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpModule } from '@nestjs/axios'
-import { OperatorRefreshJwtStrategy } from '@app/accounts-service/operators/operator-refresh-jwt.strategy'
 
 @Module({
   imports: [
@@ -48,7 +47,6 @@ import { OperatorRefreshJwtStrategy } from '@app/accounts-service/operators/oper
   controllers: [OperatorsController],
   providers: [
     OperatorJwtStrategy,
-    OperatorRefreshJwtStrategy,
     AnalyticsService,
     OperatorsService,
     ...operatorsProviders

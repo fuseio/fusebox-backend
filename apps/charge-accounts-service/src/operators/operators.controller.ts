@@ -128,10 +128,9 @@ export class OperatorsController {
    * Refresh operator token
    * @returns new access and refresh JWTs of the operator
    */
-  @UseGuards(JwtAuthGuard)
   @Post('/refresh-token')
   @ApiOperation({ summary: 'Refresh operator token' })
-  refreshToken (@Req() request: Request, @User('sub') auth0Id: string, @Res({ passthrough: true }) response: Response) {
-    return this.operatorsService.validateRefreshToken(request.cookies?.operator_refresh_token, auth0Id, response)
+  refreshToken (@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    return this.operatorsService.validateRefreshToken(request.cookies?.operator_refresh_token, response)
   }
 }

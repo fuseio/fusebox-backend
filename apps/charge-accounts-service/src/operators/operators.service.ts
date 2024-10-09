@@ -473,7 +473,7 @@ export class OperatorsService {
   }
 
   async findRefreshToken (auth0Id: string): Promise<OperatorRefreshToken> {
-    return this.operatorRefreshTokenModel.findOne({ auth0Id }).sort({ created_at: -1 })
+    return this.operatorRefreshTokenModel.findOne({ auth0Id }).sort({ createdAt: -1 })
   }
 
   async createRefreshToken (auth0Id: string, refreshToken: string): Promise<OperatorRefreshToken> {
@@ -482,15 +482,15 @@ export class OperatorsService {
 
   async markRefreshTokenAsUsed (refreshToken: string) {
     return this.operatorRefreshTokenModel.updateOne(
-      { refreshToken, used_at: null },
-      { used_at: new Date() }
+      { refreshToken, usedAt: null },
+      { usedAt: new Date() }
     )
   }
 
   async invalidateRefreshTokens (auth0Id: string) {
     return this.operatorRefreshTokenModel.updateMany(
-      { auth0Id, invalid_at: null },
-      { invalid_at: new Date() }
+      { auth0Id, invalidAt: null },
+      { invalidAt: new Date() }
     )
   }
 
@@ -503,11 +503,30 @@ export class OperatorsService {
     return bcrypt.compare(plainToken, hashedToken)
   }
 
-  async validateRefreshToken (token: string, auth0Id: string, response: Response) {
+  async validateRefreshToken (token: string, response: Response) {
     try {
-      const refreshToken = await this.findRefreshToken(auth0Id)
+      const verifiedRefreshToken = this.jwtService.verify(
+        token,
+        {
+          secret: this.configService.get('OPERATOR_REFRESH_JWT_SECRET')
+        }
+      )
+      if (!verifiedRefreshToken) {
+        throw new HttpException('Refresh token verification failed', HttpStatus.UNAUTHORIZED)
+      }
+
+      const refreshToken = await this.findRefreshToken(verifiedRefreshToken.sub)
       if (!refreshToken) {
         throw new HttpException('Refresh token does not exist', HttpStatus.NOT_FOUND)
+      }
+
+      if (verifiedRefreshToken.sub !== refreshToken.auth0Id) {
+        throw new HttpException('Refresh token does not match', HttpStatus.UNAUTHORIZED)
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000)
+      if (currentTime > verifiedRefreshToken.exp) {
+        throw new HttpException('Refresh token expired', HttpStatus.UNAUTHORIZED)
       }
 
       const hashedRefreshToken = refreshToken.refreshToken
@@ -516,16 +535,16 @@ export class OperatorsService {
         throw new HttpException('Refresh token comparison failed', HttpStatus.UNAUTHORIZED)
       }
 
-      if (refreshToken.invalid_at) {
+      if (refreshToken.invalidAt) {
         throw new HttpException('Refresh token invalidated', HttpStatus.FORBIDDEN)
       }
-      if (refreshToken.used_at) {
-        await this.invalidateRefreshTokens(auth0Id)
+      if (refreshToken.usedAt) {
+        await this.invalidateRefreshTokens(refreshToken.auth0Id)
         throw new HttpException('Refresh token used', HttpStatus.FORBIDDEN)
       }
 
       await this.markRefreshTokenAsUsed(hashedRefreshToken)
-      await this.createOperatorJwtTokens(auth0Id, response)
+      await this.createOperatorJwtTokens(refreshToken.auth0Id, response)
 
       response.status(200).send()
     } catch (error) {

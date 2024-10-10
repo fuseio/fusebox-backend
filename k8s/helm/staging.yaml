@@ -73,6 +73,7 @@ accounts:
     - amplitude_api_key
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
+    - operator_refresh_jwt_secret
 
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.

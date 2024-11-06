@@ -5,16 +5,21 @@ import { TokenAddressMapper } from '@app/network-service/voltage-dex/services/to
 import { TokenPriceDto } from '@app/network-service/voltage-dex/dto/token-price.dto'
 import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
 import { VoltageV3Client } from '@app/network-service/voltage-dex/services/voltage-v3-client.service'
+import { LiquidStakingFuseClient } from '@app/network-service/voltage-dex/services/liquid-staking-fuse-client.service'
 import dayjs from '@app/common/utils/dayjs'
 
 @Injectable()
 export class TokenPriceService {
   private readonly logger = new Logger(TokenPriceService.name)
 
+  private readonly XVOLT_ADDRESS = '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1'
+  private readonly LIQUID_STAKING_FUSE_ADDRESS = '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871'
+
   constructor (
     private voltageV2Client: VoltageV2Client,
     private voltageV3Client: VoltageV3Client,
     private voltBarClient: VoltBarClient,
+    private liquidStakingFuseClient: LiquidStakingFuseClient,
     private blocksClient: BlocksClient,
     private tokenAddressMapper: TokenAddressMapper
   ) {}
@@ -23,10 +28,12 @@ export class TokenPriceService {
     const { tokenAddress } = tokenPriceDto
     this.logger.log(`Getting token price for ${tokenAddress}`)
 
-    const XVOLT_ADDRESS = '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1'
-
-    if (tokenAddress.toLowerCase() === XVOLT_ADDRESS.toLowerCase()) {
+    if (tokenAddress.toLowerCase() === this.XVOLT_ADDRESS.toLowerCase()) {
       return this.getXVoltPrice()
+    }
+
+    if (tokenAddress.toLowerCase() === this.LIQUID_STAKING_FUSE_ADDRESS.toLowerCase()) {
+      return this.getLiquidStakingFusePrice()
     }
 
     try {
@@ -48,6 +55,15 @@ export class TokenPriceService {
     ])
 
     return (parseFloat(ratio) * parseFloat(voltPrice)).toString()
+  }
+
+  private async getLiquidStakingFusePrice (): Promise<string> {
+    const [ratio, fusePrice] = await Promise.all([
+      this.liquidStakingFuseClient.getRatio(),
+      this.getTokenPrice({ tokenAddress: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629' })
+    ])
+
+    return (parseFloat(ratio) * parseFloat(fusePrice)).toString()
   }
 
   private async getPriceFromClients (address: string): Promise<string> {

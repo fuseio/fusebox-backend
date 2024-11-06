@@ -21,6 +21,7 @@ export default () => ({
   nftGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/36MBsLQLDobyKmN9NWW5bStUS5GdXjK6mmKytMxcWFbq',
   accountAbstractionGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/hmmXWtoJqnvYaQKrBjXzPzwiXksVHoGrTZGrDi4FRtL',
   voltageV2GraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/550967d6d70d7fce0a710f38dc7bc5df/subgraphs/id/B4BGk9itvmRXzzNRAzBWwQARHRt3ZvLz11aWNVsZPT4',
+  liquidStakingFuseGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/3f81974147b5b63470524ed08206e24e/subgraphs/id/7FQVAoYfsrYPAVzaHnky1rHGYjXj2hcw3yokeLQmpntp',
   voltageV3GraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/550967d6d70d7fce0a710f38dc7bc5df/subgraphs/id/HzpnoLiTRga8yWaPBPBJjLp1FseiJkiynKDNXXFDKEQc',
   unmarshal: {
     baseUrl: process.env.UNMARSHAL_BASE_URL || 'https://api.unmarshal.com',

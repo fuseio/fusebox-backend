@@ -13,7 +13,7 @@ import {
   formatEther,
   formatUnits
 } from 'nestjs-ethers'
-import { Cron, CronExpression, Timeout } from '@nestjs/schedule'
+import { Cron, CronExpression } from '@nestjs/schedule'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Cache } from 'cache-manager'
 import { isEmpty, isUndefined } from 'lodash'
@@ -51,12 +51,6 @@ export class ConsensusService {
     await this.cacheManager.set('validatorsInfo', validatorsInfo)
 
     return validatorsInfo
-  }
-
-  @Timeout(5000)
-  async fetchValidatorsTimeout () {
-    // Called once after 5 seconds
-    await this.handleValidatorsUpdate()
   }
 
   private get multiCallAddress (): string {

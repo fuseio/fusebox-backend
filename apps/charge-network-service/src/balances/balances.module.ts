@@ -9,6 +9,7 @@ import configuration from 'apps/charge-network-service/src/common/config/configu
 import GraphQLService from '@app/common/services/graphql.service'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { EthersModule } from 'nestjs-ethers'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { EthersModule } from 'nestjs-ethers'
           useDefaultProvider: false
         }
       }
+    }),
+    CacheModule.register({
+      ttl: 60000, // in milliseconds
+      max: 1000
     })
   ],
   controllers: [BalancesController],
@@ -39,4 +44,4 @@ import { EthersModule } from 'nestjs-ethers'
     ExplorerService
   ]
 })
-export class BalancesModule {}
+export class BalancesModule { }

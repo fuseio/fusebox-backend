@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
 
 interface NFTMetadata {
   image?: string;
@@ -29,22 +30,23 @@ export class UnmarshalService implements BalanceService {
     'https://unmarshal.mypinata.cloud/ipfs/'
   ]
 
-  constructor (
+  constructor(
     private readonly tokenService: TokenService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
 
-  get unmarshalBaseUrl () {
+  get unmarshalBaseUrl() {
     return this.configService.get('unmarshal.baseUrl')
   }
 
-  get unmarshalApiKey () {
+  get unmarshalApiKey() {
     return this.configService.get('unmarshal.apiKey')
   }
 
-  async getERC20TokenBalances (address: string) {
+  @logPerformance('UnmarshalService::getERC20TokenBalances')
+  async getERC20TokenBalances(address: string) {
     const uri = `${this.unmarshalBaseUrl}/v2/fuse/address/${address}/assets?includeLowVolume=true&auth_key=${this.unmarshalApiKey}`
     const observable = this.httpService
       .get(uri)
@@ -53,11 +55,8 @@ export class UnmarshalService implements BalanceService {
     return this.transformToExplorerFormat(unmarshalData)
   }
 
-  async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
-    const startTime = performance.now()
-
-    // Cache check timing
-    const cacheStartTime = performance.now()
+  @logPerformance('UnmarshalService::getERC721TokenBalances')
+  async getERC721TokenBalances(address: string, limit?: number, cursor?: string) {
     const requestCacheKey = this.generateCacheKey([
       'nft_request',
       address.toLowerCase(),
@@ -65,10 +64,8 @@ export class UnmarshalService implements BalanceService {
       cursor || '0'
     ])
     const cachedRequest = await this.cacheManager.get(requestCacheKey)
-    this.logger.log(`Cache check took ${performance.now() - cacheStartTime}ms`)
 
     if (cachedRequest) {
-      this.logger.log(`Cache hit for NFT request: ${requestCacheKey} (${performance.now() - startTime}ms)`)
       return cachedRequest
     }
 
@@ -84,14 +81,12 @@ export class UnmarshalService implements BalanceService {
           uri += `&offset=${decodedCursor}`
         }
 
-        const unmarshalRequestStart = performance.now()
         const unmarshalData = await lastValueFrom(
           this.httpService.get(uri, {
             timeout: this.METADATA_TIMEOUT,
             validateStatus: status => status < 500
           }).pipe(map(res => res.data))
         )
-        this.logger.log(`Unmarshal API request took ${performance.now() - unmarshalRequestStart}ms`)
 
         if (!unmarshalData || !unmarshalData.nft_assets) {
           const emptyResponse = {
@@ -134,7 +129,7 @@ export class UnmarshalService implements BalanceService {
     }
   }
 
-  private transformToExplorerFormat (unmarshalData: any) {
+  private transformToExplorerFormat(unmarshalData: any) {
     if (isEmpty(unmarshalData)) {
       return {
         message: 'No tokens found',
@@ -161,7 +156,8 @@ export class UnmarshalService implements BalanceService {
     }
   }
 
-  private async transformCollectibles (assets: any[]) {
+  @logPerformance('UnmarshalService::transformCollectibles')
+  private async transformCollectibles(assets: any[]) {
     const batchSize = 10
     const batches = []
 
@@ -180,7 +176,8 @@ export class UnmarshalService implements BalanceService {
     return results
   }
 
-  private async processAsset (asset: any) {
+
+  private async processAsset(asset: any) {
     const descriptorUri = this.transformDescriptorUri(asset.external_link)
     const id = this.generateId(asset.asset_contract, asset.token_id)
 
@@ -246,12 +243,12 @@ export class UnmarshalService implements BalanceService {
     return collectible
   }
 
-  private async fetchMetadataWithTimeout (uri: string) {
+  @logPerformance('UnmarshalService::fetchMetadataWithTimeout')
+  private async fetchMetadataWithTimeout(uri: string) {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), this.METADATA_TIMEOUT)
 
     try {
-      // If it's an IPFS URI, try multiple gateways
       if (uri.includes('/ipfs/')) {
         const cid = uri.split('/ipfs/')[1]
         for (const gateway of this.IPFS_GATEWAYS) {
@@ -264,7 +261,7 @@ export class UnmarshalService implements BalanceService {
             })
 
             if (!response.ok) {
-              continue // Try next gateway if this one fails
+              continue
             }
 
             const text = await response.text()
@@ -272,10 +269,10 @@ export class UnmarshalService implements BalanceService {
               const metadata = JSON.parse(text)
               return metadata
             } catch {
-              continue // Try next gateway if JSON parsing fails
+              continue
             }
           } catch {
-            continue // Try next gateway if fetch fails
+            continue
           }
         }
         throw new Error('All IPFS gateways failed')
@@ -305,7 +302,7 @@ export class UnmarshalService implements BalanceService {
     }
   }
 
-  private transformDescriptorUri (externalLink: string): string {
+  private transformDescriptorUri(externalLink: string): string {
     if (!externalLink) {
       return null
     }
@@ -319,7 +316,7 @@ export class UnmarshalService implements BalanceService {
       : externalLink
   }
 
-  private generateId (contractAddress: string, tokenId: string): string {
+  private generateId(contractAddress: string, tokenId: string): string {
     try {
       const tokenNum = BigInt(tokenId)
       const hexTokenId = tokenNum.toString(16).padStart(4, '0')
@@ -329,7 +326,7 @@ export class UnmarshalService implements BalanceService {
     }
   }
 
-  private isBase64 (str: string): boolean {
+  private isBase64(str: string): boolean {
     if (!str) {
       return false
     }
@@ -341,7 +338,7 @@ export class UnmarshalService implements BalanceService {
     }
   }
 
-  private generateCacheKey (parts: string[]): string {
+  private generateCacheKey(parts: string[]): string {
     return parts.map(p => encodeURIComponent(p)).join(':')
   }
 }

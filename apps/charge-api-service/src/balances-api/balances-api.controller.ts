@@ -1,13 +1,15 @@
-import { Controller, Get, Param, UseGuards, Query } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards, Query, UseInterceptors } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { BalancesAPIService } from '@app/api-service/balances-api/balances-api.service'
 import { ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { CacheInterceptor } from '@nestjs/cache-manager'
 
 @ApiTags('Balances - ERC20 & NFT')
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller('v0/balances')
+@UseInterceptors(CacheInterceptor)
 export class BalancesAPIController {
-  constructor (
+  constructor(
     private readonly balancesAPIService: BalancesAPIService
   ) { }
 
@@ -20,7 +22,7 @@ export class BalancesAPIController {
   @ApiParam({ name: 'address', type: String, required: true, description: 'The wallet address to query for ERC20 token balances.' })
   @ApiQuery({ name: 'tokenAddress', type: String, required: false, description: 'Optional. Filter results by a specific token address.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
-  getERC20TokenBalances (
+  getERC20TokenBalances(
     @Param('address') address: string,
     @Query('tokenAddress') tokenAddress?: string
   ) {
@@ -45,7 +47,7 @@ export class BalancesAPIController {
       }
     }
   })
-  getERC721TokenBalances (
+  getERC721TokenBalances(
     @Param('address') address: string,
     @Query('limit') limit?: number,
     @Query('cursor') cursor?: string

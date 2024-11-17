@@ -13,29 +13,29 @@ import { isEmpty } from 'lodash'
 @Injectable()
 export class ExplorerService implements BalanceService {
   private readonly logger = new Logger(ExplorerService.name)
-  constructor(
+  constructor (
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly graphQLService: GraphQLService
   ) { }
 
-  get explorerBaseUrl() {
+  get explorerBaseUrl () {
     return this.configService.get('explorer.baseUrl')
   }
 
-  get explorerApiKey() {
+  get explorerApiKey () {
     return this.configService.get('explorer.apiKey')
   }
 
-  get nftGraphUrl() {
+  get nftGraphUrl () {
     return this.configService.get('nftGraphUrl')
   }
 
-  get rpcUrl() {
+  get rpcUrl () {
     return this.configService.get('rpcConfig.rpc.url')
   }
 
-  private async getNativeTokenBalance(address: string) {
+  private async getNativeTokenBalance (address: string) {
     const provider = new ethers.providers.JsonRpcProvider(this.rpcUrl)
     const balance = await provider.getBalance(address)
 
@@ -55,7 +55,7 @@ export class ExplorerService implements BalanceService {
     ]
   }
 
-  async getERC20TokenBalances(address: string) {
+  async getERC20TokenBalances (address: string) {
     const nativeTokenBalance = await this.getNativeTokenBalance(address)
     const observable = this.httpService
       .get(`${this.explorerBaseUrl}?module=account&action=tokenlist&address=${address}&apikey=${this.explorerApiKey}`)
@@ -71,7 +71,7 @@ export class ExplorerService implements BalanceService {
     }
   }
 
-  async getERC721TokenBalances(address: string, limit?: number, cursor?: string) {
+  async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
     const query = getCollectiblesByOwner
     const variables: any = {
       address: address.toLowerCase(),

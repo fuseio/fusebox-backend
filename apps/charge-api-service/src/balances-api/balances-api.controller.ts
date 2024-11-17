@@ -9,7 +9,7 @@ import { CacheInterceptor } from '@nestjs/cache-manager'
 @Controller('v0/balances')
 @UseInterceptors(CacheInterceptor)
 export class BalancesAPIController {
-  constructor(
+  constructor (
     private readonly balancesAPIService: BalancesAPIService
   ) { }
 
@@ -22,7 +22,7 @@ export class BalancesAPIController {
   @ApiParam({ name: 'address', type: String, required: true, description: 'The wallet address to query for ERC20 token balances.' })
   @ApiQuery({ name: 'tokenAddress', type: String, required: false, description: 'Optional. Filter results by a specific token address.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
-  getERC20TokenBalances(
+  getERC20TokenBalances (
     @Param('address') address: string,
     @Query('tokenAddress') tokenAddress?: string
   ) {
@@ -47,7 +47,7 @@ export class BalancesAPIController {
       }
     }
   })
-  getERC721TokenBalances(
+  getERC721TokenBalances (
     @Param('address') address: string,
     @Query('limit') limit?: number,
     @Query('cursor') cursor?: string

@@ -6,6 +6,7 @@ export const getCollectiblesByOwner = gql`
             id
             address
             collectibles(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
+                contentURI
                 id
                 created
                 tokenId

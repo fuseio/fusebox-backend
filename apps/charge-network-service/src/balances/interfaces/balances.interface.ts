@@ -4,6 +4,7 @@ export interface BalanceService {
 }
 
 export interface ExplorerServiceCollectibleResponse {
+  contentURI: string
   collection: {
     collectionAddress: string
     collectionName: string

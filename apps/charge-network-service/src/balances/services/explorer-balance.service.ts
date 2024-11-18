@@ -95,7 +95,7 @@ export class ExplorerService implements BalanceService {
       owner: collectible.owner,
       tokenId: collectible.tokenId,
       description: collectible.metadata?.description ?? null,
-      descriptorUri: collectible.metadata?.id ?? null,
+      descriptorUri: collectible.contentURI ?? null,
       imageURL: collectible.metadata?.imageURL ?? null,
       name: collectible.metadata?.name ?? null,
       id: `${collectible.collection.collectionAddress}-0x${BigInt(collectible.tokenId).toString(16)}`

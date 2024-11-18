@@ -7,8 +7,9 @@ import GraphQLService from '@app/common/services/graphql.service'
 import { HttpService } from '@nestjs/axios'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
 import { ethers } from 'ethers'
-import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts'
+import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts-v3'
 import { isEmpty } from 'lodash'
+import { ExplorerServiceCollectibleResponse, ExplorerServiceGraphQLVariables, ExplorerServiceTransformedCollectible } from '../interfaces/balances.interface'
 
 @Injectable()
 export class ExplorerService implements BalanceService {
@@ -73,7 +74,7 @@ export class ExplorerService implements BalanceService {
 
   async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
     const query = getCollectiblesByOwner
-    const variables: any = {
+    const variables: ExplorerServiceGraphQLVariables = {
       address: address.toLowerCase(),
       orderBy: 'created',
       orderDirection: 'desc',
@@ -86,15 +87,35 @@ export class ExplorerService implements BalanceService {
 
     const data = await this.graphQLService.fetchFromGraphQL(this.nftGraphUrl, query, variables)
     const collectibles = data?.data?.account?.collectibles || []
+
+    const transformedCollectibles = collectibles.map((collectible: ExplorerServiceCollectibleResponse): ExplorerServiceTransformedCollectible => ({
+      collection: collectible.collection,
+      created: collectible.created,
+      creator: collectible.creator,
+      owner: collectible.owner,
+      tokenId: collectible.tokenId,
+      description: collectible.metadata?.description ?? null,
+      descriptorUri: collectible.metadata?.id ?? null,
+      imageURL: collectible.metadata?.imageURL ?? null,
+      name: collectible.metadata?.name ?? null,
+      id: `${collectible.collection.collectionAddress}-0x${BigInt(collectible.tokenId).toString(16)}`
+    }))
+
     const nextCursor = isEmpty(collectibles)
       ? null
       : collectibles.length === variables.first
-        ? Buffer.from((variables.skip || 0) + collectibles.length + '').toString('base64')
+        ? Buffer.from(`${(variables.skip || 0) + collectibles.length}`).toString('base64')
         : null
 
     return {
       nextCursor,
-      ...data
+      data: {
+        ...data.data,
+        account: {
+          ...data.data.account,
+          collectibles: transformedCollectibles
+        }
+      }
     }
   }
 }

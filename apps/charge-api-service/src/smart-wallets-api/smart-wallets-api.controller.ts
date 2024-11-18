@@ -1,5 +1,5 @@
 import { AuthGuard } from '@nestjs/passport'
-import { Controller, Post, Body, UseGuards, Get, Query, Logger } from '@nestjs/common'
+import { Controller, Post, Body, UseGuards, Get, Query } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
 import { SmartWalletsAPIService } from '@app/api-service/smart-wallets-api/smart-wallets-api.service'

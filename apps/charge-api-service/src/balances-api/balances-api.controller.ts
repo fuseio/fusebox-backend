@@ -1,11 +1,13 @@
-import { Controller, Get, Param, UseGuards, Query } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards, Query, UseInterceptors } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { BalancesAPIService } from '@app/api-service/balances-api/balances-api.service'
 import { ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { CacheInterceptor } from '@nestjs/cache-manager'
 
 @ApiTags('Balances - ERC20 & NFT')
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller('v0/balances')
+@UseInterceptors(CacheInterceptor)
 export class BalancesAPIController {
   constructor (
     private readonly balancesAPIService: BalancesAPIService

@@ -8,7 +8,7 @@ export async function callMSFunction (client: ClientProxy, pattern: string, data
     client
       .send(pattern, data)
       .pipe(
-        timeout(15000),
+        timeout(20000),
         takeLast(1),
         catchError((error) => {
           console.error(`Error in microservice call to ${serviceName} (pattern: ${pattern}):`, error)

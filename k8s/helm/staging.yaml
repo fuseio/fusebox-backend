@@ -253,7 +253,7 @@ network:
 
   # ConfigMap
   configMap:
-    primary_service: "unmarshal"
+    primary_service: "explorer"
     explorer_api_url: "https://explorer.fuse.io/api"
     unmarshal_base_url: "https://api.unmarshal.com"
     coin_gecko_url: "https://pro-api.coingecko.com/api/v3"

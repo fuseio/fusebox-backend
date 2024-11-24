@@ -86,6 +86,16 @@ export class ExplorerService implements BalanceService {
     }
 
     const data = await this.graphQLService.fetchFromGraphQL(this.nftGraphUrl, query, variables)
+
+    if (!data?.data?.account) {
+      return {
+        nextCursor: null,
+        data: {
+          account: { address, id: address, collectibles: [] }
+        }
+      }
+    }
+
     const collectibles = data?.data?.account?.collectibles || []
 
     const transformedCollectibles = collectibles.map((collectible: ExplorerServiceCollectibleResponse): ExplorerServiceTransformedCollectible => ({
@@ -112,9 +122,9 @@ export class ExplorerService implements BalanceService {
     return {
       nextCursor,
       data: {
-        ...data.data,
         account: {
-          ...data.data.account,
+          address,
+          id: address,
           collectibles: transformedCollectibles
         }
       }

@@ -11,7 +11,6 @@ import { VoltageDexService } from '@app/network-service/voltage-dex/voltage-dex.
 import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
 import { VoltageV3Client } from '@app/network-service/voltage-dex/services/voltage-v3-client.service'
 import { VoltBarClient } from '@app/network-service/voltage-dex/services/volt-bar-client.service'
-import { LiquidStakingFuseClient } from '@app/network-service/voltage-dex/services/liquid-staking-fuse-client.service'
 import configuration from 'apps/charge-network-service/src/common/config/configuration'
 
 @Module({
@@ -20,11 +19,6 @@ import configuration from 'apps/charge-network-service/src/common/config/configu
   ],
   controllers: [VoltageDexController],
   providers: [
-    {
-      provide: 'SFUSE_GRAPH_CLIENT',
-      useFactory: (configService: ConfigService) => new GraphQLClient(configService.get<string>('liquidStakingFuseGraphUrl')),
-      inject: [ConfigService]
-    },
     {
       provide: 'VOLTAGE_V2_GRAPH_CLIENT',
       useFactory: (configService: ConfigService) => new GraphQLClient(configService.get<string>('voltageV2GraphUrl')),
@@ -64,11 +58,6 @@ import configuration from 'apps/charge-network-service/src/common/config/configu
       provide: VoltBarClient,
       useFactory: (client: GraphQLClient) => new VoltBarClient(client),
       inject: ['VOLT_BAR_GRAPH_CLIENT']
-    },
-    {
-      provide: LiquidStakingFuseClient,
-      useFactory: (client: GraphQLClient) => new LiquidStakingFuseClient(client),
-      inject: ['SFUSE_GRAPH_CLIENT']
     },
     TokenPriceService,
     TokenStatsService,

@@ -5,6 +5,7 @@ on:
     branches: ["qa"]
 
 env:
+  NODE_ENV: ${{ vars.NODE_ENV_QA }}
   OVH_PRIVATE_REGISTRY_ENDPOINT: ${{ vars.OVH_PRIVATE_REGISTRY_ENDPOINT_QA }}
   OVH_PRIVATE_REGISTRY_REPOSITORY: ${{ vars.OVH_PRIVATE_REGISTRY_REPOSITORY }}
   OVH_PRIVATE_REGISTRY_USERNAME: ${{ secrets.OVH_PRIVATE_REGISTRY_USERNAME_QA }}
@@ -39,7 +40,7 @@ jobs:
         run: |
           for component in accounts-service api-service network-service notifications-service smart-wallets-service; do
             docker build \
-              --target development \
+              --build-arg NODE_ENV \
               -t ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/$component:latest \
               -t ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/$component:${{ env.SHORT_SHA }} \
               -f apps/charge-$component/Dockerfile .

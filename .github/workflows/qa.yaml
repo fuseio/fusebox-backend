@@ -1,0 +1,97 @@
+name: Build & Deploy to Kubernetes [QA]
+
+on:
+  push:
+    branches: ["qa"]
+
+env:
+  OVH_PRIVATE_REGISTRY_ENDPOINT: ${{ vars.OVH_PRIVATE_REGISTRY_ENDPOINT_QA }}
+  OVH_PRIVATE_REGISTRY_REPOSITORY: ${{ vars.OVH_PRIVATE_REGISTRY_REPOSITORY }}
+  OVH_PRIVATE_REGISTRY_USERNAME: ${{ secrets.OVH_PRIVATE_REGISTRY_USERNAME_QA }}
+  OVH_PRIVATE_REGISTRY_PASSWORD: ${{ secrets.OVH_PRIVATE_REGISTRY_PASSWORD_QA }}
+  OVH_K8S_KUBECONFIG: ${{ secrets.OVH_K8S_KUBECONFIG_QA }}
+  OVH_K8S_HELM_CHART_REPOSITORY: ${{ vars.OVH_K8S_HELM_CHART_REPOSITORY_QA }}
+  OVH_K8S_HELM_CHART_VERSION: ${{ vars.OVH_K8S_HELM_CHART_VERSION_QA }}
+  OVH_K8S_HELM_RELEASE_NAME: ${{ vars.OVH_K8S_HELM_RELEASE_NAME }}
+  OVH_K8S_HELM_RELEASE_NAMESPACE: ${{ vars.OVH_K8S_HELM_RELEASE_NAMESPACE }}
+
+jobs:
+  build-and-push:
+    name: Build & Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set GitHub commit short SHA
+        run: |
+          CALCULATED_SHA=$(git rev-parse --short ${{ github.sha }})
+          echo "SHORT_SHA=$CALCULATED_SHA" >> $GITHUB_ENV
+
+      - name: Login to OVH (Harbor) private registry
+        run: |
+          docker login \
+            --username ${{ env.OVH_PRIVATE_REGISTRY_USERNAME }} \
+            --password ${{ env.OVH_PRIVATE_REGISTRY_PASSWORD }} \
+            ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}
+
+      - name: Build Docker image(s)
+        run: |
+          for component in accounts-service api-service network-service notifications-service smart-wallets-service; do
+            docker build \
+              --target development \
+              -t ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/$component:latest \
+              -t ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/$component:${{ env.SHORT_SHA }} \
+              -f apps/charge-$component/Dockerfile .
+          done
+
+      - name: Push Docker image(s)
+        run: |
+          for component in accounts-service api-service network-service notifications-service smart-wallets-service; do
+            docker push \
+              --all-tags \
+              ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/$component
+          done
+
+  deploy:
+    name: Deploy
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set GitHub commit short SHA
+        run: |
+          CALCULATED_SHA=$(git rev-parse --short ${{ github.sha }})
+          echo "SHORT_SHA=$CALCULATED_SHA" >> $GITHUB_ENV
+
+      - name: Login to OVH (Harbor) private registry
+        run: |
+          docker login \
+            --username ${{ env.OVH_PRIVATE_REGISTRY_USERNAME }} \
+            --password ${{ env.OVH_PRIVATE_REGISTRY_PASSWORD }} \
+            ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}
+
+      - name: Configure Kubernetes config file
+        run: |
+          mkdir -p $HOME/.kube/
+          echo "${{ env.OVH_K8S_KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+
+      - name: Release
+        run: |
+          helm upgrade \
+            --install \
+            --debug \
+            --atomic \
+            --wait \
+            --values helm/values/qa.yaml \
+            --set accounts-service.image.tag=${{ env.SHORT_SHA }} \
+            --set api-service.image.tag=${{ env.SHORT_SHA }} \
+            --set network-service.image.tag=${{ env.SHORT_SHA }} \
+            --set notifications-service.image.tag=${{ env.SHORT_SHA }} \
+            --set smart-wallets-service.image.tag=${{ env.SHORT_SHA }} \
+            -n ${{ env.OVH_K8S_HELM_RELEASE_NAMESPACE }} \
+            ${{ env.OVH_K8S_HELM_RELEASE_NAME }} \
+            ${{ env.OVH_K8S_HELM_CHART_REPOSITORY }} \
+            --version ${{ env.OVH_K8S_HELM_CHART_VERSION }}

@@ -1,9 +1,0 @@
-# Default values for gateway-api.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# -- Gateway API - Name
-name: ""
-
-# -- Gateway API - Global address
-global_address: ""

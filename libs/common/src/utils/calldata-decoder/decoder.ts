@@ -7,6 +7,8 @@ import {
 } from '@app/common/utils/calldata-decoder/decoders/specialized'
 import { decodeAllPossibilities, decodeWithABI } from '@app/common/utils/calldata-decoder/decoders/abi'
 import { fetchContractAbi, fetchFunctionInterface } from '@app/common/utils/calldata-decoder/api'
+import newAbi from '@app/common/utils/calldata-decoder/abis/entrypoint_0_7_0.abi.json'
+import { Fragment } from '@ethersproject/abi' // Correct import for Fragment
 
 import { Logger } from '@nestjs/common'
 import { ethers } from 'ethers'
@@ -18,12 +20,16 @@ export async function decodeWithAddress ({
   address,
   chainId
 }: {
-    calldata: string;
-    address: string;
-    chainId: number;
+  calldata: string;
+  address: string;
+  chainId: number;
 }): Promise<ethers.utils.TransactionDescription | null> {
+  console.log(`Decoding calldata with address ${address} on chain ${chainId}`)
   try {
-    const fetchedAbi = await fetchContractAbi({ address, chainId })
+    const fetchedAbi = await fetchContractAbi({
+      address,
+      chainId
+    })
     const decodedFromAbi = decodeWithABI({
       abi: fetchedAbi.abi,
       calldata
@@ -31,47 +37,67 @@ export async function decodeWithAddress ({
     if (decodedFromAbi) {
       return decodedFromAbi
     }
+    console.log(
+      `Failed to decode calldata with ABI for contract ${address} on chain ${chainId}, decoding with selector`
+    )
     const decodedWithSelector = await decodeWithSelector({ calldata })
     return decodedWithSelector
   } catch (error) {
-    return null
+    // fallback to decoding with selector
+    return decodeWithSelector({ calldata })
   }
 }
 
 export async function decodeWithSelector ({
   calldata
 }: {
-    calldata: string;
+  calldata: string;
 }): Promise<ethers.utils.TransactionDescription | any | null> {
   try {
     return await _decodeWithSelector(calldata)
-  } catch (error) {
-    logger.error('Failed to decode with selector', error.stack)
-    const decodingFunctions = [
-      decodeSafeMultiSendTransactionsParam,
-      decodeUniversalRouterPath,
-      decodeABIEncodedData,
-      decodeUniversalRouterCommands,
-      decodeByGuessingFunctionFragment
-    ]
-
-    for (const decodeFn of decodingFunctions) {
+  } catch {
+    try {
+      return decodeSafeMultiSendTransactionsParam(calldata)
+    } catch {
       try {
-        return await decodeFn(calldata)
-      } catch (error) {
-        logger.error(`Failed to decode with ${decodeFn.name}`, error.stack)
+        return decodeUniversalRouterPath(calldata)
+      } catch {
+        try {
+          return decodeABIEncodedData(calldata)
+        } catch {
+          try {
+            return decodeUniversalRouterCommands(calldata)
+          } catch {
+            try {
+              return decodeByGuessingFunctionFragment(calldata)
+            } catch {
+              // New ABI decoding
+              const abiFragments: Fragment[] = newAbi.map((item: any) => {
+                return Fragment.from(item)
+              })
+              const decodedWithNewAbi = decodeWithABI({
+                abi: abiFragments,
+                calldata
+              })
+              if (decodedWithNewAbi) {
+                return decodedWithNewAbi
+              }
+              return null
+            }
+          }
+        }
       }
     }
-    return null
   }
 }
 
 const _decodeWithSelector = async (calldata: string) => {
   const selector = calldata.slice(0, 10)
+  console.log(`Decoding calldata with selector ${selector}`)
   try {
     const fnInterface = await fetchFunctionInterface({ selector })
     if (!fnInterface) {
-      throw new Error('No function interface found')
+      throw new Error('')
     }
     const decodedTransactions = decodeAllPossibilities({
       functionSignatures: [fnInterface],
@@ -83,13 +109,12 @@ const _decodeWithSelector = async (calldata: string) => {
     }
 
     const result = decodedTransactions[0]
+    console.log({ _decodeWithSelector: result })
     return result
   } catch (error) {
-    logger.error(
-            `Failed to find function interface for selector ${selector}`,
-            error.stack
+    throw new Error(
+      `Failed to find function interface for selector ${selector}`
     )
-    throw error
   }
 }
 
@@ -99,10 +124,10 @@ export async function decodeRecursive ({
   chainId,
   abi
 }: {
-    calldata: string;
-    address?: string;
-    chainId?: number;
-    abi?: ethers.utils.Fragment[] | string[];
+  calldata: string;
+  address?: string;
+  chainId?: number;
+  abi?: ethers.utils.Fragment[] | string[];
 }) {
   try {
     let parsedTransaction: ethers.utils.TransactionDescription | null
@@ -153,10 +178,10 @@ const decodeParamTypes = async ({
   address,
   chainId
 }: {
-    input: ethers.utils.ParamType;
-    value: any;
-    address?: string;
-    chainId?: number;
+  input: ethers.utils.ParamType;
+  value: any;
+  address?: string;
+  chainId?: number;
 }): Promise<any> => {
   if (input.baseType.includes('int')) {
     return ethers.BigNumber.from(value).toString()
@@ -178,9 +203,9 @@ const decodeBytesParam = async ({
   address,
   chainId
 }: {
-    value: any;
-    address?: string;
-    chainId?: number;
+  value: any;
+  address?: string;
+  chainId?: number;
 }) => {
   return {
     decoded: await decodeRecursive({ calldata: value, address, chainId })
@@ -193,10 +218,10 @@ const decodeTupleParam = async ({
   address,
   chainId
 }: {
-    input: ethers.utils.ParamType;
-    value: any;
-    address?: string;
-    chainId?: number;
+  input: ethers.utils.ParamType;
+  value: any;
+  address?: string;
+  chainId?: number;
 }): Promise<any> => {
   if (!input.components) {
     return null
@@ -229,10 +254,10 @@ const decodeArrayParam = async ({
   address,
   chainId
 }: {
-    value: any;
-    input: ethers.utils.ParamType;
-    address?: string;
-    chainId?: number;
+  value: any;
+  input: ethers.utils.ParamType;
+  address?: string;
+  chainId?: number;
 }) => {
   if (!Array.isArray(value) || value.length === 0) {
     return []

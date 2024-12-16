@@ -44,6 +44,7 @@ export class UserOpParser {
     if (!decodeResults) {
       throw new Error('Signature is wrong or undefined')
     }
+    console.log('decodeResults', decodeResults)
 
     const { args, name, fragment } = decodeResults
     const fragmentName = name || fragment?.name

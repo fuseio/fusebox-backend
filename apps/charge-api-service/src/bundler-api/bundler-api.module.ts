@@ -3,7 +3,8 @@ import { HttpModule } from '@nestjs/axios'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { ConfigModule } from '@nestjs/config'
 import configuration from '@app/api-service/bundler-api/config/configuration'
-import { BundlerApiController } from '@app/api-service/bundler-api/bundler-api.controller'
+import { BundlerApiControllerV0 } from '@app/api-service/bundler-api/bundler-api-v0.controller'
+import { BundlerApiControllerV07 } from '@app/api-service/bundler-api/bundler-api-v0.7.controller'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 
@@ -24,7 +25,8 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
     ConfigModule.forFeature(configuration)
   ],
   controllers: [
-    BundlerApiController
+    BundlerApiControllerV0,
+    BundlerApiControllerV07
   ]
 })
 

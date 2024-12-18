@@ -28,8 +28,8 @@ interface GasDetails {
 }
 
 @Injectable()
-export class PaymasterApiServiceV0 {
-  private readonly logger = new Logger(PaymasterApiServiceV0.name)
+export class PaymasterApiService {
+  private readonly logger = new Logger(PaymasterApiService.name)
   constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,

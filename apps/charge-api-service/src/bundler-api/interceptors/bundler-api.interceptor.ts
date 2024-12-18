@@ -20,8 +20,8 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 
 @Injectable()
-export class BundlerApiInterceptorV07 implements NestInterceptor {
-  private readonly logger = new Logger(BundlerApiInterceptorV07.name)
+export class BundlerApiInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(BundlerApiInterceptor.name)
   constructor (
     @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy,
     private httpService: HttpService,
@@ -96,7 +96,7 @@ export class BundlerApiInterceptorV07 implements NestInterceptor {
 
   private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.${environment}.v0_7`)
+    const config = this.configService.get(`bundler.${environment}.v06`)
 
     if (config.url) {
       return config.url

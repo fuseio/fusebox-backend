@@ -1,17 +1,19 @@
 export default () => ({
   bundler: {
-    production:
-    {
-      v0: {
-        url: process.env.BUNDLER_API_PRD_URL_V0
+    production: {
+      v06: {
+        url: process.env.BUNDLER_API_PRD_URL_V06
       },
-      v0_7: {
-        url: process.env.BUNDLER_API_PRD_URL_V0_7
+      v07: {
+        url: process.env.BUNDLER_API_PRD_URL_V07
       }
     },
     sandbox: {
-      v0: {
-        url: process.env.BUNDLER_API_SANDBOX_URL_V0
+      v06: {
+        url: process.env.BUNDLER_API_SANDBOX_URL_V06
+      },
+      v07: {
+        url: process.env.BUNDLER_API_SANDBOX_URL_V07
       }
     }
   }

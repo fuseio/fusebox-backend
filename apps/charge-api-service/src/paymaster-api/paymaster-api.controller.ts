@@ -1,16 +1,16 @@
 import { Controller, UseGuards, Req, Post, Res } from '@nestjs/common'
-import { PaymasterApiServiceV0 } from '@app/api-service/paymaster-api/services/paymaster-api-v0.service'
+import { PaymasterApiService } from '@app/api-service/paymaster-api/services/paymaster-api.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { JSONRPCServer } from 'json-rpc-2.0'
 import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiQuery } from '@nestjs/swagger'
 
 @ApiTags('Paymaster JSON-RPC API')
 @UseGuards(IsPrdOrSbxKeyGuard)
-@Controller({ path: 'paymaster', version: '0' })
+@Controller({ path: 'v0/paymaster' })
 export class PaymasterApiController {
   server: JSONRPCServer = new JSONRPCServer()
   constructor (
-    private readonly paymasterService: PaymasterApiServiceV0
+    private readonly paymasterService: PaymasterApiService
   ) {
     this.server.addMethod('pm_sponsorUserOperation', (body, req: any) =>
       this.paymasterService.pm_sponsorUserOperation(

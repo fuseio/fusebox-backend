@@ -4,7 +4,7 @@ import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import configuration from '@app/api-service/paymaster-api/config/configuration'
 import { PaymasterApiController } from '@app/api-service/paymaster-api/paymaster-api.controller'
-import { PaymasterApiServiceV0 } from '@app/api-service/paymaster-api/services/paymaster-api-v0.service'
+import { PaymasterApiService } from '@app/api-service/paymaster-api/services/paymaster-api.service'
 import { accountsService } from '@app/common/constants/microservices.constants'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { EthersModule } from 'nestjs-ethers'
@@ -60,7 +60,7 @@ import { UserOpParser } from '@app/common/services/user-op-parser.service'
     PaymasterApiController
   ],
   providers: [
-    PaymasterApiServiceV0,
+    PaymasterApiService,
     UserOpParser
   ]
 })

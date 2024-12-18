@@ -7,8 +7,6 @@ import {
 } from '@app/common/utils/calldata-decoder/decoders/specialized'
 import { decodeAllPossibilities, decodeWithABI } from '@app/common/utils/calldata-decoder/decoders/abi'
 import { fetchContractAbi, fetchFunctionInterface } from '@app/common/utils/calldata-decoder/api'
-import newAbi from '@app/common/utils/calldata-decoder/abis/entrypoint_0_7_0.abi.json'
-import { Fragment } from '@ethersproject/abi' // Correct import for Fragment
 
 import { Logger } from '@nestjs/common'
 import { ethers } from 'ethers'
@@ -24,12 +22,8 @@ export async function decodeWithAddress ({
   address: string;
   chainId: number;
 }): Promise<ethers.utils.TransactionDescription | null> {
-  console.log(`Decoding calldata with address ${address} on chain ${chainId}`)
   try {
-    const fetchedAbi = await fetchContractAbi({
-      address,
-      chainId
-    })
+    const fetchedAbi = await fetchContractAbi({ address, chainId })
     const decodedFromAbi = decodeWithABI({
       abi: fetchedAbi.abi,
       calldata
@@ -37,14 +31,10 @@ export async function decodeWithAddress ({
     if (decodedFromAbi) {
       return decodedFromAbi
     }
-    console.log(
-      `Failed to decode calldata with ABI for contract ${address} on chain ${chainId}, decoding with selector`
-    )
     const decodedWithSelector = await decodeWithSelector({ calldata })
     return decodedWithSelector
   } catch (error) {
-    // fallback to decoding with selector
-    return decodeWithSelector({ calldata })
+    return null
   }
 }
 
@@ -54,50 +44,35 @@ export async function decodeWithSelector ({
   calldata: string;
 }): Promise<ethers.utils.TransactionDescription | any | null> {
   try {
-    return await _decodeWithSelector(calldata)
-  } catch {
-    try {
-      return decodeSafeMultiSendTransactionsParam(calldata)
-    } catch {
+    return _decodeWithSelector(calldata)
+  } catch (error) {
+    logger.error('Failed to decode with selector', error.stack)
+    const decodingFunctions = [
+      decodeSafeMultiSendTransactionsParam,
+      decodeUniversalRouterPath,
+      decodeABIEncodedData,
+      decodeUniversalRouterCommands,
+      decodeByGuessingFunctionFragment
+    ]
+
+    logger.log('calldata', calldata)
+    for (const decodeFn of decodingFunctions) {
       try {
-        return decodeUniversalRouterPath(calldata)
-      } catch {
-        try {
-          return decodeABIEncodedData(calldata)
-        } catch {
-          try {
-            return decodeUniversalRouterCommands(calldata)
-          } catch {
-            try {
-              return decodeByGuessingFunctionFragment(calldata)
-            } catch {
-              // New ABI decoding
-              const abiFragments: Fragment[] = newAbi.map((item: any) => {
-                return Fragment.from(item)
-              })
-              const decodedWithNewAbi = decodeWithABI({
-                abi: abiFragments,
-                calldata
-              })
-              if (decodedWithNewAbi) {
-                return decodedWithNewAbi
-              }
-              return null
-            }
-          }
-        }
+        return await decodeFn(calldata)
+      } catch (error) {
+        logger.error(`Failed to decode with ${decodeFn.name}`, error.stack)
       }
     }
+    return null
   }
 }
 
 const _decodeWithSelector = async (calldata: string) => {
   const selector = calldata.slice(0, 10)
-  console.log(`Decoding calldata with selector ${selector}`)
   try {
     const fnInterface = await fetchFunctionInterface({ selector })
     if (!fnInterface) {
-      throw new Error('')
+      throw new Error('No function interface found')
     }
     const decodedTransactions = decodeAllPossibilities({
       functionSignatures: [fnInterface],
@@ -109,12 +84,13 @@ const _decodeWithSelector = async (calldata: string) => {
     }
 
     const result = decodedTransactions[0]
-    console.log({ _decodeWithSelector: result })
     return result
   } catch (error) {
-    throw new Error(
-      `Failed to find function interface for selector ${selector}`
+    logger.error(
+      `Failed to find function interface for selector ${selector}`,
+      error.stack
     )
+    throw error
   }
 }
 

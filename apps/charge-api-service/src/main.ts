@@ -37,7 +37,7 @@ async function bootstrap () {
 
   await app.startAllMicroservices()
 
-  // setupSwagger(app)
+  setupSwagger(app)
 
   await app.listen(process.env.API_PORT)
 }

@@ -96,7 +96,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
 
   private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.${environment}`)
+    const config = this.configService.get(`bundler.${environment}.v06`)
 
     if (config.url) {
       return config.url

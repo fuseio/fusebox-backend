@@ -1,5 +1,5 @@
 import { Controller, UseGuards, Req, Post, Res } from '@nestjs/common'
-import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
+import { PaymasterApiService } from '@app/api-service/paymaster-api/services/paymaster-api.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { JSONRPCServer } from 'json-rpc-2.0'
 import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiQuery } from '@nestjs/swagger'

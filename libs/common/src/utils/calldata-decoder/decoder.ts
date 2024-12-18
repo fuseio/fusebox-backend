@@ -18,9 +18,9 @@ export async function decodeWithAddress ({
   address,
   chainId
 }: {
-    calldata: string;
-    address: string;
-    chainId: number;
+  calldata: string;
+  address: string;
+  chainId: number;
 }): Promise<ethers.utils.TransactionDescription | null> {
   try {
     const fetchedAbi = await fetchContractAbi({ address, chainId })
@@ -41,10 +41,10 @@ export async function decodeWithAddress ({
 export async function decodeWithSelector ({
   calldata
 }: {
-    calldata: string;
+  calldata: string;
 }): Promise<ethers.utils.TransactionDescription | any | null> {
   try {
-    return await _decodeWithSelector(calldata)
+    return _decodeWithSelector(calldata)
   } catch (error) {
     logger.error('Failed to decode with selector', error.stack)
     const decodingFunctions = [
@@ -55,6 +55,7 @@ export async function decodeWithSelector ({
       decodeByGuessingFunctionFragment
     ]
 
+    logger.log('calldata', calldata)
     for (const decodeFn of decodingFunctions) {
       try {
         return await decodeFn(calldata)
@@ -86,8 +87,8 @@ const _decodeWithSelector = async (calldata: string) => {
     return result
   } catch (error) {
     logger.error(
-            `Failed to find function interface for selector ${selector}`,
-            error.stack
+      `Failed to find function interface for selector ${selector}`,
+      error.stack
     )
     throw error
   }
@@ -99,10 +100,10 @@ export async function decodeRecursive ({
   chainId,
   abi
 }: {
-    calldata: string;
-    address?: string;
-    chainId?: number;
-    abi?: ethers.utils.Fragment[] | string[];
+  calldata: string;
+  address?: string;
+  chainId?: number;
+  abi?: ethers.utils.Fragment[] | string[];
 }) {
   try {
     let parsedTransaction: ethers.utils.TransactionDescription | null
@@ -153,10 +154,10 @@ const decodeParamTypes = async ({
   address,
   chainId
 }: {
-    input: ethers.utils.ParamType;
-    value: any;
-    address?: string;
-    chainId?: number;
+  input: ethers.utils.ParamType;
+  value: any;
+  address?: string;
+  chainId?: number;
 }): Promise<any> => {
   if (input.baseType.includes('int')) {
     return ethers.BigNumber.from(value).toString()
@@ -178,9 +179,9 @@ const decodeBytesParam = async ({
   address,
   chainId
 }: {
-    value: any;
-    address?: string;
-    chainId?: number;
+  value: any;
+  address?: string;
+  chainId?: number;
 }) => {
   return {
     decoded: await decodeRecursive({ calldata: value, address, chainId })
@@ -193,10 +194,10 @@ const decodeTupleParam = async ({
   address,
   chainId
 }: {
-    input: ethers.utils.ParamType;
-    value: any;
-    address?: string;
-    chainId?: number;
+  input: ethers.utils.ParamType;
+  value: any;
+  address?: string;
+  chainId?: number;
 }): Promise<any> => {
   if (!input.components) {
     return null
@@ -229,10 +230,10 @@ const decodeArrayParam = async ({
   address,
   chainId
 }: {
-    value: any;
-    input: ethers.utils.ParamType;
-    address?: string;
-    chainId?: number;
+  value: any;
+  input: ethers.utils.ParamType;
+  address?: string;
+  chainId?: number;
 }) => {
   if (!Array.isArray(value) || value.length === 0) {
     return []

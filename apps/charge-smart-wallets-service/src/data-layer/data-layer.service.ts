@@ -42,7 +42,7 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     try {
-      if (baseUserOp.paymasterAndData !== '0x') {
+      if (!isNil(baseUserOp.paymasterAndData) && baseUserOp.paymasterAndData !== '0x') {
         const paymasterAddressAndSponsorId = decodePaymasterAndData(baseUserOp.paymasterAndData)
         baseUserOp.paymaster = paymasterAddressAndSponsorId.paymasterAddress
         baseUserOp.sponsorId = paymasterAddressAndSponsorId.sponsorId

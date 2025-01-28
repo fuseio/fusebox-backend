@@ -18,6 +18,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
+import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
@@ -58,7 +59,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
     )
 
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
-      const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result, apiKey: context.switchToHttp().getRequest().query.apiKey }
+      const userOp = this.contructUserOp(context, requestConfig, response)
       this.logger.log(`eth_sendUserOperation: ${JSON.stringify(userOp)}`)
       try {
         if (isNil(userOp.userOpHash)) {
@@ -80,10 +81,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
   private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
     const requestEnvironment = request.environment
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
     const ctxHandlerName = context.getHandler().name
     const body = request.body
     const requestConfig: AxiosRequestConfig = {
-      url: this.prepareUrl(requestEnvironment),
+      url: this.prepareUrl(requestEnvironment, bundlerProvider),
       method: ctxHandlerName
     }
 
@@ -94,14 +96,33 @@ export class BundlerApiInterceptor implements NestInterceptor {
     return requestConfig
   }
 
-  private prepareUrl (environment) {
+  private prepareUrl (environment, bundlerProvider) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.${environment}`)
+    const config = this.configService.get(`bundler.${bundlerProvider}.${environment}`)
 
     if (config.url) {
       return config.url
     } else {
       throw new InternalServerErrorException(`${capitalize(environment)} bundler environment is missing`)
     }
+  }
+
+  private contructUserOp (context: ExecutionContext, requestConfig: AxiosRequestConfig, response) {
+    const request = context.switchToHttp().getRequest()
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
+    const param = requestConfig.data.params[0]
+    const base = { userOpHash: response?.result, apiKey: request.query.apiKey }
+
+    if (bundlerProvider === BundlerProvider.PIMLICO) {
+      return {
+        ...param,
+        ...base,
+        initCode: param.initCode ?? '0x',
+        sponsorId: param.paymaster ? BundlerProvider.PIMLICO : undefined,
+        paymasterAndData: param.paymasterData,
+        paymasterData: undefined
+      }
+    }
+    return { ...param, ...base }
   }
 }

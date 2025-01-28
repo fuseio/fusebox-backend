@@ -355,11 +355,11 @@ export class OperatorsService {
   async getSponsoredTransactionsCount (auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const project = await this.projectsService.findOneByOwnerId(user._id)
-    const paymasters = await this.paymasterService.findActivePaymasters(project._id)
-    const sponsorId = paymasters?.[0]?.sponsorId
+    const apiKey = await this.projectsService.getApiKeysInfo(project._id)
+    const publicKey = apiKey.publicKey
     let sponsoredTransactions = 0
-    if (sponsorId) {
-      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId)
+    if (publicKey) {
+      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', publicKey)
         .catch(e => {
           this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
         })

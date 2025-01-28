@@ -42,7 +42,7 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     try {
-      if (baseUserOp.paymasterAndData !== '0x') {
+      if (baseUserOp.paymasterAndData && baseUserOp.paymasterAndData !== '0x' && !baseUserOp.sponsorId) {
         const paymasterAddressAndSponsorId = decodePaymasterAndData(baseUserOp.paymasterAndData)
         baseUserOp.paymaster = paymasterAddressAndSponsorId.paymasterAddress
         baseUserOp.sponsorId = paymasterAddressAndSponsorId.sponsorId
@@ -229,8 +229,8 @@ export class DataLayerService {
     }
   }
 
-  async findSponsoredTransactionsCount (sponsorId: string): Promise<number> {
-    return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
+  async findSponsoredTransactionsCount (apiKey: string): Promise<number> {
+    return this.userOpModel.countDocuments({ apiKey: { $eq: apiKey } })
   }
 
   async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {

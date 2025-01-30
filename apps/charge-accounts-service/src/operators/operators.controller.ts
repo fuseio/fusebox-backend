@@ -10,6 +10,7 @@ import { MessagePattern } from '@nestjs/microservices'
 import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { AuthOperator } from '@app/accounts-service/operators/entities/auth-operator.entity'
 import { CreateOperatorUser } from '@app/accounts-service/operators/entities/create-operator-user.entity'
+import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 
 @ApiTags('Operators')
 @Controller({ path: 'operators', version: '1' })
@@ -61,9 +62,9 @@ export class OperatorsController {
   }
 
   /**
-   * Create user, project and AA wallet for an operator
+   * Create user and project for an operator
    * @param authOperatorDto
-   * @returns the user, project and AA wallet with public key
+   * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
   @Post('/account')
@@ -71,6 +72,19 @@ export class OperatorsController {
   @ApiBody({ type: CreateOperatorUser, required: true })
   async createOperatorUserAndProjectAndWallet (@Body() createOperatorUserDto: CreateOperatorUserDto, @User('sub') auth0Id: string) {
     return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
+  }
+
+  /**
+   * Create AA wallet for an operator
+   * @param authOperatorDto
+   * @returns the AA wallet
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/wallet')
+  @ApiOperation({ summary: 'Create AA wallet for an operator' })
+  @ApiBody({ type: CreateOperatorUser, required: true })
+  async createOperatorWallet (@Body() createOperatorWalletDto: CreateOperatorWalletDto, @User('sub') auth0Id: string) {
+    return this.operatorsService.createOperatorWallet(createOperatorWalletDto, auth0Id)
   }
 
   /**

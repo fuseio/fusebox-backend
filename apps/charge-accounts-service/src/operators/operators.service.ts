@@ -25,6 +25,7 @@ import { OperatorUserProjectResponse } from '@app/accounts-service/operators/int
 import { OperatorRefreshToken } from '@app/accounts-service/operators/interfaces/operator-refresh-token.interface'
 import { Response } from 'express'
 import * as bcrypt from 'bcryptjs'
+import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 
 @Injectable()
 export class OperatorsService {
@@ -119,14 +120,10 @@ export class OperatorsService {
       const secretKey = await this.createProjectSecret(projectObject)
       const apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
       const sponsorId = await this.createPaymasters(projectObject)
-      const predictedWallet = await this.predictWallet(auth0Id, 0, '0_1_0', 'production')
       const eventData = {
         email: user.email,
         apiKey: apiKeyInfo.publicKey
       }
-      const wallet = await this.createOperatorWallet(user, predictedWallet)
-      await this.addAddressToOperatorsWebhook(predictedWallet)
-      await this.addAddressToTokenReceiveWebhook(predictedWallet)
       this.googleFormSubmit(createOperatorUserDto)
       this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
       const project: OperatorProject = {
@@ -140,7 +137,7 @@ export class OperatorsService {
         secretLastFourChars: apiKeyInfo.secretLastFourChars,
         sponsorId
       }
-      return this.constructUserProjectResponse(user, project, wallet, secretKey)
+      return this.constructUserProjectResponse(user, project, undefined, secretKey)
     } catch (error) {
       this.errorHandler(error)
     }
@@ -178,18 +175,27 @@ export class OperatorsService {
     return paymasters[0].sponsorId
   }
 
-  private async createOperatorWallet (user: any, predictedWallet: string) {
+  async createOperatorWallet (createOperatorWalletDto: CreateOperatorWalletDto, auth0Id: string) {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
     const operatorWalletCreationResult = await this.operatorWalletModel.create({
       ownerId: user._id,
-      smartWalletAddress: predictedWallet.toLowerCase()
+      smartWalletAddress: createOperatorWalletDto.smartWalletAddress.toLowerCase()
     })
     if (!operatorWalletCreationResult) {
       throw new HttpException('Failed to create operator wallet', HttpStatus.INTERNAL_SERVER_ERROR)
     }
+
+    await this.addAddressToOperatorsWebhook(operatorWalletCreationResult.smartWalletAddress)
+    await this.addAddressToTokenReceiveWebhook(operatorWalletCreationResult.smartWalletAddress)
+
     return operatorWalletCreationResult
   }
 
-  private constructUserProjectResponse (user: User, project: OperatorProject, wallet: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
+  private constructUserProjectResponse (user: User, project: OperatorProject, wallet?: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
     // Constructs the response object from the entities
     return {
       user: {
@@ -197,7 +203,7 @@ export class OperatorsService {
         name: user.name,
         email: user.email,
         auth0Id: user.auth0Id,
-        smartWalletAddress: wallet.smartWalletAddress
+        smartWalletAddress: wallet?.smartWalletAddress ?? '0x'
       },
       project: {
         id: project.id,

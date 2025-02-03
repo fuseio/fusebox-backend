@@ -36,4 +36,9 @@ export class DataLayerController {
       apiKey
     )
   }
+
+  @MessagePattern('get-operator-by-api-key')
+  getOperatorByApiKey (apiKey: string) {
+    return this.dataLayerService.getOperatorByApiKey(apiKey)
+  }
 }

@@ -34,6 +34,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
       context
     )
 
+    const isSponsoredQuotaExceeded = await this.isOperatorSponsoredQuotaExceeded(context, requestConfig)
+    if (isSponsoredQuotaExceeded) {
+      throw new HttpException('Operator sponsored transaction quota exceeded', HttpStatus.BAD_REQUEST)
+    }
+
     const response = await lastValueFrom(
       this.httpService
         .request(requestConfig)
@@ -124,5 +129,44 @@ export class BundlerApiInterceptor implements NestInterceptor {
       }
     }
     return { ...param, ...base }
+  }
+
+  private async isOperatorSponsoredQuotaExceeded (context: ExecutionContext, requestConfig: AxiosRequestConfig) {
+    const request = context.switchToHttp().getRequest()
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
+    if (bundlerProvider !== BundlerProvider.PIMLICO) {
+      return false
+    }
+
+    const paymaster = requestConfig.data?.params?.[0]?.paymaster
+    if (!paymaster) {
+      return false
+    }
+
+    const operatorUser = await callMSFunction(this.dataLayerClient, 'get-operator-by-api-key', request.query.apiKey)
+      .catch(e => {
+        this.logger.log(`get-operator-by-api-key failed: ${JSON.stringify(e)}`)
+      })
+    if (!operatorUser) {
+      return true
+    }
+    const { operator } = operatorUser
+    if (!operator) {
+      return true
+    }
+    if (operator.isActivated) {
+      return false
+    }
+
+    const freePlanLimit = 1000
+    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', request.query.apiKey)
+      .catch(e => {
+        this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
+      })
+    if (sponsoredTransactions > freePlanLimit) {
+      return true
+    }
+
+    return false
   }
 }

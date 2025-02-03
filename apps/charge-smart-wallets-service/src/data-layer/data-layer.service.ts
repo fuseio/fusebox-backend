@@ -230,12 +230,16 @@ export class DataLayerService {
   }
 
   async findSponsoredTransactionsCount (apiKey: string): Promise<number> {
-    return this.userOpModel.countDocuments({ apiKey: { $eq: apiKey } })
+    return this.userOpModel.countDocuments({ apiKey: { $eq: apiKey }, sponsorId: { $ne: '0' } })
   }
 
   async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {
     try {
-      const user = await this.getOperatorByApiKey(body.userOp.apiKey)
+      const operatorUser = await this.getOperatorByApiKey(body.userOp.apiKey)
+      if (!operatorUser || !operatorUser?.user) {
+        return
+      }
+      const { user } = operatorUser
       if (!get(user, 'auth0Id')) {
         return
       }
@@ -275,7 +279,10 @@ export class DataLayerService {
         this.logger.log('Operator didnt exists')
         return false
       }
-      return user
+      return {
+        operator,
+        user
+      }
     } catch (error) {
       this.logger.error(error)
     }

@@ -22,6 +22,8 @@ A Helm chart for Kubernetes related accounts component
 | configMap.paymaster_funder_webhook_id | string | `""` | Paymaster Funder Webhook ID |
 | configMap.paymaster_production_contract_address_v_0_1_0 | string | `""` | Bundler - Paymaster Production contract address |
 | configMap.paymaster_sandbox_contract_address_v_0_1_0 | string | `""` | Bundler - Paymaster Sandbox contract address |
+| configMap.usdc_contract_address_mainnet | string | `""` | USDC contract address - Mainnet |
+| configMap.usdc_contract_address_testnet | string | `""` | USDC contract address - Testnet |
 | global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |

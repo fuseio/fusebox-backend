@@ -63,6 +63,8 @@ accounts:
     paymaster_funder_api_key: "pk_yWkBe0hnObJmMkYjq4Ggce1g"
     paymaster_funder_webhook_id: "65c4ba66394c8d9c3e4801ff"
     console_dapp_url: "https://console.fuse.io"
+    usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

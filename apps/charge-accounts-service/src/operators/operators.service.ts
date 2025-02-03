@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString, operatorRefreshTokenModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorWalletModelString, operatorRefreshTokenModelString, invoicesModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -26,6 +26,9 @@ import { OperatorRefreshToken } from '@app/accounts-service/operators/interfaces
 import { Response } from 'express'
 import * as bcrypt from 'bcryptjs'
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
+import { Invoice } from '@app/accounts-service/operators/interfaces/invoice.interface'
+import { Cron, CronExpression } from '@nestjs/schedule'
+import erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
 
 @Injectable()
 export class OperatorsService {
@@ -44,7 +47,9 @@ export class OperatorsService {
     private readonly notificationsClient: ClientProxy,
     private readonly analyticsService: AnalyticsService,
     @Inject(operatorRefreshTokenModelString)
-    private operatorRefreshTokenModel: Model<OperatorRefreshToken>
+    private operatorRefreshTokenModel: Model<OperatorRefreshToken>,
+    @Inject(invoicesModelString)
+    private invoicesModel: Model<Invoice>
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -390,6 +395,10 @@ export class OperatorsService {
     return this.operatorWalletModel.findOne({ smartWalletAddress: value.toLowerCase() })
   }
 
+  async findAllOperatorWallets (): Promise<OperatorWallet[]> {
+    return this.operatorWalletModel.find()
+  }
+
   async updateIsActivated (_id: ObjectId, isActivated: boolean): Promise<any> {
     return this.operatorWalletModel.updateOne({ _id }, { isActivated })
   }
@@ -596,5 +605,120 @@ export class OperatorsService {
 
     const hashedRefreshToken = await this.hashRefreshToken(refreshToken)
     return this.createRefreshToken(auth0Id, hashedRefreshToken)
+  }
+
+  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string): Promise<Invoice> {
+    return this.invoicesModel.create({ ownerId, amount, currency, txHash })
+  }
+
+  async findInvoices (ownerId: string): Promise<Invoice[]> {
+    return this.invoicesModel.find({ ownerId })
+  }
+
+  async findFirstDayOfMonthInvoice (ownerId: string): Promise<Invoice> {
+    const currentDate = new Date()
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+    return this.invoicesModel.findOne({ ownerId, createdAt: { $gte: firstDayOfMonth } })
+  }
+
+  async subscriptionWeb3 (environment:string) {
+    const version = '0_1_0'
+    const paymasterEnvs = this.configService.getOrThrow(`paymaster.${version}.${environment}`)
+    const contractAddress = paymasterEnvs.usdcContractAddress
+    const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
+    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs.url)
+    const wallet = new ethers.Wallet(privateKey, provider)
+    const contract = new ethers.Contract(contractAddress, erc20Abi, wallet)
+    return {
+      provider,
+      wallet,
+      contract
+    }
+  }
+
+  async subscriptionInfo () {
+    const payment = 50
+    const decimals = 6
+    const amount = ethers.utils.parseUnits(payment.toString(), decimals)
+    return {
+      payment,
+      decimals,
+      amount
+    }
+  }
+
+  async createSubscription (auth0Id: string): Promise<Invoice> {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    const operatorWallet = await this.findWalletOwner(user._id)
+    if (!operatorWallet) {
+      throw new HttpException('Operator wallet not found.', HttpStatus.NOT_FOUND)
+    }
+
+    const { wallet, contract } = await this.subscriptionWeb3('production')
+    const { payment, amount } = await this.subscriptionInfo()
+
+    const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
+    if (allowance.lt(amount)) {
+      throw new HttpException('Insufficient allowance', HttpStatus.BAD_REQUEST)
+    }
+
+    const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
+    const tx = await transfer.wait()
+    const txHash = tx?.transactionHash
+    if (!txHash) {
+      throw new HttpException('Transaction failed', HttpStatus.BAD_REQUEST)
+    }
+
+    const invoice = await this.createInvoice(user._id, payment, 'USDC', txHash)
+    await this.updateIsActivated(operatorWallet._id, true)
+
+    return invoice
+  }
+
+  async getSubscriptions (auth0Id: string): Promise<Invoice[]> {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    return this.findInvoices(user._id)
+  }
+
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
+  async processMonthlySubscriptions () {
+    const operatorWallets = await this.findAllOperatorWallets()
+    const { wallet, contract } = await this.subscriptionWeb3('production')
+    const { payment, amount } = await this.subscriptionInfo()
+
+    for (const operatorWallet of operatorWallets) {
+      const invoice = await this.findFirstDayOfMonthInvoice(operatorWallet.ownerId)
+      if (invoice) {
+        this.logger.log(`Invoice already exists for ${operatorWallet.ownerId}`)
+        continue
+      }
+
+      const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
+      if (allowance.lt(amount)) {
+        this.logger.log(`Insufficient allowance for ${operatorWallet.ownerId}`)
+        await this.updateIsActivated(operatorWallet._id, false)
+        continue
+      }
+
+      const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
+      const tx = await transfer.wait()
+      const txHash = tx?.transactionHash
+      if (!txHash) {
+        this.logger.log(`Transaction failed for ${operatorWallet.ownerId}`)
+        await this.updateIsActivated(operatorWallet._id, false)
+        continue
+      }
+
+      await this.createInvoice(operatorWallet.ownerId, payment, 'USDC', txHash)
+      await this.updateIsActivated(operatorWallet._id, true)
+    }
   }
 }

@@ -147,4 +147,27 @@ export class OperatorsController {
   refreshToken (@Req() request: Request, @Res({ passthrough: true }) response: Response) {
     return this.operatorsService.validateRefreshToken(request.cookies?.operator_refresh_token, response)
   }
+
+  /**
+   * Create a subscription for the operator
+   * @param createSubscriptionDto
+   * @returns the subscription
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/subscriptions')
+  @ApiOperation({ summary: 'Create a subscription for the operator' })
+  async createSubscription (@User('sub') auth0Id: string) {
+    return this.operatorsService.createSubscription(auth0Id)
+  }
+
+  /**
+   * Get all subscription invoices for the operator
+   * @returns the subscription invoices
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('/subscriptions')
+  @ApiOperation({ summary: 'Get all subscription invoices for the operator' })
+  async getSubscriptions (@User('sub') auth0Id: string) {
+    return this.operatorsService.getSubscriptions(auth0Id)
+  }
 }

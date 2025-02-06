@@ -12,6 +12,7 @@ import { ConfigService } from '@nestjs/config'
 async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
   const configService = app.get(ConfigService)
+  const consoleDappFuseOrVercelUrl = /^https:\/\/console[-.a-zA-Z0-9]*\.(fuse\.io|vercel\.app)$/
 
   const microServiceOptions: TcpOptions = {
     transport: Transport.TCP,
@@ -27,7 +28,7 @@ async function bootstrap () {
   app.use(cookieParser())
   app.setGlobalPrefix('accounts')
   app.enableCors({
-    origin: configService.get('CONSOLE_DAPP_URL'),
+    origin: configService.get('CONSOLE_DAPP_URL') ?? consoleDappFuseOrVercelUrl,
     credentials: true
   })
   app.useGlobalPipes(

@@ -65,6 +65,7 @@ accounts:
     console_dapp_url: "https://console-staging.fuse.io"
     usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
     usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    charge_payments_api_url: "https://payments.qa.chargeweb3.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -76,6 +77,7 @@ accounts:
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
     - operator_refresh_jwt_secret
+    - charge_payments_api_key
 
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.

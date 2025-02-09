@@ -11,6 +11,8 @@ import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiPara
 import { AuthOperator } from '@app/accounts-service/operators/entities/auth-operator.entity'
 import { CreateOperatorUser } from '@app/accounts-service/operators/entities/create-operator-user.entity'
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
+import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
+import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
 
 @ApiTags('Operators')
 @Controller({ path: 'operators', version: '1' })
@@ -169,5 +171,25 @@ export class OperatorsController {
   @ApiOperation({ summary: 'Get all subscription invoices for the operator' })
   async getSubscriptions (@User('sub') auth0Id: string) {
     return this.operatorsService.getSubscriptions(auth0Id)
+  }
+
+  /**
+   * Create a checkout session for the operator
+   * @returns the checkout URL
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/checkout/sessions')
+  @ApiOperation({ summary: 'Create a checkout session for the operator' })
+  async checkoutSession (@User('sub') auth0Id: string, @Body() createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
+    return this.operatorsService.checkout(auth0Id, createOperatorCheckoutDto)
+  }
+
+  /**
+   * Handle the checkout webhook
+   */
+  @Post('/checkout/webhook')
+  @ApiOperation({ summary: 'Handle the checkout webhook' })
+  async handleCheckoutWebhook (@Body() webhookEvent: ChargeCheckoutWebhookEvent) {
+    return this.operatorsService.handleCheckoutWebhook(webhookEvent)
   }
 }

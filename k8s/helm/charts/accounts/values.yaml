@@ -90,6 +90,8 @@ configMap:
   usdc_contract_address_mainnet: ""
   # -- USDC contract address - Testnet
   usdc_contract_address_testnet: ""
+  # -- Charge Payments API URL
+  charge_payments_api_url: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
@@ -101,3 +103,4 @@ secret:
   - incoming_token_transfers_webhook_id
   - google_operator_form_url
   - operator_refresh_jwt_secret
+  - charge_payments_api_key

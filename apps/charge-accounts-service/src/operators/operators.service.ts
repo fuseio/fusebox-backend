@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString, operatorRefreshTokenModelString, invoicesModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorWalletModelString, operatorRefreshTokenModelString, invoicesModelString, operatorCheckoutModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -29,6 +29,10 @@ import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/cre
 import { Invoice } from '@app/accounts-service/operators/interfaces/invoice.interface'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
+import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
+import { OperatorCheckout } from '@app/accounts-service/operators/interfaces/operator-checkout.interface'
+import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
+import { ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
 
 @Injectable()
 export class OperatorsService {
@@ -49,7 +53,9 @@ export class OperatorsService {
     @Inject(operatorRefreshTokenModelString)
     private operatorRefreshTokenModel: Model<OperatorRefreshToken>,
     @Inject(invoicesModelString)
-    private invoicesModel: Model<Invoice>
+    private invoicesModel: Model<Invoice>,
+    @Inject(operatorCheckoutModelString)
+    private operatorCheckoutModel: Model<OperatorCheckout>
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -403,6 +409,10 @@ export class OperatorsService {
     return this.operatorWalletModel.updateOne({ _id }, { isActivated })
   }
 
+  async updateIsActivatedByOwnerId (ownerId: string, isActivated: boolean): Promise<any> {
+    return this.operatorWalletModel.updateOne({ ownerId }, { isActivated })
+  }
+
   async getBalance (address: string, ver: string, environment: string): Promise<string> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
     const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
@@ -720,5 +730,77 @@ export class OperatorsService {
       await this.createInvoice(operatorWallet.ownerId, payment, 'USDC', txHash)
       await this.updateIsActivated(operatorWallet._id, true)
     }
+  }
+
+  async findCheckout (sessionId: string) {
+    return this.operatorCheckoutModel.findOne({ sessionId })
+  }
+
+  async findLastPaidCheckout (ownerId: string) {
+    return this.operatorCheckoutModel.findOne({ ownerId, paymentStatus: ChargeCheckoutPaymentStatus.PAID }).sort({ createdAt: -1 })
+  }
+
+  async updateCheckout (sessionId: string, paymentStatus: string) {
+    return this.operatorCheckoutModel.updateOne({ sessionId }, { paymentStatus })
+  }
+
+  async checkout (auth0Id: string, createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
+    try {
+      const user = await this.usersService.findOneByAuth0Id(auth0Id)
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+
+      const chargePaymentsApiUrl = this.configService.get('CHARGE_PAYMENTS_API_URL')
+      const chargePaymentsApiKey = this.configService.get('CHARGE_PAYMENTS_API_KEY')
+      const accountsUrl = this.configService.get('AUTH0_AUDIENCE')
+      const expiresIn = 12000
+      const { payment } = await this.subscriptionInfo()
+      const chargeResponse = await axios.post(
+        `${chargePaymentsApiUrl}/payments/checkout/sessions?apiKey=${chargePaymentsApiKey}`,
+        {
+          successUrl: createOperatorCheckoutDto.successUrl,
+          cancelUrl: createOperatorCheckoutDto.cancelUrl,
+          webhookUrl: `${accountsUrl}/api/v1/operators/checkout/webhook`,
+          expiresIn,
+          lineItems: [
+            {
+              currency: 'usd',
+              unitAmount: payment.toString(),
+              quantity: '1',
+              productData: {
+                name: 'Console Operator'
+              }
+            }
+          ]
+        }
+      )
+
+      const checkout = await this.operatorCheckoutModel.create({
+        ownerId: user._id,
+        sessionId: chargeResponse.data.id,
+        ...chargeResponse.data
+      })
+      return checkout.url
+    } catch (error) {
+      this.logger.error(`Failed to checkout: ${error.message}`)
+      throw error
+    }
+  }
+
+  async handleCheckoutWebhook (webhookEvent: ChargeCheckoutWebhookEvent) {
+    const checkout = await this.findCheckout(webhookEvent.sessionId)
+    if (!checkout) {
+      throw new HttpException('Checkout not found', HttpStatus.NOT_FOUND)
+    }
+
+    const lastPaidCheckout = await this.findLastPaidCheckout(checkout.ownerId)
+    const oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1))
+    if (lastPaidCheckout && lastPaidCheckout.createdAt > oneMonthAgo) {
+      const isPaid = webhookEvent.paymentStatus === ChargeCheckoutPaymentStatus.PAID
+      await this.updateIsActivatedByOwnerId(checkout.ownerId, isPaid)
+    }
+
+    await this.updateCheckout(webhookEvent.sessionId, webhookEvent.paymentStatus)
   }
 }

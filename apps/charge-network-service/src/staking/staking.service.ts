@@ -1,12 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
-import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
+import {
+  StakingOption,
+  StakingProvider
+} from '@app/network-service/staking/interfaces'
 import VoltBarService from '@app/network-service/staking/staking-providers/volt-bar.service'
 import { sumBy } from 'lodash'
-import { fuseLiquidStakingId, voltBarId } from '@app/network-service/common/constants'
+import {
+  fuseLiquidStakingId,
+  usdcOnStargateSimpleStakingId,
+  voltBarId,
+  wethOnStargateSimpleStakingId
+} from '@app/network-service/common/constants'
 import { ConfigService } from '@nestjs/config'
 import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
+import SimpleStakingService from '@app/network-service/staking/staking-providers/simple-staking.service'
 
 @Injectable()
 export class StakingService {
@@ -14,17 +23,40 @@ export class StakingService {
   constructor (
     private readonly voltBarService: VoltBarService,
     private readonly fuseLiquidStakingService: FuseLiquidStakingService,
+    private readonly simpleStakingService: SimpleStakingService,
     private readonly configService: ConfigService
-  ) { }
+  ) {}
 
   get stakingOptionsConfig () {
     return this.configService.get('stakingOptions') as Array<StakingOption>
+  }
+
+  get stakingOptionsV2Config () {
+    return this.configService.get('stakingOptionsV2') as Array<StakingOption>
   }
 
   async stakingOptions () {
     const stakingOptionsData: Array<StakingOption> = []
 
     for (const stakingOption of this.stakingOptionsConfig) {
+      const stakingProvider = this.getStakingProvider(stakingOption)
+      const stakingApr = await stakingProvider.stakingApr(stakingOption)
+      const tvl = await stakingProvider.tvl(stakingOption)
+
+      stakingOptionsData.push({
+        ...stakingOption,
+        stakingApr,
+        tvl
+      })
+    }
+
+    return stakingOptionsData
+  }
+
+  async stakingOptionsV2 () {
+    const stakingOptionsData: Array<StakingOption> = []
+
+    for (const stakingOption of this.stakingOptionsV2Config) {
       const stakingProvider = this.getStakingProvider(stakingOption)
       const stakingApr = await stakingProvider.stakingApr(stakingOption)
       const tvl = await stakingProvider.tvl(stakingOption)
@@ -83,14 +115,24 @@ export class StakingService {
   }
 
   private getStakingOption (tokenAddress: string) {
-    return this.stakingOptionsConfig.find(stakingOption => stakingOption.tokenAddress === tokenAddress)
+    return this.stakingOptionsConfig.find(
+      (stakingOption) => stakingOption.tokenAddress === tokenAddress
+    )
   }
 
   private getStakingProvider (stakingOption: StakingOption): StakingProvider {
-    if (stakingOption.stakingProviderId === voltBarId) {
+    const stakingProviderId = stakingOption.stakingProviderId
+
+    const isSimpleStaking =
+      stakingProviderId === usdcOnStargateSimpleStakingId ||
+      stakingProviderId === wethOnStargateSimpleStakingId
+
+    if (stakingProviderId === voltBarId) {
       return this.voltBarService
-    } else if (stakingOption.stakingProviderId === fuseLiquidStakingId) {
+    } else if (stakingProviderId === fuseLiquidStakingId) {
       return this.fuseLiquidStakingService
+    } else if (isSimpleStaking) {
+      return this.simpleStakingService
     }
   }
 }

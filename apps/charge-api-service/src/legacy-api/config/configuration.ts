@@ -12,9 +12,5 @@ export default () => ({
     replaceHeaders: false,
     addCommunityAddressForPostRequests: true
   },
-  LegacyTradeApiController: {
-    baseUrl: `${process.env.LEGACY_FUSE_TRADE_API_URL}/api/v1`,
-    replaceHeaders: false
-  },
   LegacyV1ApiUrl: `${process.env.LEGACY_FUSE_ADMIN_API_URL}/api/v1`
 })

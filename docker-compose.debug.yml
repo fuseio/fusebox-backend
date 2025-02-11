@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   charge-accounts-service:
     command: npm run start:debug --service=charge-accounts-service --port=9229
@@ -7,8 +5,8 @@ services:
     command: npm run start:debug --service=charge-api-service --port=9227
   charge-notifications-service:
     command: npm run start:debug --service=charge-notifications-service --port=9230
-  charge-relay-service:
-    command: npm run start:debug --service charge-relay-service --port=9226
+  # charge-relay-service:
+  #   command: npm run start:debug --service charge-relay-service --port=9226
   charge-network-service:
     command: npm run start:debug --service=charge-network-service --port=9225
   charge-apps-service:

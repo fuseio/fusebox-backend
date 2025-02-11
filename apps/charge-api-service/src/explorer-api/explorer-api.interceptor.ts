@@ -6,7 +6,6 @@ import {
   HttpException
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { lastValueFrom } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { isEmpty } from 'lodash'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
@@ -16,35 +15,34 @@ export class ExplorerApiInterceptor implements NestInterceptor {
   constructor (
     private httpService: HttpService,
     private configService: ConfigService
-  ) {}
+  ) { }
 
   async intercept (context: ExecutionContext): Promise<any> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(
       context
     )
 
-    const response = await lastValueFrom(
-      this.httpService
-        .request(requestConfig)
-        .pipe(
-          map((axiosResponse: AxiosResponse) => {
-            return axiosResponse.data
-          })
-        )
-        .pipe(
-          catchError((e) => {
-            const errorReason =
+    const response = await
+    this.httpService
+      .request(requestConfig)
+      .pipe(
+        map((axiosResponse: AxiosResponse) => {
+          return axiosResponse.data
+        })
+      )
+      .pipe(
+        catchError((e) => {
+          const errorReason =
               e?.response?.data?.error ||
               e?.response?.data?.errors?.message ||
               ''
 
-            throw new HttpException(
+          throw new HttpException(
               `${e?.response?.statusText}: ${errorReason}`,
               e?.response?.status
-            )
-          })
-        )
-    )
+          )
+        })
+      )
 
     return response
   }
@@ -60,10 +58,11 @@ export class ExplorerApiInterceptor implements NestInterceptor {
     const requestConfig: AxiosRequestConfig = {
       url: `${config?.baseUrl}`,
       method: ctxHandlerName
+
     }
 
     if (!isEmpty(query)) {
-      requestConfig.params = query
+      requestConfig.params = { ...query, apiKey: config?.apiKey }
     }
 
     return requestConfig

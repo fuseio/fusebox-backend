@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="./" class="navbar-brand">backend-api documentation</a>
+            <a href="./" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -31,41 +31,31 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 <h2 id="description">Description</h2>
-<p>Fuse Charge Backend API developed with <a href="https://github.com/nestjs/nest">Nest</a> framework TypeScript starter repository.</p>
+<p>Fusebox is a comprehensive development framework designed for constructing applications on the Fuse Network. It provides a set of APIs that cater to various functionalities:</p>
+<ol>
+<li>Account Abstraction API: This API enables the creation and administration of smart wallet accounts built on the ERC4337 standard.</li>
+<li>Data API: Utilize this API to retrieve on-chain data related to your users, including information such as balances, token specifics, and transaction history.</li>
+<li>Feed API: The Feed API offers a user-friendly stream of wallet actions, making it easy to display wallets activity.</li>
+<li>Notification API: Subscribing to the Notification API allows you to receive updates on wallet events and activities pertaining to your customers.</li>
+<li>Trading API: This API facilitates trading activities and provides access to trading-related data.</li>
+</ol>
+<h2 id="tech-stack">Tech Stack</h2>
+<p>Fusebox Backend API developed with <a href="https://github.com/nestjs/nest">Nest</a> framework TypeScript starter repository.</p>
 <h2 id="installation">Installation</h2>
 <div><pre class="line-numbers"><code class="language-bash">$ npm install</code></pre></div><h2 id="environment">Environment</h2>
-<p>Make sure to have the following keys and corresponding values in the .env file</p>
-<div><pre class="line-numbers"><code class="language-bash">SERVER_PORT=
-MONGO_URI=
-AUTH0_ISSUER_URL=
-AUTH0_AUDIENCE=</code></pre></div><h2 id="running-the-app">Running the app</h2>
-<div><pre class="line-numbers"><code class="language-bash">#docker dev
-$ npm run docker:dev
-
-#docker debug
-$ npm run docker:debug
+<p>Set the environment variables by running</p>
+<div><pre class="line-numbers"><code class="language-bash">cp .env.example .env
+cp apps/charge-api-service/.env.example apps/charge-api-service/.env
+cp apps/charge-app-service/.env.example apps/charge-app-service/.env
+cp apps/charge-network-service/.env.example apps/charge-network-service/.env
+cp apps/charge-relay-service/.env.example apps/charge-relay-service/.env
+cp apps/charge-accounts-service/.env.example apps/charge-accounts-service/.env
+cp apps/charge-notifications-service/.env.example apps/charge-notifications-service/.env
+cp apps/charge-smart-wallets-service/.env.example apps/charge-smart-wallets-service/.env</code></pre></div><p>Make sure you update the .env files with necessary variable values before proceeding to the next step.</p>
+<h2 id="running-the-app">Running the app</h2>
+<div><pre class="line-numbers"><code class="language-bash">#docker full debug
+$ npm run docker:full-debug
 
 &quot;Then run the &#39;Debug: Charge&#39; configuration in launch.json through the debugger in VS Code&quot;
 
@@ -76,27 +66,7 @@ $ npm run start
 $ npm run start:dev
 
 # production mode
-$ npm run start:prod</code></pre></div><h2 id="test">Test</h2>
-<div><pre class="line-numbers"><code class="language-bash"># unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov</code></pre></div><h2 id="support">Support</h2>
-<p>Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you&#39;d like to join them, please <a href="https://docs.nestjs.com/support">read more here</a>.</p>
-<h2 id="stay-in-touch">Stay in touch</h2>
-<ul>
-<li>Author - <a href="https://kamilmysliwiec.com">Kamil Myśliwiec</a></li>
-<li>Website - <a href="https://nestjs.com/">https://nestjs.com</a></li>
-<li>Twitter - <a href="https://twitter.com/nestframework">@nestframework</a></li>
-</ul>
-<h2 id="license">License</h2>
-<p>Nest is <a href="LICENSE">MIT licensed</a>.</p>
-
-
-
+$ npm run start:prod</code></pre></div>
 
 
 

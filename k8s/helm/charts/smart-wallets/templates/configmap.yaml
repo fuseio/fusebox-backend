@@ -3,11 +3,23 @@ kind: ConfigMap
 metadata:
   name: smart-wallets
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: smart-wallets
+    environment: {{ .Values.global.environment }}
 data:
+  
+  # [Hardcoded] Host & Port
   smart_wallets_host: "0.0.0.0"
   smart_wallets_port: "5007"
   smart_wallets_tcp_port: "8881"
-  centrifugo_uri: {{ .Values.configMap.centrifugo_uri | quote }}
-  centrifugo_api_url: {{ .Values.configMap.centrifugo_api_url | quote }}
-  legacy_fuse_wallet_api_url: {{ .Values.configMap.legacy_fuse_wallet_api_url | quote }}
-  charge_base_url: {{ .Values.configMap.charge_base_url | quote }}
+
+  # [Hardcoded] Components Host & Port ('smart-wallets' component connected to 'api' and 'accounts' components via hostname & TCP port)
+  api_host: "api"
+  api_tcp_port: "8876"
+  accounts_host: "accounts"
+  accounts_tcp_port: "8875"
+
+  # User - defined
+{{- range $key, $val := .Values.configMap }}
+  {{ $key }}: {{ $val | quote }}
+{{- end }}

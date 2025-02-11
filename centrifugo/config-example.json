@@ -28,6 +28,19 @@
       "history_ttl": "300s",
       "presence": true,
       "allow_user_limited_channels": true
+    },
+    {
+      "name": "walletAction",
+      "history_size": 10,
+      "history_ttl": "300s",
+      "allow_user_limited_channels": true
+    },
+    {
+      "name": "userOp",
+      "history_size": 10,
+      "history_ttl": "300s",
+      "presence": true,
+      "allow_user_limited_channels": true
     }
   ]
 }

@@ -4,38 +4,56 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "accounts"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
+# Autoscaling
+autoscaling:
+  # -- Vertical Pod Autoscaler
+  vpa:
+    # -- Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values
+    max_allowed:
+      cpu: "2000m"
+      memory: "4Gi"
+
+# ConfigMap (non - sensitive information)
 configMap:
   # -- Network name
   network_name: ""
@@ -46,13 +64,9 @@ configMap:
   # -- Timeout interval (ms)
   timeout_interval: ""
 
-# Secrets (through environment variables)
-secrets:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- smart-wallets - JWT secret
-  smart_wallets_jwt_secret: ""
-  # -- RPC URL - Standard - Fuse
-  rpc_url: ""
-  # -- RPC URL - Archive - Fuse
-  full_archive_rpc_url: ""
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+secret:
+  - mongo_uri
+  - smart_wallets_jwt_secret
+  - rpc_url
+  - full_archive_rpc_url

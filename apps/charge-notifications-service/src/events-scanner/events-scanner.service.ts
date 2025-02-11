@@ -1,14 +1,14 @@
-import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
-import { Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { BaseProvider, Log } from 'nestjs-ethers'
+import { Injectable, Logger } from '@nestjs/common'
+
+import { ConfigService } from '@nestjs/config'
+import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
 import { ScannerService } from '@app/notifications-service/common/scanner-service'
-import { ScannerStatusService } from '../common/scanner-status.service'
-import { LogFilter } from './interfaces/logs-filter'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
+import { logPerformance } from '@app/notifications-service/common/decorators/log-performance.decorator'
+
 @Injectable()
 export abstract class EventsScannerService extends ScannerService {
-  // TODO: Create a Base class for events scanner and transaction scanner services
-
   constructor (
     configService: ConfigService,
     scannerStatusService: ScannerStatusService,
@@ -22,8 +22,6 @@ export abstract class EventsScannerService extends ScannerService {
   @logPerformance('EventScanner::ProcessBlocks')
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
-
-    this.logger.log(`EventFilter: Processing blocks from ${fromBlock} to ${toBlock}`)
 
     const logs = await this.fetchLogs(fromBlock, toBlock)
 
@@ -39,14 +37,13 @@ export abstract class EventsScannerService extends ScannerService {
   }
 
   async fetchLogs (fromBlock: number, toBlock: number) {
-    this.logger.debug(`EventFilter: Fetching logs ${fromBlock} to ${toBlock}. topics: ${this.logsFilter.topics}, address: ${this.logsFilter.address}`)
     const logs = await this.rpcProvider.getLogs({
       fromBlock,
       toBlock,
       topics: this.logsFilter.topics,
       address: this.logsFilter.address
     })
-    this.logger.debug(`EventFilter: ${logs.length} logs found`)
+
     return logs
   }
 

@@ -668,19 +668,5 @@
     "inputs": [
       { "type": "uint256", "name": "_amount", "internalType": "uint256" }
     ]
-  },
-  {
-    "type": "function",
-    "stateMutability": "nonpayable",
-    "outputs": [],
-    "name": "withdraw",
-    "inputs": [
-      { "type": "uint256", "name": "_amount", "internalType": "uint256" },
-      {
-        "type": "uint256",
-        "name": "_validatorPosition",
-        "internalType": "uint256"
-      }
-    ]
   }
 ]

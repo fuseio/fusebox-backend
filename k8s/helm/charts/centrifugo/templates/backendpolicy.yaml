@@ -1,0 +1,30 @@
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: centrifugo
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: centrifugo
+    environment: {{ .Values.global.environment }}
+spec:
+  default:
+
+    # Logging (HTTP access logs)
+    logging:
+    {{- range $key, $val := .Values.logging }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
+
+    # Drain connection (in-flight requests)
+    connectionDraining:
+      drainingTimeoutSec: 30
+
+    {{- if .Values.securityPolicy }}
+    # Security policy (Cloud Armor)
+    securityPolicy: {{ .Values.securityPolicy }}
+    {{- end }}
+
+  targetRef:
+    group: ""
+    kind: Service
+    name: centrifugo

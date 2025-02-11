@@ -3,11 +3,13 @@ kind: Deployment
 metadata:
   name: centrifugo
   namespace: {{ .Release.Namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: centrifugo
     environment: {{ .Values.global.environment }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,22 +20,21 @@ spec:
       environment: {{ .Values.global.environment }}
   template:
     metadata:
-      annotations:
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
         app: centrifugo
         environment: {{ .Values.global.environment }}
     spec:
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - centrifugo
-              topologyKey: kubernetes.io/hostname
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                {{- range $zone := .Values.affinity.zones }}
+                  - {{ $.Values.global.region }}-{{ $zone }}
+                {{- end }}
       containers:
         - name: centrifugo
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -62,11 +63,13 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
           
           # Volume mounts (config.json)
           volumeMounts:

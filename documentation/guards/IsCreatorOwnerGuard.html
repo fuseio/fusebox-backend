@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -30,7 +30,6 @@
                <!-- START CONTENT -->
                <div class="content guard">
                    <div class="content-data">
-
 
 
 
@@ -60,7 +59,7 @@
             <h3>File</h3>
             </p>
             <p class="comment">
-                <code>src/projects/guards/is-creator-owner.guard.ts</code>
+                <code>apps/charge-accounts-service/src/projects/guards/is-creator-owner.guard.ts</code>
             </p>
 
 
@@ -108,7 +107,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/projects/guards/is-creator-owner.guard.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">apps/charge-accounts-service/src/projects/guards/is-creator-owner.guard.ts:5</a></div>
                             </td>
                         </tr>
 
@@ -174,7 +173,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="8"
-                            class="link-to-prism">src/projects/guards/is-creator-owner.guard.ts:8</a></div>
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/guards/is-creator-owner.guard.ts:8</a></div>
                 </td>
             </tr>
 
@@ -227,31 +226,27 @@
 
 
         <div class="tab-pane fade  tab-source-code" id="c-source">
-            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CanActivate, ExecutionContext, Injectable } from &#x27;@nestjs/common&#x27;;
-import { UsersService } from &#x27;src/users/users.service&#x27;;
+            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CanActivate, ExecutionContext, Injectable } from &#x27;@nestjs/common&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
 
 @Injectable()
 export class IsCreatorOwnerGuard implements CanActivate {
-  constructor(private usersService: UsersService) { }
+  constructor (private usersService: UsersService) { }
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise&lt;boolean&gt; {
+  async canActivate (context: ExecutionContext): Promise&lt;boolean&gt; {
+    const request &#x3D; context.switchToHttp().getRequest()
+    const ownerId &#x3D; request.body?.ownerId
+    const auth0Id &#x3D; request?.user?.sub
+    const userById &#x3D; await this.usersService.findOne(ownerId)
 
-    const request &#x3D; context.switchToHttp().getRequest();
-    const ownerId &#x3D; request.body?.ownerId;
-    const auth0Id &#x3D; request?.user?.sub;
-    const userById &#x3D; await this.usersService.findOne(ownerId);
+    if (!auth0Id || !userById || auth0Id !&#x3D;&#x3D; userById.auth0Id) return false
 
-    if (!auth0Id || !userById || auth0Id !&#x3D;&#x3D; userById.auth0Id) return false;
-
-    return true;
+    return true
   }
 }
 </code></pre>
         </div>
 </div>
-
 
 
 

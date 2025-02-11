@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/database.module.ts</code>
+            <code>libs/common/src/database/database.module.ts</code>
         </p>
 
 
@@ -72,18 +72,17 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Module } from &#x27;@nestjs/common&#x27;;
-import { databaseProviders } from &#x27;./database.providers&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Module } from &#x27;@nestjs/common&#x27;
+import { databaseProviders } from &#x27;@app/common/database/database.providers&#x27;
 
 @Module({
-    providers: [...databaseProviders],
-    exports: [...databaseProviders],
+  providers: [...databaseProviders],
+  exports: [...databaseProviders]
 })
-export class DatabaseModule { }</code></pre>
+export class DatabaseModule {}
+</code></pre>
     </div>
 </div>
-
-
 
 
 

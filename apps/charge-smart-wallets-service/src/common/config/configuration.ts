@@ -1,4 +1,5 @@
 export default () => ({
+  amplitudeApiKey: process.env.AMPLITUDE_API_KEY,
   webhookId: process.env.INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID,
   chargeBaseURL: process.env.CHARGE_BASE_URL,
   sharedAddresses: {
@@ -21,7 +22,5 @@ export default () => ({
   paddedVersion: '0001.0007.0000',
   relayApi: `${process.env.LEGACY_FUSE_WALLET_API_URL}/api/v3`,
   fuseWalletBackendJwt: process.env.FUSE_WALLET_BACKEND_JWT,
-  centrifugoBaseUrl: process.env.CENTRIFUGO_API_URL,
-  centrifugoApiKey: process.env.CENTRIFUGO_API_KEY,
   wsUrl: process.env.CENTRIFUGO_URI
 })

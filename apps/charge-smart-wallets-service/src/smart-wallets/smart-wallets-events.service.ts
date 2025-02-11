@@ -5,7 +5,7 @@ import { SmartWallet } from '@app/smart-wallets-service/smart-wallets/interfaces
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Centrifuge } from 'centrifuge'
 import { websocketEvents } from '@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentClient } from 'cent.js'
 import { sleep } from '@app/notifications-service/common/utils/helper-functions'
 import { has, get } from 'lodash'
 import { versionType } from '@app/smart-wallets-service/smart-wallets/schemas/smart-wallet.schema'
@@ -17,7 +17,7 @@ export class SmartWalletsEventsService {
   constructor (
     private readonly configService: ConfigService,
     private readonly centrifuge: Centrifuge,
-    private readonly centrifugoAPIService: CentrifugoAPIService,
+    private readonly centClient: CentClient,
     @Inject(smartWalletString)
     private smartWalletModel: Model<SmartWallet>
   ) { }
@@ -73,38 +73,43 @@ export class SmartWalletsEventsService {
   }
 
   async onCreateSmartWalletStarted (eventData: any) {
-    const {
-      smartWalletAddress,
-      smartWalletUser,
-      salt,
-      walletModules
-    } = eventData
-    const {
-      ownerAddress
-    } = smartWalletUser
-
-    if (!await this.smartWalletModel.findOne({ ownerAddress })) {
-      this.smartWalletModel.create({
-        salt,
-        ownerAddress,
-        walletModules,
+    this.logger.log(`onCreateSmartWalletStarted: ${JSON.stringify(eventData)}`)
+    try {
+      const {
         smartWalletAddress,
-        walletOwnerOriginalAddress: ownerAddress,
-        walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
-        walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
-        walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
-        walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
-        walletModulesOriginal: walletModules,
-        networks: ['fuse'],
-        version: this.walletVersion,
-        versionType: get(eventData, 'versionType', versionType.V2),
-        paddedVersion: this.walletPaddedVersion
-      })
+        smartWalletUser,
+        salt,
+        walletModules
+      } = eventData
+      const {
+        ownerAddress
+      } = smartWalletUser
 
-      await this.publishMessage(eventData, {
-        eventName: websocketEvents.WALLET_CREATION_STARTED,
-        eventData: {}
-      })
+      if (!await this.smartWalletModel.findOne({ ownerAddress })) {
+        this.smartWalletModel.create({
+          salt,
+          ownerAddress,
+          walletModules,
+          smartWalletAddress,
+          walletOwnerOriginalAddress: ownerAddress,
+          walletFactoryOriginalAddress: this.sharedAddresses.WalletFactory,
+          walletFactoryCurrentAddress: this.sharedAddresses.WalletFactory,
+          walletImplementationOriginalAddress: this.sharedAddresses.WalletImplementation,
+          walletImplementationCurrentAddress: this.sharedAddresses.WalletImplementation,
+          walletModulesOriginal: walletModules,
+          networks: ['fuse'],
+          version: this.walletVersion,
+          versionType: get(eventData, 'versionType', versionType.V2),
+          paddedVersion: this.walletPaddedVersion
+        })
+
+        await this.publishMessage(eventData, {
+          eventName: websocketEvents.WALLET_CREATION_STARTED,
+          eventData: {}
+        })
+      }
+    } catch (error) {
+      this.logger.error(`An error occurred during create smart wallet. ${error}`)
     }
   }
 
@@ -116,32 +121,37 @@ export class SmartWalletsEventsService {
   }
 
   async onCreateSmartWalletSuccess (eventData: any) {
-    const {
-      ownerAddress,
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
-    } =
-      await this.smartWalletModel.findOneAndUpdate(
-        { smartWalletAddress: eventData.smartWalletAddress },
-        { isContractDeployed: true },
-        { new: true }
-      )
-    const data = {
-      ownerAddress,
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
+    this.logger.log(`onCreateSmartWalletSuccess: ${JSON.stringify(eventData)}`)
+    try {
+      const {
+        ownerAddress,
+        smartWalletAddress,
+        walletModules,
+        networks,
+        version,
+        paddedVersion
+      } =
+        await this.smartWalletModel.findOneAndUpdate(
+          { smartWalletAddress: eventData.smartWalletAddress },
+          { isContractDeployed: true },
+          { new: true }
+        )
+      const data = {
+        ownerAddress,
+        smartWalletAddress,
+        walletModules,
+        networks,
+        version,
+        paddedVersion
+      }
+      await this.publishMessage(eventData, {
+        eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
+        eventData: data
+      })
+      this.unsubscribe(eventData)
+    } catch (error) {
+      this.logger.error(`An error occurred during find and update smart wallet. ${error}`)
     }
-    await this.publishMessage(eventData, {
-      eventName: websocketEvents.WALLET_CREATION_SUCCEEDED,
-      eventData: data
-    })
-    this.unsubscribe(eventData)
   }
 
   async onCreateSmartWalletFailed (eventData: any) {
@@ -180,7 +190,7 @@ export class SmartWalletsEventsService {
         return
       }
       const { transactionId } = eventData
-      await this.centrifugoAPIService.publish(`transaction:#${transactionId}`, messageData)
+      await this.centClient.publish({ channel: `transaction:#${transactionId}`, data: messageData })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)
@@ -195,7 +205,7 @@ export class SmartWalletsEventsService {
       await sleep(500)
       const { smartWalletAddress, transactionId } = eventData
       const { ownerAddress } = await this.smartWalletModel.findOne({ smartWalletAddress })
-      await this.centrifugoAPIService.unsubscribe(`transaction:#${transactionId}`, ownerAddress)
+      await this.centClient.unsubscribe({ channel: `transaction:#${transactionId}`, user: ownerAddress })
     } catch (error) {
       this.logger.error({ error })
       this.logger.error(`An error occurred during publish message to channel: transaction:# eventData: ${JSON.stringify(eventData)}`)

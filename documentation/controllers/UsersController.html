@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/users/users.controller.ts</code>
+            <code>apps/charge-accounts-service/src/users/users.controller.ts</code>
         </p>
 
 
@@ -78,6 +78,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#findOneInternal" >findOneInternal</a>
+                            </li>
+                            <li>
                                 <a href="#submitQuestionnaire" >submitQuestionnaire</a>
                             </li>
                         </ul>
@@ -97,6 +100,82 @@
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findOneInternal"></a>
+                    <span class="name">
+                        <span ><b>findOneInternal</b></span>
+                        <a href="#findOneInternal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findOneInternal(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;find-one-user&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">apps/charge-accounts-service/src/users/users.controller.ts:30</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -124,8 +203,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/users/users.controller.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="22"
+                            class="link-to-prism">apps/charge-accounts-service/src/users/users.controller.ts:22</a></div>
                 </td>
             </tr>
 
@@ -199,33 +278,42 @@ user has the given user id</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Post, Body, UseGuards, Param } from &#x27;@nestjs/common&#x27;;
-import { UsersService } from &#x27;./users.service&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
-import { SubmitQuestionnaireDto } from &#x27;./dto/submit-questionnaire.dto&#x27;;
-import { IsAccountOwnerGuard } from &#x27;./guards/is-account-owner.guard&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Post, Body, UseGuards, Param } from &#x27;@nestjs/common&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
+import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
+import { SubmitQuestionnaireDto } from &#x27;@app/accounts-service/users/dto/submit-questionnaire.dto&#x27;
+import { IsAccountOwnerGuard } from &#x27;@app/accounts-service/users/guards/is-account-owner.guard&#x27;
+import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
+import { ApiTags } from &#x27;@nestjs/swagger&#x27;
 
+@ApiTags(&#x27;Users&#x27;)
 @Controller({ path: &#x27;users&#x27;, version: &#x27;1&#x27; })
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor (private readonly usersService: UsersService) { }
 
   /**
-   * Submits questionnaire answers for the given user id and verifies that the authenticated 
+   * Submits questionnaire answers for the given user id and verifies that the authenticated
    * user has the given user id
    * @param id User ID
-   * @param submitQuestionnaireDto 
+   * @param submitQuestionnaireDto
    */
   @UseGuards(JwtAuthGuard, IsAccountOwnerGuard)
   @Post(&#x27;/questionnaire/:id&#x27;)
-  submitQuestionnaire(@Param(&#x27;id&#x27;) id: string, @Body() submitQuestionnaireDto: SubmitQuestionnaireDto) {
-    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto);
+  submitQuestionnaire (
+    @Param(&#x27;id&#x27;) id: string,
+    @Body() submitQuestionnaireDto: SubmitQuestionnaireDto
+  ) {
+    return this.usersService.submitQuestionnaire(id, submitQuestionnaireDto)
+  }
+
+  @MessagePattern(&#x27;find-one-user&#x27;)
+  findOneInternal (id: string) {
+    return this.usersService.findOne(id)
   }
 }
 </code></pre>
     </div>
 </div>
-
-
 
 
 

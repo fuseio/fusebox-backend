@@ -10,7 +10,7 @@ import { generateSalt, generateTransactionId } from 'apps/charge-smart-wallets-s
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentClient } from 'cent.js'
 
 @Injectable()
 export class SmartWalletsLegacyService implements SmartWalletService {
@@ -20,7 +20,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly relayAPIService: RelayAPIService,
-    private readonly centrifugoAPIService: CentrifugoAPIService,
+    private readonly centClient: CentClient,
     @Inject(smartWalletString)
     private smartWalletModel: Model<SmartWallet>
   ) { }
@@ -57,43 +57,52 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   }
 
   async getWallet (smartWalletUser: ISmartWalletUser) {
-    const { ownerAddress } = smartWalletUser
-    const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
-    if (!smartWallet) {
-      throw new Error('Not found')
-    }
-    if (!smartWallet.isContractDeployed) {
-      const transactionId = generateTransactionId(smartWallet.salt)
-      const walletModules = this.sharedAddresses.walletModules
-      this.relayAPIService.createWallet({
-        v2: true,
-        salt: smartWallet.salt,
-        transactionId,
-        smartWalletUser,
-        owner: ownerAddress,
+    try {
+      const { ownerAddress } = smartWalletUser
+      this.logger.log(`Fetching Smart Wallet for owner address: ${ownerAddress}`)
+      const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
+      if (!smartWallet) {
+        this.logger.warn(`Smart Wallet not found for owner address: ${ownerAddress}`)
+        throw new Error('Not found')
+      }
+      if (!smartWallet.isContractDeployed) {
+        this.logger.log(`Smart Wallet not deployed for owner address: ${ownerAddress}, deploying...`)
+        const transactionId = generateTransactionId(smartWallet.salt)
+        const walletModules = this.sharedAddresses.walletModules
+        this.relayAPIService.createWallet({
+          v2: true,
+          salt: smartWallet.salt,
+          transactionId,
+          smartWalletUser,
+          owner: ownerAddress,
+          walletModules,
+          walletFactoryAddress: this.sharedAddresses.WalletFactory
+        }).catch(err => {
+          const errorMessage = `Retry wallet creation failed: ${err}`
+          this.logger.error(errorMessage)
+        })
+      }
+
+      const {
+        smartWalletAddress,
         walletModules,
-        walletFactoryAddress: this.sharedAddresses.WalletFactory
-      }).catch(err => {
-        const errorMessage = `Retry wallet creation failed: ${err}`
-        this.logger.error(errorMessage)
-      })
-    }
+        networks,
+        version,
+        paddedVersion
+      } = smartWallet
 
-    const {
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion
-    } = smartWallet
-
-    return {
-      smartWalletAddress,
-      walletModules,
-      networks,
-      version,
-      paddedVersion,
-      ownerAddress
+      this.logger.log(`Smart Wallet found for owner address: ${ownerAddress}`)
+      return {
+        smartWalletAddress,
+        walletModules,
+        networks,
+        version,
+        paddedVersion,
+        ownerAddress
+      }
+    } catch (err) {
+      this.logger.error(`An error occurred during fetching Legacy Smart Wallet. ${err}`)
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -106,7 +115,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       const salt = generateSalt()
       const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
-      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, ownerAddress)
+      await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: ownerAddress })
       this.relayAPIService.createWallet({
         v2: true,
         salt,
@@ -129,7 +138,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
-      await this.centrifugoAPIService.subscribe(`transaction:#${transactionId}`, relayDto.ownerAddress)
+      await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: relayDto.ownerAddress })
       this.relayAPIService.relay({
         v2: true,
         transactionId,

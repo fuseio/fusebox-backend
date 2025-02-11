@@ -1,0 +1,20 @@
+services:
+  amplitude:
+    build:
+      context: .
+    hostname: amplitude
+    container_name: amplitude
+    network_mode: bridge
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "25"
+        compress: "true"
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    ports:
+      - "8888:8888"

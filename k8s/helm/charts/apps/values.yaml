@@ -4,38 +4,65 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "api"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
+# Autoscaling
+autoscaling:
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
+
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
+logging:
+  enabled: true
+  sampleRate: 1000000
+
+# ConfigMap (non - sensitive information)
 configMap:
   # -- Charge - Wallet phone number
   charge_wallet_phone_number: ""
@@ -50,21 +77,14 @@ configMap:
   # -- Ethereum - Payments network name
   ethereum_payments_network_name: ""
 
-# Secrets (through environment variables)
-secrets:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- Charge - Public key
-  charge_public_key: ""
-  # -- Charge - Secret key
-  charge_secret_key: ""
-  # -- Charge - Webhook ID
-  charge_webhook_id: ""
-  # -- Unmarshal - Auth key
-  unmarshal_auth_key: ""
-  # -- Charge - Payments Ethereum mnemonic
-  charge_payments_ethereum_mnemonic: ""
-  # -- Alchemy - Webhook ID
-  alchemy_webhook_id: ""
-  # -- Alchemy - Auth key
-  alchemy_auth_key: ""
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+secret:
+  - mongo_uri
+  - charge_public_key
+  - charge_secret_key
+  - charge_webhook_id
+  - unmarshal_auth_key
+  - charge_payments_ethereum_mnemonic
+  - alchemy_webhook_id
+  - alchemy_auth_key
+  - charge_payment_links_webhook_id

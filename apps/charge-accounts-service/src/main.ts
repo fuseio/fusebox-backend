@@ -5,9 +5,12 @@ import Helmet from 'helmet'
 import { TcpOptions, Transport } from '@nestjs/microservices'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
+import { setupSwagger } from '@app/accounts-service/common/utils/swagger/setup-swagger'
+import cookieParser from 'cookie-parser'
 
 async function bootstrap () {
   const app = await NestFactory.create(AccountsModule)
+  const consoleDappFuseOrVercelUrl = /^https:\/\/console[-.a-zA-Z0-9]*\.(fuse\.io|vercel\.app)$/
 
   const microServiceOptions: TcpOptions = {
     transport: Transport.TCP,
@@ -20,8 +23,12 @@ async function bootstrap () {
   }
 
   app.use(Helmet())
+  app.use(cookieParser())
   app.setGlobalPrefix('accounts')
-  app.enableCors()
+  app.enableCors({
+    origin: consoleDappFuseOrVercelUrl,
+    credentials: true
+  })
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true
@@ -37,6 +44,9 @@ async function bootstrap () {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
   app.connectMicroservice(microServiceOptions, { inheritAppConfig: true })
   await app.startAllMicroservices()
+
+  setupSwagger(app)
+
   await app.listen(process.env.ACCOUNTS_PORT)
 }
 bootstrap()

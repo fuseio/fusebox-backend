@@ -1,0 +1,25 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: notifications
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: notifications
+    environment: {{ .Values.global.environment }}
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: notifications
+  resourcePolicy:
+    containerPolicies:
+    - containerName: notifications
+      controlledResources: ["cpu", "memory"]
+      maxAllowed:
+        cpu: {{ .Values.autoscaling.vpa.max_allowed.cpu }}
+        memory: {{ .Values.autoscaling.vpa.max_allowed.memory }}
+      minAllowed:
+        cpu: {{ .Values.resources.requests.cpu }}
+        memory: {{ .Values.resources.requests.memory }}
+  updatePolicy:
+    updateMode: "Auto"

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -30,7 +30,6 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
-
 
 
 
@@ -58,7 +57,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/projects/projects.service.ts</code>
+            <code>apps/charge-accounts-service/src/projects/projects.service.ts</code>
         </p>
 
 
@@ -80,7 +79,19 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#checkIfSecretExists" >checkIfSecretExists</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#create" >create</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createSandboxKey" >createSandboxKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createSecret" >createSecret</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -92,7 +103,31 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#findOneByOwnerId" >findOneByOwnerId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getApiKeysInfo" >getApiKeysInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getProjectBySponsorId" >getProjectBySponsorId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPublic" >getPublic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getSandboxKey" >getSandboxKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#update" >update</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateSecret" >updateSecret</a>
                             </li>
                         </ul>
                     </td>
@@ -112,12 +147,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(projectModel: <a href="../interfaces/Project.html" target="_self">Model&lt;Project&gt;</a>, usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>)</code>
+<code>constructor(apiClient: ClientProxy, projectModel: <a href="../interfaces/Project.html" target="_self">Model&lt;Project&gt;</a>, usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/projects/projects.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -134,6 +169,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                                <tr>
+                                                        <td>apiClient</td>
+                                                  
+                                                        <td>
+                                                                    <code>ClientProxy</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                                 <tr>
                                                         <td>projectModel</td>
                                                   
@@ -176,6 +223,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="checkIfSecretExists"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>checkIfSecretExists</b></span>
+                        <a href="#checkIfSecretExists"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkIfSecretExists(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="78"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:78</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="create"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -194,8 +312,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/projects/projects.service.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:24</a></div>
                 </td>
             </tr>
 
@@ -247,6 +365,148 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="createSandboxKey"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createSandboxKey</b></span>
+                        <a href="#createSandboxKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createSandboxKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:63</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createSecret"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createSecret</b></span>
+                        <a href="#createSecret"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createSecret(createSecretDto: <a href="../interfaces/CreateSecretDto.html" target="_self">CreateSecretDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:55</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>createSecretDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/CreateSecretDto.html" target="_self" >CreateSecretDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="findAll"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -265,8 +525,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/projects/projects.service.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:41</a></div>
                 </td>
             </tr>
 
@@ -336,8 +596,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/projects/projects.service.ts:22</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:33</a></div>
                 </td>
             </tr>
 
@@ -389,6 +649,361 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="findOneByOwnerId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findOneByOwnerId</b></span>
+                        <a href="#findOneByOwnerId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findOneByOwnerId(ownerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ownerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/Project.html" target="_self" >Promise&lt;Project&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getApiKeysInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getApiKeysInfo</b></span>
+                        <a href="#getApiKeysInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getApiKeysInfo(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:87</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProjectBySponsorId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getProjectBySponsorId</b></span>
+                        <a href="#getProjectBySponsorId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getProjectBySponsorId(sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:68</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sponsorId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPublic"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getPublic</b></span>
+                        <a href="#getPublic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPublic(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSandboxKey"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getSandboxKey</b></span>
+                        <a href="#getSandboxKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSandboxKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:74</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="update"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -407,8 +1022,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">src/projects/projects.service.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:46</a></div>
                 </td>
             </tr>
 
@@ -468,51 +1083,185 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSecret"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>updateSecret</b></span>
+                        <a href="#updateSecret"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateSecret(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.service.ts:91</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Inject, Injectable } from &#x27;@nestjs/common&#x27;;
-import { Model } from &#x27;mongoose&#x27;;
-import { UsersService } from &#x27;src/users/users.service&#x27;;
-import { CreateProjectDto } from &#x27;./dto/create-project.dto&#x27;;
-import { UpdateProjectDto } from &#x27;./dto/update-project.dto&#x27;;
-import { Project } from &#x27;./interfaces/project.interface&#x27;;
-import * as constants from &#x27;./projects.constants&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { CreateProjectDto } from &#x27;@app/accounts-service/projects/dto/create-project.dto&#x27;
+import { UpdateProjectDto } from &#x27;@app/accounts-service/projects/dto/update-project.dto&#x27;
+import { CreateSecretDto } from &#x27;@app/api-service/api-keys/dto/secret-key.dto&#x27;
+
+import { Project } from &#x27;@app/accounts-service/projects/interfaces/project.interface&#x27;
+import { projectModelString } from &#x27;@app/accounts-service/projects/projects.constants&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
+import { apiService } from &#x27;@app/common/constants/microservices.constants&#x27;
+import { Inject, Injectable } from &#x27;@nestjs/common&#x27;
+import { ClientProxy } from &#x27;@nestjs/microservices&#x27;
+import { Model } from &#x27;mongoose&#x27;
+import { callMSFunction } from &#x27;@app/common/utils/client-proxy&#x27;
 
 @Injectable()
 export class ProjectsService {
-    constructor(
-        @Inject(constants.projectModelString)
-        private projectModel: Model&lt;Project&gt;,
-        private usersService: UsersService,
-    ) { }
+  constructor (
+    @Inject(apiService) private readonly apiClient: ClientProxy,
+    // @Inject(relayService) private readonly relayClient: ClientProxy,
+    @Inject(projectModelString)
+    private projectModel: Model&lt;Project&gt;,
+    private usersService: UsersService
+  ) { }
 
-    async create(createProjectDto: CreateProjectDto): Promise&lt;Project&gt; {
-        const createdProject &#x3D; new this.projectModel(createProjectDto);
-        return createdProject.save();
-    }
+  async create (createProjectDto: CreateProjectDto): Promise&lt;Project&gt; {
+    const createdProject &#x3D; new this.projectModel(createProjectDto)
+    const projectId &#x3D; createdProject._id
+    await callMSFunction(this.apiClient, &#x27;create_public&#x27;, projectId)
+    await callMSFunction(this.apiClient, &#x27;create_sandbox_key&#x27;, projectId)
 
-    async findOne(id: string): Promise&lt;Project&gt; {
-        return this.projectModel.findById(id)
-    }
+    return createdProject.save()
+  }
 
-    async findAll(auth0Id: string): Promise&lt;Project[]&gt; {
-        const userId &#x3D; await this.usersService.findOneByAuth0Id(auth0Id);
-        return this.projectModel.find({ ownerId: userId });
-    }
+  async findOne (id: string): Promise&lt;Project&gt; {
+    return this.projectModel.findById(id)
+  }
 
-    async update(id: string, updateProjectDto: UpdateProjectDto): Promise&lt;Project&gt; {
-        return this.projectModel.findByIdAndUpdate(id, updateProjectDto, { new: true });
+  async findOneByOwnerId (ownerId: string): Promise&lt;Project&gt; {
+    return this.projectModel.findOne({ ownerId })
+  }
+
+  async findAll (auth0Id: string): Promise&lt;Project[]&gt; {
+    const userId &#x3D; await this.usersService.findOneByAuth0Id(auth0Id)
+    return this.projectModel.find({ ownerId: userId._id })
+  }
+
+  async update (
+    id: string,
+    updateProjectDto: UpdateProjectDto
+  ): Promise&lt;Project&gt; {
+    return this.projectModel.findByIdAndUpdate(id, updateProjectDto, {
+      new: true
+    })
+  }
+
+  async createSecret (createSecretDto: CreateSecretDto) {
+    const secret &#x3D; await callMSFunction(this.apiClient, &#x27;create_secret&#x27;, createSecretDto)
+    // if (secret) {
+    //   callMSFunction(this.relayClient, &#x27;create_account&#x27;, projectId)
+    // }
+    return secret
+  }
+
+  async createSandboxKey (projectId: string) {
+    const sandboxKey &#x3D; await callMSFunction(this.apiClient, &#x27;create_sandbox_key&#x27;, projectId)
+    return sandboxKey
+  }
+
+  async getProjectBySponsorId (sponsorId: string) {
+    return this.projectModel.find({
+      &#x27;paymasterInfo.sponsorId&#x27;: sponsorId
+    })
+  }
+
+  async getSandboxKey (projectId: string) {
+    return callMSFunction(this.apiClient, &#x27;get_sandbox_key&#x27;, projectId)
+  }
+
+  async checkIfSecretExists (projectId: string) {
+    const apiKeysInfo &#x3D; await callMSFunction(this.apiClient, &#x27;get_api_keys_info&#x27;, projectId)
+
+    if (apiKeysInfo?.secretLastFourChars) {
+      return true
     }
+    return false
+  }
+
+  async getApiKeysInfo (projectId: string) {
+    return callMSFunction(this.apiClient, &#x27;get_api_keys_info&#x27;, projectId)
+  }
+
+  async updateSecret (projectId: string) {
+    return callMSFunction(this.apiClient, &#x27;update_secret&#x27;, projectId)
+  }
+
+  async getPublic (projectId: string) {
+    return callMSFunction(this.apiClient, &#x27;get_public&#x27;, projectId)
+  }
 }
 </code></pre>
     </div>
 
 </div>
-
 
 
 

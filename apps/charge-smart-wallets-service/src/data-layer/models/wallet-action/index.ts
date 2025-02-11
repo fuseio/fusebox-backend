@@ -1,12 +1,12 @@
-import WalletAction from './base'
-import ApproveToken from './approve-token'
-import ERC20Transfer from './erc20-transfer'
-import NativeTransfer from './native-transfer'
-import NftTransfer from './nft-transfer'
-import StakeTokens from './stake'
-import SwapTokens from './swap'
-import UnstakeTokens from './unstake'
-// import BatchTransaction from './batch-transaction'
+import WalletAction from '@app/smart-wallets-service/data-layer/models/wallet-action/base'
+import ApproveToken from '@app/smart-wallets-service/data-layer/models/wallet-action/approve-token'
+import ERC20Transfer from '@app/smart-wallets-service/data-layer/models/wallet-action/erc20-transfer'
+import NativeTransfer from '@app/smart-wallets-service/data-layer/models/wallet-action/native-transfer'
+import NftTransfer from '@app/smart-wallets-service/data-layer/models/wallet-action/nft-transfer'
+import StakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/stake'
+import UnstakeTokens from '@app/smart-wallets-service/data-layer/models/wallet-action/unstake'
+import TokenSwapExecutor from '@app/smart-wallets-service/data-layer/models/wallet-action/swap'
+import BatchTransaction from '@app/smart-wallets-service/data-layer/models/wallet-action/batch-transaction'
 
 export {
   WalletAction,
@@ -15,7 +15,7 @@ export {
   NativeTransfer,
   NftTransfer,
   StakeTokens,
-  SwapTokens,
-  UnstakeTokens
-  // BatchTransaction
+  UnstakeTokens,
+  TokenSwapExecutor,
+  BatchTransaction
 }

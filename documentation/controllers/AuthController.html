@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/auth/auth.controller.ts</code>
+            <code>apps/charge-accounts-service/src/auth/auth.controller.ts</code>
         </p>
 
 
@@ -128,8 +128,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/auth/auth.controller.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="21"
+                            class="link-to-prism">apps/charge-accounts-service/src/auth/auth.controller.ts:21</a></div>
                 </td>
             </tr>
 
@@ -208,8 +208,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="27"
-                            class="link-to-prism">src/auth/auth.controller.ts:27</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">apps/charge-accounts-service/src/auth/auth.controller.ts:31</a></div>
                 </td>
             </tr>
 
@@ -266,42 +266,44 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Post, UseGuards } from &#x27;@nestjs/common&#x27;;
-import { CreateUserDto } from &#x27;src/users/dto/create-user.dto&#x27;;
-import { User } from &#x27;src/users/user.decorator&#x27;;
-import { UsersService } from &#x27;src/users/users.service&#x27;;
-import { JwtAuthGuard } from &#x27;./guards/jwt-auth.guard&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Post, UseGuards } from &#x27;@nestjs/common&#x27;
+import { CreateUserDto } from &#x27;@app/accounts-service/users/dto/create-user.dto&#x27;
+import { User } from &#x27;@app/accounts-service/users/user.decorator&#x27;
+import { UsersService } from &#x27;@app/accounts-service/users/users.service&#x27;
+import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
+import { ApiTags } from &#x27;@nestjs/swagger&#x27;
 
+@ApiTags(&#x27;User Authentication&#x27;)
 @Controller({ path: &#x27;auth&#x27;, version: &#x27;1&#x27; })
 export class AuthController {
-    constructor(private readonly usersService: UsersService) { }
+  constructor (
+    private readonly usersService: UsersService
+  ) {}
 
-    /**
-     * Registers a new user for the authenticated user
-     * @param createUserDto 
-     */
-    @UseGuards(JwtAuthGuard)
-    @Post(&#x27;/register&#x27;)
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto);
-    }
+  /**
+   * Registers a new user for the authenticated user
+   * @param createUserDto
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/register&#x27;)
+  create (@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto)
+  }
 
-    /**
-     * 
-     * @param id Logs in the authenticated user&#x27;s auth0Id and returns the user id in our db
-     */
-    @UseGuards(JwtAuthGuard)
-    @Post(&#x27;/login&#x27;)
-    async findOne(@User(&#x27;sub&#x27;) id: string) {
-        const user &#x3D; await this.usersService.findOneByAuth0Id(id);
-        return { id: user?.id };
-    }
+  /**
+   *
+   * @param id Logs in the authenticated user&#x27;s auth0Id and returns the user id in our db
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/login&#x27;)
+  async findOne (@User(&#x27;sub&#x27;) id: string) {
+    const user &#x3D; await this.usersService.findOneByAuth0Id(id)
+    return { id: user?.id }
+  }
 }
 </code></pre>
     </div>
 </div>
-
-
 
 
 

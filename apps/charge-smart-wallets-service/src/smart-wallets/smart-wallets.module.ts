@@ -11,17 +11,38 @@ import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-events.service'
 import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
 import { CentrifugeProvider } from '@app/common/centrifuge/centrifuge.provider'
-import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { CentrifugeClientProvider } from '@app/common/centrifuge/centrifugeClient.provider'
 import { getEnvPath } from '@app/common/utils/env.helper'
 import path from 'path'
 import { NotificationsModule } from '@app/api-service/notifications/notifications.module'
 import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
+import { UsersModule } from '@app/accounts-service/users/users.module'
+import { ProjectsModule } from '@app/accounts-service/projects/projects.module'
+import { AnalyticsService } from '@app/common/services/analytics.service'
+import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
+import { ClientsModule, Transport } from '@nestjs/microservices'
+import { accountsService } from '@app/common/constants/microservices.constants'
+import { TokenModule } from '@app/common/token/token.module'
 
 @Module({
   imports: [
     DatabaseModule,
     ChargeApiModule,
     NotificationsModule,
+    UsersModule,
+    ProjectsModule,
+    TokenModule,
+    OperatorsModule,
+    ClientsModule.register([
+      {
+        name: accountsService,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.ACCOUNTS_HOST,
+          port: parseInt(process.env.ACCOUNTS_TCP_PORT)
+        }
+      }
+    ]),
     ConfigModule.forRoot({
       envFilePath: getEnvPath(path.join(__dirname, 'common/config')),
       load: [configuration]
@@ -48,10 +69,11 @@ import { ChargeApiModule } from '@app/apps-service/charge-api/charge-api.module'
     })
   ],
   providers: [
-    CentrifugoAPIService,
+    CentrifugeClientProvider,
     CentrifugeProvider,
     SmartWalletsEventsService,
     RelayAPIService,
+    AnalyticsService,
     SmartWalletsLegacyService,
     SmartWalletsAAService,
     ...smartWalletsProviders

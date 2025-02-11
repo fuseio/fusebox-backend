@@ -4,10 +4,11 @@ import {
   NativeTransfer,
   ERC20Transfer,
   ApproveToken,
-  SwapTokens,
   UnstakeTokens,
   StakeTokens,
-  NftTransfer
+  NftTransfer,
+  TokenSwapExecutor,
+  BatchTransaction
 } from '@app/smart-wallets-service/data-layer/models/wallet-action'
 
 import { TokenReceive } from '@app/smart-wallets-service/data-layer/models/wallet-action/token-receive'
@@ -24,21 +25,17 @@ const singleActionMap = {
 }
 
 const targetActionMap = {
-  '0xe3f85aad0c8dd7337427b9df5d0fb741d65eeeb5': {
-    swapTokensForExactTokens: SwapTokens,
-    swapExactTokensForTokens: SwapTokens,
-    swapExactETHForTokens: SwapTokens,
-    swapTokensForExactETH: SwapTokens,
-    swapExactTokensForETH: SwapTokens,
-    swapETHForExactTokens: SwapTokens
+
+  '0xeca6055ac01e717cef70b8c6fc5f9ca32cb4118a': {
+    transformERC20: TokenSwapExecutor
   },
   '0x0be9e53fd7edac9f859882afdda116645287c629': {
-    withdraw: SwapTokens,
-    deposit: SwapTokens
+    withdraw: TokenSwapExecutor,
+    deposit: TokenSwapExecutor
   },
   '0xa3dc222ec847aac61fb6910496295bf344ea46be': {
     deposit: StakeTokens,
-    withdraw: (name) => name === 'approve' ? UnstakeTokens : SwapTokens
+    withdraw: (name) => name === 'approve' ? UnstakeTokens : TokenSwapExecutor
   },
   '0x97a6e78c9208c21afada67e7e61d7ad27688efd1': {
     leave: UnstakeTokens,
@@ -53,22 +50,25 @@ function executeSingleAction (name: string, targetAddress: string) {
 }
 
 function executeBatchAction (targetFunctions) {
-  if (targetFunctions.length !== 2) {
-    // TODO: support more than 2 calls
-    throw new Error('Unsupported batch action')
+  if (targetFunctions.length === 2) {
+    const [firstCall, lastCall] = targetFunctions
+    const lastCallAddressMap = targetActionMap[lastCall.targetAddress.toLowerCase()]
+
+    // Check if it's a specific action like swap
+    if (lastCallAddressMap) {
+      const ActionClass = lastCallAddressMap[lastCall.name]
+      if (ActionClass) {
+        if (ActionClass.prototype instanceof WalletAction) {
+          return new ActionClass()
+        } else if (typeof ActionClass === 'function') {
+          return new (ActionClass(firstCall.name))()
+        }
+      }
+    }
   }
 
-  const [firstCall, lastCall] = targetFunctions
-
-  const addressActionMap = targetActionMap[lastCall.targetAddress.toLowerCase()]
-
-  let ActionClass = addressActionMap?.[lastCall.name]
-
-  if (ActionClass && !(ActionClass.prototype instanceof WalletAction)) {
-    ActionClass = ActionClass(firstCall.name)
-  }
-
-  return ActionClass ? new ActionClass(firstCall.name) : null
+  // If it's not a specific action or has more than 2 functions, use BatchTransaction
+  return new BatchTransaction()
 }
 
 function getWalletActionType (parsedUserOp): WalletAction {
@@ -116,7 +116,7 @@ export function tokenReceiveToWalletAction (
   const action =
     executeSingleAction('tokenReceive', toWalletAddress) as TokenReceive
 
-  return action.executeReceiveAction(
+  const result = action.executeReceiveAction(
     fromWalletAddress,
     toWalletAddress,
     txHash,
@@ -126,4 +126,6 @@ export function tokenReceiveToWalletAction (
     blockNumber,
     tokenId
   )
+
+  return result
 }

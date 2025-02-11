@@ -1,0 +1,1326 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>fusebox-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >PaymasterApiService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#buildPaymasterAndData" >buildPaymasterAndData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#estimateUserOpGas" >estimateUserOpGas</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getHash" >getHash</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getProviderByEnv" >getProviderByEnv</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pm_accounts" >pm_accounts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pm_sponsorUserOperation" >pm_sponsorUserOperation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#prepareUrl" >prepareUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#signHash" >signHash</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(accountClient: ClientProxy, configService: ConfigService, fuseProvider: JsonRpcProvider, sparkProvider: JsonRpcProvider, httpService: HttpService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:32</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>accountClient</td>
+                                                  
+                                                        <td>
+                                                                    <code>ClientProxy</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fuseProvider</td>
+                                                  
+                                                        <td>
+                                                                    <code>JsonRpcProvider</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>sparkProvider</td>
+                                                  
+                                                        <td>
+                                                                    <code>JsonRpcProvider</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>httpService</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buildPaymasterAndData"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>buildPaymasterAndData</b></span>
+                        <a href="#buildPaymasterAndData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>buildPaymasterAndData(paymasterAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, validUntil: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, validAfter: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, signature: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:123</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>paymasterAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validUntil</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validAfter</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>sponsorId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>signature</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estimateUserOpGas"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>estimateUserOpGas</b></span>
+                        <a href="#estimateUserOpGas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>estimateUserOpGas(op, requestEnvironment, entrypointAddress)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>op</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>requestEnvironment</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>entrypointAddress</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/GasDetails.html" target="_self" >Promise&lt;GasDetails&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHash"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getHash</b></span>
+                        <a href="#getHash"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHash(paymasterContract: Contract, op: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, validUntil: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, validAfter: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:100</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>paymasterContract</td>
+                                    <td>
+                                            <code>Contract</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>op</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validUntil</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>validAfter</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>sponsorId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProviderByEnv"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>getProviderByEnv</b></span>
+                        <a href="#getProviderByEnv"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getProviderByEnv(env: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:226</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>env</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>JsonRpcProvider</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pm_accounts"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>pm_accounts</b></span>
+                        <a href="#pm_accounts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pm_accounts(body, env: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="218"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:218</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>env</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pm_sponsorUserOperation"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>pm_sponsorUserOperation</b></span>
+                        <a href="#pm_sponsorUserOperation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pm_sponsorUserOperation(body: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, env: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:43</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>env</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepareUrl"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>prepareUrl</b></span>
+                        <a href="#prepareUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>prepareUrl(environment)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="207"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:207</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>environment</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="signHash"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>signHash</b></span>
+                        <a href="#signHash"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>signHash(hash: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, paymasterInfo: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:115</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>hash</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>paymasterInfo</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(PaymasterApiService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { accountsService } from &#x27;@app/common/constants/microservices.constants&#x27;
+import { ClientProxy, RpcException } from &#x27;@nestjs/microservices&#x27;
+import {
+  Injectable,
+  Inject,
+  InternalServerErrorException,
+  Logger
+} from &#x27;@nestjs/common&#x27;
+import { arrayify, defaultAbiCoder, hexConcat } from &#x27;ethers/lib/utils&#x27;
+import fusePaymasterABI from &#x27;@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json&#x27;
+import { BigNumber, Contract, Wallet } from &#x27;ethers&#x27;
+import { ConfigService } from &#x27;@nestjs/config&#x27;
+import { InjectEthersProvider, JsonRpcProvider } from &#x27;nestjs-ethers&#x27;
+import { callMSFunction } from &#x27;@app/common/utils/client-proxy&#x27;
+import { capitalize, isEmpty, has, get } from &#x27;lodash&#x27;
+import { HttpService } from &#x27;@nestjs/axios&#x27;
+import { catchError, lastValueFrom, map } from &#x27;rxjs&#x27;
+import { AxiosRequestConfig, AxiosResponse } from &#x27;axios&#x27;
+
+interface GasDetails {
+  preVerificationGas: string;
+  verificationGasLimit: string;
+  verificationGas: string;
+  validUntil: string;
+  callGasLimit: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
+}
+
+@Injectable()
+export class PaymasterApiService {
+  private readonly logger &#x3D; new Logger(PaymasterApiService.name)
+  constructor (
+    @Inject(accountsService) private readonly accountClient: ClientProxy,
+    private configService: ConfigService,
+    @InjectEthersProvider(&#x27;fuse&#x27;)
+    private readonly fuseProvider: JsonRpcProvider,
+    @InjectEthersProvider(&#x27;fuseSpark&#x27;)
+    private readonly sparkProvider: JsonRpcProvider,
+    private httpService: HttpService
+  ) { }
+
+  async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
+    try {
+      const provider &#x3D; this.getProviderByEnv(env)
+      const [op] &#x3D; body
+      this.logger.log(&#x60;INITIAL OP: ${JSON.stringify(op)}&#x60;)
+      const { timestamp } &#x3D; await provider.getBlock(&#x27;latest&#x27;)
+
+      const validUntil &#x3D; parseInt(timestamp.toString()) + 900
+      const validAfter &#x3D; 0
+      const paymasterInfo &#x3D; await callMSFunction(this.accountClient, &#x27;get_paymaster_info&#x27;, { projectId, env })
+      const minVerificationGasLimit &#x3D; &#x27;140000&#x27;
+
+      if (isEmpty(paymasterInfo)) {
+        throw new RpcException(&#x60;Error getting paymaster for project: ${projectId} in ${env} environment&#x60;)
+      }
+
+      const sponsorId &#x3D; paymasterInfo.sponsorId
+      const paymasterAddress &#x3D; paymasterInfo.paymasterAddress
+      const paymasterContract &#x3D; new Contract(
+        paymasterAddress,
+        fusePaymasterABI,
+        provider
+      )
+
+      const hashForEstimateUserOpGasCall &#x3D; await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
+      const signatureForEstimateUserOpGasCall &#x3D; await this.signHash(hashForEstimateUserOpGasCall, paymasterInfo)
+      const paymasterAndDataForEstimateUserOpGasCall &#x3D; this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
+
+      op.paymasterAndData &#x3D; paymasterAndDataForEstimateUserOpGasCall
+
+      const gases: GasDetails &#x3D; await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
+
+      const actualVerificationGasLimit &#x3D; Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
+
+      op.callGasLimit &#x3D; gases?.callGasLimit ?? op.callGasLimit
+      op.verificationGasLimit &#x3D; actualVerificationGasLimit
+      op.preVerificationGas &#x3D; gases?.preVerificationGas
+
+      const hash &#x3D; await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
+      const signature &#x3D; await this.signHash(hash, paymasterInfo)
+      const paymasterAndData &#x3D; this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signature)
+      op.paymasterAndData &#x3D; paymasterAndData
+
+      const response &#x3D; {
+        paymasterAndData,
+        preVerificationGas: op.preVerificationGas,
+        verificationGasLimit: op.verificationGasLimit,
+        callGasLimit: op.callGasLimit
+      }
+      this.logger.log(&#x60;Paymaster pm_sponsorUserOperation response ${JSON.stringify(response)}&#x60;)
+      return response
+    } catch (error) {
+      this.logger.error(&#x60;Paymaster pm_sponsorUserOperation error ${JSON.stringify(error)}&#x60;)
+      throw new RpcException(error)
+    }
+  }
+
+  private async getHash (
+    paymasterContract: Contract,
+    op: any,
+    validUntil: number,
+    validAfter: number,
+    sponsorId: string
+  ) {
+    return await paymasterContract.getHash(
+      op,
+      validUntil,
+      validAfter,
+      sponsorId
+    )
+  }
+
+  private async signHash (hash: string, paymasterInfo: any) {
+    const privateKeyString &#x3D; this.configService.getOrThrow(
+      &#x60;paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey&#x60;
+    )
+    const paymasterSigner &#x3D; new Wallet(privateKeyString)
+    return await paymasterSigner.signMessage(arrayify(hash))
+  }
+
+  private buildPaymasterAndData (paymasterAddress: string, validUntil: number, validAfter: number, sponsorId: string, signature: string) {
+    return hexConcat([
+      paymasterAddress,
+      defaultAbiCoder.encode(
+        [&#x27;uint48&#x27;, &#x27;uint48&#x27;, &#x27;uint256&#x27;, &#x27;bytes&#x27;],
+        [validUntil, validAfter, sponsorId, signature]
+      ),
+      signature
+    ])
+  }
+
+  async estimateUserOpGas (op, requestEnvironment, entrypointAddress): Promise&lt;GasDetails&gt; {
+    const data &#x3D; {
+      jsonrpc: &#x27;2.0&#x27;,
+      method: &#x27;eth_estimateUserOperationGas&#x27;,
+      params: [
+        op,
+        entrypointAddress
+      ],
+      id: 1
+    }
+
+    const requestConfig: AxiosRequestConfig &#x3D; {
+      url: this.prepareUrl(requestEnvironment),
+      method: &#x27;post&#x27;,
+      data
+    }
+
+    const response &#x3D; await lastValueFrom(
+      this.httpService
+        .request(requestConfig)
+        .pipe(
+          map((axiosResponse: AxiosResponse) &#x3D;&gt; {
+            return axiosResponse.data
+          })
+        )
+        .pipe(
+          catchError((e) &#x3D;&gt; {
+            const errorReason &#x3D;
+              e?.result?.error ||
+              e?.result?.error?.message ||
+              &#x27;&#x27;
+
+            this.logger.error(&#x60;RpcException catchError: ${errorReason} ${JSON.stringify(e)}&#x60;)
+            throw new RpcException(errorReason)
+          })
+        )
+    )
+
+    if (has(response, &#x27;error&#x27;)) {
+      const error &#x3D; get(response, &#x27;error&#x27;)
+      this.logger.error(&#x27;Error getting gas estimation&#x27;, error)
+      throw new RpcException(error)
+    }
+
+    if (!has(response, &#x27;result&#x27;)) {
+      this.logger.error(&#x27;Response does not contain result&#x27;, JSON.stringify(response))
+      throw new InternalServerErrorException(&#x27;Error getting gas estimation from paymaster&#x27;)
+    }
+
+    if (has(response, &#x27;result.error&#x27;)) {
+      const result &#x3D; get(response, &#x27;result&#x27;)
+      const error &#x3D; get(response, &#x27;result.error&#x27;)
+      this.logger.error(&#x27;Error in result of gas estimation&#x27;, result)
+      throw new RpcException(error)
+    }
+
+    if (!has(response, &#x27;result.callGasLimit&#x27;)) {
+      const result &#x3D; get(response, &#x27;result&#x27;)
+      this.logger.error(&#x27;Result does not contain callGasLimit&#x27;, result)
+      throw new InternalServerErrorException(&#x27;Error getting gas estimation from paymaster&#x27;)
+    }
+
+    const result &#x3D; get(response, &#x27;result&#x27;) as GasDetails
+    this.logger.log(&#x60;Gas estimation received: ${JSON.stringify(result)}&#x60;)
+
+    const callGasLimit &#x3D; BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+
+    return {
+      ...result,
+      callGasLimit
+    }
+  }
+
+  private prepareUrl (environment) {
+    if (isEmpty(environment)) throw new InternalServerErrorException(&#x27;Bundler environment is missing&#x27;)
+    const config &#x3D; this.configService.get(&#x60;bundler.${environment}&#x60;)
+
+    if (config.url) {
+      return config.url
+    } else {
+      throw new InternalServerErrorException(&#x60;${capitalize(environment)} bundler environment is missing&#x60;)
+    }
+  }
+
+  async pm_accounts (body, env: any, projectId: string) {
+    // const [entryPointAddress] &#x3D; body
+    const paymasterInfo &#x3D; await callMSFunction(this.accountClient, &#x27;get_paymaster_info&#x27;, { projectId, env })
+    return [
+      paymasterInfo.paymasterAddress
+    ]
+  }
+
+  private getProviderByEnv (env: string) {
+    if (env &#x3D;&#x3D;&#x3D; &#x27;production&#x27;) {
+      return this.fuseProvider
+    }
+    if (env &#x3D;&#x3D;&#x3D; &#x27;sandbox&#x27;) {
+      return this.sparkProvider
+    }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'PaymasterApiService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

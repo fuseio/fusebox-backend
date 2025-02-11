@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/projects/projects.controller.ts</code>
+            <code>apps/charge-accounts-service/src/projects/projects.controller.ts</code>
         </p>
 
 
@@ -78,7 +78,16 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#checkIfSecretExists" >checkIfSecretExists</a>
+                            </li>
+                            <li>
                                 <a href="#create" >create</a>
+                            </li>
+                            <li>
+                                <a href="#createSandboxKey" >createSandboxKey</a>
+                            </li>
+                            <li>
+                                <a href="#createSecret" >createSecret</a>
                             </li>
                             <li>
                                 <a href="#findAll" >findAll</a>
@@ -87,7 +96,31 @@
                                 <a href="#findOne" >findOne</a>
                             </li>
                             <li>
+                                <a href="#findOneByIdInternal" >findOneByIdInternal</a>
+                            </li>
+                            <li>
+                                <a href="#findOneInternal" >findOneInternal</a>
+                            </li>
+                            <li>
+                                <a href="#getApiKeysInfo" >getApiKeysInfo</a>
+                            </li>
+                            <li>
+                                <a href="#getProjectBySponsorId" >getProjectBySponsorId</a>
+                            </li>
+                            <li>
+                                <a href="#getPublic" >getPublic</a>
+                            </li>
+                            <li>
+                                <a href="#getPublicInternal" >getPublicInternal</a>
+                            </li>
+                            <li>
+                                <a href="#getSandboxKey" >getSandboxKey</a>
+                            </li>
+                            <li>
                                 <a href="#update" >update</a>
+                            </li>
+                            <li>
+                                <a href="#updateSecret" >updateSecret</a>
                             </li>
                         </ul>
                     </td>
@@ -110,6 +143,85 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="checkIfSecretExists"></a>
+                    <span class="name">
+                        <span ><b>checkIfSecretExists</b></span>
+                        <a href="#checkIfSecretExists"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkIfSecretExists(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;/secret/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Check if an API key secret for the given project exists.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The API key secret exists.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:106</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Checks if an API key secret for the given project exists</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true if secret exists for the given project, false otherwise</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="create"></a>
                     <span class="name">
                         <span ><b>create</b></span>
@@ -127,14 +239,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)<br />@Post()<br /></code>
+                    <code>@UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)<br />@Post()<br />@ApiOperation({summary: &#x27;Create a new project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The project has been successfully created.&#x27;})<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="20"
-                            class="link-to-prism">src/projects/projects.controller.ts:20</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:34</a></div>
                 </td>
             </tr>
 
@@ -188,6 +300,164 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="createSandboxKey"></a>
+                    <span class="name">
+                        <span ><b>createSandboxKey</b></span>
+                        <a href="#createSandboxKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createSandboxKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Post(&#x27;/sandbox/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Create a sandbox API key for the given project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The sandbox API key has been successfully created.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:158</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Creates an sandbox API key for the given project</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the generated sandbox API key or error if key already exists</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createSecret"></a>
+                    <span class="name">
+                        <span ><b>createSecret</b></span>
+                        <a href="#createSecret"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createSecret(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Post(&#x27;/secret/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Create an API key secret for the given project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The API key secret has been successfully created.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:93</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Creates an API key secret for the given project</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the generated API key secret or error if secret already exists</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="findAll"></a>
                     <span class="name">
                         <span ><b>findAll</b></span>
@@ -205,14 +475,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard)<br />@Get()<br /></code>
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get()<br />@ApiOperation({summary: &#x27;Find all the projects of the authenticated user.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The projects have been successfully fetched.&#x27;})<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/projects/projects.controller.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:45</a></div>
                 </td>
             </tr>
 
@@ -283,14 +553,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;:id&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;:id&#x27;)<br />@ApiOperation({summary: &#x27;Get project by id.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The project has been successfully fetched.&#x27;})<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="40"
-                            class="link-to-prism">src/projects/projects.controller.ts:40</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:58</a></div>
                 </td>
             </tr>
 
@@ -350,6 +620,547 @@ authenticated user is the owner of the project</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="findOneByIdInternal"></a>
+                    <span class="name">
+                        <span ><b>findOneByIdInternal</b></span>
+                        <a href="#findOneByIdInternal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findOneByIdInternal(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;find-one-project-by-owner-id&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="181"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:181</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findOneInternal"></a>
+                    <span class="name">
+                        <span ><b>findOneInternal</b></span>
+                        <a href="#findOneInternal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>findOneInternal(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;find-one-project&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="176"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:176</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getApiKeysInfo"></a>
+                    <span class="name">
+                        <span ><b>getApiKeysInfo</b></span>
+                        <a href="#getApiKeysInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getApiKeysInfo(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;/apikeysinfo/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Get API keys unsensitive info for the given project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The API keys unsensitive info has been successfully fetched.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:119</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Gets api keys unsensitive info for the given projectId</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>an object containing the unsensitive fields of api keys</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProjectBySponsorId"></a>
+                    <span class="name">
+                        <span ><b>getProjectBySponsorId</b></span>
+                        <a href="#getProjectBySponsorId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getProjectBySponsorId(sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;/paymaster/:sponsorId&#x27;)<br />@ApiOperation({summary: &#x27;Get project by sponsor id.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The project has been successfully fetched.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:66</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sponsorId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPublic"></a>
+                    <span class="name">
+                        <span ><b>getPublic</b></span>
+                        <a href="#getPublic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPublic(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;/public/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Get the public API key associated with the project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The public API key associated with the project.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="145"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:145</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Gets the public API key associated with the project</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the public API key associated with the given project</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPublicInternal"></a>
+                    <span class="name">
+                        <span ><b>getPublicInternal</b></span>
+                        <a href="#getPublicInternal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPublicInternal(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;get-public&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="186"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:186</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSandboxKey"></a>
+                    <span class="name">
+                        <span ><b>getSandboxKey</b></span>
+                        <a href="#getSandboxKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSandboxKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Get(&#x27;/sandbox/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Get the sandbox API key associated with the project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The sandbox API key associated with the project.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="171"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:171</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Gets the sandbox API key associated with the project</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the sandbox API key associated with the given project</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="update"></a>
                     <span class="name">
                         <span ><b>update</b></span>
@@ -367,14 +1178,14 @@ authenticated user is the owner of the project</p>
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Patch(&#x27;:id&#x27;)<br /></code>
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Patch(&#x27;:id&#x27;)<br />@ApiOperation({summary: &#x27;Update the project with the given id.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The project has been successfully updated.&#x27;})<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/projects/projects.controller.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="80"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:80</a></div>
                 </td>
             </tr>
 
@@ -444,31 +1255,124 @@ and verifies that the requesting authenticated user is the owner of the project<
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSecret"></a>
+                    <span class="name">
+                        <span ><b>updateSecret</b></span>
+                        <a href="#updateSecret"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateSecret(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard, IsProjectOwnerGuard)<br />@Put(&#x27;/secret/:projectId&#x27;)<br />@ApiOperation({summary: &#x27;Revokes the old API key secret and generates a new one for the given project.&#x27;})<br />@ApiCreatedResponse({description: &#x27;The API key secret has been successfully updated.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="132"
+                            class="link-to-prism">apps/charge-accounts-service/src/projects/projects.controller.ts:132</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Revokes the old API key secret and generates a new one for the given project</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the new API key secret</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Param, Patch, Post, UseGuards } from &#x27;@nestjs/common&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guards/jwt-auth.guard&#x27;;
-import { User } from &#x27;src/users/user.decorator&#x27;;
-import { CreateProjectDto } from &#x27;./dto/create-project.dto&#x27;;
-import { UpdateProjectDto } from &#x27;./dto/update-project.dto&#x27;;
-import { IsCreatorOwnerGuard } from &#x27;./guards/is-creator-owner.guard&#x27;;
-import { IsProjectOwnerGuard } from &#x27;./guards/is-project-owner.guard&#x27;;
-import { ProjectsService } from &#x27;./projects.service&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UseGuards
+} from &#x27;@nestjs/common&#x27;
+import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
+import { User } from &#x27;@app/accounts-service/users/user.decorator&#x27;
+import { CreateProjectDto } from &#x27;@app/accounts-service/projects/dto/create-project.dto&#x27;
+import { UpdateProjectDto } from &#x27;@app/accounts-service/projects/dto/update-project.dto&#x27;
+import { IsCreatorOwnerGuard } from &#x27;@app/accounts-service/projects/guards/is-creator-owner.guard&#x27;
+import { IsProjectOwnerGuard } from &#x27;@app/accounts-service/projects/guards/is-project-owner.guard&#x27;
+import { ProjectsService } from &#x27;@app/accounts-service/projects/projects.service&#x27;
+import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
+import { ApiCreatedResponse, ApiOperation, ApiTags } from &#x27;@nestjs/swagger&#x27;
 
+@ApiTags(&#x27;Projects&#x27;)
 @Controller({ path: &#x27;projects&#x27;, version: &#x27;1&#x27; })
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) { }
+  constructor (private readonly projectsService: ProjectsService) { }
 
   /**
    * Creates a new project for the authenticated user
-   * @param createProjectDto 
+   * @param createProjectDto
    */
   @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectsService.create(createProjectDto);
+  @ApiOperation({ summary: &#x27;Create a new project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The project has been successfully created.&#x27; })
+  create (@Body() createProjectDto: CreateProjectDto) {
+    return this.projectsService.create(createProjectDto)
   }
 
   /**
@@ -476,38 +1380,156 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@User(&#x27;sub&#x27;) auth0Id: string) {
-    return this.projectsService.findAll(auth0Id);
+  @ApiOperation({ summary: &#x27;Find all the projects of the authenticated user.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The projects have been successfully fetched.&#x27; })
+  findAll (@User(&#x27;sub&#x27;) auth0Id: string) {
+    return this.projectsService.findAll(auth0Id)
   }
 
   /**
-   * Fetches the project by the given id and verifies that the requesting 
-   * authenticated user is the owner of the project 
+   * Fetches the project by the given id and verifies that the requesting
+   * authenticated user is the owner of the project
    * @param id Project ID
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get(&#x27;:id&#x27;)
-  findOne(@Param(&#x27;id&#x27;) id: string) {
-    return this.projectsService.findOne(id);
+  @ApiOperation({ summary: &#x27;Get project by id.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The project has been successfully fetched.&#x27; })
+  findOne (@Param(&#x27;id&#x27;) id: string) {
+    return this.projectsService.findOne(id)
+  }
+
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get(&#x27;/paymaster/:sponsorId&#x27;)
+  @ApiOperation({ summary: &#x27;Get project by sponsor id.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The project has been successfully fetched.&#x27; })
+  getProjectBySponsorId (@Param(&#x27;sponsorId&#x27;) sponsorId: string) {
+    return this.projectsService.getProjectBySponsorId(sponsorId)
   }
 
   /**
-   * Updates the project with the given id with the given fields for the update 
-   * and verifies that the requesting authenticated user is the owner of the project 
+   * Updates the project with the given id with the given fields for the update
+   * and verifies that the requesting authenticated user is the owner of the project
    * @param id Project ID
-   * @param updateProjectDto 
+   * @param updateProjectDto
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Patch(&#x27;:id&#x27;)
-  update(@Param(&#x27;id&#x27;) id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectsService.update(id, updateProjectDto);
+  @ApiOperation({ summary: &#x27;Update the project with the given id.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The project has been successfully updated.&#x27; })
+  update (@Param(&#x27;id&#x27;) id: string, @Body() updateProjectDto: UpdateProjectDto) {
+    return this.projectsService.update(id, updateProjectDto)
+  }
+
+  /**
+   * Creates an API key secret for the given project
+   * @param projectId
+   * @returns the generated API key secret or error if secret already exists
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Post(&#x27;/secret/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Create an API key secret for the given project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The API key secret has been successfully created.&#x27; })
+  createSecret (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.createSecret({ projectId, createLegacyAccount: true })
+  }
+
+  /**
+   * Checks if an API key secret for the given project exists
+   * @param projectId
+   * @returns true if secret exists for the given project, false otherwise
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get(&#x27;/secret/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Check if an API key secret for the given project exists.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The API key secret exists.&#x27; })
+  checkIfSecretExists (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.checkIfSecretExists(projectId)
+  }
+
+  /**
+   * Gets api keys unsensitive info for the given projectId
+   * @param projectId
+   * @returns an object containing the unsensitive fields of api keys
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get(&#x27;/apikeysinfo/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Get API keys unsensitive info for the given project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The API keys unsensitive info has been successfully fetched.&#x27; })
+  getApiKeysInfo (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.getApiKeysInfo(projectId)
+  }
+
+  /**
+   * Revokes the old API key secret and generates a new one for the given project
+   * @param projectId
+   * @returns the new API key secret
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Put(&#x27;/secret/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Revokes the old API key secret and generates a new one for the given project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The API key secret has been successfully updated.&#x27; })
+  updateSecret (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.updateSecret(projectId)
+  }
+
+  /**
+   * Gets the public API key associated with the project
+   * @param projectId
+   * @returns the public API key associated with the given project
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get(&#x27;/public/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Get the public API key associated with the project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The public API key associated with the project.&#x27; })
+  getPublic (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.getPublic(projectId)
+  }
+
+  /**
+    * Creates an sandbox API key for the given project
+    * @param projectId
+    * @returns the generated sandbox API key or error if key already exists
+    */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Post(&#x27;/sandbox/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Create a sandbox API key for the given project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The sandbox API key has been successfully created.&#x27; })
+  createSandboxKey (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.createSandboxKey(projectId)
+  }
+
+  /**
+   * Gets the sandbox API key associated with the project
+   * @param projectId
+   * @returns the sandbox API key associated with the given project
+   */
+  @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
+  @Get(&#x27;/sandbox/:projectId&#x27;)
+  @ApiOperation({ summary: &#x27;Get the sandbox API key associated with the project.&#x27; })
+  @ApiCreatedResponse({ description: &#x27;The sandbox API key associated with the project.&#x27; })
+  getSandboxKey (@Param(&#x27;projectId&#x27;) projectId: string) {
+    return this.projectsService.getSandboxKey(projectId)
+  }
+
+  @MessagePattern(&#x27;find-one-project&#x27;)
+  findOneInternal (id: string) {
+    return this.projectsService.findOne(id)
+  }
+
+  @MessagePattern(&#x27;find-one-project-by-owner-id&#x27;)
+  findOneByIdInternal (id: string) {
+    return this.projectsService.findOneByOwnerId(id)
+  }
+
+  @MessagePattern(&#x27;get-public&#x27;)
+  getPublicInternal (projectId: string) {
+    return this.projectsService.getPublic(projectId)
   }
 }
 </code></pre>
     </div>
 </div>
-
-
 
 
 

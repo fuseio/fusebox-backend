@@ -3,20 +3,17 @@ kind: ConfigMap
 metadata:
   name: api
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: api
+    environment: {{ .Values.global.environment }}
 data:
+  
+  # [Hardcoded] Host & Port
   api_host: "0.0.0.0"
   api_port: "5002"
   api_tcp_port: "8876"
-  explorer_api_url: {{ .Values.configMap.explorer_api_url | quote }}
-  qa_mode: {{ .Values.configMap.qa_mode | quote }}
-  bundler_api_prd_url: {{ .Values.configMap.bundler_api_prd_url | quote }}
-  bundler_api_sandbox_url: {{ .Values.configMap.bundler_api_sandbox_url | quote }}
-  spark_rpc_url: {{ .Values.configMap.spark_rpc_url | quote }}
-  legacy_fuse_admin_api_url: {{ .Values.configMap.legacy_fuse_admin_api_url | quote }}
-  legacy_fuse_wallet_api_url: {{ .Values.configMap.legacy_fuse_wallet_api_url | quote }}
-  legacy_fuse_trade_api_url: {{ .Values.configMap.legacy_fuse_trade_api_url | quote }}
 
-  # Host & Port ('api' use 'accounts', 'notifications', 'network' and 'smart-wallets' hostname and TCP port)
+  # [Hardcoded] Components Host & Port ('api' component use 'accounts', 'notifications', 'network' and 'smart-wallets' components hostname & TCP port)
   accounts_host: "accounts"
   accounts_tcp_port: "8875"
   notifications_host: "notifications"
@@ -26,3 +23,8 @@ data:
   smart_wallets_host: "smart-wallets"
   smart_wallets_port: "5008"
   smart_wallets_tcp_port: "8881"
+
+  # User - defined
+{{- range $key, $val := .Values.configMap }}
+  {{ $key }}: {{ $val | quote }}
+{{- end }}

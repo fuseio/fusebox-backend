@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { ApiKeysService } from 'apps/charge-api-service/src/api-keys/api-keys.service'
+import { CreateSecretDto } from '@app/api-service/api-keys/dto/secret-key.dto'
 
 @Controller()
 export class ApiKeysController {
@@ -12,8 +13,8 @@ export class ApiKeysController {
    * @returns the generated API key secret or error if secret already exists
    */
   @MessagePattern('create_secret')
-  createSecret (projectId: string) {
-    return this.apiKeysService.createSecretKey(projectId)
+  createSecret (createSecretDto: CreateSecretDto) {
+    return this.apiKeysService.createSecretKey(createSecretDto.projectId, createSecretDto.createLegacyAccount)
   }
 
   /**
@@ -24,6 +25,16 @@ export class ApiKeysController {
   @MessagePattern('get_api_keys_info')
   checkIfSecretExists (projectId: string) {
     return this.apiKeysService.getApiKeysInfo(projectId)
+  }
+
+  /**
+   * Gets the project id for the given public api key
+   * @param publicApiKey
+   * @returns an object consisting unsensitive fields of the api_keys of the project
+   */
+  @MessagePattern('get_project_id_by_public_key')
+  getProjectIdByPublicKey (apiKey: string) {
+    return this.apiKeysService.getProjectIdByPublicKey(apiKey)
   }
 
   /**

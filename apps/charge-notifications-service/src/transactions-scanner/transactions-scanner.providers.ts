@@ -2,7 +2,7 @@ import { databaseConnectionString } from '@app/common/constants/database.constan
 import { transactionsScannerStatusModelString, transactionsScannerStatusServiceString } from '@app/notifications-service/transactions-scanner/transactions-scanner.constants'
 import { ScannerStatusSchema } from '@app/notifications-service/common/schemas/scanner-status.schema'
 import { Connection } from 'mongoose'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
 
 export const transactionsScannerProviders = [
   {

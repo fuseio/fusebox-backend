@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# - Global -
+# - Global
 global:
   # Label: environment
   environment: "production"
@@ -10,6 +10,9 @@ global:
   # Google Cloud
   project_id: "fusebox-400604"
   region: "europe-west1"
+
+  # ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "google-cloud-secret-manager-store"
 
   # DNS domain
   domain: "fuse.io"
@@ -20,41 +23,224 @@ global:
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
 
-# - Load balancing -
+# - Components
+accounts:
+  enabled: true
+
+  # Replicas
+  replicas: 2
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "500Mi"
+    limits:
+      cpu: "250m"
+      memory: "500Mi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 50
+
+  # Security - CloudArmor
+  securityPolicy: "fusebox-accounts-security-policy"
+
+  # ConfigMap
+  configMap:
+    auth0_issuer_url: "https://auth.fuse.io/"
+    auth0_audience: "https://accounts.fuse.io"
+    paymaster_sandbox_contract_address_v_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"
+    paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
+    entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+    entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+    etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    paymaster_funder_api_key: "pk_yWkBe0hnObJmMkYjq4Ggce1g"
+    paymaster_funder_webhook_id: "65c4ba66394c8d9c3e4801ff"
+    console_dapp_url: "https://console.fuse.io"
+
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - mongo_uri
+    - smart_wallets_jwt_secret
+    - paymaster_funder_private_key
+    - paymaster_funder_api_secret_key
+    - amplitude_api_key
+    - incoming_token_transfers_webhook_id
+    - google_operator_form_url
+    - operator_refresh_jwt_secret
+
+
+amplitude:
+  enabled: true
+
+  # Replicas
+  replicas: 2
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "500Mi"
+    limits:
+      cpu: "250m"
+      memory: "500Mi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 50
+
+api:
+  enabled: true
+
+  # Replicas
+  replicas: 2
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 100
+
+  # Security policy name (Cloud Armor)
+  securityPolicy: "fusebox-api-security-policy"
+
+  # ConfigMap
+  configMap:
+    explorer_api_url: "https://explorer.fuse.io/api"
+    qa_mode: "false"
+    bundler_api_sandbox_url: "https://testnet-rpc.etherspot.io/v1/123"
+    spark_rpc_url: "https://rpc.fusespark.io"
+    legacy_fuse_admin_api_url: "https://studio.fuse.io"
+    legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
+    voltage_router_api_url: "https://router.voltage.finance"
+
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - mongo_uri
+    - rpc_url
+    - fuse_studio_admin_jwt
+    - legacy_jwt_secret
+    - smart_wallets_jwt_secret
+    - paymaster_production_signer_private_key_v_0_1_0
+    - paymaster_sandbox_signer_private_key_v_0_1_0
+    - explorer_api_key
+    - bundler_api_prd_url
+
+apps:
+  enabled: false # [DEPRECATED]
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 10
+
+  # Security - CloudArmor
+  securityPolicy: null
+
+  # ConfigMap
+  configMap:
+    charge_wallet_phone_number: "+15554443322"
+    charge_base_url: "https://api.fuse.io"
+    job_sleep_ms: "6000"
+    unmarshal_base_url: "https://api.unmarshal.com"
+    alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
+    ethereum_payments_network_name: "goerli"
+
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - mongo_uri
+    - charge_public_key
+    - charge_secret_key
+    - charge_webhook_id
+    - unmarshal_auth_key
+    - charge_payments_ethereum_mnemonic
+    - alchemy_webhook_id
+    - alchemy_auth_key
+
+centrifugo:
+  enabled: true
+
+  # Replicas
+  replicas: 2
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Image
+  image:
+    repository: "centrifugo/centrifugo"
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "v5.4.4"
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 50
+
+  # Security - CloudArmor
+  securityPolicy: null
+
 gateway-api:
   enabled: true
 
   name: "fusebox-lb"
   global_address: "fusebox-lb"
 
-# - Components -
-accounts:
+network:
   enabled: true
 
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
+  # Replicas
+  replicas: 1
 
-  # ConfigMap
-  configMap:
-    auth0_issuer_url: "https://auth.fuse.io/"
-    auth0_audience: "https://accounts.chargeweb3.com"
-    paymaster_sandbox_contract_address_v_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"
-    paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
-    entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-    entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-
-api:
-  enabled: true
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -67,44 +253,28 @@ api:
 
   # ConfigMap
   configMap:
+    primary_service: "explorer"
     explorer_api_url: "https://explorer.fuse.io/api"
-    qa_mode: "false"
-    bundler_api_prd_url: "https://bundler.fuse.io/122"
-    bundler_api_sandbox_url: "https://bundler.fuse.io/123"
-    spark_rpc_url: "https://rpc.fusespark.io/"
-    legacy_fuse_admin_api_url: "https://studio.fuse.io"
-    legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
-    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
+    unmarshal_base_url: "https://api.unmarshal.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    rpc_url: ""
-    fuse_studio_admin_jwt: ""
-    legacy_jwt_secret: ""
-    smart_wallets_jwt_secret: ""
-    paymaster_production_signer_private_key_v_0_1_0: ""
-    paymaster_sandbox_signer_private_key_v_0_1_0: ""
-
-relay:
-  enabled: true
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    relay_secret: ""
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - rpc_url
+    - unmarshal_auth_key
+    - explorer_api_key
+    - coin_gecko_api_key
 
 notifications:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -119,34 +289,26 @@ notifications:
   configMap:
     network_name: "fuse"
     chain_id: "122"
-    max_blocks: "2500"
-    timeout_interval: "10000"
+    max_blocks: "1500"
+    timeout_interval: "20000"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    smart_wallets_jwt_secret: ""
-    rpc_url: ""
-    full_archive_rpc_url: ""
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - mongo_uri
+    - smart_wallets_jwt_secret
+    - rpc_url
+    - full_archive_rpc_url
 
-network:
-  enabled: true
+relay:
+  enabled: false # [DEPRECATED]
 
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "1000m"
-      memory: "2Gi"
-    limits:
-      cpu: "1000m"
-      memory: "2Gi"
+  # Replicas
+  replicas: 1
 
-  # ConfigMap
-  configMap:
-    legacy_fuse_trade_api_url: "https://api.fuseswap.com"
-
-apps:
-  enabled: true
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -157,28 +319,53 @@ apps:
       cpu: "500m"
       memory: "1Gi"
 
-  # ConfigMap
-  configMap:
-    charge_wallet_phone_number: "+15554443322"
-    charge_base_url: "https://api.alpha.fuse.io"
-    job_sleep_ms: "6000"
-    unmarshal_base_url: "https://api.unmarshal.com"
-    alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
-    ethereum_payments_network_name: "goerli"
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - mongo_uri
+    - relay_secret
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    charge_public_key: ""
-    charge_secret_key: ""
-    charge_webhook_id: ""
-    unmarshal_auth_key: ""
-    charge_payments_ethereum_mnemonic: ""
-    alchemy_webhook_id: ""
-    alchemy_auth_key: ""
+skandha:
+  enabled: false # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
+
+  # Replicas
+  replicas: 2
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
+
+  # Image
+  image:
+    repository: "etherspot/skandha"
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "v1-1.5.21"
+
+  # Resources (requests & limits)
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  # Service - RPS per Pod
+  maxRatePerEndpoint: 50
+
+  # Security - CloudArmor
+  securityPolicy: null
 
 smart-wallets:
   enabled: true
+
+  # Replicas
+  replicas: 1
+
+  # Affinity (zones)
+  affinity:
+    zones:
+      - b
 
   # Resources (requests & limits)
   resources:
@@ -194,81 +381,18 @@ smart-wallets:
     centrifugo_uri: "wss://ws.fuse.io/connection/websocket"
     centrifugo_api_url: "https://ws.fuse.io/api"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
-    charge_base_url: "https://api.alpha.fuse.io"
+    charge_base_url: "https://api.fuse.io"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
 
-  # Secrets (through CI/CD process via environment variables)
-  secrets:
-    mongo_uri: ""
-    smart_wallets_jwt_secret: ""
-    fuse_wallet_backend_jwt: ""
-    centrifugo_jwt: ""
-    centrifugo_api_key: ""
-    charge_public_key: ""
-    charge_secret_key: ""
-    incoming_token_transfers_webhook_id: ""
-
-centrifugo:
-  enabled: true
-
-  # Image
-  image:
-    repository: "centrifugo/centrifugo"
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "v5"
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-# Secrets (through CI/CD process via environment variables)
-#
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function
-# secrets:
-#   ...
-#   ...
-
-skandha:
-  enabled: true
-
-  # Image
-  image:
-    repository: "etherspot/skandha"
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.0.44"
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # ConfigMap
-  configMap:
-    skandha_networks: "fuse,fuseSparknet"
-    skandha_fuse_estimation_static_buffer: "500000"
-    skandha_fuse_sparknet_estimation_static_buffer: "500000"
-    skandha_fuse_ban_slack: "10"
-    skandha_fuse_sparknet_ban_slack: "10"
-    skandha_fuse_throttling_slack: "10"
-    skandha_fuse_sparknet_throttling_slack: "10"
-    skandha_fuse_min_inclusion_denominator: "10"
-    skandha_fuse_sparknet_min_inclusion_denominator: "10"
-
-  # Secrets
-  secrets:
-    skandha_fuse_sparknet_relayer: ""
-    skandha_fuse_sparknet_beneficiary: ""
-    skandha_fuse_sparknet_rpc: ""
-    skandha_fuse_sparknet_entrypoints: ""
-    skandha_fuse_relayer: ""
-    skandha_fuse_beneficiary: ""
-    skandha_fuse_rpc: ""
-    skandha_fuse_entrypoints: ""
+  # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+  secret:
+    - amplitude_api_key
+    - mongo_uri
+    - smart_wallets_jwt_secret
+    - fuse_wallet_backend_jwt
+    - centrifugo_jwt
+    - centrifugo_api_key
+    - charge_public_key
+    - charge_secret_key
+    - incoming_token_transfers_webhook_id
+    - coin_gecko_api_key

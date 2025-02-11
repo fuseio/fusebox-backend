@@ -3,22 +3,19 @@ import { parseLog } from '@app/notifications-service/common/utils/helper-functio
 import { UserOpScannerStatusServiceString, userOpLogsFilterString } from '@app/notifications-service/events-scanner/events-scanner.constants'
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { BaseProvider, InjectEthersProvider, Log, EthersContract, InjectContractProvider } from 'nestjs-ethers'
+import { BaseProvider, InjectEthersProvider, Log } from 'nestjs-ethers'
 import { UserOpEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
-import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
-import { EventsScannerService } from './events-scanner.service'
-import { ScannerStatusService } from '../common/scanner-status.service'
-import { LogFilter } from './interfaces/logs-filter'
+import { EventsScannerService } from '@app/notifications-service/events-scanner/events-scanner.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
+import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
 import ENTRY_POINT_ABI from '@app/notifications-service/common/constants/abi/entryPoint.json'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
+import { GasService } from '@app/common/services/gas.service'
+
 @Injectable()
 export class UserOpEventsScannerService extends EventsScannerService {
-  // TODO: Create a Base class for events scanner and transaction scanner services
-  private tokenInfoCache: TokenInfoCache = {}
-
   constructor (
     configService: ConfigService,
     @Inject(UserOpScannerStatusServiceString)
@@ -27,12 +24,9 @@ export class UserOpEventsScannerService extends EventsScannerService {
     logsFilter: LogFilter,
     @Inject(smartWalletsService)
     private readonly dataLayerClient: ClientProxy,
-
     @InjectEthersProvider('regular-node')
     rpcProvider: BaseProvider,
-    @InjectContractProvider('regular-node')
-    private readonly ethersContract: EthersContract,
-    private webhooksService: WebhooksService
+    private gasService: GasService
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(UserOpEventsScannerService.name))
   }
@@ -40,8 +34,6 @@ export class UserOpEventsScannerService extends EventsScannerService {
   @logPerformance('UserOpEventsScannerService::ProcessBlocks')
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
-
-    this.logger.log(`UserOpEventsScannerService: Processing blocks from ${fromBlock} to ${toBlock}`)
 
     const logs = await this.fetchLogs(fromBlock, toBlock)
 
@@ -58,23 +50,28 @@ export class UserOpEventsScannerService extends EventsScannerService {
 
   @logPerformance('UserOpEventsScannerService::ProcessEvent')
   async processEvent (log: Log) {
-    this.logger.log(`Processing UserOp event from block: ${log.blockNumber} & txHash:  ${log.transactionHash}`)
-
     const parsedLog = parseLog(log, ENTRY_POINT_ABI)
+    const gasValues = await this.gasService.fetchTransactionGasCosts(
+      parsedLog.transactionHash,
+      this.rpcProvider
+    )
+
     const eventData: UserOpEventData = {
       blockNumber: log.blockNumber,
       blockHash: log.blockHash,
       txHash: parsedLog.transactionHash,
       userOpHash: parsedLog.args[0],
       from: parsedLog.args[1],
-      paymasterAndData: parsedLog.args[2],
-      nonce: parsedLog.args[3].toNumber(),
+      nonce: parsedLog.args[3].toString(),
       success: parsedLog.args[4],
-      actualGasCost: parsedLog.args[5].toNumber(),
-      actualGasUsed: parsedLog.args[6].toNumber()
+      actualGasCost: parsedLog.args[5].toString(),
+      actualGasUsed: parsedLog.args[6].toString(),
+      ...gasValues
     }
     try {
-      callMSFunction(this.dataLayerClient, 'update-user-op', eventData)
+      callMSFunction(this.dataLayerClient, 'update-user-op', eventData).catch((error) => {
+        this.logger.error(`Failed to call update-user-op: ${error.message}`)
+      })
     } catch (error) {
       this.logger.error(`Failed to call update-user-op: ${error.message}`)
     }

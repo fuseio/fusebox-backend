@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: skandha
   namespace: {{ .Release.Namespace }}
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: {{ .Values.maxRatePerEndpoint | quote }}
   labels:
     app: skandha
     environment: {{ .Values.global.environment }}

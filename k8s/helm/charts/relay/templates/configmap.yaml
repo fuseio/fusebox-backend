@@ -3,7 +3,12 @@ kind: ConfigMap
 metadata:
   name: relay
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: relay
+    environment: {{ .Values.global.environment }}
 data:
+
+  # [Hardcoded] Host & Port
   relay_host: "0.0.0.0"
   relay_port: "5003"
   relay_tcp_port: "8877"

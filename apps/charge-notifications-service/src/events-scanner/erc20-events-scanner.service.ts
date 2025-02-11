@@ -7,17 +7,16 @@ import { ConfigService } from '@nestjs/config'
 import { BigNumber, BaseProvider, InjectEthersProvider, Log, Contract, EthersContract, InjectContractProvider, formatUnits } from 'nestjs-ethers'
 import { TokenEventData } from '@app/notifications-service/common/interfaces/event-data.interface'
 import { WebhooksService } from '@app/notifications-service/webhooks/webhooks.service'
-import { TokenInfo, TokenInfoCache } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
+import { TokenInfo } from '@app/notifications-service/events-scanner/interfaces/token-info-cache'
 import { LogFilter } from '@app/notifications-service/events-scanner/interfaces/logs-filter'
-import { has } from 'lodash'
-import { EventsScannerService } from './events-scanner.service'
-import { ScannerStatusService } from '../common/scanner-status.service'
+import { EventsScannerService } from '@app/notifications-service/events-scanner/events-scanner.service'
+import { ScannerStatusService } from '@app/notifications-service/common/scanner-status.service'
+import { GasService } from '@app/common/services/gas.service'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
 
 @Injectable()
 export class ERC20EventsScannerService extends EventsScannerService {
-  // TODO: Create a Base class for events scanner and transaction scanner services
-  private tokenInfoCache: TokenInfoCache = {}
-
   constructor (
     configService: ConfigService,
     @Inject(ERC20ScannerStatusServiceString)
@@ -28,7 +27,9 @@ export class ERC20EventsScannerService extends EventsScannerService {
     rpcProvider: BaseProvider,
     @InjectContractProvider('regular-node')
     private readonly ethersContract: EthersContract,
-    private webhooksService: WebhooksService
+    private webhooksService: WebhooksService,
+    private gasService: GasService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {
     super(configService, scannerStatusService, logsFilter, rpcProvider, new Logger(ERC20EventsScannerService.name))
   }
@@ -36,8 +37,6 @@ export class ERC20EventsScannerService extends EventsScannerService {
   @logPerformance('ERC20EventsScannerService::ProcessBlocks')
   async processBlocks (fromBlock: number, toBlock: number) {
     if (fromBlock > toBlock) return
-
-    this.logger.log(`ERC20EventsScannerService: Processing blocks from ${fromBlock} to ${toBlock}`)
 
     const logs = await this.fetchLogs(fromBlock, toBlock)
 
@@ -54,8 +53,6 @@ export class ERC20EventsScannerService extends EventsScannerService {
 
   @logPerformance('ERC20EventsScannerService::ProcessEvent')
   async processEvent (log: Log) {
-    this.logger.log(`Processing event from block: ${log.blockNumber} & txHash: ${log.transactionHash}`)
-
     const tokenType = getTransferEventTokenType(log)
     const abi = getTokenTypeAbi(tokenType)
 
@@ -75,6 +72,11 @@ export class ERC20EventsScannerService extends EventsScannerService {
       this.logger.error(`Unable to get token info at address ${tokenAddress}: \n${err}`)
     }
 
+    const gasValues = await this.gasService.fetchTransactionGasCosts(
+      parsedLog.transactionHash,
+      this.rpcProvider
+    )
+
     const eventData: TokenEventData = {
       to: toAddress,
       from: fromAddress,
@@ -89,7 +91,8 @@ export class ERC20EventsScannerService extends EventsScannerService {
       tokenDecimals: null,
       tokenId: null,
       valueEth: null,
-      isInternalTransaction: false
+      isInternalTransaction: false,
+      ...gasValues
     }
 
     if (tokenType === TokenType.ERC20) {
@@ -107,13 +110,10 @@ export class ERC20EventsScannerService extends EventsScannerService {
 
   @logPerformance('ERC20EventsScannerService::GetTokenInfo')
   private async getTokenInfo (tokenAddress: string, abi: any, tokenType: string) {
-    if (has(this.tokenInfoCache, tokenAddress)) {
-      this.logger.log(`Token info for ${tokenAddress} was found in cache...`)
-      const token = this.tokenInfoCache[tokenAddress]
+    const token = await this.cacheManager.get(tokenAddress) as TokenInfo
+    if (token) {
       return [token.name, token.symbol, token.decimals]
     }
-
-    this.logger.log(`Token info for ${tokenAddress} was not found in cache...`)
 
     const contract: Contract = this.ethersContract.create(
       tokenAddress,
@@ -127,7 +127,7 @@ export class ERC20EventsScannerService extends EventsScannerService {
     }
     const name = await contract.name()
     const symbol = await contract.symbol()
-    this.tokenInfoCache[tokenAddress] = { name, symbol, decimals } as TokenInfo
+    await this.cacheManager.set(tokenAddress, { name, symbol, decimals } as TokenInfo)
 
     return [name, symbol, decimals]
   }

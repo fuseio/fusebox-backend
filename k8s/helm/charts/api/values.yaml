@@ -4,45 +4,70 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "api"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
+# Autoscaling
+autoscaling:
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
+
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
+logging:
+  enabled: true
+  sampleRate: 1000000
+
+# ConfigMap (non - sensitive information)
 configMap:
   # -- BlockScout API URL
   explorer_api_url: ""
   # -- QA mode ('true' or 'false')
   qa_mode: ""
-  # -- Bundler - API Production URL
-  bundler_api_prd_url: ""
   # -- Bundler - API Sandbox URL
   bundler_api_sandbox_url: ""
   # -- RPC URL - Spark
@@ -51,22 +76,17 @@ configMap:
   legacy_fuse_admin_api_url: ""
   # -- Legacy - Fuse wallet API URL
   legacy_fuse_wallet_api_url: ""
-  # -- Legacy - Fuse trade API URL
-  legacy_fuse_trade_api_url: ""
+  # -- Voltage router API URL
+  voltage_router_api_url: ""
 
-# Secrets (through environment variables)
-secrets:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- RPC URL - Fuse
-  rpc_url: ""
-  # -- Fuse Studio admin JWT
-  fuse_studio_admin_jwt: ""
-  # -- Legacy - JWT secret
-  legacy_jwt_secret: ""
-  # -- smart-wallets - JWT secret
-  smart_wallets_jwt_secret: ""
-  # -- Bundler - Paymaster Production signer private key
-  paymaster_production_signer_private_key_v_0_1_0: ""
-  # -- Bundler - Paymaster Sandbox signer private key
-  paymaster_sandbox_signer_private_key_v_0_1_0: ""
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+secret:
+  - mongo_uri
+  - rpc_url
+  - fuse_studio_admin_jwt
+  - legacy_jwt_secret
+  - smart_wallets_jwt_secret
+  - paymaster_production_signer_private_key_v_0_1_0
+  - paymaster_sandbox_signer_private_key_v_0_1_0
+  - explorer_api_key
+  - bundler_api_prd_url

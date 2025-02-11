@@ -3,11 +3,13 @@ kind: Deployment
 metadata:
   name: accounts
   namespace: {{ .Release.Namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: accounts
     environment: {{ .Values.global.environment }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,25 +22,27 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
         app: accounts
         environment: {{ .Values.global.environment }}
     spec:
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - accounts
-              topologyKey: kubernetes.io/hostname
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                {{- range $zone := .Values.affinity.zones }}
+                  - {{ $.Values.global.region }}-{{ $zone }}
+                {{- end }}
       containers:
         - name: accounts
           image: "{{ .Values.global.region }}-docker.pkg.dev/{{ .Values.global.project_id }}/{{ .Values.global.image.repository }}/accounts:{{ .Values.global.image.tag }}"
+          imagePullPolicy: Always
           env:
+
             # ConfigMap
             - name: ACCOUNTS_HOST
               valueFrom:
@@ -55,36 +59,6 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: accounts_tcp_port
-            - name: AUTH0_ISSUER_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: auth0_issuer_url
-            - name: AUTH0_AUDIENCE
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: auth0_audience
-            - name: PAYMASTER_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: paymaster_sandbox_contract_address_v_0_1_0
-            - name: PAYMASTER_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: paymaster_production_contract_address_v_0_1_0
-            - name: ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: entrypoint_sandbox_contract_address_v_0_1_0
-            - name: ENTRYPOINT_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
-              valueFrom:
-                configMapKeyRef:
-                  name: accounts
-                  key: entrypoint_production_contract_address_v_0_1_0
             - name: API_HOST
               valueFrom:
                 configMapKeyRef:
@@ -95,33 +69,43 @@ spec:
                 configMapKeyRef:
                   name: accounts
                   key: api_tcp_port
-            - name: RELAY_HOST
+            - name: SMART_WALLETS_HOST
               valueFrom:
                 configMapKeyRef:
                   name: accounts
-                  key: relay_host
-            - name: RELAY_TCP_PORT
+                  key: smart_wallets_host
+            - name: SMART_WALLETS_TCP_PORT
               valueFrom:
                 configMapKeyRef:
                   name: accounts
-                  key: relay_tcp_port
-            - name: APPS_HOST
+                  key: smart_wallets_tcp_port
+            - name: NOTIFICATIONS_HOST
               valueFrom:
                 configMapKeyRef:
                   name: accounts
-                  key: apps_host
-            - name: APPS_TCP_PORT
+                  key: notifications_host
+            - name: NOTIFICATIONS_TCP_PORT
               valueFrom:
                 configMapKeyRef:
                   name: accounts
-                  key: apps_tcp_port
+                  key: notifications_tcp_port
+            {{- range $key, $value := .Values.configMap }}
+            - name: {{ $key | upper }}
+              valueFrom:
+                configMapKeyRef:
+                  name: accounts
+                  key: {{ $key }}
+            {{- end }}
 
-            # Secrets
-            - name: MONGO_URI
+            # Secret
+            {{- range .Values.secret }}
+            - name: {{ . | upper }}
               valueFrom:
                 secretKeyRef:
                   name: accounts
-                  key: mongo_uri
+                  key: {{ . }}
+            {{- end }}
+
           # Ports
           ports:
             - containerPort: 5001
@@ -134,20 +118,22 @@ spec:
             httpGet:
               path: /accounts/v1/health
               port: 5001
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /accounts/v1/health
               port: 5001
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 15
 
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}

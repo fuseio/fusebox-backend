@@ -4,38 +4,65 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "accounts"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
+# Autoscaling
+autoscaling:
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
+
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
+logging:
+  enabled: true
+  sampleRate: 1000000
+
+# ConfigMap (non - sensitive information)
 configMap:
   # -- Auth0 issuer URL
   auth0_issuer_url: ""
@@ -49,8 +76,22 @@ configMap:
   entrypoint_sandbox_contract_address_v_0_1_0: ""
   # -- Bundler - Entrypoint Production contract address
   entrypoint_production_contract_address_v_0_1_0: ""
+  # -- Etherspot Wallet Factory Sandbox contract address
+  etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: ""
+  # -- Etherspot Wallet Factory Production contract address
+  etherspot_wallet_factory_production_contract_address_v_0_1_0: ""
+  # -- Paymaster Funder API key
+  paymaster_funder_api_key: ""
+  # -- Paymaster Funder Webhook ID
+  paymaster_funder_webhook_id: ""
 
-# Secrets (through environment variables)
-secrets:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+secret:
+  - mongo_uri
+  - smart_wallets_jwt_secret
+  - paymaster_funder_private_key
+  - paymaster_funder_api_secret_key
+  - amplitude_api_key
+  - incoming_token_transfers_webhook_id
+  - google_operator_form_url
+  - operator_refresh_jwt_secret

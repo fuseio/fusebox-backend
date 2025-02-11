@@ -3,8 +3,17 @@ kind: ConfigMap
 metadata:
   name: network
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: network
+    environment: {{ .Values.global.environment }}
 data:
+
+  # [Hardcoded] Host & Port
   network_host: "0.0.0.0"
   network_port: "5005"
   network_tcp_port: "8879"
-  legacy_fuse_trade_api_url: {{ .Values.configMap.legacy_fuse_trade_api_url | quote }}
+  
+  # User - defined
+{{- range $key, $val := .Values.configMap }}
+  {{ $key }}: {{ $val | quote }}
+{{- end }}

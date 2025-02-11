@@ -4,35 +4,60 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- DNS domain
-  domain: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-# Image
-image:
-  # -- Repository ID
-  repository: ""
-  # -- Tag; overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
+
+  # Image
+  image:
+    # -- Repository ID
+    repository: "centrifugo/centrifugo"
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: "v5.4.4"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# Secrets
-#
-# Note: Component use config.json file which's taking from Secret Manager via Helm {{ .Files.Get }} function
-# secrets:
-#   ...
-#   ...
+# Autoscaling
+autoscaling:
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
+
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
+logging:
+  enabled: true
+  sampleRate: 1000000

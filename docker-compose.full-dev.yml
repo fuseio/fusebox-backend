@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   charge-network-service:
     build:
@@ -35,7 +33,7 @@ services:
     ports:
       - 9227:9227
     depends_on:
-      - charge-relay-service
+      # - charge-relay-service
       - mongo
     command: npm run start:dev charge-api-service
     networks:
@@ -88,19 +86,19 @@ services:
     command: npm run start:dev charge-notifications-service
     networks:
       - chargenet
-  charge-relay-service:
-    build:
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - ./node_modules:/usr/src/app/node_modules
-    ports:
-      - 9226:9226
-    depends_on:
-      - mongo
-    command: npm run start:dev charge-relay-service
-    networks:
-      - chargenet
+  # charge-relay-service:
+  #   build:
+  #     target: development
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - ./node_modules:/usr/src/app/node_modules
+  #   ports:
+  #     - 9226:9226
+  #   depends_on:
+  #     - mongo
+  #   command: npm run start:dev charge-relay-service
+  #   networks:
+  #     - chargenet
   redis:
     container_name: redis
     image: 'redis/redis-stack:latest'

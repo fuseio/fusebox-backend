@@ -2,5 +2,5 @@
     "defaultTag": "smart-wallets",
     "responseHeaders": false,
     "replaceVars": true,
-    "servers": [{"url": "https://api.chargeweb3.com"}]
+    "servers": [{"url": "https://api.fuse.io"}]
 }

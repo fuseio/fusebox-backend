@@ -16,11 +16,18 @@ export class BroadcasterService {
     private webhookEventModel: Model<WebhookEvent>,
     private readonly configService: ConfigService,
     private readonly webhookSendService: WebhookSendService
-
   ) { }
 
   get retryTimeIntervalsMS () {
     return this.configService.get('retryTimeIntervalsMS') as Record<number, number>
+  }
+
+  get maxTimeIntervalsMS (): number {
+    return this.retryTimeIntervalsMS[Object.keys(this.retryTimeIntervalsMS).length]
+  }
+
+  getRetryTimeIntervalMS (numberOfTries: number) {
+    return this.retryTimeIntervalsMS[numberOfTries] || this.maxTimeIntervalsMS
   }
 
   async onModuleInit (): Promise<void> {
@@ -39,36 +46,34 @@ export class BroadcasterService {
 
       for (const webhookEvent of webhookEventsToSendNow) {
         try {
-          this.logger.log(`Starting sending ${webhookEvent}`)
+          this.logger.log(`Starting sending to ${webhookEvent.webhook.webhookUrl}. TxHash: ${webhookEvent.eventData.txHash}`)
+          webhookEvent.numberOfTries++
           const response = await this.webhookSendService.sendData(webhookEvent)
-
-          this.logger.debug(
-            `Response status: ${response.status}, ` +
-            `response body: ${JSON.stringify(response.data)}`
-          )
-
-          this.logger.log(`Completed sending ${webhookEvent}`)
           webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
-
-          this.logger.debug(
-            `Setting webhook with ID ${webhookEvent.id} as successful...`
-          )
-
           webhookEvent.success = true
         } catch (err) {
           let errorStatus: number, errorResponse: string
-
-          this.logger.error(
-            `Webhook ${webhookEvent._id} returned error. `,
-            `Error message: ${err} \nStack: ${err?.stack}`
-          )
-
           if (err instanceof HttpException) {
             errorStatus = err.getStatus()
             errorResponse = err.getResponse().toString()
+            if (isNaN(errorStatus)) {
+              this.logger.warn(`Webhook ${webhookEvent._id} unable to send an webhook event to its URL:${webhookEvent.webhook.webhookUrl}`
+              )
+            } else {
+              this.logger.error(
+                `Webhook ${webhookEvent._id} returned error. `,
+                `Error message: ${errorResponse}`,
+                `Error status: ${errorStatus}`
+              )
+            }
           } else {
             errorStatus = HttpStatus.INTERNAL_SERVER_ERROR
             errorResponse = JSON.stringify(err)
+            this.logger.error(
+              `Webhook ${webhookEvent._id} returned error. `,
+              `Error message: ${errorResponse}`,
+              `Error status: ${errorStatus}`
+            )
           }
 
           webhookEvent.responses.push(
@@ -80,7 +85,6 @@ export class BroadcasterService {
           )
         } finally {
           try {
-            webhookEvent.numberOfTries++
             await webhookEvent.save()
           } catch (err) {
             this.logger.error(`Failed to save webhookEvent ${webhookEvent._id}: ${err}`)
@@ -100,7 +104,7 @@ export class BroadcasterService {
 
   private getNewRetryAfterDate (webhookEvent: any) {
     const old = webhookEvent?.retryAfter || new Date()
-    const addInterval = this.retryTimeIntervalsMS[webhookEvent.numberOfTries]
+    const addInterval = this.getRetryTimeIntervalMS(webhookEvent.numberOfTries)
     return new Date(old.getTime() + addInterval)
   }
 

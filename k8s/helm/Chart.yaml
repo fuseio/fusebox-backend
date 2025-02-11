@@ -27,6 +27,8 @@ appVersion: "0.1.0"
 dependencies:
   - name: accounts
     condition: accounts.enabled
+  - name: amplitude
+    condition: amplitude.enabled
   - name: api
     condition: api.enabled
   - name: relay

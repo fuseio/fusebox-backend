@@ -1,13 +1,13 @@
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { Inject, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-ethers'
 import { SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
-import { NotificationsService } from '@app/api-service/notifications/notifications.service'
 import { ConfigService } from '@nestjs/config'
 import { ChargeApiService } from '@app/apps-service/charge-api/charge-api.service'
-// import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
-// import CentrifugoAPIService from '@app/common/services/centrifugo.service'
+import { Model } from 'mongoose'
+import { smartContractWalletString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
+import { SmartContractWallet } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-contract-wallet.interface'
 
 @Injectable()
 export class SmartWalletsAAService implements SmartWalletService {
@@ -15,36 +15,40 @@ export class SmartWalletsAAService implements SmartWalletService {
 
   constructor (
     private readonly jwtService: JwtService,
-    private readonly notificationsService: NotificationsService,
     private configService: ConfigService,
-    private chargeApiService: ChargeApiService
-    // private readonly centrifugoAPIService: CentrifugoAPIService,
+    private chargeApiService: ChargeApiService,
+    @Inject(smartContractWalletString)
+    private smartContractWalletModel: Model<SmartContractWallet>
   ) { }
 
   async auth (smartWalletsAuthDto: SmartWalletsAuthDto) {
     try {
-      this.logger.debug('Recovering the public key...')
       const publicKey = recoverPublicKey(arrayify(hashMessage(arrayify(smartWalletsAuthDto.hash))), smartWalletsAuthDto.signature)
-      this.logger.debug('Recovered the public key.')
-
-      this.logger.debug('Computing the address...')
       const recoveredAddress = computeAddress(publicKey)
-      this.logger.debug('Computed the address.')
-
       const smartWalletAddress = smartWalletsAuthDto.smartWalletAddress
 
       if (recoveredAddress === smartWalletsAuthDto.ownerAddress && smartWalletAddress) {
         this.logger.debug('Signing the JWT...')
         const jwt = this.jwtService.sign({
-          sub: recoveredAddress,
+          sub: smartWalletAddress,
           info: {
             smartWalletAddress: smartWalletsAuthDto.smartWalletAddress,
             ownerAddress: recoveredAddress
           },
-          channels: ['transaction']
+          channels: ['transaction', 'walletAction']
         })
 
-        await this.subscribeWalletToNotifications(smartWalletAddress)
+        try {
+          await this.subscribeWalletToNotifications(smartWalletAddress)
+        } catch (error) {
+          this.logger.error(`An error occurred while subscribing wallet to notifications. ${error}`)
+        }
+
+        try {
+          await this.storeSmartContractWallet(smartWalletsAuthDto)
+        } catch (error) {
+          this.logger.error(`An error occurred while storing smart contract wallet. ${error}`)
+        }
 
         this.logger.debug('Returning the JWT...')
         return { jwt }
@@ -59,10 +63,18 @@ export class SmartWalletsAAService implements SmartWalletService {
 
   private async subscribeWalletToNotifications (walletAddress: string) {
     this.logger.debug('Subscribing wallet to notifications...')
-
     const webhookId =
       this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
-
     return this.chargeApiService.addWebhookAddress({ walletAddress, webhookId })
+  }
+
+  private async storeSmartContractWallet (smartWalletsAuthDto: SmartWalletsAuthDto) {
+    if (!await this.smartContractWalletModel.findOne({ smartWalletAddress: smartWalletsAuthDto.smartWalletAddress })) {
+      await this.smartContractWalletModel.create({
+        smartWalletAddress: smartWalletsAuthDto.smartWalletAddress,
+        ownerAddress: smartWalletsAuthDto.ownerAddress,
+        projectId: smartWalletsAuthDto.projectId
+      })
+    }
   }
 }

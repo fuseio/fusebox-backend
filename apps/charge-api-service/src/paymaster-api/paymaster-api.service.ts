@@ -3,35 +3,51 @@ import { ClientProxy, RpcException } from '@nestjs/microservices'
 import {
   Injectable,
   Inject,
-  InternalServerErrorException
+  InternalServerErrorException,
+  Logger
 } from '@nestjs/common'
 import { arrayify, defaultAbiCoder, hexConcat } from 'ethers/lib/utils'
 import fusePaymasterABI from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
-
-import { BigNumber, Wallet } from 'ethers'
+import { BigNumber, Contract, Wallet } from 'ethers'
 import { ConfigService } from '@nestjs/config'
-import PaymasterWeb3ProviderService from '@app/common/services/paymaster-web3-provider.service'
+import { InjectEthersProvider, JsonRpcProvider } from 'nestjs-ethers'
 import { callMSFunction } from '@app/common/utils/client-proxy'
-import { capitalize, isEmpty } from 'lodash'
+import { capitalize, isEmpty, has, get } from 'lodash'
 import { HttpService } from '@nestjs/axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
+interface GasDetails {
+  preVerificationGas: string;
+  verificationGasLimit: string;
+  verificationGas: string;
+  validUntil: string;
+  callGasLimit: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
+}
+
 @Injectable()
 export class PaymasterApiService {
+  private readonly logger = new Logger(PaymasterApiService.name)
   constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
-    private paymasterWeb3ProviderService: PaymasterWeb3ProviderService,
+    @InjectEthersProvider('fuse')
+    private readonly fuseProvider: JsonRpcProvider,
+    @InjectEthersProvider('fuseSpark')
+    private readonly sparkProvider: JsonRpcProvider,
     private httpService: HttpService
   ) { }
 
   async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
     try {
-      const web3 = this.paymasterWeb3ProviderService.getProviderByEnv(env)
+      const provider = this.getProviderByEnv(env)
       const [op] = body
-      const { timestamp } = await web3.eth.getBlock('latest')
-      const validUntil = parseInt(timestamp.toString()) + 240
+      this.logger.log(`INITIAL OP: ${JSON.stringify(op)}`)
+      const { timestamp } = await provider.getBlock('latest')
+
+      const validUntil = parseInt(timestamp.toString()) + 900
       const validAfter = 0
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
       const minVerificationGasLimit = '140000'
@@ -41,61 +57,81 @@ export class PaymasterApiService {
       }
 
       const sponsorId = paymasterInfo.sponsorId
-
-      const {
-        preVerificationGas,
-        verificationGasLimit,
-        callGasLimit
-      } = await this.estimateUserOpGas(
-        op,
-        env,
-        paymasterInfo.entrypointAddress
-      )
-
-      const actualVerificationGasLimit = Math.max(parseInt(verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
-
-      op.callGasLimit = callGasLimit
-      op.verificationGasLimit = actualVerificationGasLimit
-      op.preVerificationGas = preVerificationGas
-
       const paymasterAddress = paymasterInfo.paymasterAddress
-      const paymasterContract: any = new web3.eth.Contract(
-        fusePaymasterABI as any,
-        paymasterAddress
-      )
-
-      const hash = await paymasterContract.methods
-        .getHash(op, validUntil, validAfter, sponsorId)
-        .call()
-
-      const privateKeyString = this.configService.getOrThrow(
-        `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
-      )
-
-      const paymasterSigner = new Wallet(privateKeyString)
-      const signature = await paymasterSigner.signMessage(arrayify(hash))
-
-      const paymasterAndData = hexConcat([
+      const paymasterContract = new Contract(
         paymasterAddress,
-        defaultAbiCoder.encode(
-          ['uint48', 'uint48', 'uint256', 'bytes'],
-          [validUntil, validAfter, sponsorId, signature]
-        ),
-        signature
-      ])
+        fusePaymasterABI,
+        provider
+      )
 
-      return {
+      const hashForEstimateUserOpGasCall = await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
+      const signatureForEstimateUserOpGasCall = await this.signHash(hashForEstimateUserOpGasCall, paymasterInfo)
+      const paymasterAndDataForEstimateUserOpGasCall = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
+
+      op.paymasterAndData = paymasterAndDataForEstimateUserOpGasCall
+
+      const gases: GasDetails = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
+
+      const actualVerificationGasLimit = Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
+
+      op.callGasLimit = gases?.callGasLimit ?? op.callGasLimit
+      op.verificationGasLimit = actualVerificationGasLimit
+      op.preVerificationGas = gases?.preVerificationGas
+
+      const hash = await this.getHash(paymasterContract, op, validUntil, validAfter, sponsorId)
+      const signature = await this.signHash(hash, paymasterInfo)
+      const paymasterAndData = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signature)
+      op.paymasterAndData = paymasterAndData
+
+      const response = {
         paymasterAndData,
         preVerificationGas: op.preVerificationGas,
         verificationGasLimit: op.verificationGasLimit,
         callGasLimit: op.callGasLimit
       }
+      this.logger.log(`Paymaster pm_sponsorUserOperation response ${JSON.stringify(response)}`)
+      return response
     } catch (error) {
-      throw new RpcException(error.message)
+      this.logger.error(`Paymaster pm_sponsorUserOperation error ${JSON.stringify(error)}`)
+      throw new RpcException(error)
     }
   }
 
-  async estimateUserOpGas (op, requestEnvironment, entrypointAddress) {
+  private async getHash (
+    paymasterContract: Contract,
+    op: any,
+    validUntil: number,
+    validAfter: number,
+    sponsorId: string
+  ) {
+    return await paymasterContract.getHash(
+      op,
+      validUntil,
+      validAfter,
+      sponsorId
+    )
+  }
+
+  private async signHash (hash: string, paymasterInfo: any) {
+    const privateKeyString = this.configService.getOrThrow(
+      `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
+    )
+    const paymasterSigner = new Wallet(privateKeyString)
+    return await paymasterSigner.signMessage(arrayify(hash))
+  }
+
+  private buildPaymasterAndData (paymasterAddress: string, validUntil: number, validAfter: number, sponsorId: string, signature: string) {
+    return hexConcat([
+      paymasterAddress,
+      defaultAbiCoder.encode(
+        ['uint48', 'uint48', 'uint256', 'bytes'],
+        [validUntil, validAfter, sponsorId, signature]
+      ),
+      signature
+    ])
+  }
+
+  async estimateUserOpGas (op, requestEnvironment, entrypointAddress): Promise<GasDetails> {
     const data = {
       jsonrpc: '2.0',
       method: 'eth_estimateUserOperationGas',
@@ -123,22 +159,47 @@ export class PaymasterApiService {
         .pipe(
           catchError((e) => {
             const errorReason =
-              e?.response?.data?.error ||
-              e?.response?.data?.errors?.message ||
+              e?.result?.error ||
+              e?.result?.error?.message ||
               ''
 
+            this.logger.error(`RpcException catchError: ${errorReason} ${JSON.stringify(e)}`)
             throw new RpcException(errorReason)
           })
         )
     )
-    console.log('Values from estimateUserOpGas func')
-    console.log(response)
-    const { result } = response
+
+    if (has(response, 'error')) {
+      const error = get(response, 'error')
+      this.logger.error('Error getting gas estimation', error)
+      throw new RpcException(error)
+    }
+
+    if (!has(response, 'result')) {
+      this.logger.error('Response does not contain result', JSON.stringify(response))
+      throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+    }
+
+    if (has(response, 'result.error')) {
+      const result = get(response, 'result')
+      const error = get(response, 'result.error')
+      this.logger.error('Error in result of gas estimation', result)
+      throw new RpcException(error)
+    }
+
+    if (!has(response, 'result.callGasLimit')) {
+      const result = get(response, 'result')
+      this.logger.error('Result does not contain callGasLimit', result)
+      throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+    }
+
+    const result = get(response, 'result') as GasDetails
+    this.logger.log(`Gas estimation received: ${JSON.stringify(result)}`)
 
     const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
 
     return {
-      ...response.result,
+      ...result,
       callGasLimit
     }
   }
@@ -160,5 +221,14 @@ export class PaymasterApiService {
     return [
       paymasterInfo.paymasterAddress
     ]
+  }
+
+  private getProviderByEnv (env: string) {
+    if (env === 'production') {
+      return this.fuseProvider
+    }
+    if (env === 'sandbox') {
+      return this.sparkProvider
+    }
   }
 }

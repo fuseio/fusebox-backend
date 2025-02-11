@@ -2,7 +2,7 @@ import { DataLayerService } from '@app/smart-wallets-service/data-layer/data-lay
 import { Body, Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { BaseUserOp, UserOp } from '@app/smart-wallets-service/data-layer/interfaces/user-op.interface'
-import { TokenTransferWebhookDto } from '../smart-wallets/dto/token-transfer-webhook.dto'
+import { TokenTransferWebhookDto } from '@app/smart-wallets-service/smart-wallets/dto/token-transfer-webhook.dto'
 
 @Controller()
 export class DataLayerController {
@@ -27,6 +27,13 @@ export class DataLayerController {
   handleTokenTransferWebhook (tokenTransferWebhookDto: TokenTransferWebhookDto) {
     return this.dataLayerService.handleTokenTransferWebhook(
       tokenTransferWebhookDto
+    )
+  }
+
+  @MessagePattern('sponsored-transactions-count')
+  sponsoredTransactionsCount (sponsorId: string) {
+    return this.dataLayerService.findSponsoredTransactionsCount(
+      sponsorId
     )
   }
 }

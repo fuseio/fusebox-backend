@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: api
   namespace: {{ .Release.Namespace }}
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: {{ .Values.maxRatePerEndpoint | quote }}
   labels:
     app: api
     environment: {{ .Values.global.environment }}

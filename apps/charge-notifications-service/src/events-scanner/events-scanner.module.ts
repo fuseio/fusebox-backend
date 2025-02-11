@@ -4,7 +4,6 @@ import rpcConfig from '@app/notifications-service/common/config/rpc-config'
 import { eventsScannerProviders } from '@app/notifications-service/events-scanner/events-scanner.providers'
 import { UserOpEventsScannerService } from '@app/notifications-service/events-scanner/userop-events-scanner.service'
 import { ERC20EventsScannerService } from '@app/notifications-service/events-scanner/erc20-events-scanner.service'
-
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
@@ -12,16 +11,21 @@ import { webhookEventProviders } from '@app/notifications-service/common/provide
 import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.module'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
+import { GasService } from '@app/common/services/gas.service'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
+    CacheModule.register({
+      ttl: 60000, // in milliseconds
+      max: 1000
+    }),
     EthersModule.forRootAsync({
       imports: [ConfigModule.forFeature(rpcConfig)],
       inject: [ConfigService],
       token: 'regular-node',
       useFactory: async (configService: ConfigService) => {
         const config = configService.get('rpcConfig')
-        console.log('Rpc config ' + JSON.stringify(config))
         return {
           network: { name: config.rpc.networkName, chainId: config.rpc.chainId },
           custom: config.rpc.url,
@@ -45,6 +49,7 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
     BroadcasterModule
   ],
   providers: [
+    GasService,
     ERC20EventsScannerService,
     UserOpEventsScannerService,
     ...eventsScannerProviders,
@@ -53,5 +58,3 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
   ]
 })
 export class EventsScannerModule { }
-
-// TODO: webhookEventProviders verify that not needed here

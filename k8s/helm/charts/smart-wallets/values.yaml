@@ -4,38 +4,56 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "accounts"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
+# Autoscaling
+autoscaling:
+  # -- Vertical Pod Autoscaler
+  vpa:
+    # -- Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values
+    max_allowed:
+      cpu: "2000m"
+      memory: "4Gi"
+
+# ConfigMap (non - sensitive information)
 configMap:
   # -- Centrifugo - URL
   centrifugo_uri: ""
@@ -45,22 +63,18 @@ configMap:
   legacy_fuse_wallet_api_url: ""
   # -- Charge - Base URL
   charge_base_url: ""
+  # -- CoinGecko URL
+  coin_gecko_url: ""
 
-# Secrets (through environment variables)
-secrets:
-  # -- MongoDB Atlas URI (mongodb://username:password@hostname:port/database?params)
-  mongo_uri: ""
-  # -- smart-wallets - JWT secret
-  smart_wallets_jwt_secret: ""
-  # -- Fuse wallet backend JWT
-  fuse_wallet_backend_jwt: ""
-  # -- Centrifugo - JWT
-  centrifugo_jwt: ""
-  # -- Centrifugo - API key
-  centrifugo_api_key: ""
-  # -- The public key of the project.
-  charge_public_key: ""
-  # -- The secret key of the project.
-  charge_secret_key: ""
-  # -- The ID of the incoming token transfers webhook. This webhook is used to create wallet actions from incoming token transfers.
-  incoming_token_transfers_webhook_id: ""
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+secret:
+  - amplitude_api_key
+  - mongo_uri
+  - smart_wallets_jwt_secret
+  - fuse_wallet_backend_jwt
+  - centrifugo_jwt
+  - centrifugo_api_key
+  - charge_public_key
+  - charge_secret_key
+  - incoming_token_transfers_webhook_id
+  - coin_gecko_api_key

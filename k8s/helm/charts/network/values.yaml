@@ -4,38 +4,69 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- Google Cloud - Project ID
-  project_id: ""
-  # -- Google Cloud - Region
-  region: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-  # -- DNS domain
-  domain: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
 
   # Image
   image:
     # -- Repository ID
-    repository: ""
+    repository: "accounts"
     # -- Tag; overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "latest"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
+# Autoscaling
+autoscaling:
+  # -- Vertical Pod Autoscaler
+  vpa:
+    # -- Vertical Pod Autoscaler - Maximum number of CPU & Memory, minimal number is `resources.requests` values
+    max_allowed:
+      cpu: "4000m"
+      memory: "8Gi"
+
+# ConfigMap (non - sensitive information)
 configMap:
-  # -- Legacy - Fuse trade API URL
-  legacy_fuse_trade_api_url: ""
+  # -- BlockScout API URL
+  explorer_api_url: ""
+  # -- Unmarshal - Base URL
+  unmarshal_base_url: ""
+  # -- Primary Service
+  primary_service: ""
+  # -- CoinGecko URL
+  coin_gecko_url: ""
+
+# -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
+secret:
+  - rpc_url
+  - unmarshal_auth_key
+  - explorer_api_key
+  - coin_gecko_api_key

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>backend-api documentation</title>
+        <title>fusebox-backend documentation</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +14,7 @@
     <body>
 
         <div class="navbar navbar-default navbar-fixed-top visible-xs">
-            <a href="../" class="navbar-brand">backend-api documentation</a>
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
 
@@ -30,7 +30,6 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
-
 
 
 
@@ -58,7 +57,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/auth/jwt.strategy.ts</code>
+            <code>apps/charge-accounts-service/src/auth/jwt.strategy.ts</code>
         </p>
 
 
@@ -104,7 +103,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/auth/jwt.strategy.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">apps/charge-accounts-service/src/auth/jwt.strategy.ts:7</a></div>
                             </td>
                         </tr>
 
@@ -137,8 +136,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="27"
-                            class="link-to-prism">src/auth/jwt.strategy.ts:27</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">apps/charge-accounts-service/src/auth/jwt.strategy.ts:24</a></div>
                 </td>
             </tr>
 
@@ -181,40 +180,37 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
-import { PassportStrategy } from &#x27;@nestjs/passport&#x27;;
-import { ExtractJwt, Strategy } from &#x27;passport-jwt&#x27;;
-import { passportJwtSecret } from &#x27;jwks-rsa&#x27;;
-import * as dotenv from &#x27;dotenv&#x27;;
-
-dotenv.config();
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { PassportStrategy } from &#x27;@nestjs/passport&#x27;
+import { ExtractJwt, Strategy } from &#x27;passport-jwt&#x27;
+import { passportJwtSecret } from &#x27;jwks-rsa&#x27;
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor() {
-        super({
-            secretOrKeyProvider: passportJwtSecret({
-                cache: true,
-                rateLimit: true,
-                jwksRequestsPerMinute: 5,
-                jwksUri: &#x60;${process.env.AUTH0_ISSUER_URL}.well-known/jwks.json&#x60;,
-            }),
+  constructor () {
+    super({
+      secretOrKeyProvider: passportJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: &#x60;${process.env.AUTH0_ISSUER_URL}.well-known/jwks.json&#x60;
+      }),
 
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            audience: process.env.AUTH0_AUDIENCE,
-            issuer: &#x60;${process.env.AUTH0_ISSUER_URL}&#x60;,
-            algorithms: [&#x27;RS256&#x27;],
-        });
-    }
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      audience: process.env.AUTH0_AUDIENCE,
+      issuer: &#x60;${process.env.AUTH0_ISSUER_URL}&#x60;,
+      algorithms: [&#x27;RS256&#x27;]
+    })
+  }
 
-    validate(payload: unknown): unknown {
-        return payload;
-    }
-}</code></pre>
+  validate (payload: unknown): unknown {
+    return payload
+  }
+}
+</code></pre>
     </div>
 
 </div>
-
 
 
 

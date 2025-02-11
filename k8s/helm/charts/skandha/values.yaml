@@ -4,68 +4,60 @@
 
 # Global
 global:
-  # -- Namespace
-  namespace: ""
-  # -- Label 'environment'
-  environment: ""
+  # -- Kubernetes label `environment``
+  environment: "development"
 
-  # -- DNS domain
-  domain: ""
+  # -- Google Cloud - Project ID (used for `Deployment` resource, `container.image` section)
+  project_id: "example-12345"
+  # -- Google Cloud - Region (used for `Deployment` resource, `container.image` section)
+  region: "us-central1"
 
-# Image
-image:
-  # -- Repository ID
-  repository: ""
-  # -- Tag; overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # -- ClusterSecretStore name (should be created before apply)
+  clusterSecretStore: "gcp-store"
+
+  # -- DNS domain (used for `HTTPRoute` resource)
+  domain: "example.com"
+
+  # Image
+  image:
+    # -- Repository ID
+    repository: "etherspot/skandha"
+    # -- Tag; overrides the image tag whose default is the chart appVersion.
+    tag: "v1-1.5.21"
+
+# -- Replicas
+replicas: 1
+
+# -- Affinity (available region zones)
+affinity:
+  zones:
+    - a
 
 # Resources
 resources:
   # -- Resources - Requests
   requests:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
   # -- Resources - Limits
   limits:
-    cpu: ""
-    memory: ""
+    cpu: "500m"
+    memory: "1Gi"
 
-# ConfigMap
-configMap:
-  # -- Networks. Possible values: `fuse,fuseSparknet`
-  skandha_networks: ""
-  # -- Estimation static buffer - Fuse
-  skandha_fuse_estimation_static_buffer: ""
-  # -- Estimation static buffer - Spark
-  skandha_fuse_sparknet_estimation_static_buffer: ""
-  # -- Ban Slack - Fuse
-  skandha_fuse_ban_slack: ""
-  # -- Ban Slack - Spark
-  skandha_fuse_sparknet_ban_slack: ""
-  # -- Throttling Slack - Fuse
-  skandha_fuse_throttling_slack: ""
-  # -- Throttling Slack - Spark
-  skandha_fuse_sparknet_throttling_slack: ""
-  # -- Min inclusion denominator - Fuse
-  skandha_fuse_min_inclusion_denominator: ""
-  # -- Min inclusion denominator - Spark
-  skandha_fuse_sparknet_min_inclusion_denominator: ""
+# Autoscaling
+autoscaling:
+  # -- Horizontal Pod Autoscaler
+  hpa:
+    # -- Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value
+    max_replicas: 5
 
-# Secrets
-secrets:
-  # -- Relayer - Spark
-  skandha_fuse_sparknet_relayer: ""
-  # -- Beneficiary - Spark
-  skandha_fuse_sparknet_beneficiary: ""
-  # -- RPC endpoint - Spark
-  skandha_fuse_sparknet_rpc: ""
-  # -- Entrypoint - Spark
-  skandha_fuse_sparknet_entrypoints: ""
-  # -- Relayer - Fuse
-  skandha_fuse_relayer: ""
-  # -- Beneficiary - Fuse
-  skandha_fuse_beneficiary: ""
-  # -- RPC endpoint - Fuse
-  skandha_fuse_rpc: ""
-  # -- Entrypoint - Fuse
-  skandha_fuse_entrypoints: ""
+# -- Service - Annotations - RPS per pod
+maxRatePerEndpoint: 10
+
+# -- Security policy name (Cloud Armor)
+securityPolicy: null
+
+# -- Logging - enabled (`true` or `false`), sampleRate (from 0 to 500000 / 1000000)
+logging:
+  enabled: true
+  sampleRate: 1000000

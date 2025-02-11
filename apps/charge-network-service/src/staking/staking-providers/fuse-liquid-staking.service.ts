@@ -1,23 +1,32 @@
 import LiquidStakingABI from '@app/network-service/common/constants/abi/FuseLiquidStaking.json'
 import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
-import ConsensusABI from '@app/network-service/common/constants/abi/Consensus.json'
+import ConsensusABI from '@app/network-service/common/constants/abi/Consensus'
 import BlockRewardABI from '@app/network-service/common/constants/abi/BlockReward.json'
-import TradeService from '@app/common/services/trade.service'
-import Web3ProviderService from '@app/common/services/web3-provider.service'
-import { aprToApy, encodeFunctionCall } from '@app/network-service/common/utils/helper-functions'
-import { Injectable } from '@nestjs/common'
+import TradeService from '@app/common/token/trade.service'
+import {
+  Contract,
+  InjectEthersProvider,
+  Interface,
+  JsonRpcProvider,
+  formatEther,
+  parseEther
+} from 'nestjs-ethers'
+import { aprToApy } from '@app/network-service/common/utils/helper-functions'
+import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { UnstakeDto } from '../dto/unstake.dto'
-import { StakingOption, StakingProvider } from '../interfaces'
-import { formatEther } from 'nestjs-ethers'
+import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
+import { StakingOption, StakingProvider } from '@app/network-service/staking/interfaces'
 
 @Injectable()
 export default class FuseLiquidStakingService implements StakingProvider {
+  private readonly logger = new Logger(FuseLiquidStakingService.name)
+
   constructor (
-        private readonly web3ProviderService: Web3ProviderService,
-        private readonly configService: ConfigService,
-        private readonly tradeService: TradeService
-  ) {}
+    @InjectEthersProvider('regular-node')
+    private readonly provider: JsonRpcProvider,
+    private readonly configService: ConfigService,
+    private readonly tradeService: TradeService
+  ) { }
 
   get address () {
     return this.configService.get('fuseLiquidStakingAddress')
@@ -43,26 +52,16 @@ export default class FuseLiquidStakingService implements StakingProvider {
     return this.configService.get('validatorFee')
   }
 
-  get web3Provider () {
-    return this.web3ProviderService.getProvider()
+  get liquidStakingInterface () {
+    return new Interface(LiquidStakingABI)
   }
 
   stake () {
-    return encodeFunctionCall(
-      LiquidStakingABI,
-      this.web3Provider,
-      'deposit',
-      []
-    )
+    return this.liquidStakingInterface.encodeFunctionData('deposit', [])
   }
 
   unStake ({ tokenAmount }: UnstakeDto) {
-    return encodeFunctionCall(
-      LiquidStakingABI,
-      this.web3Provider,
-      'withdraw',
-      [this.web3Provider.utils.toWei(tokenAmount)]
-    )
+    return this.liquidStakingInterface.encodeFunctionData('withdraw', [parseEther(tokenAmount)])
   }
 
   async stakedToken (
@@ -74,14 +73,14 @@ export default class FuseLiquidStakingService implements StakingProvider {
       tokenSymbol,
       unStakeTokenAddress
     }: StakingOption) {
-    const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
-    const sfContract = new this.web3Provider.eth.Contract(Erc20ABI as any, this.sfTokenAddress)
+    const liquidStakingContract = new Contract(this.address, LiquidStakingABI, this.provider)
+    const sfContract = new Contract(this.sfTokenAddress, Erc20ABI, this.provider)
 
-    const priceRatio = await liquidStakingContract.methods.priceRatio().call()
-    const sfBalance = await sfContract.methods.balanceOf(accountAddress).call()
+    const priceRatio = await liquidStakingContract.priceRatio()
+    const sfBalance = await sfContract.balanceOf(accountAddress)
 
-    const stakedAmount = Number(formatEther(sfBalance)) * Number(formatEther(priceRatio))
-    const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
+    const stakedAmount = Number(formatEther(sfBalance.toString())) * Number(formatEther(priceRatio.toString()))
+    const fusePrice = await this.tradeService.getTokenPriceByAddress(this.wfuseAddress)
     const stakedAmountUSD = stakedAmount * fusePrice
     const earnedAmountUSD = 0
 
@@ -101,26 +100,31 @@ export default class FuseLiquidStakingService implements StakingProvider {
   }
 
   async stakingApr () {
-    const consensusContract = new this.web3Provider.eth.Contract(ConsensusABI as any, this.consensusAddress)
-    const blockRewardContract = new this.web3Provider.eth.Contract(BlockRewardABI as any, this.blockRewardAddress)
-    const validatorFee = Number(this.validatorFee)
+    try {
+      const consensusContract = new Contract(this.consensusAddress, ConsensusABI, this.provider)
+      const blockRewardContract = new Contract(this.blockRewardAddress, BlockRewardABI, this.provider)
+      const validatorFee = Number(this.validatorFee)
+      const totalStakeAmount: BigInt = await consensusContract.totalStakeAmount()
+      const rewardPerBlock: BigInt = await blockRewardContract.getBlockRewardAmount()
+      const blocksPerYear: BigInt = await blockRewardContract.getBlocksPerYear()
 
-    const totalStakeAmount = await consensusContract.methods.totalStakeAmount().call()
-    const rewardPerBlock = await blockRewardContract.methods.getBlockRewardAmount().call()
-    const blocksPerYear = await blockRewardContract.methods.getBlocksPerYear().call()
+      const rewardPerYearApr = (Number(formatEther(rewardPerBlock.toString())) * Number(blocksPerYear) * (1 - validatorFee) / Number(formatEther(totalStakeAmount.toString()))) * 100
 
-    const rewardPerYearApr = (Number(formatEther(rewardPerBlock)) * blocksPerYear * (1 - validatorFee) / Number(formatEther(totalStakeAmount))) * 100
-
-    return aprToApy(rewardPerYearApr, 365)
+      return aprToApy(rewardPerYearApr, 365)
+    } catch (error) {
+      this.logger.error(`stakingApr error: ${error}`)
+    }
   }
 
   async tvl () {
-    const liquidStakingContract = new this.web3Provider.eth.Contract(LiquidStakingABI as any, this.address)
+    try {
+      const liquidStakingContract = new Contract(this.address, LiquidStakingABI, this.provider)
+      const totalStaked = await liquidStakingContract.systemTotalStaked()
+      const fusePrice = await this.tradeService.getTokenPriceByAddress(this.wfuseAddress)
 
-    const totalStaked = await liquidStakingContract.methods.systemTotalStaked().call()
-
-    const fusePrice = await this.tradeService.getTokenPrice(this.wfuseAddress)
-
-    return Number(formatEther(totalStaked)) * fusePrice
+      return Number(formatEther(totalStaked.toString())) * fusePrice
+    } catch (error) {
+      this.logger.error(`tvl error: ${error}`)
+    }
   }
 }

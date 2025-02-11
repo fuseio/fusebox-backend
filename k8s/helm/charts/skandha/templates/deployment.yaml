@@ -3,136 +3,43 @@ kind: Deployment
 metadata:
   name: skandha
   namespace: {{ .Release.Namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: skandha
     environment: {{ .Values.global.environment }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: skandha
       environment: {{ .Values.global.environment }}
   template:
     metadata:
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
         app: skandha
         environment: {{ .Values.global.environment }}
     spec:
       affinity:
-        podAntiAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - skandha
-              topologyKey: kubernetes.io/hostname
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                {{- range $zone := .Values.affinity.zones }}
+                  - {{ $.Values.global.region }}-{{ $zone }}
+                {{- end }}
       containers:
         - name: skandha
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
-          command: ["node", "./packages/cli/bin/skandha", "start", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
-
-          env:
-            # ConfigMap
-            - name: SKANDHA_NETWORKS
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_networks
-            - name: SKANDHA_FUSE_SPARKNET_ESTIMATION_STATIC_BUFFER
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_estimation_static_buffer
-            - name: SKANDHA_FUSE_ESTIMATION_STATIC_BUFFER
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_estimation_static_buffer
-            - name: SKANDHA_FUSE_BAN_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_ban_slack
-            - name: SKANDHA_FUSE_SPARKNET_BAN_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_ban_slack
-            - name: SKANDHA_FUSE_THROTTLING_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_throttling_slack
-            - name: SKANDHA_FUSE_SPARKNET_THROTTLING_SLACK
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key:  skandha_fuse_sparknet_throttling_slack
-            - name: SKANDHA_FUSE_MIN_INCLUSION_DENOMINATOR
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_min_inclusion_denominator
-            - name: SKANDHA_FUSE_SPARKNET_MIN_INCLUSION_DENOMINATOR
-              valueFrom:
-                configMapKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_min_inclusion_denominator
-
-            # Secrets
-            - name: SKANDHA_FUSE_SPARKNET_RELAYER
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_relayer
-            - name: SKANDHA_FUSE_SPARKNET_BENEFICIARY
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_beneficiary
-            - name: SKANDHA_FUSE_SPARKNET_RPC
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_rpc
-            - name: SKANDHA_FUSE_SPARKNET_ENTRYPOINTS
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_sparknet_entrypoints
-            - name: SKANDHA_FUSE_RELAYER
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_relayer
-            - name: SKANDHA_FUSE_BENEFICIARY
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_beneficiary
-            - name: SKANDHA_FUSE_RPC
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_rpc
-            - name: SKANDHA_FUSE_ENTRYPOINTS
-              valueFrom:
-                secretKeyRef:
-                  name: skandha
-                  key: skandha_fuse_entrypoints
-          
-          # VolumeMounts
-          volumeMounts:
-            - mountPath: /opt/skandha/app
-              name: skandha
+          command: ["node", "./packages/cli/bin/skandha", "standalone", "--dataDir", "/opt/skandha/app", "--redirectRpc", "--unsafeMode"]
 
           # Ports
           ports:
@@ -156,14 +63,23 @@ spec:
           # Resources
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+            {{- range $key, $val := .Values.resources.requests }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- range $key, $val := .Values.resources.limits }}
+              {{ $key }}: {{ $val | quote }}
+            {{- end }}
 
-      # Volumes
+          # Volume mounts (config.json)
+          volumeMounts:
+            - name: skandha
+              mountPath: /usr/app/config.json
+              subPath: config.json
+              readOnly: true
+      
+      # Volume (config.json)
       volumes:
         - name: skandha
-          persistentVolumeClaim:
-            claimName: skandha
+          secret:
+            secretName: skandha

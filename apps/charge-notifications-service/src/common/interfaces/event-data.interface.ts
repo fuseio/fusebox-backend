@@ -3,6 +3,11 @@ export interface EventData extends Object {
   txHash: string,
   blockNumber: number,
   blockHash: string,
+  gasPrice: string,
+  gasUsed: string,
+  gasFee: string,
+  gasLimit: string,
+  txnValue: string,
 }
 export interface TokenEventData extends EventData {
   to: string,
@@ -21,8 +26,7 @@ export interface TokenEventData extends EventData {
 }
 export interface UserOpEventData extends EventData {
   userOpHash: string;
-  nonce: number;
-  paymasterAndData?: string;
+  nonce: string;
   success: boolean;
   actualGasCost: string;
   actualGasUsed: string;

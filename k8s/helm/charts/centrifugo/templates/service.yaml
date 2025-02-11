@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: centrifugo
   namespace: {{ .Release.Namespace }}
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: {{ .Values.maxRatePerEndpoint | quote }}
   labels:
     app: centrifugo
     environment: {{ .Values.global.environment }}

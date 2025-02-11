@@ -1,0 +1,1177 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>fusebox-backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">fusebox-backend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li >FuseLegacySDK</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>scripts/fuseLegacySDK.ts</code>
+        </p>
+
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#_axios" >_axios</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_credentials" >_credentials</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_encodedDataForContractCall" >_encodedDataForContractCall</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_from" >_from</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_getNonce" >_getNonce</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_initWebsocket" >_initWebsocket</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_signer" >_signer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_signOffChain" >_signOffChain</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_smartWalletsJwt" >_smartWalletsJwt</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_socketClient" >_socketClient</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_throwError" >_throwError</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_wallet" >_wallet</a>
+                            </li>
+                            <li>
+                                <a href="#authenticate" >authenticate</a>
+                            </li>
+                            <li>
+                                <a href="#createWallet" >createWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#events" >events</a>
+                            </li>
+                            <li>
+                                <a href="#getWallet" >getWallet</a>
+                            </li>
+                            <li>
+                                <a href="#init" >init</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#publicApiKey" >publicApiKey</a>
+                            </li>
+                            <li>
+                                <a href="#relay" >relay</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(publicApiKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">scripts/fuseLegacySDK.ts:77</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>publicApiKey</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_axios"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>_axios</b></span>
+                        <a href="#_axios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>AxiosInstance</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">scripts/fuseLegacySDK.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_credentials"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_credentials</b></span>
+                        <a href="#_credentials"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Wallet</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">scripts/fuseLegacySDK.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_encodedDataForContractCall"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_encodedDataForContractCall</b></span>
+                        <a href="#_encodedDataForContractCall"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="197" class="link-to-prism">scripts/fuseLegacySDK.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_from"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_from</b></span>
+                        <a href="#_from"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">scripts/fuseLegacySDK.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_getNonce"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_getNonce</b></span>
+                        <a href="#_getNonce"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="183" class="link-to-prism">scripts/fuseLegacySDK.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_initWebsocket"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_initWebsocket</b></span>
+                        <a href="#_initWebsocket"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">scripts/fuseLegacySDK.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_signer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_signer</b></span>
+                        <a href="#_signer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">scripts/fuseLegacySDK.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_signOffChain"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_signOffChain</b></span>
+                        <a href="#_signOffChain"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">scripts/fuseLegacySDK.ts:146</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_smartWalletsJwt"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_smartWalletsJwt</b></span>
+                        <a href="#_smartWalletsJwt"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">scripts/fuseLegacySDK.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_socketClient"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_socketClient</b></span>
+                        <a href="#_socketClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Centrifuge(Variables.SOCKET_SERVER_URL)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">scripts/fuseLegacySDK.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_throwError"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_throwError</b></span>
+                        <a href="#_throwError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="202" class="link-to-prism">scripts/fuseLegacySDK.ts:202</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_wallet"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_wallet</b></span>
+                        <a href="#_wallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SmartWallet.html" target="_self" >SmartWallet</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">scripts/fuseLegacySDK.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authenticate"></a>
+                    <span class="name">
+                        <span ><b>authenticate</b></span>
+                        <a href="#authenticate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="217" class="link-to-prism">scripts/fuseLegacySDK.ts:217</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createWallet"></a>
+                    <span class="name">
+                        <span ><b>createWallet</b></span>
+                        <a href="#createWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="239" class="link-to-prism">scripts/fuseLegacySDK.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="events"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>events</b></span>
+                        <a href="#events"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new LegacyEventEmitter()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">scripts/fuseLegacySDK.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getWallet"></a>
+                    <span class="name">
+                        <span ><b>getWallet</b></span>
+                        <a href="#getWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="271" class="link-to-prism">scripts/fuseLegacySDK.ts:271</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">scripts/fuseLegacySDK.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="publicApiKey"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>publicApiKey</b></span>
+                        <a href="#publicApiKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">scripts/fuseLegacySDK.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="relay"></a>
+                    <span class="name">
+                        <span ><b>relay</b></span>
+                        <a href="#relay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="287" class="link-to-prism">scripts/fuseLegacySDK.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BigNumber, Wallet, ethers } from &#x27;ethers&#x27;
+import { Interface } from &#x27;ethers/lib/utils&#x27;
+import axios, { AxiosError, AxiosInstance } from &#x27;axios&#x27;
+import { Centrifuge } from &#x27;centrifuge&#x27;
+import EventEmitter from &#x27;events&#x27;
+import WebSocket from &#x27;ws&#x27;
+import { jwtDecode } from &#x27;jwt-decode&#x27;
+import { websocketEvents } from &#x27;@app/smart-wallets-service/smart-wallets/constants/smart-wallets.constants&#x27;
+
+type WalletModuleAddresses &#x3D; {
+  GuardianManager: string;
+  LockManager: string;
+  RecoveryManager: string;
+  ApprovedTransfer: string;
+  TransferManager: string;
+  NftTransfer: string;
+  TokenExchanger: string;
+  CommunityManager: string;
+  WalletOwnershipManager: string;
+};
+
+type SmartWallet &#x3D; {
+  smartWalletAddress: string;
+  walletModules: WalletModuleAddresses;
+  networks: string[];
+  version: string;
+  paddedVersion: string;
+  ownerAddress: string;
+};
+
+const Variables &#x3D; {
+  FUSE_API_BASE_URL: process.env.FUSE_API_BASE_URL ?? &#x27;https://api.fuse.io&#x27;,
+  DEFAULT_GAS_LIMIT: process.env.DEFAULT_GAS_LIMIT ?? 700000,
+  SOCKET_SERVER_URL: process.env.SOCKET_SERVER_URL ?? &#x27;wss://ws.fuse.io/connection/websocket&#x27;
+}
+
+const ABI &#x3D; {
+  constant: false,
+  inputs: [
+    {
+      name: &#x27;_wallet&#x27;,
+      type: &#x27;address&#x27;
+    },
+    {
+      name: &#x27;_token&#x27;,
+      type: &#x27;address&#x27;
+    },
+    {
+      name: &#x27;_to&#x27;,
+      type: &#x27;address&#x27;
+    },
+    {
+      name: &#x27;_amount&#x27;,
+      type: &#x27;uint256&#x27;
+    },
+    {
+      name: &#x27;_data&#x27;,
+      type: &#x27;bytes&#x27;
+    }
+  ],
+  name: &#x27;transferToken&#x27;,
+  outputs: [],
+  payable: false,
+  stateMutability: &#x27;nonpayable&#x27;,
+  type: &#x27;function&#x27;
+}
+
+class LegacyEventEmitter extends EventEmitter { }
+
+export class FuseLegacySDK {
+  private readonly _axios: AxiosInstance
+  private _credentials: Wallet
+  private _from: string
+  private _smartWalletsJwt: string
+  private _wallet: SmartWallet
+  private _socketClient &#x3D; new Centrifuge(Variables.SOCKET_SERVER_URL)
+  public events &#x3D; new LegacyEventEmitter()
+
+  constructor (public readonly publicApiKey: string) {
+    this._axios &#x3D; axios.create({
+      baseURL: &#x60;${Variables.FUSE_API_BASE_URL}/api&#x60;,
+      headers: {
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
+      },
+      params: {
+        apiKey: publicApiKey
+      }
+    })
+  }
+
+  init &#x3D; async (
+    credentials: Wallet
+  ) &#x3D;&gt; {
+    this._credentials &#x3D; credentials
+
+    try {
+      this._from &#x3D; await credentials.getAddress()
+      const { hash, signature } &#x3D; await this._signer(this._credentials, this._from)
+      this._smartWalletsJwt &#x3D; await this.authenticate(hash, signature, this._from)
+      await this._initWebsocket()
+    } catch (error) {
+      throw new Error(error)
+    }
+
+    try {
+      this._wallet &#x3D; await this.getWallet()
+    } catch (error) {
+      const createWallet &#x3D; await this.createWallet()
+      await createWallet.wait()
+
+      this._wallet &#x3D; await this.getWallet()
+      if (!this._wallet.smartWalletAddress) {
+        throw new Error(&quot;Couldn&#x27;t retrieve smart wallet due to an invalid JWT. Please try again.&quot;)
+      }
+    }
+  }
+
+  private _initWebsocket &#x3D; async (): Promise&lt;void&gt; &#x3D;&gt; {
+    try {
+      const decodedJwt: any &#x3D; jwtDecode(this._smartWalletsJwt)
+      this._socketClient &#x3D; new Centrifuge(
+        Variables.SOCKET_SERVER_URL,
+        {
+          websocket: WebSocket,
+          token: this._smartWalletsJwt,
+          name: decodedJwt.sub
+        }
+      )
+      this._socketClient.connect()
+      await this._socketClient.ready()
+    } catch (error) {
+      this._throwError(&#x27;Unable to establish legacy websocket connection with Centrifuge&#x27;, error)
+    }
+  }
+
+  private _signer &#x3D; async (
+    credentials: ethers.Signer,
+    ownerAddress: string
+  ): Promise&lt;{ signature: string, hash: string }&gt; &#x3D;&gt; {
+    const input &#x3D; Uint8Array.from(Buffer.from(ownerAddress.replace(&#x27;0x&#x27;, &#x27;&#x27;), &#x27;hex&#x27;))
+    const hash &#x3D; ethers.utils.keccak256(input)
+    const signature &#x3D; await credentials.signMessage(ethers.utils.arrayify(hash))
+    return { hash, signature }
+  }
+
+  private _signOffChain &#x3D; (
+    credentials: Wallet,
+    from: string,
+    to: string,
+    data: string,
+    nonce: string,
+    options?: {
+      value?: BigNumber;
+      gasPrice?: BigNumber;
+      gasLimit?: BigNumber;
+    }
+  ): Promise&lt;string&gt; &#x3D;&gt; {
+    const value &#x3D; options?.value ?? BigNumber.from(0)
+    const gasPrice &#x3D; options?.gasPrice ?? BigNumber.from(0)
+    const gasLimit &#x3D;
+      options?.gasLimit ?? BigNumber.from(Variables.DEFAULT_GAS_LIMIT)
+
+    const inputArr &#x3D; [
+      &#x27;0x19&#x27;,
+      &#x27;0x00&#x27;,
+      from,
+      to,
+      ethers.utils.hexZeroPad(ethers.utils.hexlify(value), 32),
+      data,
+      nonce,
+      ethers.utils.hexZeroPad(ethers.utils.hexlify(gasPrice), 32),
+      ethers.utils.hexZeroPad(ethers.utils.hexlify(gasLimit), 32)
+    ]
+
+    const input &#x3D; &#x60;0x${inputArr.map((hexStr) &#x3D;&gt; hexStr.slice(2)).join(&#x27;&#x27;)}&#x60;
+
+    const messagePayload &#x3D; ethers.utils.keccak256(ethers.utils.arrayify(input))
+    const signature &#x3D; credentials.signMessage(messagePayload)
+
+    return signature
+  }
+
+  private _getNonce &#x3D; async (): Promise&lt;string&gt; &#x3D;&gt; {
+    const provider &#x3D; new ethers.providers.JsonRpcProvider(process.env.RPC_URL)
+
+    const block &#x3D; await provider.getBlockNumber()
+    const timestamp &#x3D; Date.now()
+
+    const blockHex &#x3D; ethers.utils.hexZeroPad(ethers.utils.hexlify(block), 16)
+    const timestampHex &#x3D; ethers.utils.hexZeroPad(ethers.utils.hexlify(timestamp), 16)
+
+    const combinedHex &#x3D; blockHex.substring(2) + timestampHex.substring(2)
+
+    return ethers.utils.hexlify(ethers.utils.arrayify(&#x27;0x&#x27; + combinedHex))
+  }
+
+  private _encodedDataForContractCall &#x3D; (abi: any, methodName: string, values: any[]) &#x3D;&gt; {
+    const iface &#x3D; new Interface([abi])
+    return iface.encodeFunctionData(methodName, values)
+  }
+
+  private _throwError &#x3D; (message: string, error: Error | AxiosError) &#x3D;&gt; {
+    let err: string | unknown &#x3D; error.message
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        err &#x3D; error.response.data
+      } else if (error.request) {
+        err &#x3D; error.request
+      }
+    }
+
+    this._socketClient.disconnect()
+
+    throw new Error(&#x60;${message} ${JSON.stringify(err)}&#x60;)
+  }
+
+  authenticate &#x3D; async (
+    hash: string,
+    signature: string,
+    ownerAddress: string
+  ) &#x3D;&gt; {
+    try {
+      const response &#x3D; await this._axios.post(&#x27;/v1/smart-wallets/auth&#x27;, {
+        hash,
+        signature,
+        ownerAddress
+      })
+      return response.data.jwt
+    } catch (error) {
+      console.log({ error })
+
+      this._throwError(
+        &#x27;Unable to authenticate legacy smart wallet. Please try again.&#x27;,
+        error
+      )
+    }
+  }
+
+  createWallet &#x3D; async () &#x3D;&gt; {
+    try {
+      const response &#x3D; await this._axios.post(&#x27;/v1/smart-wallets/create&#x27;, {}, {
+        headers: {
+          Authorization: &#x60;Bearer ${this._smartWalletsJwt}&#x60;
+        }
+      })
+
+      const subscription &#x3D; this._socketClient.newSubscription(&#x60;transaction:#${response.data.transactionId}&#x60;)
+      subscription.on(&#x27;publication&#x27;, ctx &#x3D;&gt; {
+        this.events.emit(ctx.data.eventName, ctx.data.eventData)
+      })
+
+      return {
+        data: response.data,
+        wait: () &#x3D;&gt; {
+          return new Promise((resolve) &#x3D;&gt; {
+            this.events.once(websocketEvents.WALLET_CREATION_SUCCEEDED, (data) &#x3D;&gt; {
+              subscription.off(&#x27;publication&#x27;, () &#x3D;&gt; {})
+              resolve(data)
+            })
+          })
+        }
+      }
+    } catch (error) {
+      this._throwError(
+        &quot;Couldn&#x27;t create a legacy smart wallet. Please try again.&quot;,
+        error
+      )
+    }
+  }
+
+  getWallet &#x3D; async (): Promise&lt;SmartWallet&gt; &#x3D;&gt; {
+    try {
+      const response &#x3D; await this._axios.get(&#x27;/v1/smart-wallets&#x27;, {
+        headers: {
+          Authorization: &#x60;Bearer ${this._smartWalletsJwt}&#x60;
+        }
+      })
+      return response.data
+    } catch (error) {
+      this._throwError(
+        &#x27;Unable to retrieve legacy smart wallet. Please try again.&#x27;,
+        error
+      )
+    }
+  }
+
+  relay &#x3D; async (
+    to: string,
+    amount: BigNumber
+  ) &#x3D;&gt; {
+    try {
+      const walletModule &#x3D; &#x27;TransferManager&#x27;
+      const methodName &#x3D; &#x27;transferToken&#x27;
+      const tokenAddress &#x3D; &#x27;0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE&#x27;
+      const transactionData &#x3D; &#x27;0x&#x27;
+      const nonce &#x3D; await this._getNonce()
+      const data &#x3D; this._encodedDataForContractCall(ABI, methodName, [
+        this._wallet.smartWalletAddress,
+        tokenAddress,
+        to,
+        amount,
+        transactionData
+      ])
+      const signature &#x3D; await this._signOffChain(
+        this._credentials,
+        this._wallet.walletModules.TransferManager,
+        this._wallet.smartWalletAddress,
+        data,
+        nonce
+      )
+      const transactionBody &#x3D; {
+        status: &#x27;pending&#x27;,
+        from: this._wallet.smartWalletAddress,
+        to,
+        value: amount.toString(),
+        type: &#x27;SEND&#x27;,
+        asset: &#x27;FUSE&#x27;,
+        tokenName: &#x27;FuseToken&#x27;,
+        tokenSymbol: &#x27;FUSE&#x27;,
+        tokenDecimal: 18,
+        tokenAddress
+      }
+
+      const body &#x3D; {
+        gasPrice: 0,
+        gasLimit: 700000,
+        relayBody: null,
+        txMetadata: null,
+        transactionBody,
+        walletAddress: this._wallet.smartWalletAddress,
+        walletModuleAddress: this._wallet.walletModules.TransferManager,
+        data,
+        nonce,
+        methodName,
+        signature,
+        walletModule
+      }
+
+      const response &#x3D; await this._axios.post(&#x27;/v1/smart-wallets/relay&#x27;, body, {
+        headers: {
+          Authorization: &#x60;Bearer ${this._smartWalletsJwt}&#x60;
+        }
+      })
+
+      const subscription &#x3D; this._socketClient.newSubscription(&#x60;transaction:#${response.data.transactionId}&#x60;)
+      subscription.on(&#x27;publication&#x27;, ctx &#x3D;&gt; {
+        this.events.emit(ctx.data.eventName, ctx.data.eventData)
+      })
+
+      return {
+        data: response.data,
+        wait: () &#x3D;&gt; {
+          return new Promise((resolve, reject) &#x3D;&gt; {
+            this.events.once(websocketEvents.TRANSACTION_SUCCEEDED, (data) &#x3D;&gt; {
+              subscription.off(&#x27;publication&#x27;, () &#x3D;&gt; {})
+              this._socketClient.disconnect()
+              resolve(data)
+            })
+
+            this.events.once(websocketEvents.TRANSACTION_FAILED, (data) &#x3D;&gt; {
+              subscription.off(&#x27;publication&#x27;, () &#x3D;&gt; {})
+              this._socketClient.disconnect()
+              reject(new Error(&#x60;Couldn&#x27;t process the legacy relay transaction. Please try again. ${JSON.stringify(data)}&#x60;))
+            })
+          })
+        }
+      }
+    } catch (error) {
+      this._throwError(
+        &#x27;Unable to relay legacy transaction. Please try again.&#x27;,
+        error
+      )
+    }
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'FuseLegacySDK.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

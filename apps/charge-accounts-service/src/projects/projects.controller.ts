@@ -15,7 +15,10 @@ import { UpdateProjectDto } from '@app/accounts-service/projects/dto/update-proj
 import { IsCreatorOwnerGuard } from '@app/accounts-service/projects/guards/is-creator-owner.guard'
 import { IsProjectOwnerGuard } from '@app/accounts-service/projects/guards/is-project-owner.guard'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
+import { MessagePattern } from '@nestjs/microservices'
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
+@ApiTags('Projects')
 @Controller({ path: 'projects', version: '1' })
 export class ProjectsController {
   constructor (private readonly projectsService: ProjectsService) { }
@@ -26,6 +29,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsCreatorOwnerGuard)
   @Post()
+  @ApiOperation({ summary: 'Create a new project.' })
+  @ApiCreatedResponse({ description: 'The project has been successfully created.' })
   create (@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto)
   }
@@ -35,6 +40,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard)
   @Get()
+  @ApiOperation({ summary: 'Find all the projects of the authenticated user.' })
+  @ApiCreatedResponse({ description: 'The projects have been successfully fetched.' })
   findAll (@User('sub') auth0Id: string) {
     return this.projectsService.findAll(auth0Id)
   }
@@ -46,12 +53,16 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get(':id')
+  @ApiOperation({ summary: 'Get project by id.' })
+  @ApiCreatedResponse({ description: 'The project has been successfully fetched.' })
   findOne (@Param('id') id: string) {
     return this.projectsService.findOne(id)
   }
 
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/paymaster/:sponsorId')
+  @ApiOperation({ summary: 'Get project by sponsor id.' })
+  @ApiCreatedResponse({ description: 'The project has been successfully fetched.' })
   getProjectBySponsorId (@Param('sponsorId') sponsorId: string) {
     return this.projectsService.getProjectBySponsorId(sponsorId)
   }
@@ -64,6 +75,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Patch(':id')
+  @ApiOperation({ summary: 'Update the project with the given id.' })
+  @ApiCreatedResponse({ description: 'The project has been successfully updated.' })
   update (@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(id, updateProjectDto)
   }
@@ -75,8 +88,10 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/secret/:projectId')
+  @ApiOperation({ summary: 'Create an API key secret for the given project.' })
+  @ApiCreatedResponse({ description: 'The API key secret has been successfully created.' })
   createSecret (@Param('projectId') projectId: string) {
-    return this.projectsService.createSecret(projectId)
+    return this.projectsService.createSecret({ projectId, createLegacyAccount: true })
   }
 
   /**
@@ -86,6 +101,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/secret/:projectId')
+  @ApiOperation({ summary: 'Check if an API key secret for the given project exists.' })
+  @ApiCreatedResponse({ description: 'The API key secret exists.' })
   checkIfSecretExists (@Param('projectId') projectId: string) {
     return this.projectsService.checkIfSecretExists(projectId)
   }
@@ -97,6 +114,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/apikeysinfo/:projectId')
+  @ApiOperation({ summary: 'Get API keys unsensitive info for the given project.' })
+  @ApiCreatedResponse({ description: 'The API keys unsensitive info has been successfully fetched.' })
   getApiKeysInfo (@Param('projectId') projectId: string) {
     return this.projectsService.getApiKeysInfo(projectId)
   }
@@ -108,6 +127,8 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Put('/secret/:projectId')
+  @ApiOperation({ summary: 'Revokes the old API key secret and generates a new one for the given project.' })
+  @ApiCreatedResponse({ description: 'The API key secret has been successfully updated.' })
   updateSecret (@Param('projectId') projectId: string) {
     return this.projectsService.updateSecret(projectId)
   }
@@ -119,29 +140,50 @@ export class ProjectsController {
    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/public/:projectId')
+  @ApiOperation({ summary: 'Get the public API key associated with the project.' })
+  @ApiCreatedResponse({ description: 'The public API key associated with the project.' })
   getPublic (@Param('projectId') projectId: string) {
     return this.projectsService.getPublic(projectId)
   }
 
   /**
-  * Creates an sandbox API key for the given project
-  * @param projectId
-  * @returns the generated sandbox API key or error if key already exists
-  */
+    * Creates an sandbox API key for the given project
+    * @param projectId
+    * @returns the generated sandbox API key or error if key already exists
+    */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Post('/sandbox/:projectId')
+  @ApiOperation({ summary: 'Create a sandbox API key for the given project.' })
+  @ApiCreatedResponse({ description: 'The sandbox API key has been successfully created.' })
   createSandboxKey (@Param('projectId') projectId: string) {
     return this.projectsService.createSandboxKey(projectId)
   }
 
   /**
-     * Gets the sandbox API key associated with the project
-     * @param projectId
-     * @returns the sandbox API key associated with the given project
-     */
+   * Gets the sandbox API key associated with the project
+   * @param projectId
+   * @returns the sandbox API key associated with the given project
+   */
   @UseGuards(JwtAuthGuard, IsProjectOwnerGuard)
   @Get('/sandbox/:projectId')
+  @ApiOperation({ summary: 'Get the sandbox API key associated with the project.' })
+  @ApiCreatedResponse({ description: 'The sandbox API key associated with the project.' })
   getSandboxKey (@Param('projectId') projectId: string) {
     return this.projectsService.getSandboxKey(projectId)
+  }
+
+  @MessagePattern('find-one-project')
+  findOneInternal (id: string) {
+    return this.projectsService.findOne(id)
+  }
+
+  @MessagePattern('find-one-project-by-owner-id')
+  findOneByIdInternal (id: string) {
+    return this.projectsService.findOneByOwnerId(id)
+  }
+
+  @MessagePattern('get-public')
+  getPublicInternal (projectId: string) {
+    return this.projectsService.getPublic(projectId)
   }
 }

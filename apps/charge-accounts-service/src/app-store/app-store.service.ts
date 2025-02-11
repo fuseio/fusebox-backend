@@ -15,11 +15,11 @@ import { TransferTokensDto } from '@app/apps-service/payments/dto/transfer-token
 @Injectable()
 export class AppStoreService {
   constructor (
-        @Inject(appStoreService) private readonly appStoreClient: ClientProxy,
-        @Inject(applicationModelString)
-        private applicationModel: Model<Application>,
-        private usersService: UsersService,
-        private configService: ConfigService
+    @Inject(appStoreService) private readonly appStoreClient: ClientProxy,
+    @Inject(applicationModelString)
+    private applicationModel: Model<Application>,
+    private usersService: UsersService,
+    private configService: ConfigService
   ) { }
 
   get availableApps () {
@@ -30,7 +30,7 @@ export class AppStoreService {
     return this.availableApps.some(app => app.appName === appName)
   }
 
-  async activateApp (appName: String, auth0Id: string): Promise<any> {
+  async activateApp (appName: string, auth0Id: string): Promise<any> {
     if (!this.isAppAvailable(appName)) {
       return new HttpException('Application not found', HttpStatus.NOT_FOUND)
     }

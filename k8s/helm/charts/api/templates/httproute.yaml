@@ -3,6 +3,9 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: api
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: api
+    environment: {{ .Values.global.environment }}
 spec:
   parentRefs:
     - kind: Gateway
@@ -13,7 +16,17 @@ spec:
   rules:
     - matches:
         - path:
-            value: /
+            value: /api/health
+            type: Exact
+        - path:
+            value: /api/v0
+            type: PathPrefix
+        - path:
+            value: /api/v1
+            type: PathPrefix
+        - path:
+            value: /api/v2
+            type: PathPrefix
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
@@ -23,26 +36,3 @@ spec:
       backendRefs:
         - name: api
           port: 5002
----
-apiVersion: networking.gke.io/v1
-kind: HealthCheckPolicy
-metadata:
-  name: api
-  namespace: {{ .Release.Namespace }}
-spec:
-  default:
-    checkIntervalSec: 30
-    timeoutSec: 5
-    healthyThreshold: 3
-    unhealthyThreshold: 5
-    config:
-      type: HTTP
-      httpHealthCheck:
-        port: 5002
-        portName: http
-        host: api
-        requestPath: /api/health
-  targetRef:
-    group: ""
-    kind: Service
-    name: api

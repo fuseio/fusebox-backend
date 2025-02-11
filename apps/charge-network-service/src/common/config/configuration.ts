@@ -7,6 +7,13 @@ export default () => ({
   blockRewardAddress: '0x63D4efeD2e3dA070247bea3073BCaB896dFF6C9B',
   consensusAddress: '0x3014ca10b91cb3D0AD85fEf7A3Cb95BCAc9c0f79',
   sfTokenAddress: '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871',
+
+  masterChefV3Address: '0xE3e184a7b75D0Ae6E17B58F5283b91B4E0A2604F',
+  usdcOnStargateAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
+  wethOnStargateAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
+  usdcOnStargatePoolId: 31,
+  wethOnStargatePoolId: 32,
+
   validatorFee: '0.15',
   rpcConfig: {
     rpc: {
@@ -53,5 +60,28 @@ export default () => ({
     }
   ],
   multiCallAddress: '0x3CE6158b7278Bf6792e014FA7B4f3c6c46fe9410',
-  botApi: 'https://bot.fuse.io/api/v1'
+  botApi: 'https://bot.fuse.io/api/v1',
+
+  stakingOptionsV2: [
+    {
+      tokenAddress: '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5',
+      tokenSymbol: 'USDC',
+      tokenName: 'USD Coin',
+      tokenLogoURI:
+        'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5/logo.png',
+      unStakeTokenAddress: '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1',
+      stakingProviderId: 'usdc-on-stargate-simple-staking',
+      expired: false
+    },
+    {
+      tokenAddress: '0xa722c13135930332Eb3d749B2F0906559D2C5b99',
+      tokenSymbol: 'WETH',
+      tokenName: 'Wrapped Ether',
+      tokenLogoURI:
+        'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0xa722c13135930332Eb3d749B2F0906559D2C5b99/logo.png',
+      unStakeTokenAddress: '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1',
+      stakingProviderId: 'weth-on-stargate-simple-staking',
+      expired: false
+    }
+  ]
 })

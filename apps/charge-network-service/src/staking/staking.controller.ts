@@ -6,11 +6,16 @@ import { StakingService } from '@app/network-service/staking/staking.service'
 
 @Controller('stake')
 export class StakingController {
-  constructor (private readonly stakingService: StakingService) { }
+  constructor (private readonly stakingService: StakingService) {}
 
   @MessagePattern('staking_options')
   stakingOptions () {
     return this.stakingService.stakingOptions()
+  }
+
+  @MessagePattern('staking_options_v2')
+  stakingOptionsV2 () {
+    return this.stakingService.stakingOptionsV2()
   }
 
   @MessagePattern('stake')

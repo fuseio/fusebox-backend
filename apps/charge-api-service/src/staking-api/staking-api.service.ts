@@ -16,6 +16,10 @@ export class StakingAPIService {
     return callMSFunction(this.stakingClient, 'staking_options', {})
   }
 
+  async stakingOptionsV2 (): Promise<Array<StakingOption>> {
+    return callMSFunction(this.stakingClient, 'staking_options_v2', {})
+  }
+
   async stake (stakeDto: StakeDto): Promise<any> {
     return callMSFunction(this.stakingClient, 'stake', stakeDto)
   }

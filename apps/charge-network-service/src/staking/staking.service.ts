@@ -81,8 +81,28 @@ export class StakingService {
     }
   }
 
+  async stakeV2 (stakeDto: StakeDto) {
+    const stakingOption = this.getStakingOptionV2(stakeDto.tokenAddress)
+    const stakingProvider = this.getStakingProvider(stakingOption)
+
+    return {
+      contractAddress: stakingProvider.address,
+      encodedABI: stakingProvider.stake(stakeDto)
+    }
+  }
+
   async unStake (unStakeDto: UnstakeDto) {
     const stakingOption = this.getStakingOption(unStakeDto.tokenAddress)
+    const stakingProvider = this.getStakingProvider(stakingOption)
+
+    return {
+      contractAddress: stakingProvider.address,
+      encodedABI: stakingProvider.unStake(unStakeDto)
+    }
+  }
+
+  async unStakeV2 (unStakeDto: UnstakeDto) {
+    const stakingOption = this.getStakingOptionV2(unStakeDto.tokenAddress)
     const stakingProvider = this.getStakingProvider(stakingOption)
 
     return {
@@ -114,8 +134,41 @@ export class StakingService {
     }
   }
 
+  async stakedTokensV2 (accountAddress: string) {
+    const stakedTokens = []
+
+    try {
+      for (const stakingOption of this.stakingOptionsV2Config) {
+        const stakingProvider = this.getStakingProvider(stakingOption)
+
+        const stakedToken = await stakingProvider.stakedToken(
+          accountAddress,
+          stakingOption
+        )
+
+        if (stakedToken.stakedAmount > 0) {
+          stakedTokens.push(stakedToken)
+        }
+      }
+
+      return {
+        totalStakedAmountUSD: sumBy(stakedTokens, 'stakedAmountUSD'),
+        totalEarnedAmountUSD: sumBy(stakedTokens, 'earnedAmountUSD'),
+        stakedTokens
+      }
+    } catch (error) {
+      this.logger.error('Error fetching staked tokens', error)
+    }
+  }
+
   private getStakingOption (tokenAddress: string) {
     return this.stakingOptionsConfig.find(
+      (stakingOption) => stakingOption.tokenAddress === tokenAddress
+    )
+  }
+
+  private getStakingOptionV2 (tokenAddress: string) {
+    return this.stakingOptionsV2Config.find(
       (stakingOption) => stakingOption.tokenAddress === tokenAddress
     )
   }

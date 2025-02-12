@@ -23,13 +23,28 @@ export class StakingController {
     return this.stakingService.stake(stakeDto)
   }
 
+  @MessagePattern('stake_v2')
+  stakeV2 (stakeDto: StakeDto) {
+    return this.stakingService.stakeV2(stakeDto)
+  }
+
   @MessagePattern('unstake')
   unstake (unstakeDto: UnstakeDto) {
     return this.stakingService.unStake(unstakeDto)
   }
 
+  @MessagePattern('unstake_v2')
+  unstakeV2 (unstakeDto: UnstakeDto) {
+    return this.stakingService.unStakeV2(unstakeDto)
+  }
+
   @MessagePattern('staked_tokens')
   stakedTokens (accountAddress: string) {
     return this.stakingService.stakedTokens(accountAddress)
+  }
+
+  @MessagePattern('staked_tokens_v2')
+  stakedTokensV2 (accountAddress: string) {
+    return this.stakingService.stakedTokensV2(accountAddress)
   }
 }

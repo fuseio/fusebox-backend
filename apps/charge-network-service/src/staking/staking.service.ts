@@ -16,6 +16,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
 import SimpleStakingService from '@app/network-service/staking/staking-providers/simple-staking.service'
+import { isLowercaseEqual } from '@app/common/utils/lowercase_equal'
 
 @Injectable()
 export class StakingService {
@@ -163,13 +164,17 @@ export class StakingService {
 
   private getStakingOption (tokenAddress: string) {
     return this.stakingOptionsConfig.find(
-      (stakingOption) => stakingOption.tokenAddress === tokenAddress
+      (stakingOption) => {
+        return isLowercaseEqual(stakingOption.tokenAddress, tokenAddress)
+      }
     )
   }
 
   private getStakingOptionV2 (tokenAddress: string) {
     return this.stakingOptionsV2Config.find(
-      (stakingOption) => stakingOption.tokenAddress === tokenAddress
+      (stakingOption) => {
+        return isLowercaseEqual(stakingOption.tokenAddress, tokenAddress)
+      }
     )
   }
 

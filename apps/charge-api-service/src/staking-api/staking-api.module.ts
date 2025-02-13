@@ -4,6 +4,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { StakingApiController } from '@app/api-service/staking-api/staking-api.controller'
 import { StakingAPIService } from '@app/api-service/staking-api/staking-api.service'
+import { StakingApiV2Controller } from './staking-api-v2.controller'
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { StakingAPIService } from '@app/api-service/staking-api/staking-api.serv
     ApiKeyModule
   ],
   providers: [StakingAPIService],
-  controllers: [StakingApiController]
+  controllers: [StakingApiController, StakingApiV2Controller]
 })
 export class StakingAPIModule {}

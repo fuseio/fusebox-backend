@@ -82,25 +82,23 @@ export default class SimpleStakingService implements StakingProvider {
 
       const poolId = this.getPoolId(stakingOption.tokenAddress)
 
-      const [userInfo, pendingRewards] = await Promise.all([
+      const [userInfo, pendingTokens] = await Promise.all([
         masterChefContract.userInfo(poolId, accountAddress),
         masterChefContract.pendingTokens(poolId, accountAddress)
       ])
 
       const stakedAmount = Number(formatUnits(userInfo.amount))
+
       const tokenPrice = await this.tradeService.getTokenPriceByAddress(
         stakingOption.tokenAddress
       )
       const stakedAmountUSD = stakedAmount * tokenPrice
 
-      // Calculate rewards in USD
-      const voltPrice = await this.tradeService.getTokenPriceByAddress(
-        await masterChefContract.VOLT()
+      const pendingBonusTokenAmount = Number(
+        formatUnits(pendingTokens[3], stakingOption.decimals)
       )
 
-      const earnedAmountUSD =
-        Number(formatUnits(pendingRewards.pendingVolt)) * voltPrice
-
+      const earnedAmountUSD = pendingBonusTokenAmount * tokenPrice
       const stakingApr = await this.stakingApr(stakingOption)
 
       return {
@@ -134,8 +132,8 @@ export default class SimpleStakingService implements StakingProvider {
         .request<SimpleStakingPool>(getSimpleStakingPoolData, { poolId })
 
       const pool = result.pool
-      const tokenPerSec = formatUnits(pool.rewarder.tokenPerSec, 18)
-      const balance = formatUnits(pool.balance, 18)
+      const tokenPerSec = formatUnits(pool.rewarder.tokenPerSec, stakingOption.decimals)
+      const balance = formatUnits(pool.balance, stakingOption.decimals)
 
       const rewardsPerYear =
         parseFloat(tokenPerSec) * this.SECONDS_IN_MONTH * 12

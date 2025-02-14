@@ -8,11 +8,11 @@ export default () => ({
   consensusAddress: '0x3014ca10b91cb3D0AD85fEf7A3Cb95BCAc9c0f79',
   sfTokenAddress: '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871',
 
-  masterChefV3Address: '0xE3e184a7b75D0Ae6E17B58F5283b91B4E0A2604F',
+  masterChefV3Address: '0x5fFcEaa947937DE1FEBb28BCa65E84894a55a2EF',
   usdcOnStargateAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
   wethOnStargateAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
-  usdcOnStargatePoolId: '31',
-  wethOnStargatePoolId: '32',
+  usdcOnStargatePoolId: '1',
+  wethOnStargatePoolId: '2',
 
   validatorFee: '0.15',
   rpcConfig: {
@@ -65,6 +65,7 @@ export default () => ({
       tokenAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
       tokenSymbol: 'USDC',
       tokenName: 'USD Coin',
+      decimals: 6,
       tokenLogoURI:
         'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5/logo.png',
       unStakeTokenAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
@@ -75,6 +76,7 @@ export default () => ({
       tokenAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
       tokenSymbol: 'WETH',
       tokenName: 'Wrapped Ether',
+      decimals: 18,
       tokenLogoURI:
         'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0xa722c13135930332Eb3d749B2F0906559D2C5b99/logo.png',
       unStakeTokenAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',

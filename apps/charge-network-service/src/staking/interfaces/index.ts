@@ -13,6 +13,7 @@ export interface StakingOption extends Token {
     stakingProviderId: string
     stakingApr?: number
     tvl?: number
+    decimals?: number
 }
 
 export interface StakedToken extends Token {

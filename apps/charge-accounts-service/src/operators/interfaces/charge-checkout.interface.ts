@@ -9,3 +9,8 @@ export enum ChargeCheckoutPaymentStatus {
   PAID = 'paid',
   REFUNDED = 'refunded'
 }
+
+export enum ChargeCheckoutBillingCycle {
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly'
+}

@@ -32,7 +32,8 @@ import erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
 import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
 import { OperatorCheckout } from '@app/accounts-service/operators/interfaces/operator-checkout.interface'
 import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
-import { ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
+import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
+import { differenceInMonths } from 'date-fns'
 
 @Injectable()
 export class OperatorsService {
@@ -756,6 +757,8 @@ export class OperatorsService {
       const accountsUrl = this.configService.get('AUTH0_AUDIENCE')
       const expiresIn = 12000
       const { payment } = await this.subscriptionInfo()
+      const isYearly = createOperatorCheckoutDto.billingCycle === ChargeCheckoutBillingCycle.YEARLY
+      const percentageOff = isYearly ? 30 : 0
       const chargeResponse = await axios.post(
         `${chargePaymentsApiUrl}/payments/checkout/sessions?apiKey=${chargePaymentsApiKey}`,
         {
@@ -766,7 +769,7 @@ export class OperatorsService {
           lineItems: [
             {
               currency: 'usd',
-              unitAmount: payment.toString(),
+              unitAmount: isYearly ? payment - (payment * percentageOff / 100) : payment,
               quantity: '1',
               productData: {
                 name: 'Console Operator'
@@ -779,6 +782,7 @@ export class OperatorsService {
       const checkout = await this.operatorCheckoutModel.create({
         ownerId: user._id,
         sessionId: chargeResponse.data.id,
+        billingCycle: createOperatorCheckoutDto.billingCycle,
         ...chargeResponse.data
       })
       return checkout.url
@@ -794,13 +798,38 @@ export class OperatorsService {
       throw new HttpException('Checkout not found', HttpStatus.NOT_FOUND)
     }
 
-    const lastPaidCheckout = await this.findLastPaidCheckout(checkout.ownerId)
-    const oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1))
-    if (lastPaidCheckout && lastPaidCheckout.createdAt > oneMonthAgo) {
-      const isPaid = webhookEvent.paymentStatus === ChargeCheckoutPaymentStatus.PAID
-      await this.updateIsActivatedByOwnerId(checkout.ownerId, isPaid)
+    const isPaid = webhookEvent.paymentStatus === ChargeCheckoutPaymentStatus.PAID
+    if (isPaid) {
+      await this.updateIsActivatedByOwnerId(checkout.ownerId, true)
     }
 
     await this.updateCheckout(webhookEvent.sessionId, webhookEvent.paymentStatus)
+  }
+
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
+  async processMonthlyBilling () {
+    const operatorWallets = await this.findAllOperatorWallets()
+    for (const operatorWallet of operatorWallets) {
+      const checkout = await this.findLastPaidCheckout(operatorWallet.ownerId)
+      if (!checkout) {
+        continue
+      }
+
+      const monthsSinceCreation = differenceInMonths(new Date(), checkout.createdAt)
+      const monthsInYear = 12
+      if (
+        checkout.billingCycle === ChargeCheckoutBillingCycle.YEARLY &&
+        monthsSinceCreation < monthsInYear
+      ) {
+        continue
+      }
+
+      const gracePeriod = 1
+      if (monthsSinceCreation <= gracePeriod) {
+        continue
+      }
+
+      await this.updateIsActivatedByOwnerId(checkout.ownerId, false)
+    }
   }
 }

@@ -6,4 +6,7 @@ export class CreateOperatorCheckoutDto {
 
   @IsString()
     cancelUrl: string
+
+  @IsString()
+    billingCycle: string
 }

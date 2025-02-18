@@ -8,13 +8,14 @@ export const OperatorCheckoutSchema = new mongoose.Schema(
       required: true
     },
     sessionId: { type: String, required: true, unique: true, index: true },
+    billingCycle: { type: String, required: true },
     url: { type: String },
     cancelUrl: { type: String },
     successUrl: { type: String },
     webhookUrl: { type: String },
     expiresAt: { type: Date },
     status: { type: String },
-    paymentStatus: { type: String, required: true }
+    paymentStatus: { type: String, required: true, index: true }
   },
   {
     timestamps: true

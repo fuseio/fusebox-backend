@@ -580,12 +580,14 @@ export class OperatorsService {
     response.cookie('operator_access_token', accessToken, {
       httpOnly: true,
       secure: true,
-      maxAge: tenMinutesInSeconds * milliseconds
+      maxAge: tenMinutesInSeconds * milliseconds,
+      sameSite: this.configService.get('CONSOLE_DAPP_URL') ? 'lax' : 'none'
     })
     response.cookie('operator_refresh_token', refreshToken, {
       httpOnly: true,
       secure: true,
-      maxAge: oneDayInSeconds * milliseconds
+      maxAge: oneDayInSeconds * milliseconds,
+      sameSite: this.configService.get('CONSOLE_DAPP_URL') ? 'lax' : 'none'
     })
 
     const hashedRefreshToken = await this.hashRefreshToken(refreshToken)

@@ -84,6 +84,8 @@ configMap:
   paymaster_funder_api_key: ""
   # -- Paymaster Funder Webhook ID
   paymaster_funder_webhook_id: ""
+  # -- Console Dapp URL
+  console_dapp_url: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:

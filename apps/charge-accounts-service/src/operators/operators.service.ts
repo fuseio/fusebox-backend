@@ -34,6 +34,7 @@ import { OperatorCheckout } from '@app/accounts-service/operators/interfaces/ope
 import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
 import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
 import { differenceInMonths } from 'date-fns'
+import { monthsInYear } from 'date-fns/constants'
 
 @Injectable()
 export class OperatorsService {
@@ -759,17 +760,19 @@ export class OperatorsService {
       const { payment } = await this.subscriptionInfo()
       const isYearly = createOperatorCheckoutDto.billingCycle === ChargeCheckoutBillingCycle.YEARLY
       const percentageOff = isYearly ? 30 : 0
+      const yearlyPayment = (payment - (payment * percentageOff / 100)) * monthsInYear
+      const amount = isYearly ? yearlyPayment : payment
       const chargeResponse = await axios.post(
         `${chargePaymentsApiUrl}/payments/checkout/sessions?apiKey=${chargePaymentsApiKey}`,
         {
           successUrl: createOperatorCheckoutDto.successUrl,
           cancelUrl: createOperatorCheckoutDto.cancelUrl,
-          webhookUrl: `${accountsUrl}/api/v1/operators/checkout/webhook`,
+          webhookUrl: `${accountsUrl}/accounts/v1/operators/checkout/webhook`,
           expiresIn,
           lineItems: [
             {
               currency: 'usd',
-              unitAmount: isYearly ? payment - (payment * percentageOff / 100) : payment,
+              unitAmount: amount.toString(),
               quantity: '1',
               productData: {
                 name: 'Console Operator'
@@ -816,7 +819,6 @@ export class OperatorsService {
       }
 
       const monthsSinceCreation = differenceInMonths(new Date(), checkout.createdAt)
-      const monthsInYear = 12
       if (
         checkout.billingCycle === ChargeCheckoutBillingCycle.YEARLY &&
         monthsSinceCreation < monthsInYear

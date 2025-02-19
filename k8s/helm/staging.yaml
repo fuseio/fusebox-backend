@@ -62,7 +62,6 @@ accounts:
     etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
     paymaster_funder_api_key: "pk_u_RbFw7NQBB7ZQIFJtziLE_S"
     paymaster_funder_webhook_id: "65bbbc63fc2f925de8e1a561"
-    console_dapp_url: "https://console-staging.fuse.io"
     usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
     usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
     charge_payments_api_url: "https://payments.qa.chargeweb3.com"

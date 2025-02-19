@@ -702,7 +702,6 @@ export class OperatorsService {
     return this.findInvoices(user._id)
   }
 
-  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async processMonthlySubscriptions () {
     const operatorWallets = await this.findAllOperatorWallets()
     const { wallet, contract } = await this.subscriptionWeb3('production')

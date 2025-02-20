@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import { BadRequestException, ExecutionContext, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
 import { notificationsService, smartWalletsService } from '@app/common/constants/microservices.constants'
@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString, operatorRefreshTokenModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorWalletModelString, operatorRefreshTokenModelString, invoicesModelString, operatorCheckoutModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -18,13 +18,24 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { User } from '@app/accounts-service/users/interfaces/user.interface'
 import { OperatorProject } from '@app/accounts-service/operators/interfaces/operator-project.interface'
 import { OperatorUserProjectResponse } from '@app/accounts-service/operators/interfaces/operator-user-project-response.interface'
 import { OperatorRefreshToken } from '@app/accounts-service/operators/interfaces/operator-refresh-token.interface'
 import { Response } from 'express'
 import * as bcrypt from 'bcryptjs'
+import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
+import { Invoice } from '@app/accounts-service/operators/interfaces/invoice.interface'
+import { Cron, CronExpression } from '@nestjs/schedule'
+import erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
+import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
+import { OperatorCheckout } from '@app/accounts-service/operators/interfaces/operator-checkout.interface'
+import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
+import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
+import { differenceInMonths } from 'date-fns'
+import { monthsInYear } from 'date-fns/constants'
+import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
 
 @Injectable()
 export class OperatorsService {
@@ -43,7 +54,11 @@ export class OperatorsService {
     private readonly notificationsClient: ClientProxy,
     private readonly analyticsService: AnalyticsService,
     @Inject(operatorRefreshTokenModelString)
-    private operatorRefreshTokenModel: Model<OperatorRefreshToken>
+    private operatorRefreshTokenModel: Model<OperatorRefreshToken>,
+    @Inject(invoicesModelString)
+    private invoicesModel: Model<Invoice>,
+    @Inject(operatorCheckoutModelString)
+    private operatorCheckoutModel: Model<OperatorCheckout>
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -119,14 +134,10 @@ export class OperatorsService {
       const secretKey = await this.createProjectSecret(projectObject)
       const apiKeyInfo = await this.projectsService.getApiKeysInfo(projectObject._id)
       const sponsorId = await this.createPaymasters(projectObject)
-      const predictedWallet = await this.predictWallet(auth0Id, 0, '0_1_0', 'production')
       const eventData = {
         email: user.email,
         apiKey: apiKeyInfo.publicKey
       }
-      const wallet = await this.createOperatorWallet(user, predictedWallet)
-      await this.addAddressToOperatorsWebhook(predictedWallet)
-      await this.addAddressToTokenReceiveWebhook(predictedWallet)
       this.googleFormSubmit(createOperatorUserDto)
       this.analyticsService.trackEvent('New Operator Created', { ...eventData }, { user_id: user?.auth0Id })
       const project: OperatorProject = {
@@ -140,7 +151,7 @@ export class OperatorsService {
         secretLastFourChars: apiKeyInfo.secretLastFourChars,
         sponsorId
       }
-      return this.constructUserProjectResponse(user, project, wallet, secretKey)
+      return this.constructUserProjectResponse(user, project, undefined, secretKey)
     } catch (error) {
       this.errorHandler(error)
     }
@@ -178,18 +189,27 @@ export class OperatorsService {
     return paymasters[0].sponsorId
   }
 
-  private async createOperatorWallet (user: any, predictedWallet: string) {
+  async createOperatorWallet (createOperatorWalletDto: CreateOperatorWalletDto, auth0Id: string) {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
     const operatorWalletCreationResult = await this.operatorWalletModel.create({
       ownerId: user._id,
-      smartWalletAddress: predictedWallet.toLowerCase()
+      smartWalletAddress: createOperatorWalletDto.smartWalletAddress.toLowerCase()
     })
     if (!operatorWalletCreationResult) {
       throw new HttpException('Failed to create operator wallet', HttpStatus.INTERNAL_SERVER_ERROR)
     }
+
+    await this.addAddressToOperatorsWebhook(operatorWalletCreationResult.smartWalletAddress)
+    await this.addAddressToTokenReceiveWebhook(operatorWalletCreationResult.smartWalletAddress)
+
     return operatorWalletCreationResult
   }
 
-  private constructUserProjectResponse (user: User, project: OperatorProject, wallet: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
+  private constructUserProjectResponse (user: User, project: OperatorProject, wallet?: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
     // Constructs the response object from the entities
     return {
       user: {
@@ -197,7 +217,7 @@ export class OperatorsService {
         name: user.name,
         email: user.email,
         auth0Id: user.auth0Id,
-        smartWalletAddress: wallet.smartWalletAddress
+        smartWalletAddress: wallet?.smartWalletAddress ?? '0x'
       },
       project: {
         id: project.id,
@@ -355,11 +375,11 @@ export class OperatorsService {
   async getSponsoredTransactionsCount (auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const project = await this.projectsService.findOneByOwnerId(user._id)
-    const paymasters = await this.paymasterService.findActivePaymasters(project._id)
-    const sponsorId = paymasters?.[0]?.sponsorId
+    const apiKey = await this.projectsService.getApiKeysInfo(project._id)
+    const publicKey = apiKey.publicKey
     let sponsoredTransactions = 0
-    if (sponsorId) {
-      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', sponsorId)
+    if (publicKey) {
+      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', publicKey)
         .catch(e => {
           this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
         })
@@ -384,8 +404,16 @@ export class OperatorsService {
     return this.operatorWalletModel.findOne({ smartWalletAddress: value.toLowerCase() })
   }
 
+  async findAllOperatorWallets (): Promise<OperatorWallet[]> {
+    return this.operatorWalletModel.find()
+  }
+
   async updateIsActivated (_id: ObjectId, isActivated: boolean): Promise<any> {
     return this.operatorWalletModel.updateOne({ _id }, { isActivated })
+  }
+
+  async updateIsActivatedByOwnerId (ownerId: string, isActivated: boolean): Promise<any> {
+    return this.operatorWalletModel.updateOne({ ownerId }, { isActivated })
   }
 
   async getBalance (address: string, ver: string, environment: string): Promise<string> {
@@ -592,5 +620,260 @@ export class OperatorsService {
 
     const hashedRefreshToken = await this.hashRefreshToken(refreshToken)
     return this.createRefreshToken(auth0Id, hashedRefreshToken)
+  }
+
+  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string): Promise<Invoice> {
+    return this.invoicesModel.create({ ownerId, amount, currency, txHash })
+  }
+
+  async findInvoices (ownerId: string): Promise<Invoice[]> {
+    return this.invoicesModel.find({ ownerId })
+  }
+
+  async findFirstDayOfMonthInvoice (ownerId: string): Promise<Invoice> {
+    const currentDate = new Date()
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+    return this.invoicesModel.findOne({ ownerId, createdAt: { $gte: firstDayOfMonth } })
+  }
+
+  async subscriptionWeb3 (environment:string) {
+    const version = '0_1_0'
+    const paymasterEnvs = this.configService.getOrThrow(`paymaster.${version}.${environment}`)
+    const tokenEnvs = this.configService.getOrThrow(`token.${environment}`)
+    const contractAddress = tokenEnvs.usdcContractAddress
+    const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
+    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs.url)
+    const wallet = new ethers.Wallet(privateKey, provider)
+    const contract = new ethers.Contract(contractAddress, erc20Abi, wallet)
+    return {
+      provider,
+      wallet,
+      contract
+    }
+  }
+
+  async subscriptionInfo () {
+    const payment = 50
+    const decimals = 6
+    const amount = ethers.utils.parseUnits(payment.toString(), decimals)
+    return {
+      payment,
+      decimals,
+      amount
+    }
+  }
+
+  async createSubscription (auth0Id: string): Promise<Invoice> {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    const operatorWallet = await this.findWalletOwner(user._id)
+    if (!operatorWallet) {
+      throw new HttpException('Operator wallet not found.', HttpStatus.NOT_FOUND)
+    }
+
+    const { wallet, contract } = await this.subscriptionWeb3('production')
+    const { payment, amount } = await this.subscriptionInfo()
+
+    const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
+    if (allowance.lt(amount)) {
+      throw new HttpException('Insufficient allowance', HttpStatus.BAD_REQUEST)
+    }
+
+    const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
+    const tx = await transfer.wait()
+    const txHash = tx?.transactionHash
+    if (!txHash) {
+      throw new HttpException('Transaction failed', HttpStatus.BAD_REQUEST)
+    }
+
+    const invoice = await this.createInvoice(user._id, payment, 'USDC', txHash)
+    await this.updateIsActivated(operatorWallet._id, true)
+
+    return invoice
+  }
+
+  async getSubscriptions (auth0Id: string): Promise<Invoice[]> {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    return this.findInvoices(user._id)
+  }
+
+  async processMonthlySubscriptions () {
+    const operatorWallets = await this.findAllOperatorWallets()
+    const { wallet, contract } = await this.subscriptionWeb3('production')
+    const { payment, amount } = await this.subscriptionInfo()
+
+    for (const operatorWallet of operatorWallets) {
+      const invoice = await this.findFirstDayOfMonthInvoice(operatorWallet.ownerId)
+      if (invoice) {
+        this.logger.log(`Invoice already exists for ${operatorWallet.ownerId}`)
+        continue
+      }
+
+      const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
+      if (allowance.lt(amount)) {
+        this.logger.log(`Insufficient allowance for ${operatorWallet.ownerId}`)
+        await this.updateIsActivated(operatorWallet._id, false)
+        continue
+      }
+
+      const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
+      const tx = await transfer.wait()
+      const txHash = tx?.transactionHash
+      if (!txHash) {
+        this.logger.log(`Transaction failed for ${operatorWallet.ownerId}`)
+        await this.updateIsActivated(operatorWallet._id, false)
+        continue
+      }
+
+      await this.createInvoice(operatorWallet.ownerId, payment, 'USDC', txHash)
+      await this.updateIsActivated(operatorWallet._id, true)
+    }
+  }
+
+  async findCheckout (sessionId: string) {
+    return this.operatorCheckoutModel.findOne({ sessionId })
+  }
+
+  async findLastPaidCheckout (ownerId: string) {
+    return this.operatorCheckoutModel.findOne({ ownerId, paymentStatus: ChargeCheckoutPaymentStatus.PAID }).sort({ createdAt: -1 })
+  }
+
+  async updateCheckout (sessionId: string, paymentStatus: string) {
+    return this.operatorCheckoutModel.updateOne({ sessionId }, { paymentStatus })
+  }
+
+  async checkout (auth0Id: string, createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
+    try {
+      const user = await this.usersService.findOneByAuth0Id(auth0Id)
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+
+      const chargePaymentsApiUrl = this.configService.get('CHARGE_PAYMENTS_API_URL')
+      const chargePaymentsApiKey = this.configService.get('CHARGE_PAYMENTS_API_KEY')
+      const accountsUrl = this.configService.get('AUTH0_AUDIENCE')
+      const expiresIn = 12000
+      const { payment } = await this.subscriptionInfo()
+      const isYearly = createOperatorCheckoutDto.billingCycle === ChargeCheckoutBillingCycle.YEARLY
+      const percentageOff = isYearly ? 30 : 0
+      const yearlyPayment = (payment - (payment * percentageOff / 100)) * monthsInYear
+      const amount = isYearly ? yearlyPayment : payment
+      const chargeResponse = await axios.post(
+        `${chargePaymentsApiUrl}/payments/checkout/sessions?apiKey=${chargePaymentsApiKey}`,
+        {
+          successUrl: createOperatorCheckoutDto.successUrl,
+          cancelUrl: createOperatorCheckoutDto.cancelUrl,
+          webhookUrl: `${accountsUrl}/accounts/v1/operators/checkout/webhook`,
+          expiresIn,
+          lineItems: [
+            {
+              currency: 'usd',
+              unitAmount: amount.toString(),
+              quantity: '1',
+              productData: {
+                name: 'Console Operator'
+              }
+            }
+          ]
+        }
+      )
+
+      const checkout = await this.operatorCheckoutModel.create({
+        ownerId: user._id,
+        sessionId: chargeResponse.data.id,
+        billingCycle: createOperatorCheckoutDto.billingCycle,
+        ...chargeResponse.data
+      })
+      return checkout.url
+    } catch (error) {
+      this.logger.error(`Failed to checkout: ${error.message}`)
+      throw error
+    }
+  }
+
+  async handleCheckoutWebhook (webhookEvent: ChargeCheckoutWebhookEvent) {
+    const checkout = await this.findCheckout(webhookEvent.sessionId)
+    if (!checkout) {
+      throw new HttpException('Checkout not found', HttpStatus.NOT_FOUND)
+    }
+
+    const isPaid = webhookEvent.paymentStatus === ChargeCheckoutPaymentStatus.PAID
+    if (isPaid) {
+      await this.updateIsActivatedByOwnerId(checkout.ownerId, true)
+    }
+
+    await this.updateCheckout(webhookEvent.sessionId, webhookEvent.paymentStatus)
+  }
+
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
+  async processMonthlyBilling () {
+    const operatorWallets = await this.findAllOperatorWallets()
+    for (const operatorWallet of operatorWallets) {
+      const checkout = await this.findLastPaidCheckout(operatorWallet.ownerId)
+      if (!checkout) {
+        continue
+      }
+
+      const monthsSinceCreation = differenceInMonths(new Date(), checkout.createdAt)
+      if (
+        checkout.billingCycle === ChargeCheckoutBillingCycle.YEARLY &&
+        monthsSinceCreation < monthsInYear
+      ) {
+        continue
+      }
+
+      const gracePeriod = 1
+      if (monthsSinceCreation <= gracePeriod) {
+        continue
+      }
+
+      await this.updateIsActivatedByOwnerId(checkout.ownerId, false)
+    }
+  }
+
+  async isOperatorSponsoredQuotaExceeded (context: ExecutionContext, requestConfig: AxiosRequestConfig) {
+    const request = context.switchToHttp().getRequest()
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
+    if (bundlerProvider !== BundlerProvider.PIMLICO) {
+      return false
+    }
+
+    const paymaster = requestConfig.data?.params?.[0]?.paymaster
+    if (!paymaster) {
+      return false
+    }
+
+    const operatorUser = await callMSFunction(this.dataLayerClient, 'get-operator-by-api-key', request.query.apiKey)
+      .catch(e => {
+        this.logger.log(`get-operator-by-api-key failed: ${JSON.stringify(e)}`)
+      })
+    if (!operatorUser) {
+      return true
+    }
+    const { operator } = operatorUser
+    if (!operator) {
+      return true
+    }
+    if (operator.isActivated) {
+      return false
+    }
+
+    const freePlanLimit = 1000
+    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', request.query.apiKey)
+      .catch(e => {
+        this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
+      })
+    if (sponsoredTransactions > freePlanLimit) {
+      return true
+    }
+
+    return false
   }
 }

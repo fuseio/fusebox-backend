@@ -28,7 +28,7 @@ async function bootstrap () {
   app.use(cookieParser())
   app.setGlobalPrefix('accounts')
   app.enableCors({
-    origin: configService.get('CONSOLE_DAPP_URL') ?? consoleDappFuseOrVercelUrl,
+    origin: configService.get('CONSOLE_DAPP_URL') || consoleDappFuseOrVercelUrl,
     credentials: true
   })
   app.useGlobalPipes(

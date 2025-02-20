@@ -64,7 +64,7 @@ accounts:
     paymaster_funder_webhook_id: "65bbbc63fc2f925de8e1a561"
     usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
     usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
-    charge_payments_api_url: "https://payments.qa.chargeweb3.com"
+    charge_payments_api_url: "https://payments.chargeweb3.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

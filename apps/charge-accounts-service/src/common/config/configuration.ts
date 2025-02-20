@@ -9,9 +9,7 @@ export default () => ({
         entrypointAddress: process.env.ENTRYPOINT_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0,
         url: process.env.RPC_URL || 'https://rpc.fuse.io',
         etherspotWalletFactoryContractAddress:
-          process.env.ETHERSPOT_WALLET_FACTORY_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0,
-        usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_MAINNET
-
+          process.env.ETHERSPOT_WALLET_FACTORY_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0
       },
       sandbox: {
         paymasterContractAddress:
@@ -19,10 +17,16 @@ export default () => ({
         entrypointAddress: process.env.ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0,
         url: process.env.SPARK_RPC_URL || 'https://rpc.fusespark.io',
         etherspotWalletFactoryContractAddress:
-          process.env.ETHERSPOT_WALLET_FACTORY_SANDBOX_CONTRACT_ADDRESS_V_0_1_0,
-        usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_TESTNET
+          process.env.ETHERSPOT_WALLET_FACTORY_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
       }
     }
+  },
+  token: {
+    production: {
+      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_MAINNET
+    },
+    sandbox: {
+      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_TESTNET
+    }
   }
-
 })

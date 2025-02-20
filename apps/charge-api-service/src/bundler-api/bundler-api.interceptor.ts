@@ -19,6 +19,7 @@ import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
+import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
@@ -26,7 +27,8 @@ export class BundlerApiInterceptor implements NestInterceptor {
   constructor (
     @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy,
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private operatorsService: OperatorsService
   ) { }
 
   async intercept (context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
@@ -34,7 +36,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
       context
     )
 
-    const isSponsoredQuotaExceeded = await this.isOperatorSponsoredQuotaExceeded(context, requestConfig)
+    const isSponsoredQuotaExceeded = await this.operatorsService.isOperatorSponsoredQuotaExceeded(context, requestConfig)
     if (isSponsoredQuotaExceeded) {
       throw new HttpException('Operator sponsored transaction quota exceeded', HttpStatus.BAD_REQUEST)
     }
@@ -64,7 +66,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
     )
 
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
-      const userOp = this.contructUserOp(context, requestConfig, response)
+      const userOp = this.constructUserOp(context, requestConfig, response)
       this.logger.log(`eth_sendUserOperation: ${JSON.stringify(userOp)}`)
       try {
         if (isNil(userOp.userOpHash)) {
@@ -112,11 +114,15 @@ export class BundlerApiInterceptor implements NestInterceptor {
     }
   }
 
-  private contructUserOp (context: ExecutionContext, requestConfig: AxiosRequestConfig, response) {
+  private constructUserOp (context: ExecutionContext, requestConfig: AxiosRequestConfig, response) {
     const request = context.switchToHttp().getRequest()
     const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
-    const param = requestConfig.data.params[0]
+    const param = requestConfig?.data?.params?.[0]
     const base = { userOpHash: response?.result, apiKey: request.query.apiKey }
+
+    if (!param) {
+      throw new InternalServerErrorException('UserOp param is missing')
+    }
 
     if (bundlerProvider === BundlerProvider.PIMLICO) {
       return {
@@ -129,44 +135,5 @@ export class BundlerApiInterceptor implements NestInterceptor {
       }
     }
     return { ...param, ...base }
-  }
-
-  private async isOperatorSponsoredQuotaExceeded (context: ExecutionContext, requestConfig: AxiosRequestConfig) {
-    const request = context.switchToHttp().getRequest()
-    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
-    if (bundlerProvider !== BundlerProvider.PIMLICO) {
-      return false
-    }
-
-    const paymaster = requestConfig.data?.params?.[0]?.paymaster
-    if (!paymaster) {
-      return false
-    }
-
-    const operatorUser = await callMSFunction(this.dataLayerClient, 'get-operator-by-api-key', request.query.apiKey)
-      .catch(e => {
-        this.logger.log(`get-operator-by-api-key failed: ${JSON.stringify(e)}`)
-      })
-    if (!operatorUser) {
-      return true
-    }
-    const { operator } = operatorUser
-    if (!operator) {
-      return true
-    }
-    if (operator.isActivated) {
-      return false
-    }
-
-    const freePlanLimit = 1000
-    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', request.query.apiKey)
-      .catch(e => {
-        this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
-      })
-    if (sponsoredTransactions > freePlanLimit) {
-      return true
-    }
-
-    return false
   }
 }

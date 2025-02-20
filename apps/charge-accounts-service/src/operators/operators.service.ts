@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import { BadRequestException, ExecutionContext, HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ethers } from 'ethers'
 import { notificationsService, smartWalletsService } from '@app/common/constants/microservices.constants'
@@ -18,7 +18,7 @@ import { callMSFunction } from '@app/common/utils/client-proxy'
 import { ClientProxy } from '@nestjs/microservices'
 import { CreateWebhookAddressesDto } from '@app/notifications-service/webhooks/dto/create-webhook-addresses.dto'
 import { AnalyticsService } from '@app/common/services/analytics.service'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { User } from '@app/accounts-service/users/interfaces/user.interface'
 import { OperatorProject } from '@app/accounts-service/operators/interfaces/operator-project.interface'
 import { OperatorUserProjectResponse } from '@app/accounts-service/operators/interfaces/operator-user-project-response.interface'
@@ -35,6 +35,7 @@ import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/inte
 import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
 import { differenceInMonths } from 'date-fns'
 import { monthsInYear } from 'date-fns/constants'
+import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
 
 @Injectable()
 export class OperatorsService {
@@ -638,7 +639,8 @@ export class OperatorsService {
   async subscriptionWeb3 (environment:string) {
     const version = '0_1_0'
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${version}.${environment}`)
-    const contractAddress = paymasterEnvs.usdcContractAddress
+    const tokenEnvs = this.configService.getOrThrow(`token.${environment}`)
+    const contractAddress = tokenEnvs.usdcContractAddress
     const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
     const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs.url)
     const wallet = new ethers.Wallet(privateKey, provider)
@@ -834,5 +836,44 @@ export class OperatorsService {
 
       await this.updateIsActivatedByOwnerId(checkout.ownerId, false)
     }
+  }
+
+  async isOperatorSponsoredQuotaExceeded (context: ExecutionContext, requestConfig: AxiosRequestConfig) {
+    const request = context.switchToHttp().getRequest()
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
+    if (bundlerProvider !== BundlerProvider.PIMLICO) {
+      return false
+    }
+
+    const paymaster = requestConfig.data?.params?.[0]?.paymaster
+    if (!paymaster) {
+      return false
+    }
+
+    const operatorUser = await callMSFunction(this.dataLayerClient, 'get-operator-by-api-key', request.query.apiKey)
+      .catch(e => {
+        this.logger.log(`get-operator-by-api-key failed: ${JSON.stringify(e)}`)
+      })
+    if (!operatorUser) {
+      return true
+    }
+    const { operator } = operatorUser
+    if (!operator) {
+      return true
+    }
+    if (operator.isActivated) {
+      return false
+    }
+
+    const freePlanLimit = 1000
+    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', request.query.apiKey)
+      .catch(e => {
+        this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
+      })
+    if (sponsoredTransactions > freePlanLimit) {
+      return true
+    }
+
+    return false
   }
 }

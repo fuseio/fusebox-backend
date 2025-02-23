@@ -15,6 +15,7 @@ import { StakeDto } from '../dto/stake.dto'
 import GraphService from '../graph.service'
 import { GET_SIMPLE_STAKING_POOL_DATA as getSimpleStakingPoolData } from '@app/network-service/common/constants/graph-queries/masterchef-v3'
 import TradeService from '@app/common/token/trade.service'
+import { PoolConfig } from '@app/network-service/common/constants/simple-staking-config'
 
 @Injectable()
 export default class SimpleStakingService implements StakingProvider {
@@ -39,36 +40,32 @@ export default class SimpleStakingService implements StakingProvider {
   }
 
   private getPoolId (tokenAddress: string): number {
-    const usdcOnStargateAddress = this.configService.get(
-      'usdcOnStargateAddress'
-    )
-    const wethOnStargateAddress = this.configService.get(
-      'wethOnStargateAddress'
-    )
-    const usdcOnStargatePoolId = this.configService.get('usdcOnStargatePoolId')
-    const wethOnStargatePoolId = this.configService.get('wethOnStargatePoolId')
+    const poolConfig = this.getPoolsConfig()
+    const config = poolConfig[tokenAddress.toLowerCase()]
+    return config.poolId
+  }
 
-    const poolMappings = {
-      [usdcOnStargateAddress.toLowerCase()]: usdcOnStargatePoolId,
-      [wethOnStargateAddress.toLowerCase()]: wethOnStargatePoolId
-    }
-
-    return poolMappings[tokenAddress.toLowerCase()]
+  private getPoolsConfig (): Record<string, PoolConfig> {
+    return this.configService.get('simpleStakingConfig')
   }
 
   stake (stakeDto: StakeDto) {
-    const poolId = this.getPoolId(stakeDto.tokenAddress)
+    const poolsConfig = this.getPoolsConfig()
+    const poolConfig = poolsConfig[stakeDto.tokenAddress.toLowerCase()]
+
     return this.masterChefV3Interface.encodeFunctionData('deposit', [
-      poolId,
-      parseUnits(stakeDto.tokenAmount)
+      poolConfig.poolId,
+      parseUnits(stakeDto.tokenAmount, poolConfig.decimals)
     ])
   }
 
   unStake ({ tokenAddress, tokenAmount }: UnstakeDto) {
-    const poolId = this.getPoolId(tokenAddress)
+    const poolsConfig = this.getPoolsConfig()
+    const poolConfig = poolsConfig[tokenAddress.toLowerCase()]
+
     return this.masterChefV3Interface.encodeFunctionData('withdraw', [
-      poolId,
-      parseUnits(tokenAmount)
+      poolConfig.poolId,
+      parseUnits(tokenAmount, poolConfig.decimals)
     ])
   }
 
@@ -87,7 +84,7 @@ export default class SimpleStakingService implements StakingProvider {
         masterChefContract.pendingTokens(poolId, accountAddress)
       ])
 
-      const stakedAmount = Number(formatUnits(userInfo.amount))
+      const stakedAmount = Number(formatUnits(userInfo.amount, stakingOption.decimals))
 
       const tokenPrice = await this.tradeService.getTokenPriceByAddress(
         stakingOption.tokenAddress
@@ -155,7 +152,8 @@ export default class SimpleStakingService implements StakingProvider {
 
   async tvl (stakingOption: StakingOption) {
     try {
-      const poolId = this.getPoolId(stakingOption.tokenAddress)
+      const poolsConfig = this.getPoolsConfig()
+      const poolConfig = poolsConfig[stakingOption.tokenAddress.toLowerCase()]
 
       const masterChefContract = new Contract(
         this.address,
@@ -163,7 +161,7 @@ export default class SimpleStakingService implements StakingProvider {
         this.provider
       )
 
-      const poolInfo = await masterChefContract.poolInfo(poolId)
+      const poolInfo = await masterChefContract.poolInfo(poolConfig.poolId)
 
       const lpToken = new Contract(
         poolInfo.lpToken,
@@ -177,7 +175,8 @@ export default class SimpleStakingService implements StakingProvider {
         poolInfo.lpToken
       )
 
-      return Number(formatUnits(balance)) * tokenPrice
+      const formattedBalance = formatUnits(balance, poolConfig.decimals)
+      return Number(formattedBalance) * tokenPrice
     } catch (error) {
       this.logger.error(`tvl error: ${error}`)
     }

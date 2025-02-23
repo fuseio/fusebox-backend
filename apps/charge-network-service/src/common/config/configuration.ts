@@ -9,10 +9,19 @@ export default () => ({
   sfTokenAddress: '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871',
 
   masterChefV3Address: '0x5fFcEaa947937DE1FEBb28BCa65E84894a55a2EF',
-  usdcOnStargateAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
-  wethOnStargateAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
-  usdcOnStargatePoolId: '1',
-  wethOnStargatePoolId: '2',
+
+  simpleStakingConfig: {
+    '0xc6bc407706b7140ee8eef2f86f9504651b63e7f9': {
+      description: 'USDC on Stargate',
+      poolId: 1,
+      decimals: 6
+    },
+    '0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590': {
+      description: 'WETH on Stargate',
+      poolId: 2,
+      decimals: 18
+    }
+  },
 
   validatorFee: '0.15',
   rpcConfig: {

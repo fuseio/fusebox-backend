@@ -92,3 +92,4 @@ secret:
   - bundler_api_prd_url
   - pimlico_api_prd_url
   - pimlico_api_sandbox_url
+  - amplitude_api_key

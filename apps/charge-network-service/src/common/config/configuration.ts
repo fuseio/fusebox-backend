@@ -7,6 +7,22 @@ export default () => ({
   blockRewardAddress: '0x63D4efeD2e3dA070247bea3073BCaB896dFF6C9B',
   consensusAddress: '0x3014ca10b91cb3D0AD85fEf7A3Cb95BCAc9c0f79',
   sfTokenAddress: '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871',
+
+  masterChefV3Address: '0x5fFcEaa947937DE1FEBb28BCa65E84894a55a2EF',
+
+  simpleStakingConfig: {
+    '0xc6bc407706b7140ee8eef2f86f9504651b63e7f9': {
+      description: 'USDC on Stargate',
+      poolId: 1,
+      decimals: 6
+    },
+    '0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590': {
+      description: 'WETH on Stargate',
+      poolId: 2,
+      decimals: 18
+    }
+  },
+
   validatorFee: '0.15',
   rpcConfig: {
     rpc: {
@@ -23,6 +39,7 @@ export default () => ({
   voltageV2GraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/550967d6d70d7fce0a710f38dc7bc5df/subgraphs/id/B4BGk9itvmRXzzNRAzBWwQARHRt3ZvLz11aWNVsZPT4',
   liquidStakingFuseGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/3f81974147b5b63470524ed08206e24e/subgraphs/id/7FQVAoYfsrYPAVzaHnky1rHGYjXj2hcw3yokeLQmpntp',
   voltageV3GraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/550967d6d70d7fce0a710f38dc7bc5df/subgraphs/id/HzpnoLiTRga8yWaPBPBJjLp1FseiJkiynKDNXXFDKEQc',
+  masterChefV3GraphUrl: 'https://gateway.thegraph.com/api/550967d6d70d7fce0a710f38dc7bc5df/subgraphs/id/4DwVLaAaEuutpoCwmGUNBS45mSnGABt42u1Qbf73BqbR',
   unmarshal: {
     baseUrl: process.env.UNMARSHAL_BASE_URL || 'https://api.unmarshal.com',
     apiKey: process.env.UNMARSHAL_AUTH_KEY
@@ -53,5 +70,30 @@ export default () => ({
     }
   ],
   multiCallAddress: '0x3CE6158b7278Bf6792e014FA7B4f3c6c46fe9410',
-  botApi: 'https://bot.fuse.io/api/v1'
+  botApi: 'https://bot.fuse.io/api/v1',
+
+  stakingOptionsV2: [
+    {
+      tokenAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
+      tokenSymbol: 'USDC',
+      tokenName: 'USD Coin',
+      decimals: 6,
+      tokenLogoURI:
+        'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5/logo.png',
+      unStakeTokenAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
+      stakingProviderId: 'usdc-on-stargate-simple-staking',
+      expired: false
+    },
+    {
+      tokenAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
+      tokenSymbol: 'WETH',
+      tokenName: 'Wrapped Ether',
+      decimals: 18,
+      tokenLogoURI:
+        'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0xa722c13135930332Eb3d749B2F0906559D2C5b99/logo.png',
+      unStakeTokenAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
+      stakingProviderId: 'weth-on-stargate-simple-staking',
+      expired: false
+    }
+  ]
 })

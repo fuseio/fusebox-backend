@@ -98,14 +98,20 @@ spec:
             httpGet:
               path: /notifications/health
               port: 5004
-            initialDelaySeconds: 15
-            periodSeconds: 10
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /notifications/health
               port: 5004
-            initialDelaySeconds: 15
-            periodSeconds: 10
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
           
           # Resources
           resources:

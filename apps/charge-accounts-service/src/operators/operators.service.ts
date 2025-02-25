@@ -40,7 +40,7 @@ import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler
 @Injectable()
 export class OperatorsService {
   private readonly logger = new Logger(OperatorsService.name)
-  constructor(
+  constructor (
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
     private configService: ConfigService,
@@ -61,12 +61,12 @@ export class OperatorsService {
     private operatorCheckoutModel: Model<OperatorCheckout>
   ) { }
 
-  async checkOperatorExistenceByEoaAddress(eoaAddress: string): Promise<number> {
+  async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
     const operator = await this.usersService.findOneByAuth0Id(eoaAddress)
     return operator ? 200 : 404
   }
 
-  async validate(authOperatorDto: AuthOperatorDto, response: Response) {
+  async validate (authOperatorDto: AuthOperatorDto, response: Response) {
     try {
       const recoveredAddress = ethers.utils.verifyMessage(authOperatorDto.message, authOperatorDto.signature)
       if (authOperatorDto.externallyOwnedAccountAddress !== recoveredAddress) {
@@ -80,7 +80,7 @@ export class OperatorsService {
     }
   }
 
-  async getOperatorUserAndProject(auth0Id: string) {
+  async getOperatorUserAndProject (auth0Id: string) {
     try {
       const user = await this.usersService.findOneByAuth0Id(auth0Id)
       if (!user) {
@@ -125,7 +125,7 @@ export class OperatorsService {
     }
   }
 
-  async createOperatorUserAndProjectAndWallet(createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
+  async createOperatorUserAndProjectAndWallet (createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
     this.validateInput(createOperatorUserDto, auth0Id)
 
     try {
@@ -157,7 +157,7 @@ export class OperatorsService {
     }
   }
 
-  private async createUser(createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
+  private async createUser (createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
     return await this.usersService.create({
       name: `${createOperatorUserDto.firstName} ${createOperatorUserDto.lastName}`,
       email: createOperatorUserDto.email,
@@ -165,7 +165,7 @@ export class OperatorsService {
     })
   }
 
-  private async createProject(user: any, createOperatorUserDto: CreateOperatorUserDto) {
+  private async createProject (user: any, createOperatorUserDto: CreateOperatorUserDto) {
     return await this.projectsService.create({
       ownerId: user._id,
       name: createOperatorUserDto.name || user.name,
@@ -173,7 +173,7 @@ export class OperatorsService {
     })
   }
 
-  private async createProjectSecret(projectObject: any) {
+  private async createProjectSecret (projectObject: any) {
     const { secretKey } = await this.projectsService.createSecret({ projectId: projectObject._id, createLegacyAccount: false })
     if (!secretKey) {
       throw new HttpException('Failed to create secret', HttpStatus.INTERNAL_SERVER_ERROR)
@@ -181,7 +181,7 @@ export class OperatorsService {
     return secretKey
   }
 
-  private async createPaymasters(projectObject: any) {
+  private async createPaymasters (projectObject: any) {
     const paymasters = await this.paymasterService.create(projectObject._id, '0_1_0')
     if (!paymasters) {
       throw new HttpException('Failed to create paymasters', HttpStatus.INTERNAL_SERVER_ERROR)
@@ -189,7 +189,7 @@ export class OperatorsService {
     return paymasters[0].sponsorId
   }
 
-  async createOperatorWallet(createOperatorWalletDto: CreateOperatorWalletDto, auth0Id: string) {
+  async createOperatorWallet (createOperatorWalletDto: CreateOperatorWalletDto, auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
@@ -209,7 +209,7 @@ export class OperatorsService {
     return operatorWalletCreationResult
   }
 
-  private constructUserProjectResponse(user: User, project: OperatorProject, wallet?: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
+  private constructUserProjectResponse (user: User, project: OperatorProject, wallet?: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
     // Constructs the response object from the entities
     return {
       user: {
@@ -234,7 +234,7 @@ export class OperatorsService {
     }
   }
 
-  private errorHandler(error: any) {
+  private errorHandler (error: any) {
     // Improved error handling, distinguishing between different error types
     if (error instanceof HttpException) {
       this.logger.error(`Failed to create operator: ${error.getResponse()}`)
@@ -245,7 +245,7 @@ export class OperatorsService {
     }
   }
 
-  async predictWallet(owner: string, index: number, ver: string, environment: string): Promise<string> {
+  async predictWallet (owner: string, index: number, ver: string, environment: string): Promise<string> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
     const contractAddress = paymasterEnvs[environment].etherspotWalletFactoryContractAddress
 
@@ -259,7 +259,7 @@ export class OperatorsService {
     }
   }
 
-  async handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook(webhookEvent: WebhookEvent): Promise<void> {
+  async handleWebhookReceiveAndFundPaymasterAndDeleteWalletAddressFromOperatorsWebhook (webhookEvent: WebhookEvent): Promise<void> {
     this.logger.log(`handleWebhook: ${JSON.stringify(webhookEvent)}`)
     const DEPOSIT_REQUIRED = 10 // Consider moving to a config or class constant
     const valueEthInWebhookEvent = webhookEvent.valueEth
@@ -329,7 +329,7 @@ export class OperatorsService {
     }
   }
 
-  async fundPaymaster(sponsorId: string, amount: string, ver: string, environment: string): Promise<any> {
+  async fundPaymaster (sponsorId: string, amount: string, ver: string, environment: string): Promise<any> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
     const contractAddress = paymasterEnvs[environment].paymasterContractAddress
     const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
@@ -372,7 +372,7 @@ export class OperatorsService {
     }
   }
 
-  async getSponsoredTransactionsCount(auth0Id: string) {
+  async getSponsoredTransactionsCount (auth0Id: string) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const project = await this.projectsService.findOneByOwnerId(user._id)
     const apiKey = await this.projectsService.getApiKeysInfo(project._id)
@@ -387,7 +387,7 @@ export class OperatorsService {
     return { sponsoredTransactions }
   }
 
-  private validateInput(createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
+  private validateInput (createOperatorUserDto: CreateOperatorUserDto, auth0Id: string) {
     if (!createOperatorUserDto.email || !createOperatorUserDto.firstName || !createOperatorUserDto.lastName) {
       throw new BadRequestException('Missing required fields in createOperatorUserDto')
     }
@@ -396,27 +396,27 @@ export class OperatorsService {
     }
   }
 
-  async findWalletOwner(value: string): Promise<OperatorWallet> {
+  async findWalletOwner (value: string): Promise<OperatorWallet> {
     return this.operatorWalletModel.findOne({ ownerId: value })
   }
 
-  async findOperatorBySmartWallet(value: string): Promise<OperatorWallet> {
+  async findOperatorBySmartWallet (value: string): Promise<OperatorWallet> {
     return this.operatorWalletModel.findOne({ smartWalletAddress: value.toLowerCase() })
   }
 
-  async findAllOperatorWallets(): Promise<OperatorWallet[]> {
+  async findAllOperatorWallets (): Promise<OperatorWallet[]> {
     return this.operatorWalletModel.find()
   }
 
-  async updateIsActivated(_id: ObjectId, isActivated: boolean): Promise<any> {
+  async updateIsActivated (_id: ObjectId, isActivated: boolean): Promise<any> {
     return this.operatorWalletModel.updateOne({ _id }, { isActivated })
   }
 
-  async updateIsActivatedByOwnerId(ownerId: string, isActivated: boolean): Promise<any> {
+  async updateIsActivatedByOwnerId (ownerId: string, isActivated: boolean): Promise<any> {
     return this.operatorWalletModel.updateOne({ ownerId }, { isActivated })
   }
 
-  async getBalance(address: string, ver: string, environment: string): Promise<string> {
+  async getBalance (address: string, ver: string, environment: string): Promise<string> {
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
     const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
     try {
@@ -427,13 +427,13 @@ export class OperatorsService {
     }
   }
 
-  async checkWalletActivationStatus(auth0Id) {
+  async checkWalletActivationStatus (auth0Id) {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     const wallet = await this.findWalletOwner(user._id)
     return wallet?.isActivated || false
   }
 
-  async addAddressToOperatorsWebhook(walletAddress: string) {
+  async addAddressToOperatorsWebhook (walletAddress: string) {
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
     const requestBody: CreateWebhookAddressesDto = {
       webhookId,
@@ -442,7 +442,7 @@ export class OperatorsService {
     return callMSFunction(this.notificationsClient, 'create_addresses', requestBody)
   }
 
-  async addAddressToTokenReceiveWebhook(walletAddress: string) {
+  async addAddressToTokenReceiveWebhook (walletAddress: string) {
     const webhookId = this.configService.get('INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID')
     const requestBody: CreateWebhookAddressesDto = {
       webhookId,
@@ -451,7 +451,7 @@ export class OperatorsService {
     return callMSFunction(this.notificationsClient, 'create_addresses', requestBody)
   }
 
-  async deleteAddressFromOperatorsWebhook(walletAddress: string) {
+  async deleteAddressFromOperatorsWebhook (walletAddress: string) {
     const webhookId = this.configService.get('PAYMASTER_FUNDER_WEBHOOK_ID')
     const requestBody: CreateWebhookAddressesDto = {
       webhookId,
@@ -460,7 +460,7 @@ export class OperatorsService {
     return callMSFunction(this.notificationsClient, 'delete_addresses', requestBody)
   }
 
-  async operatorAccountActivationEvent({ id, projectId }) {
+  async operatorAccountActivationEvent ({ id, projectId }) {
     try {
       const user = await this.usersService.findOne(id)
       const publicKey = (await this.projectsService.getPublic(projectId)).publicKey
@@ -474,7 +474,7 @@ export class OperatorsService {
     }
   }
 
-  async googleFormSubmit(createOperatorUserDto: CreateOperatorUserDto) {
+  async googleFormSubmit (createOperatorUserDto: CreateOperatorUserDto) {
     try {
       const formActionUrl = this.configService.get('googleOperatorFormUrl')
 
@@ -501,38 +501,38 @@ export class OperatorsService {
     }
   }
 
-  async findRefreshToken(auth0Id: string): Promise<OperatorRefreshToken> {
+  async findRefreshToken (auth0Id: string): Promise<OperatorRefreshToken> {
     return this.operatorRefreshTokenModel.findOne({ auth0Id }).sort({ createdAt: -1 })
   }
 
-  async createRefreshToken(auth0Id: string, refreshToken: string): Promise<OperatorRefreshToken> {
+  async createRefreshToken (auth0Id: string, refreshToken: string): Promise<OperatorRefreshToken> {
     return this.operatorRefreshTokenModel.create({ auth0Id, refreshToken })
   }
 
-  async markRefreshTokenAsUsed(refreshToken: string) {
+  async markRefreshTokenAsUsed (refreshToken: string) {
     return this.operatorRefreshTokenModel.updateOne(
       { refreshToken, usedAt: null },
       { usedAt: new Date() }
     )
   }
 
-  async invalidateRefreshTokens(auth0Id: string) {
+  async invalidateRefreshTokens (auth0Id: string) {
     return this.operatorRefreshTokenModel.updateMany(
       { auth0Id, invalidAt: null },
       { invalidAt: new Date() }
     )
   }
 
-  async hashRefreshToken(token: string) {
+  async hashRefreshToken (token: string) {
     const salt = await bcrypt.genSalt()
     return bcrypt.hash(token, salt)
   }
 
-  async compareRefreshToken(plainToken: string, hashedToken: string) {
+  async compareRefreshToken (plainToken: string, hashedToken: string) {
     return bcrypt.compare(plainToken, hashedToken)
   }
 
-  async validateRefreshToken(token: string, response: Response) {
+  async validateRefreshToken (token: string, response: Response) {
     try {
       const verifiedRefreshToken = this.jwtService.verify(
         token,
@@ -582,7 +582,7 @@ export class OperatorsService {
     }
   }
 
-  async createOperatorJwtTokens(auth0Id: string, response: Response) {
+  async createOperatorJwtTokens (auth0Id: string, response: Response) {
     const tenMinutesInSeconds = 10 * 60
     const oneDayInSeconds = 24 * 60 * 60
     const milliseconds = 1000
@@ -623,21 +623,21 @@ export class OperatorsService {
     return this.createRefreshToken(auth0Id, hashedRefreshToken)
   }
 
-  async createInvoice(ownerId: string, amount: number, currency: string, txHash: string): Promise<Invoice> {
+  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string): Promise<Invoice> {
     return this.invoicesModel.create({ ownerId, amount, currency, txHash })
   }
 
-  async findInvoices(ownerId: string): Promise<Invoice[]> {
+  async findInvoices (ownerId: string): Promise<Invoice[]> {
     return this.invoicesModel.find({ ownerId })
   }
 
-  async findFirstDayOfMonthInvoice(ownerId: string): Promise<Invoice> {
+  async findFirstDayOfMonthInvoice (ownerId: string): Promise<Invoice> {
     const currentDate = new Date()
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
     return this.invoicesModel.findOne({ ownerId, createdAt: { $gte: firstDayOfMonth } })
   }
 
-  async subscriptionWeb3(environment: string) {
+  async subscriptionWeb3 (environment: string) {
     const version = '0_1_0'
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${version}.${environment}`)
     const tokenEnvs = this.configService.getOrThrow(`token.${environment}`)
@@ -653,7 +653,7 @@ export class OperatorsService {
     }
   }
 
-  async subscriptionInfo() {
+  async subscriptionInfo () {
     const payment = 50
     const decimals = 6
     const amount = ethers.utils.parseUnits(payment.toString(), decimals)
@@ -664,7 +664,7 @@ export class OperatorsService {
     }
   }
 
-  async createSubscription(auth0Id: string): Promise<Invoice> {
+  async createSubscription (auth0Id: string): Promise<Invoice> {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
@@ -696,7 +696,7 @@ export class OperatorsService {
     return invoice
   }
 
-  async getSubscriptions(auth0Id: string): Promise<Invoice[]> {
+  async getSubscriptions (auth0Id: string): Promise<Invoice[]> {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
@@ -705,7 +705,7 @@ export class OperatorsService {
     return this.findInvoices(user._id)
   }
 
-  async processMonthlySubscriptions() {
+  async processMonthlySubscriptions () {
     const operatorWallets = await this.findAllOperatorWallets()
     const { wallet, contract } = await this.subscriptionWeb3('production')
     const { payment, amount } = await this.subscriptionInfo()
@@ -738,19 +738,19 @@ export class OperatorsService {
     }
   }
 
-  async findCheckout(sessionId: string) {
+  async findCheckout (sessionId: string) {
     return this.operatorCheckoutModel.findOne({ sessionId })
   }
 
-  async findLastPaidCheckout(ownerId: string) {
+  async findLastPaidCheckout (ownerId: string) {
     return this.operatorCheckoutModel.findOne({ ownerId, paymentStatus: ChargeCheckoutPaymentStatus.PAID }).sort({ createdAt: -1 })
   }
 
-  async updateCheckout(sessionId: string, paymentStatus: string) {
+  async updateCheckout (sessionId: string, paymentStatus: string) {
     return this.operatorCheckoutModel.updateOne({ sessionId }, { paymentStatus })
   }
 
-  async checkout(auth0Id: string, createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
+  async checkout (auth0Id: string, createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
     try {
       const user = await this.usersService.findOneByAuth0Id(auth0Id)
       if (!user) {
@@ -799,7 +799,7 @@ export class OperatorsService {
     }
   }
 
-  async handleCheckoutWebhook(webhookEvent: ChargeCheckoutWebhookEvent) {
+  async handleCheckoutWebhook (webhookEvent: ChargeCheckoutWebhookEvent) {
     const checkout = await this.findCheckout(webhookEvent.sessionId)
     if (!checkout) {
       throw new HttpException('Checkout not found', HttpStatus.NOT_FOUND)
@@ -814,7 +814,7 @@ export class OperatorsService {
   }
 
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
-  async processMonthlyBilling() {
+  async processMonthlyBilling () {
     const operatorWallets = await this.findAllOperatorWallets()
     for (const operatorWallet of operatorWallets) {
       const checkout = await this.findLastPaidCheckout(operatorWallet.ownerId)
@@ -839,7 +839,7 @@ export class OperatorsService {
     }
   }
 
-  async isOperatorSponsoredQuotaExceeded(context: ExecutionContext, requestConfig: AxiosRequestConfig) {
+  async isOperatorSponsoredQuotaExceeded (context: ExecutionContext, requestConfig: AxiosRequestConfig) {
     const request = context.switchToHttp().getRequest()
     const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
     if (bundlerProvider !== BundlerProvider.PIMLICO) {

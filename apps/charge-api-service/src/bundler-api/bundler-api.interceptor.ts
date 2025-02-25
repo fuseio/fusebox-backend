@@ -18,6 +18,8 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ClientProxy } from '@nestjs/microservices'
 import { callMSFunction } from '@app/common/utils/client-proxy'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
+import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
+import { OperatorsService } from '@app/accounts-service/operators/operators.service'
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
@@ -25,13 +27,19 @@ export class BundlerApiInterceptor implements NestInterceptor {
   constructor (
     @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy,
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private operatorsService: OperatorsService
   ) { }
 
   async intercept (context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const requestConfig: AxiosRequestConfig = await this.prepareRequestConfig(
       context
     )
+
+    const isSponsoredQuotaExceeded = await this.operatorsService.isOperatorSponsoredQuotaExceeded(context, requestConfig)
+    if (isSponsoredQuotaExceeded) {
+      throw new HttpException('Operator sponsored transaction quota exceeded', HttpStatus.BAD_REQUEST)
+    }
 
     const response = await lastValueFrom(
       this.httpService
@@ -58,7 +66,7 @@ export class BundlerApiInterceptor implements NestInterceptor {
     )
 
     if (requestConfig.data?.method === 'eth_sendUserOperation') {
-      const userOp = { ...requestConfig.data.params[0], userOpHash: response?.result, apiKey: context.switchToHttp().getRequest().query.apiKey }
+      const userOp = this.constructUserOp(context, requestConfig, response)
       this.logger.log(`eth_sendUserOperation: ${JSON.stringify(userOp)}`)
       try {
         if (isNil(userOp.userOpHash)) {
@@ -80,10 +88,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
   private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
     const requestEnvironment = request.environment
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
     const ctxHandlerName = context.getHandler().name
     const body = request.body
     const requestConfig: AxiosRequestConfig = {
-      url: this.prepareUrl(requestEnvironment),
+      url: this.prepareUrl(requestEnvironment, bundlerProvider),
       method: ctxHandlerName
     }
 
@@ -94,14 +103,37 @@ export class BundlerApiInterceptor implements NestInterceptor {
     return requestConfig
   }
 
-  private prepareUrl (environment) {
+  private prepareUrl (environment, bundlerProvider) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.${environment}`)
+    const config = this.configService.get(`bundler.${bundlerProvider}.${environment}`)
 
     if (config.url) {
       return config.url
     } else {
       throw new InternalServerErrorException(`${capitalize(environment)} bundler environment is missing`)
     }
+  }
+
+  private constructUserOp (context: ExecutionContext, requestConfig: AxiosRequestConfig, response) {
+    const request = context.switchToHttp().getRequest()
+    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
+    const param = requestConfig?.data?.params?.[0]
+    const base = { userOpHash: response?.result, apiKey: request.query.apiKey }
+
+    if (!param) {
+      throw new InternalServerErrorException('UserOp param is missing')
+    }
+
+    if (bundlerProvider === BundlerProvider.PIMLICO) {
+      return {
+        ...param,
+        ...base,
+        initCode: param.initCode ?? '0x',
+        sponsorId: param.paymaster ? BundlerProvider.PIMLICO : undefined,
+        paymasterAndData: param.paymasterData,
+        paymasterData: undefined
+      }
+    }
+    return { ...param, ...base }
   }
 }

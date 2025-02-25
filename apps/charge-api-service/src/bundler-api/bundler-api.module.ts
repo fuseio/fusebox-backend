@@ -6,6 +6,7 @@ import configuration from '@app/api-service/bundler-api/config/configuration'
 import { BundlerApiController } from '@app/api-service/bundler-api/bundler-api.controller'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
+import { OperatorsModule } from '@app/accounts-service/operators/operators.module'
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
       }
     ]),
     HttpModule,
-    ConfigModule.forFeature(configuration)
+    ConfigModule.forFeature(configuration),
+    OperatorsModule
   ],
   controllers: [
     BundlerApiController

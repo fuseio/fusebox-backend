@@ -20,6 +20,13 @@ export default () => ({
           process.env.ETHERSPOT_WALLET_FACTORY_SANDBOX_CONTRACT_ADDRESS_V_0_1_0
       }
     }
+  },
+  token: {
+    production: {
+      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_MAINNET
+    },
+    sandbox: {
+      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_TESTNET
+    }
   }
-
 })

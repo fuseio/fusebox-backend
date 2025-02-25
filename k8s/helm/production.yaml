@@ -63,6 +63,9 @@ accounts:
     paymaster_funder_api_key: "pk_yWkBe0hnObJmMkYjq4Ggce1g"
     paymaster_funder_webhook_id: "65c4ba66394c8d9c3e4801ff"
     console_dapp_url: "https://console.fuse.io"
+    usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    charge_payments_api_url: "https://payments.chargeweb3.com"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -74,6 +77,7 @@ accounts:
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
     - operator_refresh_jwt_secret
+    - charge_payments_api_key
 
 
 amplitude:
@@ -146,6 +150,8 @@ api:
     - paymaster_sandbox_signer_private_key_v_0_1_0
     - explorer_api_key
     - bundler_api_prd_url
+    - pimlico_api_prd_url
+    - pimlico_api_sandbox_url
 
 apps:
   enabled: false # [DEPRECATED]

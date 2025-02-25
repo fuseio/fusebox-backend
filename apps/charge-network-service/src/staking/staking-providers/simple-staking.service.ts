@@ -126,7 +126,7 @@ export default class SimpleStakingService implements StakingProvider {
 
       const result = await this.graphService
         .getMasterChefV3Client()
-        .request<SimpleStakingPool>(getSimpleStakingPoolData, { poolId })
+        .request<SimpleStakingPool>(getSimpleStakingPoolData, { poolId: poolId.toString() })
 
       const pool = result.pool
       const tokenPerSec = formatUnits(pool.rewarder.tokenPerSec, stakingOption.decimals)
@@ -147,6 +147,7 @@ export default class SimpleStakingService implements StakingProvider {
       return (rewardsPerYearUSD / totalStakedUSD) * 100
     } catch (error) {
       this.logger.error(`stakingApr error: ${error}`)
+      return 0
     }
   }
 

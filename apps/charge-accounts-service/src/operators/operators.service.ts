@@ -475,15 +475,20 @@ export class OperatorsService {
   }
 
   async googleFormSubmit (createOperatorUserDto: CreateOperatorUserDto) {
-    const formActionUrl = this.configService.getOrThrow('googleOperatorFormUrl')
-
-    const formData = new URLSearchParams()
-    formData.append('entry.1781500597', createOperatorUserDto.email)
-    formData.append('entry.1823923312', createOperatorUserDto.firstName)
-    formData.append('entry.995318623', createOperatorUserDto.lastName)
-    formData.append('entry.1016494914', createOperatorUserDto.name)
-
     try {
+      const formActionUrl = this.configService.get('googleOperatorFormUrl')
+
+      if (!formActionUrl) {
+        this.logger.warn('Google Form URL not configured, skipping form submission')
+        return
+      }
+
+      const formData = new URLSearchParams()
+      formData.append('entry.1781500597', createOperatorUserDto.email)
+      formData.append('entry.1823923312', createOperatorUserDto.firstName)
+      formData.append('entry.995318623', createOperatorUserDto.lastName)
+      formData.append('entry.1016494914', createOperatorUserDto.name)
+
       await axios.post(formActionUrl, formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -492,11 +497,7 @@ export class OperatorsService {
 
       this.logger.log('Submission to Google Form successful')
     } catch (error) {
-      this.logger.error('Submission to Google Form failed:', error.response ? error.response.data : error.message)
-      throw new HttpException(
-        `Error sending data to Google Form: ${error.response?.statusText || 'Unknown Error'}: ${error.response?.data?.error || ''}`,
-        error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
-      )
+      this.logger.error('Google Form submission failed:', error.message)
     }
   }
 
@@ -636,7 +637,7 @@ export class OperatorsService {
     return this.invoicesModel.findOne({ ownerId, createdAt: { $gte: firstDayOfMonth } })
   }
 
-  async subscriptionWeb3 (environment:string) {
+  async subscriptionWeb3 (environment: string) {
     const version = '0_1_0'
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${version}.${environment}`)
     const tokenEnvs = this.configService.getOrThrow(`token.${environment}`)

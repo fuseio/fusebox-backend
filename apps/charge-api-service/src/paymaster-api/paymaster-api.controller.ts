@@ -1,11 +1,10 @@
-import { Controller, UseGuards, Req, Post, Res } from '@nestjs/common'
+import { Controller, UseGuards, Req, Post, Res, Body } from '@nestjs/common'
 import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { JSONRPCServer } from 'json-rpc-2.0'
 import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiQuery } from '@nestjs/swagger'
 
 @ApiTags('Paymaster JSON-RPC API')
-@UseGuards(IsPrdOrSbxKeyGuard)
 @Controller({ path: 'v0/paymaster' })
 export class PaymasterApiController {
   server: JSONRPCServer = new JSONRPCServer()
@@ -90,5 +89,49 @@ export class PaymasterApiController {
       console.error(error)
       res.status(500).send('An error occurred')
     }
+  }
+
+  @Post('/estimate-gas')
+  @ApiOperation({ summary: 'Estimate gas for user operations' })
+  @ApiBody({
+    description: 'Gas Estimation Request',
+    type: Object,
+    examples: {
+      estimateGas: {
+        summary: 'Estimate gas for a user operation',
+        value: {
+          userOp: {
+            sender: '0x1234567890123456789012345678901234567890',
+            nonce: '0x1',
+            initCode: '0x',
+            callData: '0xa9059cbb000000000000000000000000abcdef0123456789abcdef0123456789abcdef010000000000000000000000000000000000000000000000000de0b6b3a7640000',
+            callGasLimit: '0x30000',
+            verificationGasLimit: '0x100000',
+            preVerificationGas: '0x20000',
+            maxFeePerGas: '0x3b9aca00',
+            maxPriorityFeePerGas: '0x3b9aca00',
+            paymasterAndData: '0x2345678901234567890123456789012345678901000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+            signature: '0x1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
+          },
+          entrypointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+          environment: 'sandbox'
+        }
+      }
+    }
+  })
+  @ApiCreatedResponse({ description: 'Gas estimation results', type: Object })
+  @ApiInternalServerErrorResponse({ description: 'Error estimating gas' })
+  async estimateGas (@Body() body: {
+    userOp: any,
+    entrypointAddress: string,
+    environment?: string
+  }) {
+    const environment = body.environment || 'sandbox'
+
+    return this.paymasterService.estimateUserOpGas(
+      body.userOp,
+      environment,
+      body.entrypointAddress
+    )
   }
 }

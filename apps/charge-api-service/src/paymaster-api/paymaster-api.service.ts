@@ -49,6 +49,7 @@ export class PaymasterApiService {
 
       const validUntil = parseInt(timestamp.toString()) + 900
       const validAfter = 0
+
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
       const minVerificationGasLimit = '140000'
 

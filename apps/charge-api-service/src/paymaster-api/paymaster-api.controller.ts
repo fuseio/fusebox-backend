@@ -5,6 +5,7 @@ import { JSONRPCServer } from 'json-rpc-2.0'
 import { ApiOperation, ApiTags, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiQuery } from '@nestjs/swagger'
 
 @ApiTags('Paymaster JSON-RPC API')
+@UseGuards(IsPrdOrSbxKeyGuard)
 @Controller({ path: 'v0/paymaster' })
 export class PaymasterApiController {
   server: JSONRPCServer = new JSONRPCServer()

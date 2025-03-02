@@ -217,7 +217,8 @@ export class OperatorsService {
         name: user.name,
         email: user.email,
         auth0Id: user.auth0Id,
-        smartWalletAddress: wallet?.smartWalletAddress ?? '0x'
+        smartWalletAddress: wallet?.smartWalletAddress ?? '0x',
+        isActivated: wallet?.isActivated ?? false
       },
       project: {
         id: project.id,

@@ -4,4 +4,5 @@ export interface OperatorUser {
   email: string;
   auth0Id: string;
   smartWalletAddress: string;
+  isActivated: boolean;
 }

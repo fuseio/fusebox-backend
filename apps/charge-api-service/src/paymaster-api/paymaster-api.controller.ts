@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Req, Post, Res } from '@nestjs/common'
+import { Controller, UseGuards, Req, Post, Res, Body } from '@nestjs/common'
 import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
 import { IsPrdOrSbxKeyGuard } from '@app/api-service/api-keys/guards/is-production-or-sandbox-key.guard'
 import { JSONRPCServer } from 'json-rpc-2.0'

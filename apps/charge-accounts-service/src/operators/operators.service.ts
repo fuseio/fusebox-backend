@@ -800,6 +800,18 @@ export class OperatorsService {
     }
   }
 
+  async getCheckoutSessions (auth0Id: string) {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    return this.operatorCheckoutModel.find(
+      { ownerId: user._id },
+      { billingCycle: 1, status: 1, paymentStatus: 1, createdAt: 1, updatedAt: 1 }
+    )
+  }
+
   async handleCheckoutWebhook (webhookEvent: ChargeCheckoutWebhookEvent) {
     const checkout = await this.findCheckout(webhookEvent.sessionId)
     if (!checkout) {

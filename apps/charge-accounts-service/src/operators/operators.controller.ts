@@ -185,6 +185,17 @@ export class OperatorsController {
   }
 
   /**
+   * Get all checkout sessions for the operator
+   * @returns checkout sessions
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('/checkout/sessions')
+  @ApiOperation({ summary: 'Get all checkout sessions for the operator' })
+  async getCheckoutSessions (@User('sub') auth0Id: string) {
+    return this.operatorsService.getCheckoutSessions(auth0Id)
+  }
+
+  /**
    * Handle the checkout webhook
    */
   @Post('/checkout/webhook')

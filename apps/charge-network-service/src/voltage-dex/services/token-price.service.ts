@@ -70,7 +70,7 @@ export class TokenPriceService {
       return { ...v2Prices, ...tokensWithPrices }
     } catch (err) {
       this.logger.error('Error getting multiple token prices', err)
-      return []
+      return {}
     }
   }
 

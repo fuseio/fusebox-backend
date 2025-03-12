@@ -34,7 +34,7 @@ export class VoltageV2Client {
 
     return Object.fromEntries(
       Object.entries(derivedPrices).map(([address, price]) => {
-        return [address, (price * fusePrice).toString()]
+        return [address, (price ?? 0 * fusePrice).toString()]
       })
     )
   }

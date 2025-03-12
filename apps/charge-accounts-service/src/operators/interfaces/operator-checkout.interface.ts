@@ -11,6 +11,7 @@ export interface OperatorCheckout extends Document {
   readonly expiresAt: Date;
   readonly status: string;
   readonly paymentStatus: string;
+  readonly amount: number;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }

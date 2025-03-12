@@ -15,7 +15,8 @@ export const OperatorCheckoutSchema = new mongoose.Schema(
     webhookUrl: { type: String },
     expiresAt: { type: Date },
     status: { type: String },
-    paymentStatus: { type: String, required: true, index: true }
+    paymentStatus: { type: String, required: true, index: true },
+    amount: { type: Number }
   },
   {
     timestamps: true

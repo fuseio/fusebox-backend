@@ -229,8 +229,12 @@ export class DataLayerService {
     }
   }
 
-  async findSponsoredTransactionsCount (apiKey: string): Promise<number> {
-    return this.userOpModel.countDocuments({ apiKey: { $eq: apiKey }, sponsorId: { $ne: '0' } })
+  async findSponsoredTransactionsCount (apiKey: string, startDate?: string): Promise<number> {
+    return this.userOpModel.countDocuments({
+      apiKey: { $eq: apiKey },
+      sponsorId: { $ne: '0' },
+      createdAt: { $gte: startDate ? new Date(startDate) : new Date(0) }
+    })
   }
 
   async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {

@@ -33,7 +33,7 @@ import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/c
 import { OperatorCheckout } from '@app/accounts-service/operators/interfaces/operator-checkout.interface'
 import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
 import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
-import { differenceInMonths } from 'date-fns'
+import { differenceInMonths, getDate, getDaysInMonth, startOfMonth } from 'date-fns'
 import { monthsInYear } from 'date-fns/constants'
 import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
 
@@ -380,7 +380,8 @@ export class OperatorsService {
     const publicKey = apiKey.publicKey
     let sponsoredTransactions = 0
     if (publicKey) {
-      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', publicKey)
+      const startDate = startOfMonth(new Date()).toISOString()
+      sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', { apiKey: publicKey, startDate })
         .catch(e => {
           this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
         })
@@ -654,14 +655,45 @@ export class OperatorsService {
     }
   }
 
-  async subscriptionInfo () {
+  subscriptionInfo () {
     const payment = 50
     const decimals = 6
     const amount = ethers.utils.parseUnits(payment.toString(), decimals)
+
+    const today = new Date()
+    const daysInMonth = getDaysInMonth(today)
+    const dayOfMonth = getDate(today)
+    const remainingDays = daysInMonth - dayOfMonth + 1
+    const proratedFactor = remainingDays / daysInMonth
+
+    const tiers = {
+      [ChargeCheckoutBillingCycle.YEARLY]: {
+        percentageOff: 30,
+        multiplier: monthsInYear
+      },
+      [ChargeCheckoutBillingCycle.MONTHLY]: {
+        percentageOff: 0,
+        multiplier: 1
+      }
+    }
+
+    function calculateAmount (billingCycle) {
+      const { percentageOff, multiplier } = tiers[billingCycle]
+      const discount = payment * (percentageOff / 100)
+      return (payment - discount) * multiplier
+    }
+
+    function calculateProrated (billingCycle) {
+      const calculatedAmount = calculateAmount(billingCycle)
+      return Math.round(payment * proratedFactor + calculatedAmount - payment)
+    }
+
     return {
       payment,
       decimals,
-      amount
+      amount,
+      calculateAmount,
+      calculateProrated
     }
   }
 
@@ -677,7 +709,7 @@ export class OperatorsService {
     }
 
     const { wallet, contract } = await this.subscriptionWeb3('production')
-    const { payment, amount } = await this.subscriptionInfo()
+    const { payment, amount } = this.subscriptionInfo()
 
     const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
     if (allowance.lt(amount)) {
@@ -709,7 +741,7 @@ export class OperatorsService {
   async processMonthlySubscriptions () {
     const operatorWallets = await this.findAllOperatorWallets()
     const { wallet, contract } = await this.subscriptionWeb3('production')
-    const { payment, amount } = await this.subscriptionInfo()
+    const { payment, amount } = this.subscriptionInfo()
 
     for (const operatorWallet of operatorWallets) {
       const invoice = await this.findFirstDayOfMonthInvoice(operatorWallet.ownerId)
@@ -762,11 +794,10 @@ export class OperatorsService {
       const chargePaymentsApiKey = this.configService.get('CHARGE_PAYMENTS_API_KEY')
       const accountsUrl = this.configService.get('AUTH0_AUDIENCE')
       const expiresIn = 12000
-      const { payment } = await this.subscriptionInfo()
-      const isYearly = createOperatorCheckoutDto.billingCycle === ChargeCheckoutBillingCycle.YEARLY
-      const percentageOff = isYearly ? 30 : 0
-      const yearlyPayment = (payment - (payment * percentageOff / 100)) * monthsInYear
-      const amount = isYearly ? yearlyPayment : payment
+
+      const { calculateProrated } = this.subscriptionInfo()
+      const proratedAmount = calculateProrated(createOperatorCheckoutDto.billingCycle)
+
       const chargeResponse = await axios.post(
         `${chargePaymentsApiUrl}/payments/checkout/sessions?apiKey=${chargePaymentsApiKey}`,
         {
@@ -777,7 +808,7 @@ export class OperatorsService {
           lineItems: [
             {
               currency: 'usd',
-              unitAmount: amount.toString(),
+              unitAmount: proratedAmount.toString(),
               quantity: '1',
               productData: {
                 name: 'Console Operator'
@@ -791,6 +822,7 @@ export class OperatorsService {
         ownerId: user._id,
         sessionId: chargeResponse.data.id,
         billingCycle: createOperatorCheckoutDto.billingCycle,
+        amount: proratedAmount,
         ...chargeResponse.data
       })
       return checkout.url
@@ -808,7 +840,14 @@ export class OperatorsService {
 
     return this.operatorCheckoutModel.find(
       { ownerId: user._id },
-      { billingCycle: 1, status: 1, paymentStatus: 1, createdAt: 1, updatedAt: 1 }
+      {
+        billingCycle: 1,
+        status: 1,
+        paymentStatus: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        amount: 1
+      }
     )
   }
 
@@ -880,7 +919,8 @@ export class OperatorsService {
     }
 
     const freePlanLimit = 1000
-    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', request.query.apiKey)
+    const startDate = startOfMonth(new Date()).toISOString()
+    const sponsoredTransactions = await callMSFunction(this.dataLayerClient, 'sponsored-transactions-count', { apiKey: request.query.apiKey, startDate })
       .catch(e => {
         this.logger.log(`sponsored-transactions-count failed: ${JSON.stringify(e)}`)
       })

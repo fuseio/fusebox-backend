@@ -5,6 +5,7 @@ import { MessagePattern } from '@nestjs/microservices'
 import { TokenPriceDto } from '@app/network-service/voltage-dex/dto/token-price.dto'
 import { TokenPriceChangeIntervalDto } from '@app/network-service/voltage-dex/dto/token-price-change-interval.dto'
 import { TokenHistoricalStatisticsDto } from '@app/network-service/voltage-dex/dto/token-stats.dto'
+import { MultipleTokenPricesDto } from '@app/network-service/voltage-dex/dto/multiple-token-prices.dto'
 
 @Controller('voltage-dex')
 export class VoltageDexController {
@@ -13,6 +14,11 @@ export class VoltageDexController {
   @MessagePattern('get_token_price')
   getTokenPrice (@Body() tokenPriceDto: TokenPriceDto) {
     return this.voltageDexService.getTokenPrice(tokenPriceDto)
+  }
+
+  @MessagePattern('get_multiple_token_prices')
+  getMultipleTokenPrices (@Body() multipleTokenPricesDto: MultipleTokenPricesDto) {
+    return this.voltageDexService.getMultipleTokenPrices(multipleTokenPricesDto)
   }
 
   @MessagePattern('get_token_price_change')

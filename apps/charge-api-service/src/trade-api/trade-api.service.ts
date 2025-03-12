@@ -13,6 +13,10 @@ export class TradeApiService {
     return callMSFunction(this.networkClient, 'get_token_price', { tokenAddress })
   }
 
+  async getMultipleTokenPrices (tokenAddresses: string[]): Promise<string[]> {
+    return callMSFunction(this.networkClient, 'get_multiple_token_prices', { tokenAddresses })
+  }
+
   async getTokenPriceChange (tokenAddress: string): Promise<string> {
     return callMSFunction(this.networkClient, 'get_token_price_change', { tokenAddress })
   }

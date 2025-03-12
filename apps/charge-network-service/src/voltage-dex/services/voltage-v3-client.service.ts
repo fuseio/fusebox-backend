@@ -1,8 +1,9 @@
-import { getTokenDataQuery, getTokenDayDataV3, getTokenUsdPrice } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v3'
+import { getMultipleTokenUsdPrices, getTokenDataQuery, getTokenDayDataV3, getTokenUsdPrice } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v3'
 
 import { GraphQLClient } from 'graphql-request'
 import { Injectable } from '@nestjs/common'
 import dayjs from '@app/common/utils/dayjs'
+import { TokenPrices } from '../types'
 
 @Injectable()
 export class VoltageV3Client {
@@ -20,6 +21,18 @@ export class VoltageV3Client {
       console.error(`Error fetching token price for address ${address}:`, error)
       return null
     }
+  }
+
+  async getMultipleTokenPrices (addresses: string[]): Promise<TokenPrices> {
+    const { tokens } = await this.graphClient.request<{
+      tokens: { id: string; derivedUSD: string }[]
+    }>(getMultipleTokenUsdPrices, { addresses })
+
+    return tokens.reduce((result, token) => {
+      const price = token.derivedUSD
+      result[token.id] = price && price !== '0' ? price : null
+      return result
+    }, {})
   }
 
   async getTokenStats (address: string, limit: number): Promise<any> {

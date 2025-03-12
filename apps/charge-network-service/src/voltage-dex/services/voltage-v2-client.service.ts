@@ -1,8 +1,9 @@
-import { fusePriceQuery, getTokenDayDataV2, getTokenPriceByBlock } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v2'
+import { fusePriceQuery, getMultipleTokenPrices, getTokenDayDataV2, getTokenPriceByBlock } from '@app/network-service/common/constants/graph-queries/voltage-exchange-v2'
 
 import { GraphQLClient } from 'graphql-request'
 import { Injectable } from '@nestjs/common'
 import dayjs from '@app/common/utils/dayjs'
+import { DerivedTokenPrices, TokenPrices } from '../types'
 
 @Injectable()
 export class VoltageV2Client {
@@ -25,6 +26,30 @@ export class VoltageV2Client {
     }>(getTokenPriceByBlock, { address: address.toLowerCase() })
 
     return response?.token?.derivedETH ? Number(response.token.derivedETH) : 0
+  }
+
+  async getMultipleTokenPrices (addresses: string[]): Promise<TokenPrices> {
+    const derivedPrices = await this.getMultipleDerivedTokenPrices(addresses)
+    const fusePrice = await this.getFusePrice()
+
+    return Object.fromEntries(
+      Object.entries(derivedPrices).map(([address, price]) => {
+        return [address, (price * fusePrice).toString()]
+      })
+    )
+  }
+
+  private async getMultipleDerivedTokenPrices (addresses: string[]): Promise<DerivedTokenPrices> {
+    const result = await this.graphClient.request<{
+      tokens: { id: string; derivedETH: string }[]
+    }>(getMultipleTokenPrices, { addresses })
+
+    return result.tokens.reduce((acc, token) => {
+      const rawPrice = token.derivedETH
+      const price = rawPrice && rawPrice !== '0' ? Number(rawPrice) : null
+      acc[token.id] = price
+      return acc
+    }, {})
   }
 
   async getFusePrice (): Promise<number> {

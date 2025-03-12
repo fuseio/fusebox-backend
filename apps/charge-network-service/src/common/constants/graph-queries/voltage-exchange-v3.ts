@@ -8,6 +8,15 @@ export const getTokenUsdPrice = gql`
     }
 `
 
+export const getMultipleTokenUsdPrices = gql`
+    query getMultipleTokenUsdPrices($addresses: [String!]!) {
+        tokens(where: { id_in: $addresses }) {
+            id
+            derivedUSD
+        }
+    }
+`
+
 export const getBlockQuery = gql`
     query blocks($timestampFrom: Int!, $timestampTo: Int!) {
         blocks(

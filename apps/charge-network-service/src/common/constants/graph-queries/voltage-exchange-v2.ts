@@ -23,6 +23,15 @@ export const getTokenPriceByBlock = gql`
     }
 `
 
+export const getMultipleTokenPrices = gql`
+    query getMultipleTokenPrices($addresses: [ID!]!) {
+        tokens(where: { id_in: $addresses }) {
+            id
+            derivedETH
+        }
+    }
+`
+
 export const bundleFields = gql`
     fragment bundleFields on Bundle {
         id

@@ -41,6 +41,45 @@ export class TradeApiController {
     }
   }
 
+  @Get('prices/:tokenAddresses')
+  @ApiOperation({
+    summary: 'Get prices for multiple tokens'
+  })
+  @ApiParam({
+    name: 'tokenAddresses',
+    description: 'Comma-separated list of token addresses',
+    example: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629,0x6a5F6A8121592BeCd6747a38d67451B310F7f156'
+  })
+  @ApiOkResponse({
+    description: 'Success response with prices for multiple tokens',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            prices: {
+              type: 'object',
+              additionalProperties: {
+                type: 'string',
+                example: '0.03345197440906984362974767871408538'
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+  async getMultipleTokenPrices (
+    @Param('tokenAddresses') tokenAddresses: string
+  ) {
+    const prices = await this.tradeApiService.getMultipleTokenPrices(tokenAddresses.split(','))
+
+    return {
+      data: { prices }
+    }
+  }
+
   @Get('pricechange/:tokenAddress')
   @ApiOperation({
     summary: 'Get price change for token over last 24 hours'

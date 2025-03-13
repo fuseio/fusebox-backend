@@ -6,6 +6,8 @@ import { TokenPriceDto } from '@app/network-service/voltage-dex/dto/token-price.
 import { VoltageV2Client } from '@app/network-service/voltage-dex/services/voltage-v2-client.service'
 import { VoltageV3Client } from '@app/network-service/voltage-dex/services/voltage-v3-client.service'
 import dayjs from '@app/common/utils/dayjs'
+import { MultipleTokenPricesDto } from '../dto/multiple-token-prices.dto'
+import { TokenPrices } from '../types'
 
 @Injectable()
 export class TokenPriceService {
@@ -38,6 +40,37 @@ export class TokenPriceService {
     } catch (error) {
       this.logger.error(`Error getting token price for ${tokenAddress}`, error)
       return '0'
+    }
+  }
+
+  async getMultipleTokenPrices (multipleTokenPricesDto: MultipleTokenPricesDto) {
+    try {
+      const tokenAddresses = multipleTokenPricesDto.tokenAddresses.map(
+        address => this.tokenAddressMapper.getTokenAddress(address)
+      )
+
+      const prices = await this.voltageV3Client.getMultipleTokenPrices(
+        tokenAddresses
+      )
+
+      const tokensWithoutPrices: TokenPrices = {}
+      const tokensWithPrices: TokenPrices = {}
+
+      for (const [address, price] of Object.entries(prices)) {
+        if (price === null) {
+          tokensWithoutPrices[address] = price
+        } else {
+          tokensWithPrices[address] = price
+        }
+      }
+
+      const tokensWithoutPricesArray = Object.keys(tokensWithoutPrices)
+      const v2Prices = await this.voltageV2Client.getMultipleTokenPrices(tokensWithoutPricesArray)
+
+      return { ...v2Prices, ...tokensWithPrices }
+    } catch (err) {
+      this.logger.error('Error getting multiple token prices', err)
+      return {}
     }
   }
 

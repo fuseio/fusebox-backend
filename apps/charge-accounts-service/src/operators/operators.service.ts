@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString, operatorRefreshTokenModelString, invoicesModelString, operatorCheckoutModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorWalletModelString, operatorRefreshTokenModelString, operatorInvoiceModelString, operatorCheckoutModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -26,7 +26,7 @@ import { OperatorRefreshToken } from '@app/accounts-service/operators/interfaces
 import { Response } from 'express'
 import * as bcrypt from 'bcryptjs'
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
-import { Invoice } from '@app/accounts-service/operators/interfaces/invoice.interface'
+import { OperatorInvoice } from '@app/accounts-service/operators/interfaces/operator-invoice.interface'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
 import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
@@ -55,8 +55,8 @@ export class OperatorsService {
     private readonly analyticsService: AnalyticsService,
     @Inject(operatorRefreshTokenModelString)
     private operatorRefreshTokenModel: Model<OperatorRefreshToken>,
-    @Inject(invoicesModelString)
-    private invoicesModel: Model<Invoice>,
+    @Inject(operatorInvoiceModelString)
+    private operatorInvoiceModel: Model<OperatorInvoice>,
     @Inject(operatorCheckoutModelString)
     private operatorCheckoutModel: Model<OperatorCheckout>
   ) { }
@@ -625,18 +625,18 @@ export class OperatorsService {
     return this.createRefreshToken(auth0Id, hashedRefreshToken)
   }
 
-  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string): Promise<Invoice> {
-    return this.invoicesModel.create({ ownerId, amount, currency, txHash })
+  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string): Promise<OperatorInvoice> {
+    return this.operatorInvoiceModel.create({ ownerId, amount, currency, txHash })
   }
 
-  async findInvoices (ownerId: string): Promise<Invoice[]> {
-    return this.invoicesModel.find({ ownerId })
+  async findInvoices (ownerId: string): Promise<OperatorInvoice[]> {
+    return this.operatorInvoiceModel.find({ ownerId })
   }
 
-  async findFirstDayOfMonthInvoice (ownerId: string): Promise<Invoice> {
+  async findFirstDayOfMonthInvoice (ownerId: string): Promise<OperatorInvoice> {
     const currentDate = new Date()
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
-    return this.invoicesModel.findOne({ ownerId, createdAt: { $gte: firstDayOfMonth } })
+    return this.operatorInvoiceModel.findOne({ ownerId, createdAt: { $gte: firstDayOfMonth } })
   }
 
   async subscriptionWeb3 (environment: string) {
@@ -697,7 +697,7 @@ export class OperatorsService {
     }
   }
 
-  async createSubscription (auth0Id: string): Promise<Invoice> {
+  async createSubscription (auth0Id: string): Promise<OperatorInvoice> {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
@@ -709,7 +709,9 @@ export class OperatorsService {
     }
 
     const { wallet, contract } = await this.subscriptionWeb3('production')
-    const { payment, amount } = this.subscriptionInfo()
+    const { decimals, calculateProrated } = this.subscriptionInfo()
+    const proratedAmount = calculateProrated(ChargeCheckoutBillingCycle.MONTHLY)
+    const amount = ethers.utils.parseUnits(proratedAmount.toString(), decimals)
 
     const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
     if (allowance.lt(amount)) {
@@ -723,13 +725,13 @@ export class OperatorsService {
       throw new HttpException('Transaction failed', HttpStatus.BAD_REQUEST)
     }
 
-    const invoice = await this.createInvoice(user._id, payment, 'USDC', txHash)
+    const invoice = await this.createInvoice(user._id, proratedAmount, 'USDC', txHash)
     await this.updateIsActivated(operatorWallet._id, true)
 
     return invoice
   }
 
-  async getSubscriptions (auth0Id: string): Promise<Invoice[]> {
+  async getSubscriptions (auth0Id: string): Promise<OperatorInvoice[]> {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
@@ -738,6 +740,7 @@ export class OperatorsService {
     return this.findInvoices(user._id)
   }
 
+  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async processMonthlySubscriptions () {
     const operatorWallets = await this.findAllOperatorWallets()
     const { wallet, contract } = await this.subscriptionWeb3('production')
@@ -865,7 +868,6 @@ export class OperatorsService {
     await this.updateCheckout(webhookEvent.sessionId, webhookEvent.paymentStatus)
   }
 
-  @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async processMonthlyBilling () {
     const operatorWallets = await this.findAllOperatorWallets()
     for (const operatorWallet of operatorWallets) {

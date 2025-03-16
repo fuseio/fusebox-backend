@@ -1,6 +1,6 @@
 import { Document } from 'mongoose'
 
-export interface Invoice extends Document {
+export interface OperatorInvoice extends Document {
   readonly ownerId: string;
   readonly amount: number;
   readonly currency: string;

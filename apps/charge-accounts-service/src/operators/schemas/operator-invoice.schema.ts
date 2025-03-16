@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose'
 
-export const InvoiceSchema = new mongoose.Schema(
+export const OperatorInvoiceSchema = new mongoose.Schema(
   {
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,

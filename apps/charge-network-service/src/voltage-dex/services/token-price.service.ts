@@ -67,7 +67,17 @@ export class TokenPriceService {
       const tokensWithoutPricesArray = Object.keys(tokensWithoutPrices)
       const v2Prices = await this.voltageV2Client.getMultipleTokenPrices(tokensWithoutPricesArray)
 
-      return { ...v2Prices, ...tokensWithPrices }
+      const allPrices = { ...v2Prices, ...tokensWithPrices }
+
+      // Revert the token mapper
+      const revertedPrices = Object.fromEntries(
+        Object.entries(allPrices).map(([address, price]) => [
+          this.tokenAddressMapper.getOriginalTokenAddress(address),
+          price
+        ])
+      )
+
+      return revertedPrices
     } catch (err) {
       this.logger.error('Error getting multiple token prices', err)
       return {}

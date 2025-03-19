@@ -69,31 +69,8 @@ export default () => ({
       expired: false
     }
   ],
+  // Staking options have been removed from the config temporarily.
+  stakingOptionsV2: [],
   multiCallAddress: '0x3CE6158b7278Bf6792e014FA7B4f3c6c46fe9410',
-  botApi: 'https://bot.fuse.io/api/v1',
-
-  stakingOptionsV2: [
-    {
-      tokenAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
-      tokenSymbol: 'USDC',
-      tokenName: 'USD Coin',
-      decimals: 6,
-      tokenLogoURI:
-        'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5/logo.png',
-      unStakeTokenAddress: '0xc6Bc407706B7140EE8Eef2f86F9504651b63e7f9',
-      stakingProviderId: 'usdc-on-stargate-simple-staking',
-      expired: false
-    },
-    {
-      tokenAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
-      tokenSymbol: 'WETH',
-      tokenName: 'Wrapped Ether',
-      decimals: 18,
-      tokenLogoURI:
-        'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0xa722c13135930332Eb3d749B2F0906559D2C5b99/logo.png',
-      unStakeTokenAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
-      stakingProviderId: 'weth-on-stargate-simple-staking',
-      expired: false
-    }
-  ]
+  botApi: 'https://bot.fuse.io/api/v1'
 })

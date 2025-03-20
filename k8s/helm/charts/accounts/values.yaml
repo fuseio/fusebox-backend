@@ -92,6 +92,12 @@ configMap:
   usdc_contract_address_testnet: ""
   # -- Charge Payments API URL
   charge_payments_api_url: ""
+  # -- CoinGecko URL
+  coin_gecko_url: ""
+  # -- WFUSE contract address - Mainnet
+  wfuse_contract_address_mainnet: ""
+  # -- WFUSE contract address - Testnet
+  wfuse_contract_address_testnet: ""
 
 # -- Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
 secret:
@@ -104,3 +110,4 @@ secret:
   - google_operator_form_url
   - operator_refresh_jwt_secret
   - charge_payments_api_key
+  - coin_gecko_api_key

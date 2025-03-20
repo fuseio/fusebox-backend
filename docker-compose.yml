@@ -38,7 +38,10 @@ services:
       - USDC_CONTRACT_ADDRESS_TESTNET
       - CHARGE_PAYMENTS_API_URL
       - CHARGE_PAYMENTS_API_KEY
-
+      - COIN_GECKO_API_KEY
+      - COIN_GECKO_URL
+      - WFUSE_CONTRACT_ADDRESS_MAINNET
+      - WFUSE_CONTRACT_ADDRESS_TESTNET
     depends_on:
       - charge-api-service
       - charge-apps-service

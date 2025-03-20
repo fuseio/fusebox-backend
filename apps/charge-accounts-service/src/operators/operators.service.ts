@@ -10,7 +10,7 @@ import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/Ether
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
-import { operatorWalletModelString, operatorRefreshTokenModelString, operatorInvoiceModelString, operatorCheckoutModelString } from '@app/accounts-service/operators/operators.constants'
+import { operatorWalletModelString, operatorRefreshTokenModelString, operatorInvoiceModelString, operatorCheckoutModelString, chargeBridgeModelString } from '@app/accounts-service/operators/operators.constants'
 import { Model, ObjectId } from 'mongoose'
 import { WebhookEvent } from '@app/apps-service/payments/interfaces/webhook-event.interface'
 import { ProjectsService } from '@app/accounts-service/projects/projects.service'
@@ -36,6 +36,9 @@ import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/ac
 import { differenceInMonths, getDate, getDaysInMonth, startOfMonth } from 'date-fns'
 import { monthsInYear } from 'date-fns/constants'
 import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
+import { CreateChargeBridgeDto } from '@app/accounts-service/operators/dto/create-charge-bridge.dto'
+import { ChargeBridge } from '@app/accounts-service/operators/interfaces/charge-bridge.interface'
+import TradeService from '@app/common/token/trade.service'
 
 @Injectable()
 export class OperatorsService {
@@ -58,7 +61,10 @@ export class OperatorsService {
     @Inject(operatorInvoiceModelString)
     private operatorInvoiceModel: Model<OperatorInvoice>,
     @Inject(operatorCheckoutModelString)
-    private operatorCheckoutModel: Model<OperatorCheckout>
+    private operatorCheckoutModel: Model<OperatorCheckout>,
+    @Inject(chargeBridgeModelString)
+    private chargeBridgeModel: Model<ChargeBridge>,
+    private readonly tradeService: TradeService
   ) { }
 
   async checkOperatorExistenceByEoaAddress (eoaAddress: string): Promise<number> {
@@ -209,6 +215,36 @@ export class OperatorsService {
     return operatorWalletCreationResult
   }
 
+  async migrateOperatorWallet (migrateOperatorWalletDto: CreateOperatorWalletDto, auth0Id: string) {
+    const user = await this.usersService.findOneByAuth0Id(auth0Id)
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    }
+
+    const existingWallet = await this.operatorWalletModel.findOne({ ownerId: user._id })
+    if (existingWallet.etherspotSmartWalletAddress) {
+      throw new HttpException('Already migrated operator wallet', HttpStatus.BAD_REQUEST)
+    }
+
+    await this.operatorWalletModel.findOneAndUpdate(
+      { ownerId: user._id },
+      { $rename: { smartWalletAddress: 'etherspotSmartWalletAddress' } }
+    )
+    const operatorWalletResult = await this.operatorWalletModel.findOneAndUpdate(
+      { ownerId: user._id },
+      { $set: { smartWalletAddress: migrateOperatorWalletDto.smartWalletAddress.toLowerCase() } },
+      { new: true }
+    )
+    if (!operatorWalletResult) {
+      throw new HttpException('Failed to migrate operator wallet', HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    await this.addAddressToOperatorsWebhook(operatorWalletResult.smartWalletAddress)
+    await this.addAddressToTokenReceiveWebhook(operatorWalletResult.smartWalletAddress)
+
+    return operatorWalletResult
+  }
+
   private constructUserProjectResponse (user: User, project: OperatorProject, wallet?: OperatorWallet, secretKey?: string): OperatorUserProjectResponse {
     // Constructs the response object from the entities
     return {
@@ -218,7 +254,9 @@ export class OperatorsService {
         email: user.email,
         auth0Id: user.auth0Id,
         smartWalletAddress: wallet?.smartWalletAddress ?? '0x',
-        isActivated: wallet?.isActivated ?? false
+        isActivated: wallet?.isActivated ?? false,
+        createdAt: user.createdAt,
+        etherspotSmartWalletAddress: wallet?.etherspotSmartWalletAddress ?? null
       },
       project: {
         id: project.id,
@@ -625,8 +663,8 @@ export class OperatorsService {
     return this.createRefreshToken(auth0Id, hashedRefreshToken)
   }
 
-  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string): Promise<OperatorInvoice> {
-    return this.operatorInvoiceModel.create({ ownerId, amount, currency, txHash })
+  async createInvoice (ownerId: string, amount: number, currency: string, txHash: string, amountUsd?: number): Promise<OperatorInvoice> {
+    return this.operatorInvoiceModel.create({ ownerId, amount, currency, txHash, amountUsd })
   }
 
   async findInvoices (ownerId: string): Promise<OperatorInvoice[]> {
@@ -643,12 +681,13 @@ export class OperatorsService {
     const version = '0_1_0'
     const paymasterEnvs = this.configService.getOrThrow(`paymaster.${version}.${environment}`)
     const tokenEnvs = this.configService.getOrThrow(`token.${environment}`)
-    const contractAddress = tokenEnvs.usdcContractAddress
+    const contractAddress = tokenEnvs.wfuseContractAddress
     const privateKey = this.configService.get('PAYMASTER_FUNDER_PRIVATE_KEY')
     const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs.url)
     const wallet = new ethers.Wallet(privateKey, provider)
     const contract = new ethers.Contract(contractAddress, erc20Abi, wallet)
     return {
+      contractAddress,
       provider,
       wallet,
       contract
@@ -657,7 +696,7 @@ export class OperatorsService {
 
   subscriptionInfo () {
     const payment = 50
-    const decimals = 6
+    const decimals = 18
     const amount = ethers.utils.parseUnits(payment.toString(), decimals)
 
     const today = new Date()
@@ -708,10 +747,17 @@ export class OperatorsService {
       throw new HttpException('Operator wallet not found.', HttpStatus.NOT_FOUND)
     }
 
-    const { wallet, contract } = await this.subscriptionWeb3('production')
+    const { contractAddress, wallet, contract } = await this.subscriptionWeb3('production')
     const { decimals, calculateProrated } = this.subscriptionInfo()
     const proratedAmount = calculateProrated(ChargeCheckoutBillingCycle.MONTHLY)
-    const amount = ethers.utils.parseUnits(proratedAmount.toString(), decimals)
+
+    const tokenPrice = await this.tradeService.getTokenPriceByAddress(contractAddress)
+    if (!tokenPrice || tokenPrice <= 0) {
+      throw new HttpException('Token price is not available', HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    const proratedTokenAmount = proratedAmount / tokenPrice
+    const amount = ethers.utils.parseUnits(proratedTokenAmount.toString(), decimals)
 
     const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
     if (allowance.lt(amount)) {
@@ -725,7 +771,7 @@ export class OperatorsService {
       throw new HttpException('Transaction failed', HttpStatus.BAD_REQUEST)
     }
 
-    const invoice = await this.createInvoice(user._id, proratedAmount, 'USDC', txHash)
+    const invoice = await this.createInvoice(user._id, proratedTokenAmount, 'WFUSE', txHash, proratedAmount)
     await this.updateIsActivated(operatorWallet._id, true)
 
     return invoice
@@ -740,11 +786,37 @@ export class OperatorsService {
     return this.findInvoices(user._id)
   }
 
+  private async retryGetTokenPrice (tokenAddress: string, retries = 3, delayMinutes = 15): Promise<number> {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      const tokenPrice = await this.tradeService.getTokenPriceByAddress(tokenAddress)
+      if (tokenPrice && tokenPrice > 0) {
+        return tokenPrice
+      }
+
+      this.logger.warn(`Token price fetch attempt ${attempt}/${retries} failed. Retrying in ${delayMinutes} minutes...`)
+      if (attempt < retries) {
+        await new Promise(resolve => setTimeout(resolve, delayMinutes * 60 * 1000))
+      }
+    }
+    throw new Error('Failed to get token price after multiple attempts')
+  }
+
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async processMonthlySubscriptions () {
     const operatorWallets = await this.findAllOperatorWallets()
-    const { wallet, contract } = await this.subscriptionWeb3('production')
-    const { payment, amount } = this.subscriptionInfo()
+    const { contractAddress, wallet, contract } = await this.subscriptionWeb3('production')
+    const { payment, decimals } = this.subscriptionInfo()
+
+    let tokenPrice: number
+    try {
+      tokenPrice = await this.retryGetTokenPrice(contractAddress)
+    } catch (error) {
+      this.logger.error('Failed to get token price after all retries, skipping subscription processing')
+      return
+    }
+
+    const tokenAmount = payment / tokenPrice
+    const amount = ethers.utils.parseUnits(tokenAmount.toString(), decimals)
 
     for (const operatorWallet of operatorWallets) {
       const invoice = await this.findFirstDayOfMonthInvoice(operatorWallet.ownerId)
@@ -769,7 +841,7 @@ export class OperatorsService {
         continue
       }
 
-      await this.createInvoice(operatorWallet.ownerId, payment, 'USDC', txHash)
+      await this.createInvoice(operatorWallet.ownerId, tokenAmount, 'WFUSE', txHash, payment)
       await this.updateIsActivated(operatorWallet._id, true)
     }
   }
@@ -931,5 +1003,45 @@ export class OperatorsService {
     }
 
     return false
+  }
+
+  async createChargeBridge (auth0Id: string, createChargeBridgeDto: CreateChargeBridgeDto) {
+    try {
+      const user = await this.usersService.findOneByAuth0Id(auth0Id)
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+
+      const operatorWallet = await this.findWalletOwner(user._id)
+      if (!operatorWallet) {
+        throw new HttpException('Operator wallet not found.', HttpStatus.NOT_FOUND)
+      }
+
+      const chargePaymentsApiUrl = this.configService.get('CHARGE_PAYMENTS_API_URL')
+      const chargePaymentsApiKey = this.configService.get('CHARGE_PAYMENTS_API_KEY')
+      const chargeBridgeResponse = await axios.post(
+        `${chargePaymentsApiUrl}/payments/bridge/create-new?apiKey=${chargePaymentsApiKey}`,
+        {
+          chainId: createChargeBridgeDto.chainId,
+          token: 'FUSE',
+          amount: createChargeBridgeDto.amount,
+          destinationWallet: operatorWallet.smartWalletAddress,
+          receiveToken: 'WFUSE'
+        }
+      )
+
+      const chargeBridge = await this.chargeBridgeModel.create({
+        ...chargeBridgeResponse.data,
+        ownerId: user._id
+      })
+      return {
+        walletAddress: chargeBridge.walletAddress,
+        startTime: chargeBridge.startTime,
+        endTime: chargeBridge.endTime
+      }
+    } catch (error) {
+      this.logger.error(`Failed to create charge bridge: ${error.message}`)
+      throw error
+    }
   }
 }

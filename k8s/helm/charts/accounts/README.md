@@ -14,6 +14,7 @@ A Helm chart for Kubernetes related accounts component
 | configMap.auth0_audience | string | `""` | Auth0 audience |
 | configMap.auth0_issuer_url | string | `""` | Auth0 issuer URL |
 | configMap.charge_payments_api_url | string | `""` | Charge Payments API URL |
+| configMap.coin_gecko_url | string | `""` | CoinGecko URL |
 | configMap.console_dapp_url | string | `""` | Console Dapp URL |
 | configMap.entrypoint_production_contract_address_v_0_1_0 | string | `""` | Bundler - Entrypoint Production contract address |
 | configMap.entrypoint_sandbox_contract_address_v_0_1_0 | string | `""` | Bundler - Entrypoint Sandbox contract address |
@@ -25,6 +26,8 @@ A Helm chart for Kubernetes related accounts component
 | configMap.paymaster_sandbox_contract_address_v_0_1_0 | string | `""` | Bundler - Paymaster Sandbox contract address |
 | configMap.usdc_contract_address_mainnet | string | `""` | USDC contract address - Mainnet |
 | configMap.usdc_contract_address_testnet | string | `""` | USDC contract address - Testnet |
+| configMap.wfuse_contract_address_mainnet | string | `""` | WFUSE contract address - Mainnet |
+| configMap.wfuse_contract_address_testnet | string | `""` | WFUSE contract address - Testnet |
 | global.clusterSecretStore | string | `"gcp-store"` | ClusterSecretStore name (should be created before apply) |
 | global.domain | string | `"example.com"` | DNS domain (used for `HTTPRoute` resource) |
 | global.environment | string | `"development"` | Kubernetes label `environment`` |
@@ -37,6 +40,6 @@ A Helm chart for Kubernetes related accounts component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret | list | `["mongo_uri","smart_wallets_jwt_secret","paymaster_funder_private_key","paymaster_funder_api_secret_key","amplitude_api_key","incoming_token_transfers_webhook_id","google_operator_form_url","operator_refresh_jwt_secret","charge_payments_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
+| secret | list | `["mongo_uri","smart_wallets_jwt_secret","paymaster_funder_private_key","paymaster_funder_api_secret_key","amplitude_api_key","incoming_token_transfers_webhook_id","google_operator_form_url","operator_refresh_jwt_secret","charge_payments_api_key","coin_gecko_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
 | securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 

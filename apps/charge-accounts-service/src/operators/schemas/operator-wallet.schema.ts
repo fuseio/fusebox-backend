@@ -8,7 +8,8 @@ export const OperatorWalletSchema = new mongoose.Schema(
       required: true
     },
     smartWalletAddress: { type: String, required: true, unique: true, index: true },
-    isActivated: { type: Boolean, default: false }
+    isActivated: { type: Boolean, default: false },
+    etherspotSmartWalletAddress: { type: String, default: null }
   },
   {
     timestamps: true

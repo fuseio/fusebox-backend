@@ -9,7 +9,8 @@ export const OperatorInvoiceSchema = new mongoose.Schema(
     },
     amount: { type: Number, required: true },
     currency: { type: String, required: true },
-    txHash: { type: String, required: true }
+    txHash: { type: String, required: true },
+    amountUsd: { type: Number }
   },
   {
     timestamps: true

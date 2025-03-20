@@ -5,4 +5,5 @@ export interface OperatorInvoice extends Document {
   readonly amount: number;
   readonly currency: string;
   readonly txHash: string;
+  readonly amountUsd: number;
 }

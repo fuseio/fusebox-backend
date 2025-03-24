@@ -30,7 +30,7 @@ interface GasDetails {
 @Injectable()
 export class PaymasterApiService {
   private readonly logger = new Logger(PaymasterApiService.name)
-  constructor(
+  constructor (
     @Inject(accountsService) private readonly accountClient: ClientProxy,
     private configService: ConfigService,
     @InjectEthersProvider('fuse')
@@ -40,7 +40,7 @@ export class PaymasterApiService {
     private httpService: HttpService
   ) { }
 
-  async pm_sponsorUserOperation(body: any, env: any, projectId: string) {
+  async pm_sponsorUserOperation (body: any, env: any, projectId: string) {
     try {
       const provider = this.getProviderByEnv(env)
       const [op] = body
@@ -96,7 +96,7 @@ export class PaymasterApiService {
     }
   }
 
-  private async getHash(
+  private async getHash (
     paymasterContract: Contract,
     op: any,
     validUntil: number,
@@ -111,7 +111,7 @@ export class PaymasterApiService {
     )
   }
 
-  private async signHash(hash: string, paymasterInfo: any) {
+  private async signHash (hash: string, paymasterInfo: any) {
     const privateKeyString = this.configService.getOrThrow(
       `paymasterApi.keys.${paymasterInfo.paymasterVersion}.${paymasterInfo.environment}PrivateKey`
     )
@@ -119,7 +119,7 @@ export class PaymasterApiService {
     return await paymasterSigner.signMessage(arrayify(hash))
   }
 
-  private buildPaymasterAndData(paymasterAddress: string, validUntil: number, validAfter: number, sponsorId: string, signature: string) {
+  private buildPaymasterAndData (paymasterAddress: string, validUntil: number, validAfter: number, sponsorId: string, signature: string) {
     return hexConcat([
       paymasterAddress,
       defaultAbiCoder.encode(
@@ -130,7 +130,7 @@ export class PaymasterApiService {
     ])
   }
 
-  async estimateUserOpGas(op, requestEnvironment, entrypointAddress): Promise<GasDetails> {
+  async estimateUserOpGas (op, requestEnvironment, entrypointAddress): Promise<GasDetails> {
     const data = {
       jsonrpc: '2.0',
       method: 'eth_estimateUserOperationGas',
@@ -203,7 +203,7 @@ export class PaymasterApiService {
     }
   }
 
-  private prepareUrl(environment) {
+  private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
     const config = this.configService.get(`bundler.etherspot.${environment}`)
     if (config.url) {
@@ -213,7 +213,7 @@ export class PaymasterApiService {
     }
   }
 
-  async pm_accounts(body, env: any, projectId: string) {
+  async pm_accounts (body, env: any, projectId: string) {
     // const [entryPointAddress] = body
     const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
     return [
@@ -221,7 +221,7 @@ export class PaymasterApiService {
     ]
   }
 
-  private getProviderByEnv(env: string) {
+  private getProviderByEnv (env: string) {
     if (env === 'production') {
       return this.fuseProvider
     }

@@ -16,6 +16,7 @@ import { smartWalletsService, notificationsService } from '@app/common/constants
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpModule } from '@nestjs/axios'
 import { ScheduleModule } from '@nestjs/schedule'
+import { TokenModule } from '@app/common/token/token.module'
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { ScheduleModule } from '@nestjs/schedule'
     ]),
     ConfigModule.forFeature(configuration),
     DatabaseModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    TokenModule
   ],
   controllers: [OperatorsController],
   providers: [

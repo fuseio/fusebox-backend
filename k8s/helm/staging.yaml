@@ -65,6 +65,9 @@ accounts:
     usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
     usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
     charge_payments_api_url: "https://payments.chargeweb3.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
+    wfuse_contract_address_mainnet: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
+    wfuse_contract_address_testnet: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -77,6 +80,7 @@ accounts:
     - google_operator_form_url
     - operator_refresh_jwt_secret
     - charge_payments_api_key
+    - coin_gecko_api_key
 
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.

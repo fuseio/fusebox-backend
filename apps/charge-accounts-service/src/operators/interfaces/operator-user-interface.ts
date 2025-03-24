@@ -5,4 +5,6 @@ export interface OperatorUser {
   auth0Id: string;
   smartWalletAddress: string;
   isActivated: boolean;
+  createdAt: Date;
+  etherspotSmartWalletAddress?: string;
 }

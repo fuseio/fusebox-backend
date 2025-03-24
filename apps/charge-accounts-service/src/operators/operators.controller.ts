@@ -13,6 +13,8 @@ import { CreateOperatorUser } from '@app/accounts-service/operators/entities/cre
 import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
 import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
 import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
+import { CreateChargeBridgeDto } from '@app/accounts-service/operators/dto/create-charge-bridge.dto'
+import { CreateOperatorWallet } from '@app/accounts-service/operators/entities/create-operator-wallet.entity'
 
 @ApiTags('Operators')
 @Controller({ path: 'operators', version: '1' })
@@ -84,9 +86,22 @@ export class OperatorsController {
   @UseGuards(JwtAuthGuard)
   @Post('/wallet')
   @ApiOperation({ summary: 'Create AA wallet for an operator' })
-  @ApiBody({ type: CreateOperatorUser, required: true })
+  @ApiBody({ type: CreateOperatorWallet, required: true })
   async createOperatorWallet (@Body() createOperatorWalletDto: CreateOperatorWalletDto, @User('sub') auth0Id: string) {
     return this.operatorsService.createOperatorWallet(createOperatorWalletDto, auth0Id)
+  }
+
+  /**
+   * Migrate Etherspot AA wallet to SAFE for an operator
+   * @param authOperatorDto
+   * @returns the SAFE AA wallet
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/migrate-wallet')
+  @ApiOperation({ summary: 'Migrate Etherspot AA wallet to SAFE for an operator' })
+  @ApiBody({ type: CreateOperatorWallet, required: true })
+  async migrateOperatorWallet (@Body() migrateOperatorWalletDto: CreateOperatorWalletDto, @User('sub') auth0Id: string) {
+    return this.operatorsService.migrateOperatorWallet(migrateOperatorWalletDto, auth0Id)
   }
 
   /**
@@ -202,5 +217,17 @@ export class OperatorsController {
   @ApiOperation({ summary: 'Handle the checkout webhook' })
   async handleCheckoutWebhook (@Body() webhookEvent: ChargeCheckoutWebhookEvent) {
     return this.operatorsService.handleCheckoutWebhook(webhookEvent)
+  }
+
+  /**
+   * Create a Charge bridge wallet address for operator deposit
+   * @param chargeBridgeDto
+   * @returns the Charge bridge deposit wallet address
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/bridge')
+  @ApiOperation({ summary: 'Create a Charge bridge wallet address for operator deposit' })
+  async createChargeBridge (@User('sub') auth0Id: string, @Body() createChargeBridgeDto: CreateChargeBridgeDto) {
+    return this.operatorsService.createChargeBridge(auth0Id, createChargeBridgeDto)
   }
 }

@@ -23,10 +23,14 @@ export default () => ({
   },
   token: {
     production: {
-      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_MAINNET
+      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_MAINNET,
+      wfuseContractAddress: process.env.WFUSE_CONTRACT_ADDRESS_MAINNET
     },
     sandbox: {
-      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_TESTNET
+      usdcContractAddress: process.env.USDC_CONTRACT_ADDRESS_TESTNET,
+      wfuseContractAddress: process.env.WFUSE_CONTRACT_ADDRESS_TESTNET
     }
-  }
+  },
+  coinGeckoApiKey: process.env.COIN_GECKO_API_KEY,
+  coinGeckoUrl: process.env.COIN_GECKO_URL
 })

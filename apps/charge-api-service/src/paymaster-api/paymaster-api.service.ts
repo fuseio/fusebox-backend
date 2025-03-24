@@ -69,7 +69,6 @@ export class PaymasterApiService {
       const paymasterAndDataForEstimateUserOpGasCall = this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
 
       op.paymasterAndData = paymasterAndDataForEstimateUserOpGasCall
-
       const gases: GasDetails = await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
 
       const actualVerificationGasLimit = Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
@@ -206,8 +205,7 @@ export class PaymasterApiService {
 
   private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.${environment}`)
-
+    const config = this.configService.get(`bundler.etherspot.${environment}`)
     if (config.url) {
       return config.url
     } else {

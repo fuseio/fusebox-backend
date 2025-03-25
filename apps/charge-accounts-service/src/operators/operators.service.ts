@@ -760,6 +760,7 @@ export class OperatorsService {
     const amount = ethers.utils.parseUnits(proratedTokenAmount.toString(), decimals)
 
     const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
+    console.log('subscriptionAllowance', JSON.stringify({ allowance: allowance.toString(), amount: amount.toString(), proratedTokenAmount, proratedAmount, tokenPrice, smartWalletAddress: operatorWallet.smartWalletAddress, walletAddress: wallet.address, contractAddress }, null, 2))
     if (allowance.lt(amount)) {
       throw new HttpException('Insufficient allowance', HttpStatus.BAD_REQUEST)
     }

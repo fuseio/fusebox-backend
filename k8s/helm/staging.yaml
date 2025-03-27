@@ -62,7 +62,12 @@ accounts:
     etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
     paymaster_funder_api_key: "pk_u_RbFw7NQBB7ZQIFJtziLE_S"
     paymaster_funder_webhook_id: "65bbbc63fc2f925de8e1a561"
-    console_dapp_url: "https://console-staging.fuse.io"
+    usdc_contract_address_mainnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    usdc_contract_address_testnet: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    charge_payments_api_url: "https://payments.chargeweb3.com"
+    coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
+    wfuse_contract_address_mainnet: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
+    wfuse_contract_address_testnet: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -74,6 +79,8 @@ accounts:
     - incoming_token_transfers_webhook_id
     - google_operator_form_url
     - operator_refresh_jwt_secret
+    - charge_payments_api_key
+    - coin_gecko_api_key
 
 amplitude:
   enabled: false # We use reverse Amplitude proxy only for Production.
@@ -145,6 +152,9 @@ api:
     - paymaster_sandbox_signer_private_key_v_0_1_0
     - explorer_api_key
     - bundler_api_prd_url
+    - pimlico_api_prd_url
+    - pimlico_api_sandbox_url
+    - amplitude_api_key
 
 apps:
   enabled: false # [DEPRECATED]

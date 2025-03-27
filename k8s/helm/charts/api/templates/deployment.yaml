@@ -133,14 +133,22 @@ spec:
             httpGet:
               path: /api/health
               port: 5002
-            initialDelaySeconds: 10
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
             periodSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /api/health
               port: 5002
-            initialDelaySeconds: 10
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
             periodSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
 
           # Resources
           resources:

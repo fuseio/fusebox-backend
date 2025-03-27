@@ -15,6 +15,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpModule } from '@nestjs/axios'
+import { ScheduleModule } from '@nestjs/schedule'
+import { TokenModule } from '@app/common/token/token.module'
 
 @Module({
   imports: [
@@ -42,7 +44,9 @@ import { HttpModule } from '@nestjs/axios'
       }
     ]),
     ConfigModule.forFeature(configuration),
-    DatabaseModule
+    DatabaseModule,
+    ScheduleModule.forRoot(),
+    TokenModule
   ],
   controllers: [OperatorsController],
   providers: [

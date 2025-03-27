@@ -5,4 +5,5 @@ export interface User extends Document {
   readonly email: string;
   readonly auth0Id: string;
   readonly questionnaire: object;
+  readonly createdAt: Date;
 }

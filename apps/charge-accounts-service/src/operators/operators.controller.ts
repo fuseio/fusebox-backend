@@ -10,6 +10,11 @@ import { MessagePattern } from '@nestjs/microservices'
 import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { AuthOperator } from '@app/accounts-service/operators/entities/auth-operator.entity'
 import { CreateOperatorUser } from '@app/accounts-service/operators/entities/create-operator-user.entity'
+import { CreateOperatorWalletDto } from '@app/accounts-service/operators/dto/create-operator-wallet.dto'
+import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/create-operator-checkout.dto'
+import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
+import { CreateChargeBridgeDto } from '@app/accounts-service/operators/dto/create-charge-bridge.dto'
+import { CreateOperatorWallet } from '@app/accounts-service/operators/entities/create-operator-wallet.entity'
 
 @ApiTags('Operators')
 @Controller({ path: 'operators', version: '1' })
@@ -61,9 +66,9 @@ export class OperatorsController {
   }
 
   /**
-   * Create user, project and AA wallet for an operator
+   * Create user and project for an operator
    * @param authOperatorDto
-   * @returns the user, project and AA wallet with public key
+   * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
   @Post('/account')
@@ -71,6 +76,32 @@ export class OperatorsController {
   @ApiBody({ type: CreateOperatorUser, required: true })
   async createOperatorUserAndProjectAndWallet (@Body() createOperatorUserDto: CreateOperatorUserDto, @User('sub') auth0Id: string) {
     return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
+  }
+
+  /**
+   * Create AA wallet for an operator
+   * @param authOperatorDto
+   * @returns the AA wallet
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/wallet')
+  @ApiOperation({ summary: 'Create AA wallet for an operator' })
+  @ApiBody({ type: CreateOperatorWallet, required: true })
+  async createOperatorWallet (@Body() createOperatorWalletDto: CreateOperatorWalletDto, @User('sub') auth0Id: string) {
+    return this.operatorsService.createOperatorWallet(createOperatorWalletDto, auth0Id)
+  }
+
+  /**
+   * Migrate Etherspot AA wallet to SAFE for an operator
+   * @param authOperatorDto
+   * @returns the SAFE AA wallet
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/migrate-wallet')
+  @ApiOperation({ summary: 'Migrate Etherspot AA wallet to SAFE for an operator' })
+  @ApiBody({ type: CreateOperatorWallet, required: true })
+  async migrateOperatorWallet (@Body() migrateOperatorWalletDto: CreateOperatorWalletDto, @User('sub') auth0Id: string) {
+    return this.operatorsService.migrateOperatorWallet(migrateOperatorWalletDto, auth0Id)
   }
 
   /**
@@ -132,5 +163,71 @@ export class OperatorsController {
   @ApiOperation({ summary: 'Refresh operator token' })
   refreshToken (@Req() request: Request, @Res({ passthrough: true }) response: Response) {
     return this.operatorsService.validateRefreshToken(request.cookies?.operator_refresh_token, response)
+  }
+
+  /**
+   * Create a subscription for the operator
+   * @param createSubscriptionDto
+   * @returns the subscription
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/subscriptions')
+  @ApiOperation({ summary: 'Create a subscription for the operator' })
+  async createSubscription (@User('sub') auth0Id: string) {
+    return this.operatorsService.createSubscription(auth0Id)
+  }
+
+  /**
+   * Get all subscription invoices for the operator
+   * @returns the subscription invoices
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('/subscriptions')
+  @ApiOperation({ summary: 'Get all subscription invoices for the operator' })
+  async getSubscriptions (@User('sub') auth0Id: string) {
+    return this.operatorsService.getSubscriptions(auth0Id)
+  }
+
+  /**
+   * Create a checkout session for the operator
+   * @returns the checkout URL
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/checkout/sessions')
+  @ApiOperation({ summary: 'Create a checkout session for the operator' })
+  async checkoutSession (@User('sub') auth0Id: string, @Body() createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
+    return this.operatorsService.checkout(auth0Id, createOperatorCheckoutDto)
+  }
+
+  /**
+   * Get all checkout sessions for the operator
+   * @returns checkout sessions
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('/checkout/sessions')
+  @ApiOperation({ summary: 'Get all checkout sessions for the operator' })
+  async getCheckoutSessions (@User('sub') auth0Id: string) {
+    return this.operatorsService.getCheckoutSessions(auth0Id)
+  }
+
+  /**
+   * Handle the checkout webhook
+   */
+  @Post('/checkout/webhook')
+  @ApiOperation({ summary: 'Handle the checkout webhook' })
+  async handleCheckoutWebhook (@Body() webhookEvent: ChargeCheckoutWebhookEvent) {
+    return this.operatorsService.handleCheckoutWebhook(webhookEvent)
+  }
+
+  /**
+   * Create a Charge bridge wallet address for operator deposit
+   * @param chargeBridgeDto
+   * @returns the Charge bridge deposit wallet address
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('/bridge')
+  @ApiOperation({ summary: 'Create a Charge bridge wallet address for operator deposit' })
+  async createChargeBridge (@User('sub') auth0Id: string, @Body() createChargeBridgeDto: CreateChargeBridgeDto) {
+    return this.operatorsService.createChargeBridge(auth0Id, createChargeBridgeDto)
   }
 }

@@ -30,6 +30,6 @@ A Helm chart for Kubernetes related api component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret | list | `["mongo_uri","rpc_url","fuse_studio_admin_jwt","legacy_jwt_secret","smart_wallets_jwt_secret","paymaster_production_signer_private_key_v_0_1_0","paymaster_sandbox_signer_private_key_v_0_1_0","explorer_api_key","bundler_api_prd_url"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
+| secret | list | `["mongo_uri","rpc_url","fuse_studio_admin_jwt","legacy_jwt_secret","smart_wallets_jwt_secret","paymaster_production_signer_private_key_v_0_1_0","paymaster_sandbox_signer_private_key_v_0_1_0","explorer_api_key","bundler_api_prd_url","pimlico_api_prd_url","pimlico_api_sandbox_url","amplitude_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
 | securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 

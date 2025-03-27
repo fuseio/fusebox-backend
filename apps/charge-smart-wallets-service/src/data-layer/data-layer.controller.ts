@@ -31,9 +31,15 @@ export class DataLayerController {
   }
 
   @MessagePattern('sponsored-transactions-count')
-  sponsoredTransactionsCount (sponsorId: string) {
+  sponsoredTransactionsCount (data: { apiKey: string, startDate?: string }) {
     return this.dataLayerService.findSponsoredTransactionsCount(
-      sponsorId
+      data.apiKey,
+      data.startDate
     )
+  }
+
+  @MessagePattern('get-operator-by-api-key')
+  getOperatorByApiKey (apiKey: string) {
+    return this.dataLayerService.getOperatorByApiKey(apiKey)
   }
 }

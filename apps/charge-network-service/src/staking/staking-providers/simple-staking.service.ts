@@ -11,10 +11,10 @@ import {
 import { StakingOption, StakingProvider } from '../interfaces'
 import { UnstakeDto } from '../dto/unstake.dto'
 import MasterChefV3ABI from '@app/network-service/common/constants/abi/MasterChefV3.json'
+import TradeService from '@app/common/token/trade.service'
 import { StakeDto } from '../dto/stake.dto'
 import GraphService from '../graph.service'
 import { GET_SIMPLE_STAKING_POOL_DATA as getSimpleStakingPoolData } from '@app/network-service/common/constants/graph-queries/masterchef-v3'
-import TradeService from '@app/common/token/trade.service'
 import { PoolConfig } from '@app/network-service/common/constants/simple-staking-config'
 
 @Injectable()

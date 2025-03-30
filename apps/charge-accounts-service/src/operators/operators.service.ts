@@ -833,6 +833,13 @@ export class OperatorsService {
         continue
       }
 
+      const balance = await contract.balanceOf(operatorWallet.smartWalletAddress)
+      if (balance.lt(amount)) {
+        this.logger.log(`Insufficient balance for ${operatorWallet.ownerId}`)
+        await this.updateIsActivated(operatorWallet._id, false)
+        continue
+      }
+
       const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
       const tx = await transfer.wait()
       const txHash = tx?.transactionHash

@@ -686,11 +686,13 @@ export class OperatorsService {
     const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs.url)
     const wallet = new ethers.Wallet(privateKey, provider)
     const contract = new ethers.Contract(contractAddress, erc20Abi, wallet)
+    const symbol = await contract.symbol()
     return {
       contractAddress,
       provider,
       wallet,
-      contract
+      contract,
+      symbol
     }
   }
 
@@ -736,6 +738,35 @@ export class OperatorsService {
     }
   }
 
+  async operatorSubscriptionPaidEvent ({ id, token, amount }) {
+    try {
+      const user = await this.usersService.findOne(id)
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+
+      const project = await this.projectsService.findOneByOwnerId(user._id)
+      if (!project) {
+        throw new HttpException('Project not found', HttpStatus.NOT_FOUND)
+      }
+
+      const apiKey = await this.projectsService.getApiKeysInfo(project._id)
+      if (!apiKey) {
+        throw new HttpException('API Key info not found', HttpStatus.NOT_FOUND)
+      }
+
+      const eventData = {
+        email: user.email,
+        apiKey: apiKey.publicKey,
+        token,
+        amount
+      }
+      this.analyticsService.trackEvent('Operator Subscription Paid', { ...eventData }, { user_id: user?.auth0Id })
+    } catch (error) {
+      this.logger.error('Error tracking Operator Subscription Paid event:', error)
+    }
+  }
+
   async createSubscription (auth0Id: string): Promise<OperatorInvoice> {
     const user = await this.usersService.findOneByAuth0Id(auth0Id)
     if (!user) {
@@ -747,7 +778,7 @@ export class OperatorsService {
       throw new HttpException('Operator wallet not found.', HttpStatus.NOT_FOUND)
     }
 
-    const { contractAddress, wallet, contract } = await this.subscriptionWeb3('production')
+    const { contractAddress, wallet, contract, symbol } = await this.subscriptionWeb3('production')
     const { decimals, calculateProrated } = this.subscriptionInfo()
     const proratedAmount = calculateProrated(ChargeCheckoutBillingCycle.MONTHLY)
 
@@ -772,8 +803,10 @@ export class OperatorsService {
       throw new HttpException('Transaction failed', HttpStatus.BAD_REQUEST)
     }
 
-    const invoice = await this.createInvoice(user._id, proratedTokenAmount, 'WFUSE', txHash, proratedAmount)
+    const invoice = await this.createInvoice(user._id, proratedTokenAmount, symbol, txHash, proratedAmount)
     await this.updateIsActivated(operatorWallet._id, true)
+
+    this.operatorSubscriptionPaidEvent({ id: user._id, token: symbol, amount: proratedTokenAmount })
 
     return invoice
   }
@@ -805,7 +838,7 @@ export class OperatorsService {
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async processMonthlySubscriptions () {
     const operatorWallets = await this.findAllOperatorWallets()
-    const { contractAddress, wallet, contract } = await this.subscriptionWeb3('production')
+    const { contractAddress, wallet, contract, symbol } = await this.subscriptionWeb3('production')
     const { payment, decimals } = this.subscriptionInfo()
 
     let tokenPrice: number
@@ -849,8 +882,10 @@ export class OperatorsService {
         continue
       }
 
-      await this.createInvoice(operatorWallet.ownerId, tokenAmount, 'WFUSE', txHash, payment)
+      await this.createInvoice(operatorWallet.ownerId, tokenAmount, symbol, txHash, payment)
       await this.updateIsActivated(operatorWallet._id, true)
+
+      this.operatorSubscriptionPaidEvent({ id: operatorWallet.ownerId, token: symbol, amount: tokenAmount })
     }
   }
 

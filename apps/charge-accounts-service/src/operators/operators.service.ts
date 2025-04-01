@@ -837,55 +837,54 @@ export class OperatorsService {
 
   @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_MIDNIGHT)
   async processMonthlySubscriptions () {
-    const operatorWallets = await this.findAllOperatorWallets()
-    const { contractAddress, wallet, contract, symbol } = await this.subscriptionWeb3('production')
-    const { payment, decimals } = this.subscriptionInfo()
-
-    let tokenPrice: number
     try {
-      tokenPrice = await this.retryGetTokenPrice(contractAddress)
+      const operatorWallets = await this.findAllOperatorWallets()
+      const { contractAddress, wallet, contract, symbol } = await this.subscriptionWeb3('production')
+      const { payment, decimals } = this.subscriptionInfo()
+
+      const tokenPrice = await this.retryGetTokenPrice(contractAddress)
+
+      const tokenAmount = payment / tokenPrice
+      const amount = ethers.utils.parseUnits(tokenAmount.toString(), decimals)
+
+      for (const operatorWallet of operatorWallets) {
+        const invoice = await this.findFirstDayOfMonthInvoice(operatorWallet.ownerId)
+        if (invoice) {
+          this.logger.log(`Invoice already exists for ${operatorWallet.ownerId}`)
+          continue
+        }
+
+        const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
+        if (allowance.lt(amount)) {
+          this.logger.log(`Insufficient allowance for ${operatorWallet.ownerId}`)
+          await this.updateIsActivated(operatorWallet._id, false)
+          continue
+        }
+
+        const balance = await contract.balanceOf(operatorWallet.smartWalletAddress)
+        if (balance.lt(amount)) {
+          this.logger.log(`Insufficient balance for ${operatorWallet.ownerId}`)
+          await this.updateIsActivated(operatorWallet._id, false)
+          continue
+        }
+
+        const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
+        const tx = await transfer.wait()
+        const txHash = tx?.transactionHash
+        if (!txHash) {
+          this.logger.log(`Transaction failed for ${operatorWallet.ownerId}`)
+          await this.updateIsActivated(operatorWallet._id, false)
+          continue
+        }
+
+        await this.createInvoice(operatorWallet.ownerId, tokenAmount, symbol, txHash, payment)
+        await this.updateIsActivated(operatorWallet._id, true)
+
+        this.operatorSubscriptionPaidEvent({ id: operatorWallet.ownerId, token: symbol, amount: tokenAmount })
+      }
     } catch (error) {
-      this.logger.error('Failed to get token price after all retries, skipping subscription processing')
-      return
-    }
-
-    const tokenAmount = payment / tokenPrice
-    const amount = ethers.utils.parseUnits(tokenAmount.toString(), decimals)
-
-    for (const operatorWallet of operatorWallets) {
-      const invoice = await this.findFirstDayOfMonthInvoice(operatorWallet.ownerId)
-      if (invoice) {
-        this.logger.log(`Invoice already exists for ${operatorWallet.ownerId}`)
-        continue
-      }
-
-      const allowance = await contract.allowance(operatorWallet.smartWalletAddress, wallet.address)
-      if (allowance.lt(amount)) {
-        this.logger.log(`Insufficient allowance for ${operatorWallet.ownerId}`)
-        await this.updateIsActivated(operatorWallet._id, false)
-        continue
-      }
-
-      const balance = await contract.balanceOf(operatorWallet.smartWalletAddress)
-      if (balance.lt(amount)) {
-        this.logger.log(`Insufficient balance for ${operatorWallet.ownerId}`)
-        await this.updateIsActivated(operatorWallet._id, false)
-        continue
-      }
-
-      const transfer = await contract.transferFrom(operatorWallet.smartWalletAddress, wallet.address, amount)
-      const tx = await transfer.wait()
-      const txHash = tx?.transactionHash
-      if (!txHash) {
-        this.logger.log(`Transaction failed for ${operatorWallet.ownerId}`)
-        await this.updateIsActivated(operatorWallet._id, false)
-        continue
-      }
-
-      await this.createInvoice(operatorWallet.ownerId, tokenAmount, symbol, txHash, payment)
-      await this.updateIsActivated(operatorWallet._id, true)
-
-      this.operatorSubscriptionPaidEvent({ id: operatorWallet.ownerId, token: symbol, amount: tokenAmount })
+      this.logger.error('Failed to process monthly subscriptions', error)
+      throw error
     }
   }
 

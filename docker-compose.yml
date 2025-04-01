@@ -42,6 +42,7 @@ services:
       - COIN_GECKO_URL
       - WFUSE_CONTRACT_ADDRESS_MAINNET
       - WFUSE_CONTRACT_ADDRESS_TESTNET
+      - CRON_JOB_SECRET
     depends_on:
       - charge-api-service
       - charge-apps-service

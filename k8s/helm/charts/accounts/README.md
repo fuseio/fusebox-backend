@@ -40,6 +40,6 @@ A Helm chart for Kubernetes related accounts component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret | list | `["mongo_uri","smart_wallets_jwt_secret","paymaster_funder_private_key","paymaster_funder_api_secret_key","amplitude_api_key","incoming_token_transfers_webhook_id","google_operator_form_url","operator_refresh_jwt_secret","charge_payments_api_key","coin_gecko_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
+| secret | list | `["mongo_uri","smart_wallets_jwt_secret","paymaster_funder_private_key","paymaster_funder_api_secret_key","amplitude_api_key","incoming_token_transfers_webhook_id","google_operator_form_url","operator_refresh_jwt_secret","charge_payments_api_key","coin_gecko_api_key","cron_job_secret"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
 | securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 

@@ -9,7 +9,7 @@ import { CacheModule } from '@nestjs/cache-manager'
 @Module({
   imports: [
     CacheModule.register({
-      ttl: 60000, // in milliseconds
+      ttl: 10000, // in milliseconds
       max: 1000
     }),
     ClientsModule.register([

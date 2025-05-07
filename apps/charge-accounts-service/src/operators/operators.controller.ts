@@ -15,6 +15,7 @@ import { CreateOperatorCheckoutDto } from '@app/accounts-service/operators/dto/c
 import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface'
 import { CreateChargeBridgeDto } from '@app/accounts-service/operators/dto/create-charge-bridge.dto'
 import { CreateOperatorWallet } from '@app/accounts-service/operators/entities/create-operator-wallet.entity'
+import { CronGuard } from '@app/accounts-service/auth/guards/cron.guard'
 
 @ApiTags('Operators')
 @Controller({ path: 'operators', version: '1' })
@@ -229,5 +230,15 @@ export class OperatorsController {
   @ApiOperation({ summary: 'Create a Charge bridge wallet address for operator deposit' })
   async createChargeBridge (@User('sub') auth0Id: string, @Body() createChargeBridgeDto: CreateChargeBridgeDto) {
     return this.operatorsService.createChargeBridge(auth0Id, createChargeBridgeDto)
+  }
+
+  /**
+   * Trigger the process of monthly subscriptions
+   */
+  @UseGuards(CronGuard)
+  @Post('/subscriptions/process')
+  @ApiOperation({ summary: 'Trigger the process of monthly subscriptions' })
+  async processMonthlySubscriptions () {
+    return this.operatorsService.processMonthlySubscriptions()
   }
 }

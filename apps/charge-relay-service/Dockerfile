@@ -1,4 +1,4 @@
-FROM node:alpine As development
+FROM node:22-alpine AS development
 
 RUN apk update && apk add python3 make g++
 
@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:alpine as production
+FROM node:22-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}

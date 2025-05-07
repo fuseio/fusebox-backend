@@ -1,0 +1,659 @@
+# Default values for fusebox-backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+accounts-service:
+  enabled: true
+
+  externalSecret:
+    secretStoreName: "hashicorp-vault"
+    remoteRefKey: "fuseio/fusebox-backend/accounts-service"
+    refreshInterval: "15s"
+    secretKey:
+      - MONGO_URI
+      - SMART_WALLETS_JWT_SECRET
+      - PAYMASTER_FUNDER_PRIVATE_KEY
+      - PAYMASTER_FUNDER_API_SECRET_KEY
+      - AMPLITUDE_API_KEY
+      - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+      - GOOGLE_OPERATOR_FORM_URL
+      - OPERATOR_REFRESH_JWT_SECRET
+      - CHARGE_PAYMENTS_API_KEY
+      - COIN_GECKO_API_KEY
+      - CRON_JOB_SECRET
+
+  replicaCount: 1
+
+  image:
+    repository: fusebox-backend/accounts-service
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets:
+    - name: regcred
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  command: []
+
+  args: []
+
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: ""
+
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 5001
+        protocol: TCP
+        targetPort: 5001
+      - name: tcp
+        port: 8875
+        protocol: TCP
+        targetPort: 8875
+
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: accounts.qa.fuse.io
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: fusebox-backend-accounts-service-tls-certificate
+        hosts:
+          - accounts.qa.fuse.io
+
+  resources: {}
+
+  livenessProbe:
+    httpGet:
+      path: /accounts/v1/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /accounts/v1/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  volumes: []
+
+  volumeMounts: []
+
+  configMap:
+    ACCOUNTS_HOST: "0.0.0.0"
+    ACCOUNTS_PORT: "5001"
+    ACCOUNTS_TCP_PORT: "8875"
+    API_HOST: "fusebox-backend-api-service"
+    API_TCP_PORT: "8876"
+    SMART_WALLETS_HOST: "fusebox-backend-smart-wallets-service"
+    SMART_WALLETS_TCP_PORT: "8881"
+    NOTIFICATIONS_HOST: "fusebox-backend-notifications-service"
+    NOTIFICATIONS_TCP_PORT: "8879"
+    AUTH0_ISSUER_URL: "https://auth.qa.fuse.io/"
+    AUTH0_AUDIENCE: "https://accounts.qa.fuse.io"
+    PAYMASTER_SANDBOX_CONTRACT_ADDRESS_V_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"
+    PAYMASTER_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
+    ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+    ENTRYPOINT_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+    ETHERSPOT_WALLET_FACTORY_SANDBOX_CONTRACT_ADDRESS_V_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    ETHERSPOT_WALLET_FACTORY_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
+    PAYMASTER_FUNDER_API_KEY: "pk_u_RbFw7NQBB7ZQIFJtziLE_S"
+    PAYMASTER_FUNDER_WEBHOOK_ID: "65bbbc63fc2f925de8e1a561"
+    USDC_CONTRACT_ADDRESS_MAINNET: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    USDC_CONTRACT_ADDRESS_TESTNET: "0x28C3d1cD466Ba22f6cae51b1a4692a831696391A"
+    CHARGE_PAYMENTS_API_URL: "https://payments.chargeweb3.com"
+    COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
+    WFUSE_CONTRACT_ADDRESS_MAINNET: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
+    WFUSE_CONTRACT_ADDRESS_TESTNET: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+api-service:
+  enabled: true
+
+  externalSecret:
+    secretStoreName: "hashicorp-vault"
+    remoteRefKey: "fuseio/fusebox-backend/api-service"
+    refreshInterval: "15s"
+    secretKey:
+      - MONGO_URI
+      - RPC_URL
+      - FUSE_STUDIO_ADMIN_JWT
+      - LEGACY_JWT_SECRET
+      - SMART_WALLETS_JWT_SECRET
+      - PAYMASTER_PRODUCTION_SIGNER_PRIVATE_KEY_V_0_1_0
+      - PAYMASTER_SANDBOX_SIGNER_PRIVATE_KEY_V_0_1_0
+      - EXPLORER_API_KEY
+      - BUNDLER_API_PRD_URL
+      - PIMLICO_API_PRD_URL
+      - PIMLICO_API_SANDBOX_URL
+      - AMPLITUDE_API_KEY
+
+  replicaCount: 1
+
+  image:
+    repository: fusebox-backend/api-service
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets:
+    - name: regcred
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  command: []
+
+  args: []
+
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: ""
+
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 5002
+        protocol: TCP
+        targetPort: 5002
+      - name: tcp
+        port: 8876
+        protocol: TCP
+        targetPort: 8876
+
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: api.qa.fuse.io
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: fusebox-backend-api-service-tls-certificate
+        hosts:
+          - api.qa.fuse.io
+
+  resources: {}
+
+  livenessProbe:
+    httpGet:
+      path: /api/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /api/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  volumes: []
+
+  volumeMounts: []
+
+  configMap:
+    API_HOST: "0.0.0.0"
+    API_PORT: "5002"
+    API_TCP_PORT: "8876"
+    ACCOUNTS_HOST: "fusebox-backend-accounts-service"
+    ACCOUNTS_TCP_PORT: "8875"
+    NOTIFICATIONS_HOST: "fusebox-backend-notifications-service"
+    NOTIFICATIONS_TCP_PORT: "8879"
+    NETWORK_HOST: "fusebox-backend-network-service"
+    NETWORK_TCP_PORT: "8878"
+    SMART_WALLETS_HOST: "fusebox-backend-smart-wallets-service"
+    SMART_WALLETS_PORT: "5008"
+    SMART_WALLETS_TCP_PORT: "8881"
+    EXPLORER_API_URL: "https://explorer.fuse.io/api"
+    QA_MODE: "true"
+    BUNDLER_API_SANDBOX_URL: "https://testnet-rpc.etherspot.io/v1/123"
+    SPARK_RPC_URL: "https://rpc.fusespark.io"
+    LEGACY_FUSE_ADMIN_API_URL: "https://studio.fuse.io"
+    LEGACY_FUSE_WALLET_API_URL: "https://staging-wallet.fuse.io"
+    VOLTAGE_ROUTER_API_URL: "https://router.voltage.finance"
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# ----------------------
+# !!! - DEPRECATED - !!!
+# ----------------------
+apps-service:
+  enabled: false
+
+network-service:
+  enabled: true
+
+  externalSecret:
+    secretStoreName: "hashicorp-vault"
+    remoteRefKey: "fuseio/fusebox-backend/network-service"
+    refreshInterval: "15s"
+    secretKey:
+      - RPC_URL
+      - UNMARSHAL_AUTH_KEY
+      - EXPLORER_API_KEY
+      - COIN_GECKO_API_KEY
+
+  replicaCount: 1
+
+  image:
+    repository: fusebox-backend/network-service
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets:
+    - name: regcred
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  command: []
+
+  args: []
+
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: ""
+
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 5004
+        protocol: TCP
+        targetPort: 5004
+      - name: tcp
+        port: 8878
+        protocol: TCP
+        targetPort: 8878
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+  resources: {}
+
+  livenessProbe:
+    httpGet:
+      path: /network/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /network/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  volumes: []
+
+  volumeMounts: []
+
+  configMap:
+    NETWORK_HOST: "0.0.0.0"
+    NETWORK_PORT: "5004"
+    NETWORK_TCP_PORT: "8878"
+    PRIMARY_SERVICE: "explorer"
+    EXPLORER_API_URL: "https://explorer.fuse.io/api"
+    UNMARSHAL_BASE_URL: "https://api.unmarshal.com"
+    COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+notifications-service:
+  enabled: true
+
+  externalSecret:
+    secretStoreName: "hashicorp-vault"
+    remoteRefKey: "fuseio/fusebox-backend/notifications-service"
+    refreshInterval: "15s"
+    secretKey:
+      - MONGO_URI
+      - SMART_WALLETS_JWT_SECRET
+      - RPC_URL
+      - FULL_ARCHIVE_RPC_URL
+
+  replicaCount: 1
+
+  image:
+    repository: fusebox-backend/notifications-service
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets:
+    - name: regcred
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  command: []
+
+  args: []
+
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: ""
+
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 5005
+        protocol: TCP
+        targetPort: 5005
+      - name: tcp
+        port: 8879
+        protocol: TCP
+        targetPort: 8879
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+  resources: {}
+
+  livenessProbe:
+    httpGet:
+      path: /notifications/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /notifications/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  volumes: []
+
+  volumeMounts: []
+
+  configMap:
+    NOTIFICATIONS_HOST: "0.0.0.0"
+    NOTIFICATIONS_PORT: "5005"
+    NOTIFICATIONS_TCP_PORT: "8879"
+    SMART_WALLETS_HOST: "fusebox-backend-smart-wallets-service"
+    SMART_WALLETS_TCP_PORT: "8881"
+    NETWORK_NAME: "fuse"
+    CHAIN_ID: "122"
+    MAX_BLOCKS: "1500"
+    TIMEOUT_INTERVAL: "20000"
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# ----------------------
+# !!! - DEPRECATED - !!!
+# ----------------------
+relay-service:
+  enabled: false
+
+smart-wallets-service:
+  enabled: true
+
+  externalSecret:
+    secretStoreName: "hashicorp-vault"
+    remoteRefKey: "fuseio/fusebox-backend/smart-wallets-service"
+    refreshInterval: "15s"
+    secretKey:
+      - AMPLITUDE_API_KEY
+      - MONGO_URI
+      - SMART_WALLETS_JWT_SECRET
+      - FUSE_WALLET_BACKEND_JWT
+      - CENTRIFUGO_JWT
+      - CENTRIFUGO_API_KEY
+      - CHARGE_PUBLIC_KEY
+      - CHARGE_SECRET_KEY
+      - INCOMING_TOKEN_TRANSFERS_WEBHOOK_ID
+      - COIN_GECKO_API_KEY
+
+  replicaCount: 1
+
+  image:
+    repository: fusebox-backend/smart-wallets-service
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets:
+    - name: regcred
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  command: []
+
+  args: []
+
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: ""
+
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 5007
+        protocol: TCP
+        targetPort: 5007
+      - name: tcp
+        port: 8881
+        protocol: TCP
+        targetPort: 8881
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+  resources: {}
+
+  livenessProbe:
+    httpGet:
+      path: /smart-wallets/v1/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /smart-wallets/v1/health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 3
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  volumes: []
+
+  volumeMounts: []
+
+  configMap:
+    SMART_WALLETS_HOST: "0.0.0.0"
+    SMART_WALLETS_PORT: "5007"
+    SMART_WALLETS_TCP_PORT: "8881"
+    API_HOST: "fusebox-backend-api-service"
+    API_TCP_PORT: "8876"
+    ACCOUNTS_HOST: "fusebox-backend-accounts-service"
+    ACCOUNTS_TCP_PORT: "8875"
+    CENTRIFUGO_URI: "wss://ws.qa.fuse.io/connection/websocket"
+    CENTRIFUGO_API_URL: "https://ws.qa.fuse.io/api"
+    LEGACY_FUSE_WALLET_API_URL: "https://staging-wallet.fuse.io"
+    CHARGE_BASE_URL: "https://api.qa.fuse.io"
+    COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}

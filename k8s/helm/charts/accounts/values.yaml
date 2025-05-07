@@ -111,3 +111,4 @@ secret:
   - operator_refresh_jwt_secret
   - charge_payments_api_key
   - coin_gecko_api_key
+  - cron_job_secret

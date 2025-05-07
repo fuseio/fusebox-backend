@@ -21,7 +21,7 @@ jobs:
           - dockerfile: ./apps/charge-network-service/Dockerfile
             image: network-service
           - dockerfile: ./apps/charge-notifications-service/Dockerfile
-            image: notification-service
+            image: notifications-service
           - dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
             image: smart-wallets-service
     env:

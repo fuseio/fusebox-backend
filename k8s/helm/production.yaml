@@ -85,7 +85,7 @@ accounts:
     - cron_job_secret
 
 amplitude:
-  enabled: true
+  enabled: false # amplitude-proxy was migrated to OVH Cloud
 
   # Replicas
   replicas: 2

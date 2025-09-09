@@ -85,7 +85,7 @@ accounts:
     - cron_job_secret
 
 amplitude:
-  enabled: true
+  enabled: false # amplitude-proxy was migrated to OVH Cloud
 
   # Replicas
   replicas: 2
@@ -156,6 +156,7 @@ api:
     - bundler_api_prd_url
     - pimlico_api_prd_url
     - pimlico_api_sandbox_url
+    - amplitude_api_key
 
 apps:
   enabled: false # [DEPRECATED]

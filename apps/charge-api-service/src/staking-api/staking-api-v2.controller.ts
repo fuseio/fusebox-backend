@@ -7,7 +7,7 @@ import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller({ path: 'staking', version: '2' })
 export class StakingApiV2Controller {
-  constructor (private readonly stakingAPIService: StakingAPIService) {}
+  constructor (private readonly stakingAPIService: StakingAPIService) { }
 
   @Get('staking_options')
   stakingOptions () {

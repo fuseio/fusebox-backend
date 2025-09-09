@@ -100,7 +100,7 @@ jobs:
       - name: Release
         run: |
           helm upgrade \
-            --force \          
+            --force \
             --install \
             --history-max 3 \
             --debug \

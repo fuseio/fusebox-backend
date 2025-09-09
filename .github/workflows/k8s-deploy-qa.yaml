@@ -99,6 +99,7 @@ jobs:
 
       - name: Release
         run: |
+          kubectl auth can-i create externalsecrets -n ${{ env.HELM_RELEASE_NAMESPACE }}
           helm upgrade \
             --install \
             --history-max 3 \

@@ -157,10 +157,16 @@ export class PaymasterApiService {
         )
         .pipe(
           catchError((e) => {
+            // Log specific error types for better debugging
+            if (e?.response?.status === 503 || e?.response?.status === 502) {
+              this.logger.error(`Service unavailable error (${e?.response?.status}): RPC node may be down`)
+            }
+
             const errorReason =
+              e?.response?.data?.error?.message ||
               e?.result?.error ||
-              e?.result?.error?.message ||
-              ''
+              e?.message ||
+              'Unknown error during gas estimation'
 
             this.logger.error(`RpcException catchError: ${errorReason} ${JSON.stringify(e)}`)
             throw new RpcException(errorReason)

@@ -46,21 +46,40 @@ export class BundlerApiInterceptor implements NestInterceptor {
         .request(requestConfig)
         .pipe(
           map((axiosResponse: AxiosResponse) => {
-            this.logger.log(`BundlerApiInterceptor succeeded: ${JSON.stringify(axiosResponse.data)}`)
-            return axiosResponse.data
+            const data = axiosResponse.data
+            if (data?.error) {
+              this.logger.error(`BundlerApiInterceptor JSON-RPC error: ${JSON.stringify(data.error)}`)
+              // Parse specific error codes
+              if (data.error?.data?.includes('0xe0cff05f')) {
+                this.logger.error('FailedOp: UserOperation validation failed at EntryPoint')
+              }
+              // For CALL_EXCEPTION errors specifically
+              if (data.error?.message?.includes('CALL_EXCEPTION')) {
+                this.logger.error('Transaction simulation failed - possible validation, gas, or contract execution error')
+              }
+            } else {
+              this.logger.log(`BundlerApiInterceptor succeeded: ${JSON.stringify(data)}`)
+            }
+            return data
           })
         )
         .pipe(
           catchError((e) => {
-            const errorReason =
-              e?.response?.data?.error ||
-              e?.response?.data?.errors?.message ||
-              ''
-            this.logger.log(`BundlerApiInterceptor error: ${JSON.stringify(e)}`)
-            throw new HttpException(
-              `${e?.response?.statusText}: ${errorReason}`,
-              e?.response?.status
-            )
+            const errorData = e?.response?.data
+            let errorMessage = e?.response?.statusText || 'Bundler API error'
+
+            if (errorData?.error) {
+              const error = errorData.error
+              if (error.data?.includes('0xe0cff05f')) {
+                errorMessage = 'UserOperation validation failed - possible causes: expired validUntil timestamp, insufficient gas, or paymaster validation failure'
+                this.logger.error(`FailedOp details: ${JSON.stringify(error)}`)
+              } else {
+                errorMessage = error.message || errorMessage
+              }
+            }
+
+            this.logger.error(`BundlerApiInterceptor error: ${JSON.stringify(e)}`)
+            throw new HttpException(errorMessage, e?.response?.status || 500)
           })
         )
     )

@@ -10,7 +10,6 @@ accounts-service:
     remoteRefKey: "fuseio/fusebox-backend/accounts-service"
     refreshInterval: "15s"
     secretKey:
-      - MONGO_URI
       - SMART_WALLETS_JWT_SECRET
       - PAYMASTER_FUNDER_PRIVATE_KEY
       - PAYMASTER_FUNDER_API_SECRET_KEY
@@ -154,7 +153,6 @@ api-service:
     remoteRefKey: "fuseio/fusebox-backend/api-service"
     refreshInterval: "15s"
     secretKey:
-      - MONGO_URI
       - RPC_URL
       - FUSE_STUDIO_ADMIN_JWT
       - LEGACY_JWT_SECRET
@@ -415,7 +413,6 @@ notifications-service:
     remoteRefKey: "fuseio/fusebox-backend/notifications-service"
     refreshInterval: "15s"
     secretKey:
-      - MONGO_URI
       - SMART_WALLETS_JWT_SECRET
       - RPC_URL
       - FULL_ARCHIVE_RPC_URL
@@ -540,7 +537,6 @@ smart-wallets-service:
     refreshInterval: "15s"
     secretKey:
       - AMPLITUDE_API_KEY
-      - MONGO_URI
       - SMART_WALLETS_JWT_SECRET
       - FUSE_WALLET_BACKEND_JWT
       - CENTRIFUGO_JWT

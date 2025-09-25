@@ -99,7 +99,14 @@ jobs:
 
       - name: Release
         run: |
-          helm template \
+          helm upgrade \
+            --force \
+            --reset-values \
+            --install \
+            --history-max 3 \
+            --debug \
+            --atomic \
+            --wait \
             --values helm/values/prod.yaml \
             --set accounts-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/accounts-service \
             --set accounts-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \

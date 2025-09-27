@@ -65,11 +65,14 @@ export class SmartWalletsLegacyService implements SmartWalletService {
         this.logger.warn(`Smart Wallet not found for owner address: ${ownerAddress}`)
         throw new Error('Not found')
       }
+      // Handle wallet deployment if not deployed
       if (!smartWallet.isContractDeployed) {
         this.logger.log(`Smart Wallet not deployed for owner address: ${ownerAddress}, deploying...`)
         const transactionId = generateTransactionId(smartWallet.salt)
         const walletModules = this.sharedAddresses.walletModules
-        this.relayAPIService.createWallet({
+
+        // Attempt deployment but don't let it fail the whole request
+        await this.relayAPIService.createWallet({
           v2: true,
           salt: smartWallet.salt,
           transactionId,
@@ -78,9 +81,13 @@ export class SmartWalletsLegacyService implements SmartWalletService {
           walletModules,
           walletFactoryAddress: this.sharedAddresses.WalletFactory
         }).catch(err => {
-          const errorMessage = `Retry wallet creation failed: ${err}`
+          // Log deployment error but continue - wallet can be retried later
+          const errorMessage = `Wallet deployment failed: ${err.message || err}`
           this.logger.error(errorMessage)
+          // Don't rethrow - we still want to return the wallet object
         })
+
+        this.logger.log(`Wallet deployment process completed for ${ownerAddress}`)
       }
 
       const {
@@ -116,7 +123,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       const transactionId = generateTransactionId(salt)
       const walletModules = this.sharedAddresses.walletModules
       await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: ownerAddress })
-      this.relayAPIService.createWallet({
+      await this.relayAPIService.createWallet({
         v2: true,
         salt,
         transactionId,
@@ -139,7 +146,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     try {
       const transactionId = generateTransactionId(relayDto.data)
       await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: relayDto.ownerAddress })
-      this.relayAPIService.relay({
+      await this.relayAPIService.relay({
         v2: true,
         transactionId,
         ...relayDto

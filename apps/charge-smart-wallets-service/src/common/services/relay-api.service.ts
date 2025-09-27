@@ -55,22 +55,31 @@ export default class RelayAPIService {
   }
 
   private async httpProxy (requestConfig: AxiosRequestConfig) {
-    const observable = this.httpService
-      .request(
-        requestConfig
-      )
-      .pipe(map(res => res.data))
-      .pipe(
-        catchError(e => {
-          const errorReason = e?.response?.data?.error ||
-            e?.response?.data?.errors?.message || ''
-
-          throw new HttpException(
-            `${e?.response?.statusText}: ${errorReason}`,
-            e?.response?.status
-          )
+    try {
+      const observable = this.httpService
+        .request({
+          ...requestConfig,
+          timeout: 30000 // 30 second timeout
         })
-      )
-    return await lastValueFrom(observable)
+        .pipe(map(res => res.data))
+        .pipe(
+          catchError(e => {
+            const errorReason = e?.response?.data?.error ||
+              e?.response?.data?.errors?.message || ''
+
+            // Transform HTTP exceptions to regular errors for microservice context
+            if (e.code === 'ECONNABORTED' || e?.response?.status === 504) {
+              throw new Error('Service temporarily unavailable, please try again')
+            }
+
+            throw new Error(`${e?.response?.statusText || 'Request failed'}: ${errorReason}`)
+          })
+        )
+      return await lastValueFrom(observable)
+    } catch (error) {
+      // Log error for debugging but don't let it crash the service
+      console.error('Relay API error:', error.message)
+      throw error
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { Model } from 'mongoose'
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
-import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
+import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
+import { RpcException } from '@nestjs/microservices'
 import { JwtService } from '@nestjs/jwt'
 import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
@@ -52,7 +53,10 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
     } catch (err) {
       this.logger.error(`An error occurred during Smart Wallets Auth. ${err}`)
-      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+      throw new RpcException({
+        message: err.message || 'Authentication error',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
     }
   }
 
@@ -63,7 +67,7 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
       if (!smartWallet) {
         this.logger.warn(`Smart Wallet not found for owner address: ${ownerAddress}`)
-        throw new Error('Not found')
+        throw new RpcException({ message: 'Smart wallet not found', statusCode: HttpStatus.NOT_FOUND })
       }
       if (!smartWallet.isContractDeployed) {
         this.logger.log(`Smart Wallet not deployed for owner address: ${ownerAddress}, deploying...`)
@@ -102,7 +106,15 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
     } catch (err) {
       this.logger.error(`An error occurred during fetching Legacy Smart Wallet. ${err}`)
-      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+      // If it's already an RpcException, re-throw it
+      if (err instanceof RpcException) {
+        throw err
+      }
+      // Otherwise wrap it in RpcException for microservice context
+      throw new RpcException({
+        message: err.message || 'Error fetching smart wallet',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
     }
   }
 
@@ -110,7 +122,10 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     try {
       const { ownerAddress } = smartWalletUser
       if (await this.smartWalletModel.findOne({ ownerAddress })) {
-        throw new Error('Owner address already has a deployed smart wallet')
+        throw new RpcException({
+          message: 'Owner address already has a deployed smart wallet',
+          statusCode: HttpStatus.CONFLICT
+        })
       }
       const salt = generateSalt()
       const transactionId = generateTransactionId(salt)
@@ -131,7 +146,10 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
     } catch (err) {
       this.logger.error(`An error occurred during Smart Wallets Creation. ${err}`)
-      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+      throw new RpcException({
+        message: err.message || 'Error creating smart wallet',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
     }
   }
 
@@ -150,7 +168,10 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
     } catch (err) {
       this.logger.error(`An error occurred during relay execution. ${err}`)
-      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+      throw new RpcException({
+        message: err.message || 'Relay execution error',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
     }
   }
 
@@ -163,7 +184,10 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
     } catch (error) {
       this.logger.error(`An error occurred during fetching historical txs. ${error}`)
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+      throw new RpcException({
+        message: error.message || 'Error fetching historical transactions',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
     }
   }
 

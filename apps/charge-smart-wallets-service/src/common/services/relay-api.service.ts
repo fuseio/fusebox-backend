@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios'
-import { HttpException, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
@@ -62,13 +62,19 @@ export default class RelayAPIService {
       .pipe(map(res => res.data))
       .pipe(
         catchError(e => {
+          // More robust error handling - check if response exists before accessing properties
           const errorReason = e?.response?.data?.error ||
-            e?.response?.data?.errors?.message || ''
+            e?.response?.data?.errors?.message ||
+            e?.message ||
+            'Unknown error occurred'
 
-          throw new HttpException(
-            `${e?.response?.statusText}: ${errorReason}`,
-            e?.response?.status
-          )
+          const statusText = e?.response?.statusText || 'Error'
+          const status = e?.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
+
+          // Create error message safely
+          const errorMessage = errorReason ? `${statusText}: ${errorReason}` : statusText
+
+          throw new HttpException(errorMessage, status)
         })
       )
     return await lastValueFrom(observable)

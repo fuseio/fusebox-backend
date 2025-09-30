@@ -8,6 +8,7 @@ import { RpcException } from '@nestjs/microservices'
 import { ServerResponse } from 'http'
 import { MongoServerError } from 'mongodb'
 import { throwError } from 'rxjs'
+import { get, isPlainObject } from 'lodash'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -36,8 +37,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
         errorMessage = `${Object.keys(exception?.keyValue)} must be unique`
       }
     } else if (exception instanceof RpcException) {
-      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
-      errorMessage = exception.message
+      // RpcException can have custom status in the error object
+      const rpcError = exception.getError()
+      this.logger.debug(`RpcException caught - Raw error object: ${JSON.stringify(rpcError)}`)
+
+      if (isPlainObject(rpcError)) {
+        httpStatus = get(rpcError, 'status', get(rpcError, 'statusCode', HttpStatus.INTERNAL_SERVER_ERROR))
+        errorMessage = get(rpcError, 'error', get(rpcError, 'message', exception.message))
+        this.logger.debug(`RpcException - Extracted status: ${httpStatus}, message: ${errorMessage}`)
+      } else {
+        httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+        errorMessage = exception.message
+        this.logger.debug(`RpcException - Using defaults, status: ${httpStatus}, message: ${errorMessage}`)
+      }
     } else {
       httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
       errorMessage = 'Critical Internal Server Error Occurred'
@@ -52,7 +64,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     if (host.getType() === 'rpc') {
-      return throwError(() => ({ message: errorMessage, status: httpStatus }))
+      this.logger.debug(`Returning RPC error - status: ${httpStatus}, message: ${errorMessage}`)
+      return throwError(() => ({
+        error: errorMessage, // Use 'error' field for consistency
+        status: httpStatus
+      }))
     }
 
     response.statusCode = httpStatus

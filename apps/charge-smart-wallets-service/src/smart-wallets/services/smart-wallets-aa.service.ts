@@ -64,8 +64,8 @@ export class SmartWalletsAAService implements SmartWalletService {
       }
       // Otherwise wrap it in RpcException for microservice context
       throw new RpcException({
-        message: err.message || 'Authentication error',
-        statusCode: HttpStatus.BAD_REQUEST
+        error: err.message || 'Authentication error',
+        status: HttpStatus.BAD_REQUEST
       })
     }
   }

@@ -54,8 +54,8 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     } catch (err) {
       this.logger.error(`An error occurred during Smart Wallets Auth. ${err}`)
       throw new RpcException({
-        message: err.message || 'Authentication error',
-        statusCode: HttpStatus.BAD_REQUEST
+        error: err.message || 'Authentication error',
+        status: HttpStatus.BAD_REQUEST
       })
     }
   }
@@ -67,7 +67,12 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       const smartWallet = await this.smartWalletModel.findOne({ ownerAddress })
       if (!smartWallet) {
         this.logger.warn(`Smart Wallet not found for owner address: ${ownerAddress}`)
-        throw new RpcException({ message: 'Smart wallet not found', statusCode: HttpStatus.NOT_FOUND })
+        const errorObj = {
+          error: 'Smart wallet not found',
+          status: HttpStatus.NOT_FOUND
+        }
+        this.logger.debug(`Throwing RpcException with: ${JSON.stringify(errorObj)}`)
+        throw new RpcException(errorObj)
       }
       if (!smartWallet.isContractDeployed) {
         this.logger.log(`Smart Wallet not deployed for owner address: ${ownerAddress}, deploying...`)
@@ -112,8 +117,8 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
       // Otherwise wrap it in RpcException for microservice context
       throw new RpcException({
-        message: err.message || 'Error fetching smart wallet',
-        statusCode: HttpStatus.BAD_REQUEST
+        error: err.message || 'Error fetching smart wallet',
+        status: HttpStatus.BAD_REQUEST
       })
     }
   }
@@ -123,8 +128,8 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       const { ownerAddress } = smartWalletUser
       if (await this.smartWalletModel.findOne({ ownerAddress })) {
         throw new RpcException({
-          message: 'Owner address already has a deployed smart wallet',
-          statusCode: HttpStatus.CONFLICT
+          error: 'Owner address already has a deployed smart wallet',
+          status: HttpStatus.CONFLICT
         })
       }
       const salt = generateSalt()
@@ -147,8 +152,8 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     } catch (err) {
       this.logger.error(`An error occurred during Smart Wallets Creation. ${err}`)
       throw new RpcException({
-        message: err.message || 'Error creating smart wallet',
-        statusCode: HttpStatus.BAD_REQUEST
+        error: err.message || 'Error creating smart wallet',
+        status: HttpStatus.BAD_REQUEST
       })
     }
   }
@@ -169,8 +174,8 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     } catch (err) {
       this.logger.error(`An error occurred during relay execution. ${err}`)
       throw new RpcException({
-        message: err.message || 'Relay execution error',
-        statusCode: HttpStatus.BAD_REQUEST
+        error: err.message || 'Relay execution error',
+        status: HttpStatus.BAD_REQUEST
       })
     }
   }
@@ -185,8 +190,8 @@ export class SmartWalletsLegacyService implements SmartWalletService {
     } catch (error) {
       this.logger.error(`An error occurred during fetching historical txs. ${error}`)
       throw new RpcException({
-        message: error.message || 'Error fetching historical transactions',
-        statusCode: HttpStatus.BAD_REQUEST
+        error: error.message || 'Error fetching historical transactions',
+        status: HttpStatus.BAD_REQUEST
       })
     }
   }

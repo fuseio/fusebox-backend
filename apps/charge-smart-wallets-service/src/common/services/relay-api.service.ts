@@ -1,11 +1,12 @@
 import { HttpService } from '@nestjs/axios'
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
 import { catchError, lastValueFrom, map } from 'rxjs'
 
 @Injectable()
 export default class RelayAPIService {
+  private readonly logger = new Logger(RelayAPIService.name)
   constructor (
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
@@ -62,6 +63,7 @@ export default class RelayAPIService {
       .pipe(map(res => res.data))
       .pipe(
         catchError(e => {
+          this.logger.error(`RelayAPIService error: ${JSON.stringify(e)}`)
           // More robust error handling - check if response exists before accessing properties
           const errorReason = e?.response?.data?.error ||
             e?.response?.data?.errors?.message ||

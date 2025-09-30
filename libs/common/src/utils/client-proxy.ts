@@ -15,9 +15,12 @@ export async function callMSFunction (client: ClientProxy, pattern: string, data
           if (error instanceof TimeoutError) {
             return throwError(() => new HttpException(`Timeout in ${serviceName} microservice call`, HttpStatus.REQUEST_TIMEOUT))
           }
+          // Handle RpcException errors that contain statusCode
+          const statusCode = error.statusCode || error.status || HttpStatus.INTERNAL_SERVER_ERROR
+          const message = error.message || 'Unknown error'
           return throwError(() => new HttpException(
-            `Error in ${serviceName} microservice: ${error.message || 'Unknown error'}`,
-            error.status || HttpStatus.INTERNAL_SERVER_ERROR
+            `Error in ${serviceName} microservice: ${message}`,
+            statusCode
           ))
         })
       )

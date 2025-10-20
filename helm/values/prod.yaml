@@ -10,6 +10,7 @@ accounts-service:
     remoteRefKey: "fuseio/fusebox-backend/accounts-service"
     refreshInterval: "15s"
     secretKey:
+      - MONGO_URI
       - SMART_WALLETS_JWT_SECRET
       - PAYMASTER_FUNDER_PRIVATE_KEY
       - PAYMASTER_FUNDER_API_SECRET_KEY
@@ -71,14 +72,14 @@ accounts-service:
     className: "nginx"
     annotations: {}
     hosts:
-      - host: accounts.test.fuse.io
+      - host: accounts.fuse.io
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: fusebox-backend-accounts-service-tls-certificate
         hosts:
-          - accounts.test.fuse.io
+          - accounts.fuse.io
 
   resources: {}
 
@@ -123,7 +124,7 @@ accounts-service:
     NOTIFICATIONS_HOST: "fusebox-backend-notifications-service"
     NOTIFICATIONS_TCP_PORT: "8879"
     AUTH0_ISSUER_URL: "https://auth.fuse.io//"
-    AUTH0_AUDIENCE: "https://accounts.test.fuse.io"
+    AUTH0_AUDIENCE: "https://accounts.fuse.io"
     PAYMASTER_SANDBOX_CONTRACT_ADDRESS_V_0_1_0: "0x324999f067EA822EEf78e7A4793F672A4F5E80f6"
     PAYMASTER_PRODUCTION_CONTRACT_ADDRESS_V_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
     ENTRYPOINT_SANDBOX_CONTRACT_ADDRESS_V_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
@@ -153,6 +154,7 @@ api-service:
     remoteRefKey: "fuseio/fusebox-backend/api-service"
     refreshInterval: "15s"
     secretKey:
+      - MONGO_URI
       - RPC_URL
       - FUSE_STUDIO_ADMIN_JWT
       - LEGACY_JWT_SECRET
@@ -215,14 +217,14 @@ api-service:
     className: "nginx"
     annotations: {}
     hosts:
-      - host: api.test.fuse.io
+      - host: api.fuse.io
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: fusebox-backend-api-service-tls-certificate
         hosts:
-          - api.test.fuse.io
+          - api.fuse.io
 
   resources: {}
 
@@ -413,6 +415,7 @@ notifications-service:
     remoteRefKey: "fuseio/fusebox-backend/notifications-service"
     refreshInterval: "15s"
     secretKey:
+      - MONGO_URI
       - SMART_WALLETS_JWT_SECRET
       - RPC_URL
       - FULL_ARCHIVE_RPC_URL
@@ -536,6 +539,7 @@ smart-wallets-service:
     remoteRefKey: "fuseio/fusebox-backend/smart-wallets-service"
     refreshInterval: "15s"
     secretKey:
+      - MONGO_URI
       - AMPLITUDE_API_KEY
       - SMART_WALLETS_JWT_SECRET
       - FUSE_WALLET_BACKEND_JWT
@@ -645,7 +649,7 @@ smart-wallets-service:
     CENTRIFUGO_URI: "wss://ws.test.fuse.io/connection/websocket"
     CENTRIFUGO_API_URL: "https://ws.test.fuse.io/api"
     LEGACY_FUSE_WALLET_API_URL: "https://wallet.fuse.io"
-    CHARGE_BASE_URL: "https://api.test.fuse.io"
+    CHARGE_BASE_URL: "https://api.fuse.io"
     COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
 
   nodeSelector: {}

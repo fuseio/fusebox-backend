@@ -1,5 +1,6 @@
 import { SmartWalletsAuthDto } from '@app/smart-wallets-service/dto/smart-wallets-auth.dto'
-import { Inject, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { Inject, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { RpcException } from '@nestjs/microservices'
 import { JwtService } from '@nestjs/jwt'
 import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-ethers'
 import { SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
@@ -57,7 +58,15 @@ export class SmartWalletsAAService implements SmartWalletService {
       }
     } catch (err) {
       this.logger.error(`An error occurred during Smart Wallets Auth. ${err}`)
-      throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+      // If it's already an RpcException, re-throw it
+      if (err instanceof RpcException) {
+        throw err
+      }
+      // Otherwise wrap it in RpcException for microservice context
+      throw new RpcException({
+        error: err.message || 'Authentication error',
+        status: HttpStatus.BAD_REQUEST
+      })
     }
   }
 

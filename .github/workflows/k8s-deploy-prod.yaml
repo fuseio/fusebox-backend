@@ -4,7 +4,7 @@ name: Build & Deploy to Kubernetes [PRIVATE_REGISTRY_PASSWORD:]
 on:
   push:
     branches:
-      - prod
+      - master
 
 jobs:
   build-and-push:

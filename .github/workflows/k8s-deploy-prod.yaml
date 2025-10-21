@@ -1,0 +1,124 @@
+---
+name: Build & Deploy to Kubernetes [PRIVATE_REGISTRY_PASSWORD:]
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  build-and-push:
+    name: Build & Push
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./apps/charge-accounts-service/Dockerfile
+            image: accounts-service
+          - dockerfile: ./apps/charge-api-service/Dockerfile
+            image: api-service
+          - dockerfile: ./apps/charge-network-service/Dockerfile
+            image: network-service
+          - dockerfile: ./apps/charge-notifications-service/Dockerfile
+            image: notifications-service
+          - dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
+            image: smart-wallets-service
+    env:
+      PRIVATE_REGISTRY_ENDPOINT: ${{ secrets.PRIVATE_REGISTRY_ENDPOINT }}
+      PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_PROD }}
+      PRIVATE_REGISTRY_USERNAME: ${{ secrets.PRIVATE_REGISTRY_USERNAME_PROD }}
+      PRIVATE_REGISTRY_PASSWORD: ${{ secrets.PRIVATE_REGISTRY_PASSWORD_PROD }}
+    outputs:
+      short_sha: ${{ steps.sha.outputs.short_sha }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set GitHub commit short SHA
+        id: sha
+        run: |
+          CALCULATED_SHA=$(git rev-parse --short ${{ github.sha }})
+          echo "short_sha=$CALCULATED_SHA" >> $GITHUB_OUTPUT
+
+      - name: Login to private registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.PRIVATE_REGISTRY_ENDPOINT }}
+          username: ${{ env.PRIVATE_REGISTRY_USERNAME }}
+          password: ${{ env.PRIVATE_REGISTRY_PASSWORD }}
+          logout: true
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image(s)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: |
+            ${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/${{ matrix.image }}:latest
+            ${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/${{ matrix.image }}:${{ steps.sha.outputs.short_sha }}
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_REGISTRY_ENDPOINT: ${{ secrets.PRIVATE_REGISTRY_ENDPOINT }}
+      PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_PROD }}
+      K8S_KUBECONFIG: ${{ secrets.K8S_KUBECONFIG_PROD }}
+      HELM_CHART_REGISTRY_ENDPOINT: ${{ secrets.HELM_CHART_REGISTRY_ENDPOINT }}
+      HELM_CHART_REGISTRY_REPOSITORY: ${{ secrets.HELM_CHART_REGISTRY_REPOSITORY }}
+      HELM_CHART_REGISTRY_USERNAME: ${{ secrets.HELM_CHART_REGISTRY_USERNAME }}
+      HELM_CHART_REGISTRY_PASSWORD: ${{ secrets.HELM_CHART_REGISTRY_PASSWORD }}
+      HELM_CHART_VERSION: ${{ vars.HELM_CHART_VERSION_PROD }}
+      HELM_RELEASE_NAME: ${{ vars.HELM_RELEASE_NAME }}
+      HELM_RELEASE_NAMESPACE: ${{ vars.HELM_RELEASE_NAMESPACE }}
+    needs: build-and-push
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Login to private registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.HELM_CHART_REGISTRY_ENDPOINT }}
+          username: ${{ env.HELM_CHART_REGISTRY_USERNAME }}
+          password: ${{ env.HELM_CHART_REGISTRY_PASSWORD }}
+          logout: true
+
+      - name: Configure Kubernetes config file
+        run: |
+          mkdir -p $HOME/.kube/
+          echo "${{ env.K8S_KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+
+      - name: Release
+        run: |
+          helm upgrade \
+            --force \
+            --reset-values \
+            --install \
+            --history-max 3 \
+            --debug \
+            --atomic \
+            --wait \
+            --values helm/values/prod.yaml \
+            --set accounts-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/accounts-service \
+            --set accounts-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \
+            --set api-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/api-service \
+            --set api-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \
+            --set network-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/network-service \
+            --set network-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \
+            --set notifications-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/notifications-service \
+            --set notifications-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \
+            --set smart-wallets-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/smart-wallets-service \
+            --set smart-wallets-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \
+            -n ${{ env.HELM_RELEASE_NAMESPACE }} \
+            ${{ env.HELM_RELEASE_NAME }} \
+            oci://${{ env.HELM_CHART_REGISTRY_ENDPOINT }}/${{ env.HELM_CHART_REGISTRY_REPOSITORY }} \
+            --version ${{ env.HELM_CHART_VERSION }}

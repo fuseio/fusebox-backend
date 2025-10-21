@@ -4,7 +4,7 @@ name: Build & Deploy to Kubernetes [PRIVATE_REGISTRY_PASSWORD:]
 on:
   push:
     branches:
-      - prod
+      - Add-Prod-to-OVH
 
 jobs:
   build-and-push:

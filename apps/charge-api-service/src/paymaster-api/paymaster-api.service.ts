@@ -49,7 +49,6 @@ export class PaymasterApiService {
 
       const validUntil = parseInt(timestamp.toString()) + 900
       const validAfter = 0
-
       const paymasterInfo = await callMSFunction(this.accountClient, 'get_paymaster_info', { projectId, env })
       const minVerificationGasLimit = '140000'
 
@@ -132,90 +131,81 @@ export class PaymasterApiService {
   }
 
   async estimateUserOpGas (op, requestEnvironment, entrypointAddress): Promise<GasDetails> {
-    try {
-      const data = {
-        jsonrpc: '2.0',
-        method: 'eth_estimateUserOperationGas',
-        params: [
-          op,
-          entrypointAddress
-        ],
-        id: 1
-      }
+    const data = {
+      jsonrpc: '2.0',
+      method: 'eth_estimateUserOperationGas',
+      params: [
+        op,
+        entrypointAddress
+      ],
+      id: 1
+    }
 
-      const requestConfig: AxiosRequestConfig = {
-        url: this.prepareUrl(requestEnvironment),
-        method: 'post',
-        data
-      }
-      const response = await lastValueFrom(
-        this.httpService
-          .request(requestConfig)
-          .pipe(
-            map((axiosResponse: AxiosResponse) => {
-              return axiosResponse.data
-            })
-          )
-          .pipe(
-            catchError((e) => {
-              const errorReason =
-                e?.result?.error ||
-                e?.result?.error?.message ||
-                ''
+    const requestConfig: AxiosRequestConfig = {
+      url: this.prepareUrl(requestEnvironment),
+      method: 'post',
+      data
+    }
 
-              this.logger.error(`RpcException catchError: ${errorReason} ${JSON.stringify(e)}`)
-              throw new RpcException(errorReason)
-            })
-          )
-      )
+    const response = await lastValueFrom(
+      this.httpService
+        .request(requestConfig)
+        .pipe(
+          map((axiosResponse: AxiosResponse) => {
+            return axiosResponse.data
+          })
+        )
+        .pipe(
+          catchError((e) => {
+            // Log specific error types for better debugging
+            if (e?.response?.status === 503 || e?.response?.status === 502) {
+              this.logger.error(`Service unavailable error (${e?.response?.status}): RPC node may be down`)
+            }
 
-      if (has(response, 'error')) {
-        const error = get(response, 'error')
-        this.logger.error('Error getting gas estimation', error)
-        throw new RpcException(error)
-      }
+            const errorReason =
+              e?.response?.data?.error?.message ||
+              e?.result?.error ||
+              e?.message ||
+              'Unknown error during gas estimation'
 
-      if (!has(response, 'result')) {
-        this.logger.error('Response does not contain result', JSON.stringify(response))
-        throw new InternalServerErrorException('Error getting gas estimation from paymaster')
-      }
+            this.logger.error(`RpcException catchError: ${errorReason} ${JSON.stringify(e)}`)
+            throw new RpcException(errorReason)
+          })
+        )
+    )
 
-      if (has(response, 'result.error')) {
-        const result = get(response, 'result')
-        const error = get(response, 'result.error')
-        this.logger.error('Error in result of gas estimation', result)
-        throw new RpcException(error)
-      }
+    if (has(response, 'error')) {
+      const error = get(response, 'error')
+      this.logger.error('Error getting gas estimation', error)
+      throw new RpcException(error)
+    }
 
-      if (!has(response, 'result.callGasLimit')) {
-        const result = get(response, 'result')
-        this.logger.error('Result does not contain callGasLimit', result)
-        throw new InternalServerErrorException('Error getting gas estimation from paymaster')
-      }
+    if (!has(response, 'result')) {
+      this.logger.error('Response does not contain result', JSON.stringify(response))
+      throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+    }
 
-      const result = get(response, 'result') as GasDetails
-      this.logger.log(`Gas estimation received: ${JSON.stringify(result)}`)
+    if (has(response, 'result.error')) {
+      const result = get(response, 'result')
+      const error = get(response, 'result.error')
+      this.logger.error('Error in result of gas estimation', result)
+      throw new RpcException(error)
+    }
 
-      const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+    if (!has(response, 'result.callGasLimit')) {
+      const result = get(response, 'result')
+      this.logger.error('Result does not contain callGasLimit', result)
+      throw new InternalServerErrorException('Error getting gas estimation from paymaster')
+    }
 
-      return {
-        ...result,
-        callGasLimit
-      }
-    } catch (error) {
-      // Provide hardcoded fallback gas values when estimation fails
-      this.logger.warn(`Gas estimation failed, using hardcoded values. Error: ${JSON.stringify(error)}`)
+    const result = get(response, 'result') as GasDetails
+    this.logger.log(`Gas estimation received: ${JSON.stringify(result)}`)
 
-      // Hardcoded gas values with generous buffers
-      return {
-        preVerificationGas: '0x186a0', // 100,000
-        verificationGasLimit: '0x1e8480', // 2,000,000
-        verificationGas: '0xf4240', // 1,000,000
-        validUntil: '0xffffffff', // Far future
-        callGasLimit: '0x2dc6c0', // 3,000,000
-        maxFeePerGas: '0x3b9aca00', // 1 Gwei
-        maxPriorityFeePerGas: '0x3b9aca00' // 1 Gwei
-      }
+    const callGasLimit = BigNumber.from(result.callGasLimit).mul(115).div(100).toHexString() // 15% buffer
+
+    return {
+      ...result,
+      callGasLimit
     }
   }
 

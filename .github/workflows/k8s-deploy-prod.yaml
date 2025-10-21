@@ -1,10 +1,10 @@
 ---
-name: Build & Deploy to Kubernetes [QA]
+name: Build & Deploy to Kubernetes [PRIVATE_REGISTRY_PASSWORD:]
 
 on:
   push:
     branches:
-      - qa
+      - master
 
 jobs:
   build-and-push:
@@ -26,9 +26,9 @@ jobs:
             image: smart-wallets-service
     env:
       PRIVATE_REGISTRY_ENDPOINT: ${{ secrets.PRIVATE_REGISTRY_ENDPOINT }}
-      PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_QA }}
-      PRIVATE_REGISTRY_USERNAME: ${{ secrets.PRIVATE_REGISTRY_USERNAME_QA }}
-      PRIVATE_REGISTRY_PASSWORD: ${{ secrets.PRIVATE_REGISTRY_PASSWORD_QA }}
+      PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_PROD }}
+      PRIVATE_REGISTRY_USERNAME: ${{ secrets.PRIVATE_REGISTRY_USERNAME_PROD }}
+      PRIVATE_REGISTRY_PASSWORD: ${{ secrets.PRIVATE_REGISTRY_PASSWORD_PROD }}
     outputs:
       short_sha: ${{ steps.sha.outputs.short_sha }}
     steps:
@@ -70,13 +70,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PRIVATE_REGISTRY_ENDPOINT: ${{ secrets.PRIVATE_REGISTRY_ENDPOINT }}
-      PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_QA }}
-      K8S_KUBECONFIG: ${{ secrets.K8S_KUBECONFIG_QA }}
+      PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_PROD }}
+      K8S_KUBECONFIG: ${{ secrets.K8S_KUBECONFIG_PROD }}
       HELM_CHART_REGISTRY_ENDPOINT: ${{ secrets.HELM_CHART_REGISTRY_ENDPOINT }}
       HELM_CHART_REGISTRY_REPOSITORY: ${{ secrets.HELM_CHART_REGISTRY_REPOSITORY }}
       HELM_CHART_REGISTRY_USERNAME: ${{ secrets.HELM_CHART_REGISTRY_USERNAME }}
       HELM_CHART_REGISTRY_PASSWORD: ${{ secrets.HELM_CHART_REGISTRY_PASSWORD }}
-      HELM_CHART_VERSION: ${{ vars.HELM_CHART_VERSION_QA }}
+      HELM_CHART_VERSION: ${{ vars.HELM_CHART_VERSION_PROD }}
       HELM_RELEASE_NAME: ${{ vars.HELM_RELEASE_NAME }}
       HELM_RELEASE_NAMESPACE: ${{ vars.HELM_RELEASE_NAMESPACE }}
     needs: build-and-push
@@ -107,7 +107,7 @@ jobs:
             --debug \
             --atomic \
             --wait \
-            --values helm/values/qa.yaml \
+            --values helm/values/prod.yaml \
             --set accounts-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/accounts-service \
             --set accounts-service.image.tag=${{ needs.build-and-push.outputs.short_sha }} \
             --set api-service.image.repository=${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/api-service \

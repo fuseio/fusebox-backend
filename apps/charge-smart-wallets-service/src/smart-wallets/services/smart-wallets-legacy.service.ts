@@ -161,12 +161,24 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
-      await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: relayDto.ownerAddress })
+
+      // Non-blocking subscription with error handling
+      this.centClient.subscribe({
+        channel: `transaction:#${transactionId}`,
+        user: relayDto.ownerAddress
+      }).catch(err => {
+        this.logger.error(`Centrifugo subscription failed: ${err}`)
+      })
+
+      // Fire-and-forget relay call with error handling
       this.relayAPIService.relay({
         v2: true,
         transactionId,
         ...relayDto
+      }).catch(err => {
+        this.logger.error(`Relay API call failed: ${err}`)
       })
+
       return {
         connectionUrl: this.wsUrl,
         transactionId

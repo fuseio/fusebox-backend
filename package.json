@@ -25,6 +25,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/charge-accounts-service/test/jest-e2e.json",
+    "sw-test": "jest apps/charge-smart-wallets-service/src/smart-wallets/services/smart-wallets-legacy.service.spec.ts --config ./jest.config.ts",
     "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve",
     "docker:staging": "docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d",
     "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",

@@ -320,7 +320,7 @@ import {
   formatEther,
   formatUnits
 } from &#x27;nestjs-ethers&#x27;
-import { Cron, CronExpression, Timeout } from &#x27;@nestjs/schedule&#x27;
+import { Cron, CronExpression } from &#x27;@nestjs/schedule&#x27;
 import { CACHE_MANAGER } from &#x27;@nestjs/cache-manager&#x27;
 import { Cache } from &#x27;cache-manager&#x27;
 import { isEmpty, isUndefined } from &#x27;lodash&#x27;
@@ -358,12 +358,6 @@ export class ConsensusService {
     await this.cacheManager.set(&#x27;validatorsInfo&#x27;, validatorsInfo)
 
     return validatorsInfo
-  }
-
-  @Timeout(5000)
-  async fetchValidatorsTimeout () {
-    // Called once after 5 seconds
-    await this.handleValidatorsUpdate()
   }
 
   private get multiCallAddress (): string {
@@ -567,7 +561,7 @@ export class ConsensusService {
   private extendActiveMetadata (nodeMetadata: any) {
     return {
       firstSeen: nodeMetadata?.firstSeen,
-      forDelegation: nodeMetadata?.forDelegation,
+      forDelegation: true,
       totalValidated: nodeMetadata?.totalValidated,
       uptime: nodeMetadata?.upTime
     }

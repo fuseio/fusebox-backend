@@ -24,13 +24,13 @@
 <title>cluster_RelayAccountsModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="66,-70 66,-268 430,-268 430,-70 66,-70"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_RelayAccountsModule_imports</title>
-<polygon fill="none" stroke="black" points="296,-78 296,-130 422,-130 422,-78 296,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_RelayAccountsModule_exports</title>
 <polygon fill="none" stroke="black" points="178,-208 178,-260 342,-260 342,-208 178,-208"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_RelayAccountsModule_imports</title>
+<polygon fill="none" stroke="black" points="296,-78 296,-130 422,-130 422,-78 296,-78"/>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_RelayAccountsModule_providers</title>

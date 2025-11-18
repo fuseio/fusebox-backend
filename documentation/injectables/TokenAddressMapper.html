@@ -78,6 +78,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#getOriginalTokenAddress" >getOriginalTokenAddress</a>
+                            </li>
+                            <li>
                                 <a href="#getTokenAddress" >getTokenAddress</a>
                             </li>
                         </ul>
@@ -92,12 +95,129 @@
     </table>
 </section>
 
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(configService: ConfigService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-address-mapper.service.ts:8</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
             <section>
     
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOriginalTokenAddress"></a>
+                    <span class="name">
+                        <span ><b>getOriginalTokenAddress</b></span>
+                        <a href="#getOriginalTokenAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOriginalTokenAddress(mappedTokenAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-address-mapper.service.ts:23</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>mappedTokenAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -118,8 +238,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="7"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-address-mapper.service.ts:7</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="11"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-address-mapper.service.ts:11</a></div>
                 </td>
             </tr>
 
@@ -176,13 +296,33 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { NATIVE_FUSE_ADDRESS } from &#x27;@app/notifications-service/common/constants/addresses&#x27;
 import { get } from &#x27;lodash&#x27;
+import { ConfigService } from &#x27;@nestjs/config&#x27;
+import { isLowercaseEqual } from &#x27;@app/common/utils/lowercase_equal&#x27;
 
 @Injectable()
 export class TokenAddressMapper {
+  constructor (private readonly configService: ConfigService) {}
+
   getTokenAddress (tokenAddress: string): string {
-    return get({
-      [NATIVE_FUSE_ADDRESS.toLowerCase()]: &#x27;0x0BE9e53fd7EDaC9F859882AfdDa116645287C629&#x27;.toLowerCase()
-    }, tokenAddress.toLowerCase(), tokenAddress.toLowerCase())
+    const wrappedFuseAddress &#x3D; this.configService.get(&#x27;wfuseAddress&#x27;)
+
+    return get(
+      {
+        [NATIVE_FUSE_ADDRESS.toLowerCase()]: wrappedFuseAddress.toLowerCase()
+      },
+      tokenAddress.toLowerCase(),
+      tokenAddress.toLowerCase()
+    )
+  }
+
+  getOriginalTokenAddress (mappedTokenAddress: string): string {
+    const wrappedFuseAddress &#x3D; this.configService.get(&#x27;wfuseAddress&#x27;)
+
+    if (isLowercaseEqual(mappedTokenAddress, wrappedFuseAddress)) {
+      return NATIVE_FUSE_ADDRESS.toLowerCase()
+    }
+
+    return mappedTokenAddress.toLowerCase()
   }
 }
 </code></pre>

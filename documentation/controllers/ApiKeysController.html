@@ -55,9 +55,15 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>apps/charge-api-service/src/api-keys/api-keys.controller.ts</code>
+            <code>apps/charge-apps-service/src/api-keys/api-keys.controller.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>api-keys</code>
+            </p>
 
 
 
@@ -84,19 +90,10 @@
                                 <a href="#createPublic" >createPublic</a>
                             </li>
                             <li>
-                                <a href="#createSandbox" >createSandbox</a>
-                            </li>
-                            <li>
                                 <a href="#createSecret" >createSecret</a>
                             </li>
                             <li>
-                                <a href="#getProjectIdByPublicKey" >getProjectIdByPublicKey</a>
-                            </li>
-                            <li>
                                 <a href="#getPublic" >getPublic</a>
-                            </li>
-                            <li>
-                                <a href="#getSandbox" >getSandbox</a>
                             </li>
                             <li>
                                 <a href="#updateSecret" >updateSecret</a>
@@ -131,7 +128,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>checkIfSecretExists(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>checkIfSecretExists(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -146,7 +143,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:26</a></div>
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:26</a></div>
                 </td>
             </tr>
 
@@ -169,9 +166,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>projectId</td>
+                                    <td>apiKeysDto</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
                                     </td>
 
                                     <td>
@@ -210,7 +207,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createPublic(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>createPublic(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -224,8 +221,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:56</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:46</a></div>
                 </td>
             </tr>
 
@@ -248,9 +245,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>projectId</td>
+                                    <td>apiKeysDto</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
                                     </td>
 
                                     <td>
@@ -280,85 +277,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createSandbox"></a>
-                    <span class="name">
-                        <span ><b>createSandbox</b></span>
-                        <a href="#createSandbox"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>createSandbox(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@MessagePattern(&#x27;create_sandbox_key&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="76"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:76</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Creates the sandBox API key associated with the project</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>projectId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>the sandBox API key associated with the given project</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="createSecret"></a>
                     <span class="name">
                         <span ><b>createSecret</b></span>
@@ -368,7 +286,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createSecret(createSecretDto: <a href="../interfaces/CreateSecretDto.html" target="_self">CreateSecretDto</a>)</code>
+<code>createSecret(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -383,7 +301,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="16"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:16</a></div>
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:16</a></div>
                 </td>
             </tr>
 
@@ -406,9 +324,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>createSecretDto</td>
+                                    <td>apiKeysDto</td>
                                     <td>
-                                                <code><a href="../interfaces/CreateSecretDto.html" target="_self" >CreateSecretDto</a></code>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
                                     </td>
 
                                     <td>
@@ -438,85 +356,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getProjectIdByPublicKey"></a>
-                    <span class="name">
-                        <span ><b>getProjectIdByPublicKey</b></span>
-                        <a href="#getProjectIdByPublicKey"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getProjectIdByPublicKey(apiKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@MessagePattern(&#x27;get_project_id_by_public_key&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:36</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Gets the project id for the given public api key</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>apiKey</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>an object consisting unsensitive fields of the api_keys of the project</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="getPublic"></a>
                     <span class="name">
                         <span ><b>getPublic</b></span>
@@ -526,7 +365,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getPublic(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>getPublic(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -540,8 +379,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="66"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:66</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:56</a></div>
                 </td>
             </tr>
 
@@ -564,9 +403,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>projectId</td>
+                                    <td>apiKeysDto</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
                                     </td>
 
                                     <td>
@@ -596,82 +435,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getSandbox"></a>
-                    <span class="name">
-                        <span ><b>getSandbox</b></span>
-                        <a href="#getSandbox"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSandbox(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@MessagePattern(&#x27;get_sandbox_key&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="81"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:81</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>projectId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="updateSecret"></a>
                     <span class="name">
                         <span ><b>updateSecret</b></span>
@@ -681,7 +444,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>updateSecret(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>updateSecret(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
                 </td>
             </tr>
 
@@ -695,8 +458,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.controller.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.controller.ts:36</a></div>
                 </td>
             </tr>
 
@@ -719,9 +482,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>projectId</td>
+                                    <td>apiKeysDto</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
                                     </td>
 
                                     <td>
@@ -751,88 +514,63 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiKeysService } from &#x27;@app/apps-service/api-keys/api-keys.service&#x27;
+import { Controller } from &#x27;@nestjs/common&#x27;
 import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
-import { ApiKeysService } from &#x27;apps/charge-api-service/src/api-keys/api-keys.service&#x27;
-import { CreateSecretDto } from &#x27;@app/api-service/api-keys/dto/secret-key.dto&#x27;
+import { ApiKeysDto } from &#x27;@app/apps-service/api-keys/dto/api-keys.dto&#x27;
 
-@Controller()
+@Controller(&#x27;api-keys&#x27;)
 export class ApiKeysController {
   constructor (private readonly apiKeysService: ApiKeysService) { }
 
   /**
    * Creates an API key secret for the given project
-   * @param projectId
+   * @param apiKeysDto
    * @returns the generated API key secret or error if secret already exists
    */
   @MessagePattern(&#x27;create_secret&#x27;)
-  createSecret (createSecretDto: CreateSecretDto) {
-    return this.apiKeysService.createSecretKey(createSecretDto.projectId, createSecretDto.createLegacyAccount)
+  createSecret (apiKeysDto: ApiKeysDto) {
+    return this.apiKeysService.createSecretKey(apiKeysDto)
   }
 
   /**
    * Gets the api_key&#x27;s for the given projectId
-   * @param projectId
+   * @param apiKeysDto
    * @returns an object consisting unsensitive fields of the api_keys of the project
    */
   @MessagePattern(&#x27;get_api_keys_info&#x27;)
-  checkIfSecretExists (projectId: string) {
-    return this.apiKeysService.getApiKeysInfo(projectId)
-  }
-
-  /**
-   * Gets the project id for the given public api key
-   * @param publicApiKey
-   * @returns an object consisting unsensitive fields of the api_keys of the project
-   */
-  @MessagePattern(&#x27;get_project_id_by_public_key&#x27;)
-  getProjectIdByPublicKey (apiKey: string) {
-    return this.apiKeysService.getProjectIdByPublicKey(apiKey)
+  checkIfSecretExists (apiKeysDto: ApiKeysDto) {
+    return this.apiKeysService.getApiKeysInfo(apiKeysDto)
   }
 
   /**
    * Revokes the old API key secret and generates a new one for the given project
-   * @param projectId
+   * @param apiKeysDto
    * @returns the new API key secret
    */
   @MessagePattern(&#x27;update_secret&#x27;)
-  updateSecret (projectId: string) {
-    return this.apiKeysService.updateSecretKey(projectId)
+  updateSecret (apiKeysDto: ApiKeysDto) {
+    return this.apiKeysService.updateSecretKey(apiKeysDto)
   }
 
   /**
    * Creates the public API key associated with the project
-   * @param projectId
+   * @param apiKeysDto
    * @returns the public API key associated with the given project
    */
   @MessagePattern(&#x27;create_public&#x27;)
-  createPublic (projectId: string) {
-    return this.apiKeysService.createPublicKey(projectId)
+  createPublic (apiKeysDto: ApiKeysDto) {
+    return this.apiKeysService.createPublicKey(apiKeysDto)
   }
 
   /**
    * Gets the public API key associated with the project
-   * @param projectId
+   * @param apiKeysDto
    * @returns the public API key associated with the given project
    */
   @MessagePattern(&#x27;get_public&#x27;)
-  getPublic (projectId: string) {
-    return this.apiKeysService.getPublicKey(projectId)
-  }
-
-  /**
-  * Creates the sandBox API key associated with the project
-  * @param projectId
-  * @returns the sandBox API key associated with the given project
-  */
-  @MessagePattern(&#x27;create_sandbox_key&#x27;)
-  createSandbox (projectId: string) {
-    return this.apiKeysService.createSandboxKey(projectId)
-  }
-
-  @MessagePattern(&#x27;get_sandbox_key&#x27;)
-  getSandbox (projectId: string) {
-    return this.apiKeysService.getSandboxKey(projectId)
+  getPublic (apiKeysDto: ApiKeysDto) {
+    return this.apiKeysService.getPublicKey(apiKeysDto)
   }
 }
 </code></pre>

@@ -377,7 +377,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findSponsoredTransactionsCount(sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>findSponsoredTransactionsCount(apiKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, startDate?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -406,13 +406,25 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>sponsorId</td>
+                                    <td>apiKey</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
                                         No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>startDate</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
                                     </td>
 
 
@@ -455,8 +467,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="268"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/data-layer.service.ts:268</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="276"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/data-layer.service.ts:276</a></div>
                 </td>
             </tr>
 
@@ -697,8 +709,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="236"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/data-layer.service.ts:236</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="240"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/data-layer.service.ts:240</a></div>
                 </td>
             </tr>
 
@@ -1038,7 +1050,7 @@ export class DataLayerService {
 
   async recordUserOp (baseUserOp: BaseUserOp) {
     try {
-      if (baseUserOp.paymasterAndData !&#x3D;&#x3D; &#x27;0x&#x27;) {
+      if (baseUserOp.paymasterAndData &amp;&amp; baseUserOp.paymasterAndData !&#x3D;&#x3D; &#x27;0x&#x27; &amp;&amp; !baseUserOp.sponsorId) {
         const paymasterAddressAndSponsorId &#x3D; decodePaymasterAndData(baseUserOp.paymasterAndData)
         baseUserOp.paymaster &#x3D; paymasterAddressAndSponsorId.paymasterAddress
         baseUserOp.sponsorId &#x3D; paymasterAddressAndSponsorId.sponsorId
@@ -1225,13 +1237,21 @@ export class DataLayerService {
     }
   }
 
-  async findSponsoredTransactionsCount (sponsorId: string): Promise&lt;number&gt; {
-    return this.userOpModel.countDocuments({ sponsorId: { $eq: sponsorId } })
+  async findSponsoredTransactionsCount (apiKey: string, startDate?: string): Promise&lt;number&gt; {
+    return this.userOpModel.countDocuments({
+      apiKey: { $eq: apiKey },
+      sponsorId: { $ne: &#x27;0&#x27; },
+      createdAt: { $gte: startDate ? new Date(startDate) : new Date(0) }
+    })
   }
 
   async handleUserOpAndWalletActionOfOperatorToSendAnalyticsEvent (body) {
     try {
-      const user &#x3D; await this.getOperatorByApiKey(body.userOp.apiKey)
+      const operatorUser &#x3D; await this.getOperatorByApiKey(body.userOp.apiKey)
+      if (!operatorUser || !operatorUser?.user) {
+        return
+      }
+      const { user } &#x3D; operatorUser
       if (!get(user, &#x27;auth0Id&#x27;)) {
         return
       }
@@ -1271,7 +1291,10 @@ export class DataLayerService {
         this.logger.log(&#x27;Operator didnt exists&#x27;)
         return false
       }
-      return user
+      return {
+        operator,
+        user
+      }
     } catch (error) {
       this.logger.error(error)
     }

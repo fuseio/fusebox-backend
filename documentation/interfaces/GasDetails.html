@@ -442,7 +442,6 @@ export class PaymasterApiService {
       const paymasterAndDataForEstimateUserOpGasCall &#x3D; this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
 
       op.paymasterAndData &#x3D; paymasterAndDataForEstimateUserOpGasCall
-
       const gases: GasDetails &#x3D; await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
 
       const actualVerificationGasLimit &#x3D; Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
@@ -531,10 +530,16 @@ export class PaymasterApiService {
         )
         .pipe(
           catchError((e) &#x3D;&gt; {
+            // Log specific error types for better debugging
+            if (e?.response?.status &#x3D;&#x3D;&#x3D; 503 || e?.response?.status &#x3D;&#x3D;&#x3D; 502) {
+              this.logger.error(&#x60;Service unavailable error (${e?.response?.status}): RPC node may be down&#x60;)
+            }
+
             const errorReason &#x3D;
+              e?.response?.data?.error?.message ||
               e?.result?.error ||
-              e?.result?.error?.message ||
-              &#x27;&#x27;
+              e?.message ||
+              &#x27;Unknown error during gas estimation&#x27;
 
             this.logger.error(&#x60;RpcException catchError: ${errorReason} ${JSON.stringify(e)}&#x60;)
             throw new RpcException(errorReason)
@@ -579,8 +584,7 @@ export class PaymasterApiService {
 
   private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException(&#x27;Bundler environment is missing&#x27;)
-    const config &#x3D; this.configService.get(&#x60;bundler.${environment}&#x60;)
-
+    const config &#x3D; this.configService.get(&#x60;bundler.etherspot.${environment}&#x60;)
     if (config.url) {
       return config.url
     } else {

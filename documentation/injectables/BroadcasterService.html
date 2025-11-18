@@ -78,8 +78,22 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#isProcessing" >isProcessing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Readonly</span>
                                 <a href="#logger" >logger</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#MAX_RETRY_ATTEMPTS" >MAX_RETRY_ATTEMPTS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#PROCESSING_INTERVAL_MS" >PROCESSING_INTERVAL_MS</a>
                             </li>
                         </ul>
                     </td>
@@ -110,6 +124,10 @@
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#onModuleInit" >onModuleInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#processWebhookQueue" >processWebhookQueue</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -155,7 +173,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -244,8 +262,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="105"
-                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:105</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:147</a></div>
                 </td>
             </tr>
 
@@ -315,8 +333,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="97"
-                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:97</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="139"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:139</a></div>
                 </td>
             </tr>
 
@@ -396,8 +414,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:32</a></div>
                 </td>
             </tr>
 
@@ -465,8 +483,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="111"
-                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:111</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="153"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:153</a></div>
                 </td>
             </tr>
 
@@ -548,8 +566,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:36</a></div>
                 </td>
             </tr>
 
@@ -559,6 +577,45 @@
 
                     <div class="io-description">
                         <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processWebhookQueue"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>processWebhookQueue</b></span>
+                        <a href="#processWebhookQueue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processWebhookQueue()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:61</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                 </td>
@@ -587,8 +644,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="37"
-                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:37</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:40</a></div>
                 </td>
             </tr>
 
@@ -614,6 +671,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="isProcessing"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isProcessing</b></span>
+                        <a href="#isProcessing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:13</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="logger"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
@@ -631,6 +714,72 @@
                     <tr>
                         <td class="col-md-4">
                                 <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:12</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MAX_RETRY_ATTEMPTS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>MAX_RETRY_ATTEMPTS</b></span>
+                        <a href="#MAX_RETRY_ATTEMPTS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>6</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:14</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PROCESSING_INTERVAL_MS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>PROCESSING_INTERVAL_MS</b></span>
+                        <a href="#PROCESSING_INTERVAL_MS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>2000</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:15</a></div>
                         </td>
                     </tr>
 
@@ -659,7 +808,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:21</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:24</a></div>
                                 </td>
                             </tr>
 
@@ -681,7 +830,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:25</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">apps/charge-notifications-service/src/broadcaster/broadcaster.service.ts:28</a></div>
                                 </td>
                             </tr>
 
@@ -704,6 +853,9 @@ import WebhookSendService from &#x27;@app/common/services/webhook-send.service&#
 @Injectable()
 export class BroadcasterService {
   private readonly logger &#x3D; new Logger(BroadcasterService.name)
+  private isProcessing &#x3D; false
+  private readonly MAX_RETRY_ATTEMPTS &#x3D; 6
+  private readonly PROCESSING_INTERVAL_MS &#x3D; 2000
 
   constructor (
     @Inject(webhookEventModelString)
@@ -729,60 +881,99 @@ export class BroadcasterService {
   }
 
   async start () {
-    while (true) {
-      const webhookEventsToSendNow &#x3D; await this.webhookEventModel.find(
-        {
-          retryAfter: { $lte: new Date() },
-          success: false,
-          numberOfTries: { $lt: 6 }
+    if (this.isProcessing) {
+      return
+    }
+
+    this.isProcessing &#x3D; true
+
+    try {
+      while (true) {
+        await this.processWebhookQueue()
+        // Add delay between iterations to prevent excessive CPU usage
+        await new Promise(resolve &#x3D;&gt; setTimeout(resolve, this.PROCESSING_INTERVAL_MS))
+      }
+    } catch (error) {
+      this.isProcessing &#x3D; false
+      this.logger.error(&#x60;Failed to process webhook queue: ${error}&#x60;)
+      // Restart after delay if there was an error
+      setTimeout(() &#x3D;&gt; this.start(), this.PROCESSING_INTERVAL_MS)
+    }
+  }
+
+  async processWebhookQueue () {
+    const webhookEventsToSendNow &#x3D; await this.webhookEventModel.find(
+      {
+        retryAfter: { $lte: new Date() },
+        success: false,
+        numberOfTries: { $lt: this.MAX_RETRY_ATTEMPTS }
+      }
+    ).populate&lt;{ webhook: Webhook }&gt;(&#x27;webhook&#x27;).sort({ retryAfter: -1 }).limit(100)
+
+    this.logger.log(&#x60;Processing ${webhookEventsToSendNow.length} webhook events&#x60;)
+
+    for (const webhookEvent of webhookEventsToSendNow) {
+      try {
+        const updatedEvent &#x3D; await this.webhookEventModel.findByIdAndUpdate(
+          webhookEvent._id,
+          { $inc: { numberOfTries: 1 } },
+          { new: true }
+        )
+
+        if (!updatedEvent) {
+          this.logger.warn(&#x60;Webhook event ${webhookEvent._id} no longer exists&#x60;)
+          continue
         }
-      ).populate&lt;{ webhook: Webhook }&gt;(&#x27;webhook&#x27;).sort({ retryAfter: -1 })
 
-      for (const webhookEvent of webhookEventsToSendNow) {
-        try {
-          this.logger.log(&#x60;Starting sending to ${webhookEvent.webhook.webhookUrl}. TxHash: ${webhookEvent.eventData.txHash}&#x60;)
-          webhookEvent.numberOfTries++
-          const response &#x3D; await this.webhookSendService.sendData(webhookEvent)
-          webhookEvent.responses.push(this.getResponseDetailsWithDate(response.status, response.statusText))
-          webhookEvent.success &#x3D; true
-        } catch (err) {
-          let errorStatus: number, errorResponse: string
-          if (err instanceof HttpException) {
-            errorStatus &#x3D; err.getStatus()
-            errorResponse &#x3D; err.getResponse().toString()
-            if (isNaN(errorStatus)) {
-              this.logger.warn(&#x60;Webhook ${webhookEvent._id} unable to send an webhook event to its URL:${webhookEvent.webhook.webhookUrl}&#x60;
-              )
-            } else {
-              // this.logger.error(
-              //   &#x60;Webhook ${webhookEvent._id} returned error. &#x60;,
-              //   &#x60;Error message: ${errorResponse}&#x60;,
-              //   &#x60;Error status: ${errorStatus}&#x60;
-              // )
-            }
+        webhookEvent.numberOfTries &#x3D; updatedEvent.numberOfTries
+
+        this.logger.log(&#x60;Sending to ${webhookEvent.webhook.webhookUrl}. TxHash: ${webhookEvent.eventData.txHash}, Attempt: ${webhookEvent.numberOfTries}&#x60;)
+
+        const response &#x3D; await this.webhookSendService.sendData(webhookEvent)
+
+        await this.webhookEventModel.findByIdAndUpdate(
+          webhookEvent._id,
+          {
+            $set: { success: true },
+            $push: { responses: this.getResponseDetailsWithDate(response.status, response.statusText) }
+          }
+        )
+      } catch (err) {
+        let errorStatus: number, errorResponse: string
+        if (err instanceof HttpException) {
+          errorStatus &#x3D; err.getStatus()
+          errorResponse &#x3D; err.getResponse().toString()
+          if (isNaN(errorStatus)) {
+            this.logger.warn(&#x60;Webhook ${webhookEvent._id} unable to send an webhook event to its URL:${webhookEvent.webhook.webhookUrl}&#x60;)
           } else {
-            errorStatus &#x3D; HttpStatus.INTERNAL_SERVER_ERROR
-            errorResponse &#x3D; JSON.stringify(err)
-            // this.logger.error(
-            //   &#x60;Webhook ${webhookEvent._id} returned error. &#x60;,
-            //   &#x60;Error message: ${errorResponse}&#x60;,
-            //   &#x60;Error status: ${errorStatus}&#x60;
-            // )
+            this.logger.error(
+              &#x60;Webhook ${webhookEvent._id} returned error. &#x60;,
+              &#x60;Error message: ${errorResponse}&#x60;,
+              &#x60;Error status: ${errorStatus}&#x60;
+            )
           }
-
-          webhookEvent.responses.push(
-            this.getResponseDetailsWithDate(errorStatus, errorResponse)
+        } else {
+          errorStatus &#x3D; HttpStatus.INTERNAL_SERVER_ERROR
+          errorResponse &#x3D; JSON.stringify(err)
+          this.logger.error(
+            &#x60;Webhook ${webhookEvent._id} returned error. &#x60;,
+            &#x60;Error message: ${errorResponse}&#x60;,
+            &#x60;Error status: ${errorStatus}&#x60;
           )
+        }
 
-          webhookEvent.retryAfter &#x3D; new Date(
-            this.getNewRetryAfterDate(webhookEvent)
+        const retryAfter &#x3D; new Date(this.getNewRetryAfterDate(webhookEvent))
+
+        try {
+          await this.webhookEventModel.findByIdAndUpdate(
+            webhookEvent._id,
+            {
+              $push: { responses: this.getResponseDetailsWithDate(errorStatus, errorResponse) },
+              $set: { retryAfter }
+            }
           )
-        } finally {
-          try {
-            await webhookEvent.save()
-          } catch (err) {
-            this.logger.error(&#x60;Failed to save webhookEvent ${webhookEvent._id}: ${err}&#x60;)
-          }
+        } catch (err) {
+          this.logger.error(&#x60;Failed to save webhookEvent ${webhookEvent._id}: ${err}&#x60;)
         }
       }
     }

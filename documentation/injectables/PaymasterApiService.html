@@ -263,8 +263,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="123"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:123</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="122"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:122</a></div>
                 </td>
             </tr>
 
@@ -382,8 +382,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="134"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:134</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="133"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:133</a></div>
                 </td>
             </tr>
 
@@ -468,8 +468,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:100</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="99"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:99</a></div>
                 </td>
             </tr>
 
@@ -587,8 +587,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="226"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:226</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="230"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:230</a></div>
                 </td>
             </tr>
 
@@ -658,8 +658,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="218"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:218</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="222"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:222</a></div>
                 </td>
             </tr>
 
@@ -847,8 +847,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="207"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:207</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="212"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:212</a></div>
                 </td>
             </tr>
 
@@ -915,8 +915,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="115"
-                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:115</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="114"
+                            class="link-to-prism">apps/charge-api-service/src/paymaster-api/paymaster-api.service.ts:114</a></div>
                 </td>
             </tr>
 
@@ -1086,7 +1086,6 @@ export class PaymasterApiService {
       const paymasterAndDataForEstimateUserOpGasCall &#x3D; this.buildPaymasterAndData(paymasterAddress, validUntil, validAfter, sponsorId, signatureForEstimateUserOpGasCall)
 
       op.paymasterAndData &#x3D; paymasterAndDataForEstimateUserOpGasCall
-
       const gases: GasDetails &#x3D; await this.estimateUserOpGas(op, env, paymasterInfo.entrypointAddress)
 
       const actualVerificationGasLimit &#x3D; Math.max(parseInt(gases.verificationGasLimit), parseInt(minVerificationGasLimit)).toString()
@@ -1175,10 +1174,16 @@ export class PaymasterApiService {
         )
         .pipe(
           catchError((e) &#x3D;&gt; {
+            // Log specific error types for better debugging
+            if (e?.response?.status &#x3D;&#x3D;&#x3D; 503 || e?.response?.status &#x3D;&#x3D;&#x3D; 502) {
+              this.logger.error(&#x60;Service unavailable error (${e?.response?.status}): RPC node may be down&#x60;)
+            }
+
             const errorReason &#x3D;
+              e?.response?.data?.error?.message ||
               e?.result?.error ||
-              e?.result?.error?.message ||
-              &#x27;&#x27;
+              e?.message ||
+              &#x27;Unknown error during gas estimation&#x27;
 
             this.logger.error(&#x60;RpcException catchError: ${errorReason} ${JSON.stringify(e)}&#x60;)
             throw new RpcException(errorReason)
@@ -1223,8 +1228,7 @@ export class PaymasterApiService {
 
   private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException(&#x27;Bundler environment is missing&#x27;)
-    const config &#x3D; this.configService.get(&#x60;bundler.${environment}&#x60;)
-
+    const config &#x3D; this.configService.get(&#x60;bundler.etherspot.${environment}&#x60;)
     if (config.url) {
       return config.url
     } else {

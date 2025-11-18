@@ -24,163 +24,163 @@
 <title>cluster_SmartWalletsModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-195 2018,-195 2018,-70 8,-70"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_SmartWalletsModule_imports</title>
-<polygon fill="none" stroke="black" points="1115,-78 1115,-130 2010,-130 2010,-78 1115,-78"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_SmartWalletsModule_providers</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 1107,-130 1107,-78 16,-78"/>
+<polygon fill="none" stroke="black" points="919,-78 919,-130 2010,-130 2010,-78 919,-78"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_SmartWalletsModule_imports</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 911,-130 911,-78 16,-78"/>
 </g>
 <!-- ChargeApiModule -->
 <g id="node1" class="node">
 <title>ChargeApiModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="2002.47,-122 1999.47,-126 1978.47,-126 1975.47,-122 1881.53,-122 1881.53,-86 2002.47,-86 2002.47,-122"/>
-<text text-anchor="middle" x="1942" y="-99.8" font-family="Times,serif" font-size="14.00">ChargeApiModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="903.47,-122 900.47,-126 879.47,-126 876.47,-122 782.53,-122 782.53,-86 903.47,-86 903.47,-122"/>
+<text text-anchor="middle" x="843" y="-99.8" font-family="Times,serif" font-size="14.00">ChargeApiModule</text>
 </g>
 <!-- SmartWalletsModule -->
 <g id="node8" class="node">
 <title>SmartWalletsModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1291.75,-187 1288.75,-191 1267.75,-191 1264.75,-187 1156.25,-187 1156.25,-151 1291.75,-151 1291.75,-187"/>
-<text text-anchor="middle" x="1224" y="-164.8" font-family="Times,serif" font-size="14.00">SmartWalletsModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="843.75,-187 840.75,-191 819.75,-191 816.75,-187 708.25,-187 708.25,-151 843.75,-151 843.75,-187"/>
+<text text-anchor="middle" x="776" y="-164.8" font-family="Times,serif" font-size="14.00">SmartWalletsModule</text>
 </g>
 <!-- ChargeApiModule&#45;&gt;SmartWalletsModule -->
 <g id="edge1" class="edge">
 <title>ChargeApiModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1942,-122.09C1942,-145.13 1942,-182 1942,-182 1942,-182 1301.87,-182 1301.87,-182"/>
-<polygon fill="black" stroke="black" points="1301.87,-178.5 1291.87,-182 1301.87,-185.5 1301.87,-178.5"/>
+<path fill="none" stroke="black" d="M813.19,-122.11C813.19,-122.11 813.19,-140.99 813.19,-140.99"/>
+<polygon fill="black" stroke="black" points="809.69,-140.99 813.19,-150.99 816.69,-140.99 809.69,-140.99"/>
 </g>
 <!-- DatabaseModule -->
 <g id="node2" class="node">
 <title>DatabaseModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1863.35,-122 1860.35,-126 1839.35,-126 1836.35,-122 1752.65,-122 1752.65,-86 1863.35,-86 1863.35,-122"/>
-<text text-anchor="middle" x="1808" y="-99.8" font-family="Times,serif" font-size="14.00">DatabaseModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="764.35,-122 761.35,-126 740.35,-126 737.35,-122 653.65,-122 653.65,-86 764.35,-86 764.35,-122"/>
+<text text-anchor="middle" x="709" y="-99.8" font-family="Times,serif" font-size="14.00">DatabaseModule</text>
 </g>
 <!-- DatabaseModule&#45;&gt;SmartWalletsModule -->
 <g id="edge2" class="edge">
 <title>DatabaseModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1808,-122.28C1808,-143.32 1808,-175 1808,-175 1808,-175 1301.85,-175 1301.85,-175"/>
-<polygon fill="black" stroke="black" points="1301.85,-171.5 1291.85,-175 1301.85,-178.5 1301.85,-171.5"/>
+<path fill="none" stroke="black" d="M736.28,-122.11C736.28,-122.11 736.28,-140.99 736.28,-140.99"/>
+<polygon fill="black" stroke="black" points="732.78,-140.99 736.28,-150.99 739.78,-140.99 732.78,-140.99"/>
 </g>
 <!-- NotificationsModule -->
 <g id="node3" class="node">
 <title>NotificationsModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1734.14,-122 1731.14,-126 1710.14,-126 1707.14,-122 1601.86,-122 1601.86,-86 1734.14,-86 1734.14,-122"/>
-<text text-anchor="middle" x="1668" y="-99.8" font-family="Times,serif" font-size="14.00">NotificationsModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="635.14,-122 632.14,-126 611.14,-126 608.14,-122 502.86,-122 502.86,-86 635.14,-86 635.14,-122"/>
+<text text-anchor="middle" x="569" y="-99.8" font-family="Times,serif" font-size="14.00">NotificationsModule</text>
 </g>
 <!-- NotificationsModule&#45;&gt;SmartWalletsModule -->
 <g id="edge3" class="edge">
 <title>NotificationsModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1668,-122.11C1668,-141.34 1668,-169 1668,-169 1668,-169 1301.92,-169 1301.92,-169"/>
-<polygon fill="black" stroke="black" points="1301.92,-165.5 1291.92,-169 1301.92,-172.5 1301.92,-165.5"/>
+<path fill="none" stroke="black" d="M569,-122.24C569,-137.57 569,-157 569,-157 569,-157 698.22,-157 698.22,-157"/>
+<polygon fill="black" stroke="black" points="698.22,-160.5 708.22,-157 698.22,-153.5 698.22,-160.5"/>
 </g>
 <!-- OperatorsModule -->
 <g id="node4" class="node">
 <title>OperatorsModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1583.24,-122 1580.24,-126 1559.24,-126 1556.24,-122 1468.76,-122 1468.76,-86 1583.24,-86 1583.24,-122"/>
-<text text-anchor="middle" x="1526" y="-99.8" font-family="Times,serif" font-size="14.00">OperatorsModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="484.24,-122 481.24,-126 460.24,-126 457.24,-122 369.76,-122 369.76,-86 484.24,-86 484.24,-122"/>
+<text text-anchor="middle" x="427" y="-99.8" font-family="Times,serif" font-size="14.00">OperatorsModule</text>
 </g>
 <!-- OperatorsModule&#45;&gt;SmartWalletsModule -->
 <g id="edge4" class="edge">
 <title>OperatorsModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1526,-122.02C1526,-139.37 1526,-163 1526,-163 1526,-163 1301.77,-163 1301.77,-163"/>
-<polygon fill="black" stroke="black" points="1301.77,-159.5 1291.77,-163 1301.77,-166.5 1301.77,-159.5"/>
+<path fill="none" stroke="black" d="M427,-122.02C427,-139.37 427,-163 427,-163 427,-163 697.88,-163 697.88,-163"/>
+<polygon fill="black" stroke="black" points="697.88,-166.5 707.88,-163 697.88,-159.5 697.88,-166.5"/>
 </g>
 <!-- ProjectsModule -->
 <g id="node5" class="node">
 <title>ProjectsModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1450.15,-122 1447.15,-126 1426.15,-126 1423.15,-122 1345.85,-122 1345.85,-86 1450.15,-86 1450.15,-122"/>
-<text text-anchor="middle" x="1398" y="-99.8" font-family="Times,serif" font-size="14.00">ProjectsModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="351.15,-122 348.15,-126 327.15,-126 324.15,-122 246.85,-122 246.85,-86 351.15,-86 351.15,-122"/>
+<text text-anchor="middle" x="299" y="-99.8" font-family="Times,serif" font-size="14.00">ProjectsModule</text>
 </g>
 <!-- ProjectsModule&#45;&gt;SmartWalletsModule -->
 <g id="edge5" class="edge">
 <title>ProjectsModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1398,-122.24C1398,-137.57 1398,-157 1398,-157 1398,-157 1301.77,-157 1301.77,-157"/>
-<polygon fill="black" stroke="black" points="1301.77,-153.5 1291.77,-157 1301.77,-160.5 1301.77,-153.5"/>
+<path fill="none" stroke="black" d="M299,-122.11C299,-141.34 299,-169 299,-169 299,-169 698.16,-169 698.16,-169"/>
+<polygon fill="black" stroke="black" points="698.16,-172.5 708.16,-169 698.16,-165.5 698.16,-172.5"/>
 </g>
 <!-- TokenModule -->
 <g id="node6" class="node">
 <title>TokenModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1327.82,-122 1324.82,-126 1303.82,-126 1300.82,-122 1232.18,-122 1232.18,-86 1327.82,-86 1327.82,-122"/>
-<text text-anchor="middle" x="1280" y="-99.8" font-family="Times,serif" font-size="14.00">TokenModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="228.82,-122 225.82,-126 204.82,-126 201.82,-122 133.18,-122 133.18,-86 228.82,-86 228.82,-122"/>
+<text text-anchor="middle" x="181" y="-99.8" font-family="Times,serif" font-size="14.00">TokenModule</text>
 </g>
 <!-- TokenModule&#45;&gt;SmartWalletsModule -->
 <g id="edge6" class="edge">
 <title>TokenModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1262.11,-122.11C1262.11,-122.11 1262.11,-140.99 1262.11,-140.99"/>
-<polygon fill="black" stroke="black" points="1258.61,-140.99 1262.11,-150.99 1265.61,-140.99 1258.61,-140.99"/>
+<path fill="none" stroke="black" d="M181,-122.28C181,-143.32 181,-175 181,-175 181,-175 698.04,-175 698.04,-175"/>
+<polygon fill="black" stroke="black" points="698.04,-178.5 708.04,-175 698.04,-171.5 698.04,-178.5"/>
 </g>
 <!-- UsersModule -->
 <g id="node7" class="node">
 <title>UsersModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1214.92,-122 1211.92,-126 1190.92,-126 1187.92,-122 1123.08,-122 1123.08,-86 1214.92,-86 1214.92,-122"/>
-<text text-anchor="middle" x="1169" y="-99.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="115.92,-122 112.92,-126 91.92,-126 88.92,-122 24.08,-122 24.08,-86 115.92,-86 115.92,-122"/>
+<text text-anchor="middle" x="70" y="-99.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
 </g>
 <!-- UsersModule&#45;&gt;SmartWalletsModule -->
 <g id="edge7" class="edge">
 <title>UsersModule&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1185.42,-122.11C1185.42,-122.11 1185.42,-140.99 1185.42,-140.99"/>
-<polygon fill="black" stroke="black" points="1181.92,-140.99 1185.42,-150.99 1188.92,-140.99 1181.92,-140.99"/>
+<path fill="none" stroke="black" d="M70,-122.09C70,-145.13 70,-182 70,-182 70,-182 697.99,-182 697.99,-182"/>
+<polygon fill="black" stroke="black" points="697.99,-185.5 707.99,-182 697.99,-178.5 697.99,-185.5"/>
 </g>
 <!-- AnalyticsService -->
 <g id="node9" class="node">
 <title>AnalyticsService</title>
-<ellipse fill="#fdb462" stroke="black" cx="1022" cy="-104" rx="77" ry="18"/>
-<text text-anchor="middle" x="1022" y="-99.8" font-family="Times,serif" font-size="14.00">AnalyticsService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1925" cy="-104" rx="77" ry="18"/>
+<text text-anchor="middle" x="1925" y="-99.8" font-family="Times,serif" font-size="14.00">AnalyticsService</text>
 </g>
 <!-- AnalyticsService&#45;&gt;SmartWalletsModule -->
 <g id="edge8" class="edge">
 <title>AnalyticsService&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M1022,-122.24C1022,-137.57 1022,-157 1022,-157 1022,-157 1146.17,-157 1146.17,-157"/>
-<polygon fill="black" stroke="black" points="1146.18,-160.5 1156.17,-157 1146.17,-153.5 1146.18,-160.5"/>
+<path fill="none" stroke="black" d="M1925,-122.09C1925,-145.13 1925,-182 1925,-182 1925,-182 854.01,-182 854.01,-182"/>
+<polygon fill="black" stroke="black" points="854.01,-178.5 844.01,-182 854.01,-185.5 854.01,-178.5"/>
 </g>
 <!-- RelayAPIService -->
 <g id="node10" class="node">
 <title>RelayAPIService</title>
-<ellipse fill="#fdb462" stroke="black" cx="849" cy="-104" rx="78.14" ry="18"/>
-<text text-anchor="middle" x="849" y="-99.8" font-family="Times,serif" font-size="14.00">RelayAPIService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1752" cy="-104" rx="78.14" ry="18"/>
+<text text-anchor="middle" x="1752" y="-99.8" font-family="Times,serif" font-size="14.00">RelayAPIService</text>
 </g>
 <!-- RelayAPIService&#45;&gt;SmartWalletsModule -->
 <g id="edge9" class="edge">
 <title>RelayAPIService&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M849,-122.02C849,-139.37 849,-163 849,-163 849,-163 1146.09,-163 1146.09,-163"/>
-<polygon fill="black" stroke="black" points="1146.09,-166.5 1156.09,-163 1146.09,-159.5 1146.09,-166.5"/>
+<path fill="none" stroke="black" d="M1752,-122.28C1752,-143.32 1752,-175 1752,-175 1752,-175 853.86,-175 853.86,-175"/>
+<polygon fill="black" stroke="black" points="853.86,-171.5 843.86,-175 853.86,-178.5 853.86,-171.5"/>
 </g>
 <!-- SmartWalletsAAService -->
 <g id="node11" class="node">
 <title>SmartWalletsAAService</title>
-<ellipse fill="#fdb462" stroke="black" cx="646" cy="-104" rx="106.49" ry="18"/>
-<text text-anchor="middle" x="646" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsAAService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1549" cy="-104" rx="106.49" ry="18"/>
+<text text-anchor="middle" x="1549" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsAAService</text>
 </g>
 <!-- SmartWalletsAAService&#45;&gt;SmartWalletsModule -->
 <g id="edge10" class="edge">
 <title>SmartWalletsAAService&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M646,-122.11C646,-141.34 646,-169 646,-169 646,-169 1146,-169 1146,-169"/>
-<polygon fill="black" stroke="black" points="1146,-172.5 1156,-169 1146,-165.5 1146,-172.5"/>
+<path fill="none" stroke="black" d="M1549,-122.11C1549,-141.34 1549,-169 1549,-169 1549,-169 853.92,-169 853.92,-169"/>
+<polygon fill="black" stroke="black" points="853.92,-165.5 843.92,-169 853.92,-172.5 853.92,-165.5"/>
 </g>
 <!-- SmartWalletsEventsService -->
 <g id="node12" class="node">
 <title>SmartWalletsEventsService</title>
-<ellipse fill="#fdb462" stroke="black" cx="403" cy="-104" rx="118.67" ry="18"/>
-<text text-anchor="middle" x="403" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsEventsService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1306" cy="-104" rx="118.67" ry="18"/>
+<text text-anchor="middle" x="1306" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsEventsService</text>
 </g>
 <!-- SmartWalletsEventsService&#45;&gt;SmartWalletsModule -->
 <g id="edge11" class="edge">
 <title>SmartWalletsEventsService&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M403,-122.28C403,-143.32 403,-175 403,-175 403,-175 1146.12,-175 1146.12,-175"/>
-<polygon fill="black" stroke="black" points="1146.12,-178.5 1156.12,-175 1146.12,-171.5 1146.12,-178.5"/>
+<path fill="none" stroke="black" d="M1306,-122.02C1306,-139.37 1306,-163 1306,-163 1306,-163 853.93,-163 853.93,-163"/>
+<polygon fill="black" stroke="black" points="853.93,-159.5 843.93,-163 853.93,-166.5 853.93,-159.5"/>
 </g>
 <!-- SmartWalletsLegacyService -->
 <g id="node13" class="node">
 <title>SmartWalletsLegacyService</title>
-<ellipse fill="#fdb462" stroke="black" cx="145" cy="-104" rx="120.94" ry="18"/>
-<text text-anchor="middle" x="145" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsLegacyService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1048" cy="-104" rx="120.94" ry="18"/>
+<text text-anchor="middle" x="1048" y="-99.8" font-family="Times,serif" font-size="14.00">SmartWalletsLegacyService</text>
 </g>
 <!-- SmartWalletsLegacyService&#45;&gt;SmartWalletsModule -->
 <g id="edge12" class="edge">
 <title>SmartWalletsLegacyService&#45;&gt;SmartWalletsModule</title>
-<path fill="none" stroke="black" d="M145,-122.09C145,-145.13 145,-182 145,-182 145,-182 1146.09,-182 1146.09,-182"/>
-<polygon fill="black" stroke="black" points="1146.1,-185.5 1156.09,-182 1146.09,-178.5 1146.1,-185.5"/>
+<path fill="none" stroke="black" d="M1048,-122.24C1048,-137.57 1048,-157 1048,-157 1048,-157 853.94,-157 853.94,-157"/>
+<polygon fill="black" stroke="black" points="853.94,-153.5 843.94,-157 853.94,-160.5 853.94,-153.5"/>
 </g>
 </g>
 </svg>

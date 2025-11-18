@@ -68,6 +68,27 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#XVOLT_ADDRESS" >XVOLT_ADDRESS</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -82,9 +103,18 @@
                                 <a href="#calculatePercentChange" >calculatePercentChange</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getMultipleTokenPrices" >getMultipleTokenPrices</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getPreviousTokenPrice" >getPreviousTokenPrice</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPriceFromClients" >getPriceFromClients</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -97,6 +127,11 @@
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getTokenPriceChange" >getTokenPriceChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getXVoltPrice" >getXVoltPrice</a>
                             </li>
                         </ul>
                     </td>
@@ -116,12 +151,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(voltageV2Client: <a href="../injectables/VoltageV2Client.html" target="_self">VoltageV2Client</a>, voltageV3Client: <a href="../injectables/VoltageV3Client.html" target="_self">VoltageV3Client</a>, blocksClient: <a href="../injectables/BlocksClient.html" target="_self">BlocksClient</a>, tokenAddressMapper: <a href="../injectables/TokenAddressMapper.html" target="_self">TokenAddressMapper</a>)</code>
+<code>constructor(voltageV2Client: <a href="../injectables/VoltageV2Client.html" target="_self">VoltageV2Client</a>, voltageV3Client: <a href="../injectables/VoltageV3Client.html" target="_self">VoltageV3Client</a>, voltBarClient: <a href="../injectables/VoltBarClient.html" target="_self">VoltBarClient</a>, blocksClient: <a href="../injectables/BlocksClient.html" target="_self">BlocksClient</a>, tokenAddressMapper: <a href="../injectables/TokenAddressMapper.html" target="_self">TokenAddressMapper</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -155,6 +190,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/VoltageV3Client.html" target="_self" >VoltageV3Client</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>voltBarClient</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/VoltBarClient.html" target="_self" >VoltBarClient</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -222,8 +269,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:134</a></div>
                 </td>
             </tr>
 
@@ -287,6 +334,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getMultipleTokenPrices"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getMultipleTokenPrices</b></span>
+                        <a href="#getMultipleTokenPrices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMultipleTokenPrices(multipleTokenPricesDto: <a href="../classes/MultipleTokenPricesDto.html" target="_self">MultipleTokenPricesDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:46</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>multipleTokenPricesDto</td>
+                                    <td>
+                                                <code><a href="../classes/MultipleTokenPricesDto.html" target="_self" >MultipleTokenPricesDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getPreviousTokenPrice"></a>
                     <span class="name">
                         <span class="modifier">Private</span>
@@ -306,8 +424,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="124"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:124</a></div>
                 </td>
             </tr>
 
@@ -359,6 +477,78 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getPriceFromClients"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getPriceFromClients</b></span>
+                        <a href="#getPriceFromClients"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPriceFromClients(address: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:96</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getTokenData"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -377,8 +567,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="143"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:143</a></div>
                 </td>
             </tr>
 
@@ -460,8 +650,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:26</a></div>
                 </td>
             </tr>
 
@@ -531,8 +721,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:108</a></div>
                 </td>
             </tr>
 
@@ -580,47 +770,239 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getXVoltPrice"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getXVoltPrice</b></span>
+                        <a href="#getXVoltPrice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getXVoltPrice()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:87</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(TokenPriceService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:14</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="XVOLT_ADDRESS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>XVOLT_ADDRESS</b></span>
+                        <a href="#XVOLT_ADDRESS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/token-price.service.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
 </section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BlocksClient } from &#x27;@app/network-service/voltage-dex/services/blocks-client.service&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { VoltBarClient } from &#x27;@app/network-service/voltage-dex/services/volt-bar-client.service&#x27;
+import { BlocksClient } from &#x27;@app/network-service/voltage-dex/services/blocks-client.service&#x27;
+import { Injectable, Logger } from &#x27;@nestjs/common&#x27;
 import { TokenAddressMapper } from &#x27;@app/network-service/voltage-dex/services/token-address-mapper.service&#x27;
 import { TokenPriceDto } from &#x27;@app/network-service/voltage-dex/dto/token-price.dto&#x27;
 import { VoltageV2Client } from &#x27;@app/network-service/voltage-dex/services/voltage-v2-client.service&#x27;
 import { VoltageV3Client } from &#x27;@app/network-service/voltage-dex/services/voltage-v3-client.service&#x27;
 import dayjs from &#x27;@app/common/utils/dayjs&#x27;
+import { MultipleTokenPricesDto } from &#x27;../dto/multiple-token-prices.dto&#x27;
+import { TokenPrices } from &#x27;../types&#x27;
 
 @Injectable()
 export class TokenPriceService {
+  private readonly logger &#x3D; new Logger(TokenPriceService.name)
+
+  private readonly XVOLT_ADDRESS &#x3D; &#x27;0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1&#x27;
+
   constructor (
     private voltageV2Client: VoltageV2Client,
     private voltageV3Client: VoltageV3Client,
+    private voltBarClient: VoltBarClient,
     private blocksClient: BlocksClient,
     private tokenAddressMapper: TokenAddressMapper
   ) {}
 
   async getTokenPrice (tokenPriceDto: TokenPriceDto): Promise&lt;string&gt; {
-    const address &#x3D; this.tokenAddressMapper.getTokenAddress(tokenPriceDto.tokenAddress)
+    const { tokenAddress } &#x3D; tokenPriceDto
+    this.logger.log(&#x60;Getting token price for ${tokenAddress}&#x60;)
 
+    if (tokenAddress.toLowerCase() &#x3D;&#x3D;&#x3D; this.XVOLT_ADDRESS.toLowerCase()) {
+      return this.getXVoltPrice()
+    }
+
+    try {
+      const address &#x3D; this.tokenAddressMapper.getTokenAddress(tokenAddress)
+      const price &#x3D; await this.getPriceFromClients(address)
+
+      this.logger.log(&#x60;Got token price for ${tokenAddress}&#x60;)
+      return price
+    } catch (error) {
+      this.logger.error(&#x60;Error getting token price for ${tokenAddress}&#x60;, error)
+      return &#x27;0&#x27;
+    }
+  }
+
+  async getMultipleTokenPrices (multipleTokenPricesDto: MultipleTokenPricesDto) {
+    try {
+      const tokenAddresses &#x3D; multipleTokenPricesDto.tokenAddresses.map(
+        address &#x3D;&gt; this.tokenAddressMapper.getTokenAddress(address)
+      )
+
+      const prices &#x3D; await this.voltageV3Client.getMultipleTokenPrices(
+        tokenAddresses
+      )
+
+      const tokensWithoutPrices: TokenPrices &#x3D; {}
+      const tokensWithPrices: TokenPrices &#x3D; {}
+
+      for (const [address, price] of Object.entries(prices)) {
+        if (price &#x3D;&#x3D;&#x3D; null) {
+          tokensWithoutPrices[address] &#x3D; price
+        } else {
+          tokensWithPrices[address] &#x3D; price
+        }
+      }
+
+      const tokensWithoutPricesArray &#x3D; Object.keys(tokensWithoutPrices)
+      const v2Prices &#x3D; await this.voltageV2Client.getMultipleTokenPrices(tokensWithoutPricesArray)
+
+      const allPrices &#x3D; { ...v2Prices, ...tokensWithPrices }
+
+      // Revert the token mapper
+      const revertedPrices &#x3D; Object.fromEntries(
+        Object.entries(allPrices).map(([address, price]) &#x3D;&gt; [
+          this.tokenAddressMapper.getOriginalTokenAddress(address),
+          price
+        ])
+      )
+
+      return revertedPrices
+    } catch (err) {
+      this.logger.error(&#x27;Error getting multiple token prices&#x27;, err)
+      return {}
+    }
+  }
+
+  private async getXVoltPrice (): Promise&lt;string&gt; {
+    const [ratio, voltPrice] &#x3D; await Promise.all([
+      this.voltBarClient.getRatio(),
+      this.getTokenPrice({ tokenAddress: &#x27;0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4&#x27; })
+    ])
+
+    return (parseFloat(ratio) * parseFloat(voltPrice)).toString()
+  }
+
+  private async getPriceFromClients (address: string): Promise&lt;string&gt; {
     const v3Price &#x3D; await this.voltageV3Client.getTokenPrice(address)
     if (v3Price) {
+      this.logger.log(&#x27;Got token price from V3&#x27;)
       return v3Price
     }
 
-    return this.voltageV2Client.getTokenPrice(address)
+    const v2Price &#x3D; await this.voltageV2Client.getTokenPrice(address)
+    this.logger.log(&#x27;Got token price from V2&#x27;)
+    return v2Price
   }
 
   async getTokenPriceChange (tokenPriceDto: TokenPriceDto) {
-    const [currentPrice, previousPrice] &#x3D; await Promise.all([
-      this.getTokenPrice(tokenPriceDto),
-      this.getPreviousTokenPrice(tokenPriceDto)
-    ])
-    const priceChange &#x3D; this.calculatePercentChange(currentPrice, previousPrice)
-    return { priceChange: priceChange.toString(), currentPrice, previousPrice }
+    this.logger.log(&#x60;Getting token price change for ${tokenPriceDto.tokenAddress}&#x60;)
+    try {
+      const [currentPrice, previousPrice] &#x3D; await Promise.all([
+        this.getTokenPrice(tokenPriceDto),
+        this.getPreviousTokenPrice(tokenPriceDto)
+      ])
+      const priceChange &#x3D; this.calculatePercentChange(currentPrice, previousPrice)
+      this.logger.log(&#x60;Got token price change for ${tokenPriceDto.tokenAddress}&#x60;)
+      return { priceChange: priceChange.toString(), currentPrice, previousPrice }
+    } catch (error) {
+      this.logger.error(&#x60;Error getting token price change for ${tokenPriceDto.tokenAddress}&#x60;, error)
+      return { priceChange: &#x27;0&#x27;, currentPrice: &#x27;0&#x27;, previousPrice: &#x27;0&#x27; }
+    }
   }
 
   private async getPreviousTokenPrice (tokenPriceDto: TokenPriceDto): Promise&lt;string&gt; {

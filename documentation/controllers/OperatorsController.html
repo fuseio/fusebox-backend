@@ -83,11 +83,27 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#checkoutSession" >checkoutSession</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#checkWalletActivationStatus" >checkWalletActivationStatus</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#createChargeBridge" >createChargeBridge</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#createOperatorUserAndProjectAndWallet" >createOperatorUserAndProjectAndWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createOperatorWallet" >createOperatorWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createSubscription" >createSubscription</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -99,6 +115,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#getCheckoutSessions" >getCheckoutSessions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getOperatorsUserAndProject" >getOperatorsUserAndProject</a>
                             </li>
                             <li>
@@ -107,7 +127,26 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#getSubscriptions" >getSubscriptions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleCheckoutWebhook" >handleCheckoutWebhook</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#handleWebhookReceiveAndFundPaymaster" >handleWebhookReceiveAndFundPaymaster</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#migrateOperatorWallet" >migrateOperatorWallet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#processMonthlySubscriptions" >processMonthlySubscriptions</a>
+                            </li>
+                            <li>
+                                <a href="#refreshToken" >refreshToken</a>
                             </li>
                             <li>
                                 <a href="#validate" >validate</a>
@@ -158,8 +197,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:37</a></div>
                 </td>
             </tr>
 
@@ -225,6 +264,99 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="checkoutSession"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>checkoutSession</b></span>
+                        <a href="#checkoutSession"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkoutSession(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, createOperatorCheckoutDto: <a href="../interfaces/OperatorCheckout.html" target="_self">CreateOperatorCheckoutDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/checkout/sessions&#x27;)<br />@ApiOperation({summary: &#x27;Create a checkout session for the operator&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="199"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:199</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Create a checkout session for the operator</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>createOperatorCheckoutDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/OperatorCheckout.html" target="_self" >CreateOperatorCheckoutDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the checkout URL</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="checkWalletActivationStatus"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -250,8 +382,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="95"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:95</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="127"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:127</a></div>
                 </td>
             </tr>
 
@@ -318,6 +450,99 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="createChargeBridge"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createChargeBridge</b></span>
+                        <a href="#createChargeBridge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createChargeBridge(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, createChargeBridgeDto: <a href="../interfaces/ChargeBridge.html" target="_self">CreateChargeBridgeDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/bridge&#x27;)<br />@ApiOperation({summary: &#x27;Create a Charge bridge wallet address for operator deposit&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="231"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:231</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Create a Charge bridge wallet address for operator deposit</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>createChargeBridgeDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/ChargeBridge.html" target="_self" >CreateChargeBridgeDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the Charge bridge deposit wallet address</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="createOperatorUserAndProjectAndWallet"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -329,7 +554,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createOperatorUserAndProjectAndWallet(createOperatorUserDto: <a href="../interfaces/User.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>createOperatorUserAndProjectAndWallet(createOperatorUserDto: <a href="../classes/CreateOperatorUserDto.html" target="_self">CreateOperatorUserDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -343,15 +568,15 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="72"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:72</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="78"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:78</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Create user, project and AA wallet for an operator</p>
+                    <div class="io-description"><p>Create user and project for an operator</p>
 </div>
 
                     <div class="io-description">
@@ -369,7 +594,7 @@
                                 <tr>
                                     <td>createOperatorUserDto</td>
                                     <td>
-                                                <code><a href="../interfaces/User.html" target="_self" >CreateOperatorUserDto</a></code>
+                                                <code><a href="../classes/CreateOperatorUserDto.html" target="_self" >CreateOperatorUserDto</a></code>
                                     </td>
 
                                     <td>
@@ -400,7 +625,181 @@
 
                     </div>
                     <div class="io-description">
-                        <p>the user, project and AA wallet with public key</p>
+                        <p>the user and project with public key</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createOperatorWallet"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createOperatorWallet</b></span>
+                        <a href="#createOperatorWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createOperatorWallet(createOperatorWalletDto: <a href="../interfaces/OperatorWallet.html" target="_self">CreateOperatorWalletDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/wallet&#x27;)<br />@ApiOperation({summary: &#x27;Create AA wallet for an operator&#x27;})<br />@ApiBody({type: CreateOperatorWallet, required: true})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:91</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Create AA wallet for an operator</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>createOperatorWalletDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/OperatorWallet.html" target="_self" >CreateOperatorWalletDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the AA wallet</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createSubscription"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createSubscription</b></span>
+                        <a href="#createSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createSubscription(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/subscriptions&#x27;)<br />@ApiOperation({summary: &#x27;Create a subscription for the operator&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="177"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:177</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Create a subscription for the operator</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the subscription</p>
 
                     </div>
                 </td>
@@ -436,8 +835,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="123"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:123</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="155"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:155</a></div>
                 </td>
             </tr>
 
@@ -514,8 +913,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="118"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:118</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="150"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:150</a></div>
                 </td>
             </tr>
 
@@ -567,6 +966,87 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getCheckoutSessions"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getCheckoutSessions</b></span>
+                        <a href="#getCheckoutSessions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCheckoutSessions(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/checkout/sessions&#x27;)<br />@ApiOperation({summary: &#x27;Get all checkout sessions for the operator&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="210"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:210</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get all checkout sessions for the operator</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>checkout sessions</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getOperatorsUserAndProject"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -592,8 +1072,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:65</a></div>
                 </td>
             </tr>
 
@@ -673,8 +1153,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="112"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:112</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:144</a></div>
                 </td>
             </tr>
 
@@ -729,6 +1209,167 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getSubscriptions"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getSubscriptions</b></span>
+                        <a href="#getSubscriptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSubscriptions(auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Get(&#x27;/subscriptions&#x27;)<br />@ApiOperation({summary: &#x27;Get all subscription invoices for the operator&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="188"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:188</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get all subscription invoices for the operator</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the subscription invoices</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleCheckoutWebhook"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>handleCheckoutWebhook</b></span>
+                        <a href="#handleCheckoutWebhook"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleCheckoutWebhook(webhookEvent: <a href="../interfaces/ChargeCheckoutWebhookEvent.html" target="_self">ChargeCheckoutWebhookEvent</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;/checkout/webhook&#x27;)<br />@ApiOperation({summary: &#x27;Handle the checkout webhook&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="219"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:219</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Handle the checkout webhook</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>webhookEvent</td>
+                                    <td>
+                                                <code><a href="../interfaces/ChargeCheckoutWebhookEvent.html" target="_self" >ChargeCheckoutWebhookEvent</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="handleWebhookReceiveAndFundPaymaster"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -754,8 +1395,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="82"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:82</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="114"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:114</a></div>
                 </td>
             </tr>
 
@@ -809,6 +1450,238 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="migrateOperatorWallet"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>migrateOperatorWallet</b></span>
+                        <a href="#migrateOperatorWallet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>migrateOperatorWallet(migrateOperatorWalletDto: <a href="../interfaces/OperatorWallet.html" target="_self">CreateOperatorWalletDto</a>, auth0Id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(JwtAuthGuard)<br />@Post(&#x27;/migrate-wallet&#x27;)<br />@ApiOperation({summary: &#x27;Migrate Etherspot AA wallet to SAFE for an operator&#x27;})<br />@ApiBody({type: CreateOperatorWallet, required: true})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:104</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Migrate Etherspot AA wallet to SAFE for an operator</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>migrateOperatorWalletDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/OperatorWallet.html" target="_self" >CreateOperatorWalletDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>auth0Id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>the SAFE AA wallet</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processMonthlySubscriptions"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>processMonthlySubscriptions</b></span>
+                        <a href="#processMonthlySubscriptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processMonthlySubscriptions()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@UseGuards(CronGuard)<br />@Post(&#x27;/subscriptions/process&#x27;)<br />@ApiOperation({summary: &#x27;Trigger the process of monthly subscriptions&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="241"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:241</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Trigger the process of monthly subscriptions</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="refreshToken"></a>
+                    <span class="name">
+                        <span ><b>refreshToken</b></span>
+                        <a href="#refreshToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>refreshToken(request: Request, response: Response)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;/refresh-token&#x27;)<br />@ApiOperation({summary: &#x27;Refresh operator token&#x27;})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="165"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:165</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Refresh operator token</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>request</td>
+                                    <td>
+                                            <code>Request</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>new access and refresh JWTs of the operator</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="validate"></a>
                     <span class="name">
                         <span ><b>validate</b></span>
@@ -818,7 +1691,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>validate(authOperatorDto: <a href="../classes/AuthOperatorDto.html" target="_self">AuthOperatorDto</a>)</code>
+<code>validate(authOperatorDto: <a href="../classes/AuthOperatorDto.html" target="_self">AuthOperatorDto</a>, response: Response)</code>
                 </td>
             </tr>
 
@@ -832,8 +1705,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operators.controller.ts:52</a></div>
                 </td>
             </tr>
 
@@ -867,6 +1740,18 @@
 
 
                                 </tr>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                            <code>Response</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -888,18 +1773,24 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Head, Logger, Param, Post, Res, UseGuards } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Get, Head, Logger, Param, Post, Req, Res, UseGuards } from &#x27;@nestjs/common&#x27;
 import { User } from &#x27;@app/accounts-service/users/user.decorator&#x27;
 import { JwtAuthGuard } from &#x27;@app/accounts-service/auth/guards/jwt-auth.guard&#x27;
 import { CreateOperatorUserDto } from &#x27;@app/accounts-service/operators/dto/create-operator-user.dto&#x27;
 import { OperatorsService } from &#x27;@app/accounts-service/operators/operators.service&#x27;
 import { AuthOperatorDto } from &#x27;@app/accounts-service/operators/dto/auth-operator.dto&#x27;
-import { Response } from &#x27;express&#x27;
+import { Request, Response } from &#x27;express&#x27;
 import { WebhookEvent } from &#x27;@app/apps-service/payments/interfaces/webhook-event.interface&#x27;
 import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
 import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse } from &#x27;@nestjs/swagger&#x27;
 import { AuthOperator } from &#x27;@app/accounts-service/operators/entities/auth-operator.entity&#x27;
 import { CreateOperatorUser } from &#x27;@app/accounts-service/operators/entities/create-operator-user.entity&#x27;
+import { CreateOperatorWalletDto } from &#x27;@app/accounts-service/operators/dto/create-operator-wallet.dto&#x27;
+import { CreateOperatorCheckoutDto } from &#x27;@app/accounts-service/operators/dto/create-operator-checkout.dto&#x27;
+import { ChargeCheckoutWebhookEvent } from &#x27;@app/accounts-service/operators/interfaces/charge-checkout-webhook-event.interface&#x27;
+import { CreateChargeBridgeDto } from &#x27;@app/accounts-service/operators/dto/create-charge-bridge.dto&#x27;
+import { CreateOperatorWallet } from &#x27;@app/accounts-service/operators/entities/create-operator-wallet.entity&#x27;
+import { CronGuard } from &#x27;@app/accounts-service/auth/guards/cron.guard&#x27;
 
 @ApiTags(&#x27;Operators&#x27;)
 @Controller({ path: &#x27;operators&#x27;, version: &#x27;1&#x27; })
@@ -933,8 +1824,8 @@ export class OperatorsController {
   @ApiBody({ type: AuthOperator, required: true })
   @ApiCreatedResponse({ description: &#x27;The operator has been successfully validated.&#x27; })
   @ApiUnauthorizedResponse({ description: &#x27;Unauthorized.&#x27; })
-  validate (@Body() authOperatorDto: AuthOperatorDto) {
-    return this.operatorsService.validate(authOperatorDto)
+  validate (@Body() authOperatorDto: AuthOperatorDto, @Res({ passthrough: true }) response: Response) {
+    return this.operatorsService.validate(authOperatorDto, response)
   }
 
   /**
@@ -951,9 +1842,9 @@ export class OperatorsController {
   }
 
   /**
-   * Create user, project and AA wallet for an operator
+   * Create user and project for an operator
    * @param authOperatorDto
-   * @returns the user, project and AA wallet with public key
+   * @returns the user and project with public key
    */
   @UseGuards(JwtAuthGuard)
   @Post(&#x27;/account&#x27;)
@@ -961,6 +1852,32 @@ export class OperatorsController {
   @ApiBody({ type: CreateOperatorUser, required: true })
   async createOperatorUserAndProjectAndWallet (@Body() createOperatorUserDto: CreateOperatorUserDto, @User(&#x27;sub&#x27;) auth0Id: string) {
     return this.operatorsService.createOperatorUserAndProjectAndWallet(createOperatorUserDto, auth0Id)
+  }
+
+  /**
+   * Create AA wallet for an operator
+   * @param authOperatorDto
+   * @returns the AA wallet
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/wallet&#x27;)
+  @ApiOperation({ summary: &#x27;Create AA wallet for an operator&#x27; })
+  @ApiBody({ type: CreateOperatorWallet, required: true })
+  async createOperatorWallet (@Body() createOperatorWalletDto: CreateOperatorWalletDto, @User(&#x27;sub&#x27;) auth0Id: string) {
+    return this.operatorsService.createOperatorWallet(createOperatorWalletDto, auth0Id)
+  }
+
+  /**
+   * Migrate Etherspot AA wallet to SAFE for an operator
+   * @param authOperatorDto
+   * @returns the SAFE AA wallet
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/migrate-wallet&#x27;)
+  @ApiOperation({ summary: &#x27;Migrate Etherspot AA wallet to SAFE for an operator&#x27; })
+  @ApiBody({ type: CreateOperatorWallet, required: true })
+  async migrateOperatorWallet (@Body() migrateOperatorWalletDto: CreateOperatorWalletDto, @User(&#x27;sub&#x27;) auth0Id: string) {
+    return this.operatorsService.migrateOperatorWallet(migrateOperatorWalletDto, auth0Id)
   }
 
   /**
@@ -1012,6 +1929,92 @@ export class OperatorsController {
   @MessagePattern(&#x27;find-operator-by-owner-id&#x27;)
   async findOperatorByOwnerId (walletAddress: string) {
     return this.operatorsService.findWalletOwner(walletAddress)
+  }
+
+  /**
+   * Refresh operator token
+   * @returns new access and refresh JWTs of the operator
+   */
+  @Post(&#x27;/refresh-token&#x27;)
+  @ApiOperation({ summary: &#x27;Refresh operator token&#x27; })
+  refreshToken (@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    return this.operatorsService.validateRefreshToken(request.cookies?.operator_refresh_token, response)
+  }
+
+  /**
+   * Create a subscription for the operator
+   * @param createSubscriptionDto
+   * @returns the subscription
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/subscriptions&#x27;)
+  @ApiOperation({ summary: &#x27;Create a subscription for the operator&#x27; })
+  async createSubscription (@User(&#x27;sub&#x27;) auth0Id: string) {
+    return this.operatorsService.createSubscription(auth0Id)
+  }
+
+  /**
+   * Get all subscription invoices for the operator
+   * @returns the subscription invoices
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get(&#x27;/subscriptions&#x27;)
+  @ApiOperation({ summary: &#x27;Get all subscription invoices for the operator&#x27; })
+  async getSubscriptions (@User(&#x27;sub&#x27;) auth0Id: string) {
+    return this.operatorsService.getSubscriptions(auth0Id)
+  }
+
+  /**
+   * Create a checkout session for the operator
+   * @returns the checkout URL
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/checkout/sessions&#x27;)
+  @ApiOperation({ summary: &#x27;Create a checkout session for the operator&#x27; })
+  async checkoutSession (@User(&#x27;sub&#x27;) auth0Id: string, @Body() createOperatorCheckoutDto: CreateOperatorCheckoutDto) {
+    return this.operatorsService.checkout(auth0Id, createOperatorCheckoutDto)
+  }
+
+  /**
+   * Get all checkout sessions for the operator
+   * @returns checkout sessions
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get(&#x27;/checkout/sessions&#x27;)
+  @ApiOperation({ summary: &#x27;Get all checkout sessions for the operator&#x27; })
+  async getCheckoutSessions (@User(&#x27;sub&#x27;) auth0Id: string) {
+    return this.operatorsService.getCheckoutSessions(auth0Id)
+  }
+
+  /**
+   * Handle the checkout webhook
+   */
+  @Post(&#x27;/checkout/webhook&#x27;)
+  @ApiOperation({ summary: &#x27;Handle the checkout webhook&#x27; })
+  async handleCheckoutWebhook (@Body() webhookEvent: ChargeCheckoutWebhookEvent) {
+    return this.operatorsService.handleCheckoutWebhook(webhookEvent)
+  }
+
+  /**
+   * Create a Charge bridge wallet address for operator deposit
+   * @param chargeBridgeDto
+   * @returns the Charge bridge deposit wallet address
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(&#x27;/bridge&#x27;)
+  @ApiOperation({ summary: &#x27;Create a Charge bridge wallet address for operator deposit&#x27; })
+  async createChargeBridge (@User(&#x27;sub&#x27;) auth0Id: string, @Body() createChargeBridgeDto: CreateChargeBridgeDto) {
+    return this.operatorsService.createChargeBridge(auth0Id, createChargeBridgeDto)
+  }
+
+  /**
+   * Trigger the process of monthly subscriptions
+   */
+  @UseGuards(CronGuard)
+  @Post(&#x27;/subscriptions/process&#x27;)
+  @ApiOperation({ summary: &#x27;Trigger the process of monthly subscriptions&#x27; })
+  async processMonthlySubscriptions () {
+    return this.operatorsService.processMonthlySubscriptions()
   }
 }
 </code></pre>

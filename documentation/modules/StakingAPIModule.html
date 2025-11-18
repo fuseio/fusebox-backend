@@ -159,6 +159,9 @@
                         <li class="list-group-item">
                             <a href="../controllers/StakingApiController.html">StakingApiController</a>
                         </li>
+                        <li class="list-group-item">
+                            <a href="../controllers/StakingApiV2Controller.html">StakingApiV2Controller</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
@@ -184,6 +187,7 @@ import { ClientsModule, Transport } from &#x27;@nestjs/microservices&#x27;
 import { ApiKeyModule } from &#x27;@app/api-service/api-keys/api-keys.module&#x27;
 import { StakingApiController } from &#x27;@app/api-service/staking-api/staking-api.controller&#x27;
 import { StakingAPIService } from &#x27;@app/api-service/staking-api/staking-api.service&#x27;
+import { StakingApiV2Controller } from &#x27;./staking-api-v2.controller&#x27;
 
 @Module({
   imports: [
@@ -200,7 +204,7 @@ import { StakingAPIService } from &#x27;@app/api-service/staking-api/staking-api
     ApiKeyModule
   ],
   providers: [StakingAPIService],
-  controllers: [StakingApiController]
+  controllers: [StakingApiController, StakingApiV2Controller]
 })
 export class StakingAPIModule {}
 </code></pre>

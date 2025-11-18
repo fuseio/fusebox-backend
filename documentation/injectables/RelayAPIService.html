@@ -68,6 +68,22 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -131,7 +147,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:9</a></div>
                             </td>
                         </tr>
 
@@ -208,8 +224,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:29</a></div>
                 </td>
             </tr>
 
@@ -275,8 +291,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:19</a></div>
                 </td>
             </tr>
 
@@ -352,8 +368,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:58</a></div>
                 </td>
             </tr>
 
@@ -423,8 +439,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:43</a></div>
                 </td>
             </tr>
 
@@ -469,6 +485,39 @@
         </tbody>
     </table>
 </section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(RelayAPIService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:9</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
 
             <section>
     <h3 id="accessors">
@@ -490,7 +539,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:14</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-smart-wallets-service/src/common/services/relay-api.service.ts:15</a></div>
                                 </td>
                             </tr>
 
@@ -502,13 +551,14 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpService } from &#x27;@nestjs/axios&#x27;
-import { HttpException, Injectable } from &#x27;@nestjs/common&#x27;
+import { HttpException, HttpStatus, Injectable, Logger } from &#x27;@nestjs/common&#x27;
 import { ConfigService } from &#x27;@nestjs/config&#x27;
 import { AxiosRequestConfig } from &#x27;axios&#x27;
 import { catchError, lastValueFrom, map } from &#x27;rxjs&#x27;
 
 @Injectable()
 export default class RelayAPIService {
+  private readonly logger &#x3D; new Logger(RelayAPIService.name)
   constructor (
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
@@ -565,13 +615,20 @@ export default class RelayAPIService {
       .pipe(map(res &#x3D;&gt; res.data))
       .pipe(
         catchError(e &#x3D;&gt; {
+          this.logger.error(&#x60;RelayAPIService error: ${JSON.stringify(e)}&#x60;)
+          // More robust error handling - check if response exists before accessing properties
           const errorReason &#x3D; e?.response?.data?.error ||
-            e?.response?.data?.errors?.message || &#x27;&#x27;
+            e?.response?.data?.errors?.message ||
+            e?.message ||
+            &#x27;Unknown error occurred&#x27;
 
-          throw new HttpException(
-            &#x60;${e?.response?.statusText}: ${errorReason}&#x60;,
-            e?.response?.status
-          )
+          const statusText &#x3D; e?.response?.statusText || &#x27;Error&#x27;
+          const status &#x3D; e?.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
+
+          // Create error message safely
+          const errorMessage &#x3D; errorReason ? &#x60;${statusText}: ${errorReason}&#x60; : statusText
+
+          throw new HttpException(errorMessage, status)
         })
       )
     return await lastValueFrom(observable)

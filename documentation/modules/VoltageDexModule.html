@@ -66,13 +66,13 @@
 <title>cluster_VoltageDexModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 798,-268 798,-70 8,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_VoltageDexModule_providers</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 790,-130 790,-78 16,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_VoltageDexModule_exports</title>
 <polygon fill="none" stroke="black" points="319,-208 319,-260 465,-260 465,-208 319,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_VoltageDexModule_providers</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 790,-130 790,-78 16,-78"/>
 </g>
 <!-- VoltageDexService  -->
 <g id="node1" class="node">
@@ -235,6 +235,7 @@ import { VoltageDexController } from &#x27;@app/network-service/voltage-dex/volt
 import { VoltageDexService } from &#x27;@app/network-service/voltage-dex/voltage-dex.service&#x27;
 import { VoltageV2Client } from &#x27;@app/network-service/voltage-dex/services/voltage-v2-client.service&#x27;
 import { VoltageV3Client } from &#x27;@app/network-service/voltage-dex/services/voltage-v3-client.service&#x27;
+import { VoltBarClient } from &#x27;@app/network-service/voltage-dex/services/volt-bar-client.service&#x27;
 import configuration from &#x27;apps/charge-network-service/src/common/config/configuration&#x27;
 
 @Module({
@@ -259,6 +260,11 @@ import configuration from &#x27;apps/charge-network-service/src/common/config/co
       inject: [ConfigService]
     },
     {
+      provide: &#x27;VOLT_BAR_GRAPH_CLIENT&#x27;,
+      useFactory: (configService: ConfigService) &#x3D;&gt; new GraphQLClient(configService.get&lt;string&gt;(&#x27;voltBarGraphUrl&#x27;)),
+      inject: [ConfigService]
+    },
+    {
       provide: VoltageV2Client,
       useFactory: (client: GraphQLClient) &#x3D;&gt; new VoltageV2Client(client),
       inject: [&#x27;VOLTAGE_V2_GRAPH_CLIENT&#x27;]
@@ -272,6 +278,11 @@ import configuration from &#x27;apps/charge-network-service/src/common/config/co
       provide: BlocksClient,
       useFactory: (client: GraphQLClient) &#x3D;&gt; new BlocksClient(client),
       inject: [&#x27;BLOCKS_GRAPH_CLIENT&#x27;]
+    },
+    {
+      provide: VoltBarClient,
+      useFactory: (client: GraphQLClient) &#x3D;&gt; new VoltBarClient(client),
+      inject: [&#x27;VOLT_BAR_GRAPH_CLIENT&#x27;]
     },
     TokenPriceService,
     TokenStatsService,

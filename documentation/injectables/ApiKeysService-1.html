@@ -57,7 +57,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>apps/charge-apps-service/src/api-keys/api-keys.service.ts</code>
+            <code>apps/charge-api-service/src/api-keys/api-keys.service.ts</code>
         </p>
 
 
@@ -83,6 +83,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#createSandboxKey" >createSandboxKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#createSecretKey" >createSecretKey</a>
                             </li>
                             <li>
@@ -105,11 +109,19 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getOwnerIdByPublicKey" >getOwnerIdByPublicKey</a>
+                                <a href="#getProjectIdByPublicKey" >getProjectIdByPublicKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getProjectJwt" >getProjectJwt</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getPublicKey" >getPublicKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getSandboxKey" >getSandboxKey</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -133,12 +145,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(apiKeyModel: Model<ApiKey>)</code>
+<code>constructor(apiKeyModel: Model<ApiKey>, studioLegacyJwtService: <a href="../injectables/StudioLegacyJwtService.html" target="_self">StudioLegacyJwtService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:13</a></div>
                             </td>
                         </tr>
 
@@ -160,6 +172,18 @@
                                                   
                                                         <td>
                                                                     <code>Model&lt;ApiKey&gt;</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>studioLegacyJwtService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/StudioLegacyJwtService.html" target="_self" >StudioLegacyJwtService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -196,15 +220,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createPublicKey(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+                    <code>createPublicKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:20</a></div>
                 </td>
             </tr>
 
@@ -225,9 +249,80 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>apiKeysDto</td>
+                                    <td>projectId</td>
                                     <td>
-                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createSandboxKey"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createSandboxKey</b></span>
+                        <a href="#createSandboxKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createSandboxKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:107</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
@@ -267,15 +362,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createSecretKey(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+                    <code>createSecretKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, createLegacyAccount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:59</a></div>
                 </td>
             </tr>
 
@@ -296,9 +391,21 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>apiKeysDto</td>
+                                    <td>projectId</td>
                                     <td>
-                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>createLegacyAccount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
                                     </td>
 
                                     <td>
@@ -345,8 +452,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:55</a></div>
                 </td>
             </tr>
 
@@ -417,8 +524,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="143"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:143</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="194"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:194</a></div>
                 </td>
             </tr>
 
@@ -457,8 +564,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="148"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:148</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="199"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:199</a></div>
                 </td>
             </tr>
 
@@ -489,15 +596,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getApiKeysInfo(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+                    <code>getApiKeysInfo(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="132"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:132</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:185</a></div>
                 </td>
             </tr>
 
@@ -518,9 +625,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>apiKeysDto</td>
+                                    <td>projectId</td>
                                     <td>
-                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
@@ -549,26 +656,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getOwnerIdByPublicKey"></a>
+                    <a name="getProjectIdByPublicKey"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
-                        <span ><b>getOwnerIdByPublicKey</b></span>
-                        <a href="#getOwnerIdByPublicKey"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getProjectIdByPublicKey</b></span>
+                        <a href="#getProjectIdByPublicKey"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getOwnerIdByPublicKey(publicKey: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    <code>getProjectIdByPublicKey(publicKey: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="121"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:121</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="174"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:174</a></div>
                 </td>
             </tr>
 
@@ -620,26 +727,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getPublicKey"></a>
+                    <a name="getProjectJwt"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
-                        <span ><b>getPublicKey</b></span>
-                        <a href="#getPublicKey"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getProjectJwt</b></span>
+                        <a href="#getProjectJwt"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPublicKey(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+                    <code>getProjectJwt(query: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank">object</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="47"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:47</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:144</a></div>
                 </td>
             </tr>
 
@@ -660,9 +767,151 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>apiKeysDto</td>
+                                    <td>query</td>
                                     <td>
-                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPublicKey"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getPublicKey</b></span>
+                        <a href="#getPublicKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPublicKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:45</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSandboxKey"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getSandboxKey</b></span>
+                        <a href="#getSandboxKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSandboxKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>projectId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
@@ -702,15 +951,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateSecretKey(apiKeysDto: <a href="../classes/ApiKeysDto.html" target="_self">ApiKeysDto</a>)</code>
+                    <code>updateSecretKey(projectId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="95"
-                            class="link-to-prism">apps/charge-apps-service/src/api-keys/api-keys.service.ts:95</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="150"
+                            class="link-to-prism">apps/charge-api-service/src/api-keys/api-keys.service.ts:150</a></div>
                 </td>
             </tr>
 
@@ -731,9 +980,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>apiKeysDto</td>
+                                    <td>projectId</td>
                                     <td>
-                                                <code><a href="../classes/ApiKeysDto.html" target="_self" >ApiKeysDto</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
@@ -764,40 +1013,38 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiKey } from &#x27;@app/apps-service/api-keys/interfaces/api-keys.interface &#x27;
-import { apiKeyModelString } from &#x27;@app/apps-service/api-keys/api-keys.constants&#x27;
-import { Inject, Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Inject, Injectable } from &#x27;@nestjs/common&#x27;
 import { Model } from &#x27;mongoose&#x27;
-import { RpcException } from &#x27;@nestjs/microservices&#x27;
-import { isEmpty } from &#x27;lodash&#x27;
+import { ApiKey } from &#x27;apps/charge-api-service/src/api-keys/interfaces/api-keys.interface &#x27;
+import { apiKeyModelString } from &#x27;apps/charge-api-service/src/api-keys/api-keys.constants&#x27;
 import * as bcrypt from &#x27;bcryptjs&#x27;
 import * as crypto from &#x27;crypto&#x27;
 import base64url from &#x27;base64url&#x27;
-import { ApiKeysDto } from &#x27;@app/apps-service/api-keys/dto/api-keys.dto&#x27;
+import { RpcException } from &#x27;@nestjs/microservices&#x27;
+import { StudioLegacyJwtService } from &#x27;@app/api-service/studio-legacy-jwt/studio-legacy-jwt.service&#x27;
+import { isEmpty } from &#x27;lodash&#x27;
 
 @Injectable()
 export class ApiKeysService {
   constructor (
-        @Inject(apiKeyModelString)
-        private apiKeyModel: Model&lt;ApiKey&gt;
+    @Inject(apiKeyModelString)
+    private apiKeyModel: Model&lt;ApiKey&gt;,
+    private studioLegacyJwtService: StudioLegacyJwtService
   ) { }
 
-  async createPublicKey (apiKeysDto: ApiKeysDto) {
-    const [ownerId, appName] &#x3D; [apiKeysDto.ownerId, apiKeysDto.appName]
-
-    const appKeys &#x3D; await this.apiKeyModel.findOne({
-      ownerId, appName
+  async createPublicKey (projectId: string) {
+    const projectKeys &#x3D; await this.apiKeyModel.findOne({
+      projectId
     })
 
-    if (appKeys) {
+    if (projectKeys) {
       throw new RpcException(&#x27;Public Keys already exist&#x27;)
     }
 
     const publicKey &#x3D; &#x60;pk_${await this.generateRandomToken()}&#x60;
 
     const result &#x3D; await this.apiKeyModel.create({
-      ownerId,
-      appName,
+      projectId,
       publicKey
     })
 
@@ -810,10 +1057,8 @@ export class ApiKeysService {
     throw new RpcException(&#x27;Internal Server Error&#x27;)
   }
 
-  async getPublicKey (apiKeysDto: ApiKeysDto) {
-    const [ownerId, appName] &#x3D; [apiKeysDto.ownerId, apiKeysDto.appName]
-
-    const apiKeys &#x3D; await this.findOne({ ownerId, appName })
+  async getPublicKey (projectId: string) {
+    const apiKeys &#x3D; await this.findOne({ projectId })
 
     if (apiKeys &amp;&amp; apiKeys?.publicKey) {
       return { publicKey: apiKeys?.publicKey }
@@ -826,10 +1071,8 @@ export class ApiKeysService {
     return this.apiKeyModel.findOne(query)
   }
 
-  async createSecretKey (apiKeysDto: ApiKeysDto) {
-    const [ownerId, appName] &#x3D; [apiKeysDto.ownerId, apiKeysDto.appName]
-
-    const apiKeys &#x3D; await this.apiKeyModel.findOne({ ownerId, appName })
+  async createSecretKey (projectId: string, createLegacyAccount: boolean) {
+    const apiKeys &#x3D; await this.apiKeyModel.findOne({ projectId })
 
     if (apiKeys &amp;&amp; apiKeys?.secretHash) {
       throw new RpcException(&#x27;Secret Key already exists&#x27;)
@@ -839,35 +1082,94 @@ export class ApiKeysService {
     const saltRounds &#x3D; await bcrypt.genSalt()
     const secretHash &#x3D; await bcrypt.hash(secretKey, saltRounds)
 
+    if (createLegacyAccount) {
+      const { encryptedLegacyJwt, legacyBackendAccount } &#x3D; await this.studioLegacyJwtService.createLegacyJwt(&#x60;chargeApp_${projectId}&#x60;)
+      const result &#x3D; await this.apiKeyModel.findOneAndUpdate(
+        { projectId },
+        {
+          secretHash,
+          secretPrefix,
+          secretLastFourChars,
+          encryptedLegacyJwt,
+          legacyBackendAccount
+        },
+        { upsert: true, new: true }
+      )
+      if (result) {
+        return {
+          secretKey
+        }
+      }
+    } else {
+      const result &#x3D; await this.apiKeyModel.findOneAndUpdate(
+        { projectId },
+        {
+          secretHash,
+          secretPrefix,
+          secretLastFourChars
+        },
+        { upsert: true, new: true }
+      )
+      if (result) {
+        return {
+          secretKey
+        }
+      }
+    }
+    throw new RpcException(&#x27;Internal Server Error&#x27;)
+  }
+
+  async createSandboxKey (projectId: string) {
+    const projectKeys &#x3D; await this.apiKeyModel.findOne({
+      projectId
+    })
+
+    if (projectKeys &amp;&amp; projectKeys?.sandboxKey) {
+      throw new RpcException(&#x27;sandboxKey Key already exist&#x27;)
+    }
+    const sandboxKey &#x3D; &#x60;pk_test_${await this.generateRandomToken()}&#x60;
+
     const result &#x3D; await this.apiKeyModel.findOneAndUpdate(
-      { ownerId, appName },
+      { projectId },
       {
-        secretHash,
-        secretPrefix,
-        secretLastFourChars
-      },
-      { upsert: true, new: true }
+        projectId,
+        sandboxKey
+      }
     )
 
     if (result) {
       return {
-        secretKey
+        sandboxKey
       }
     }
 
     throw new RpcException(&#x27;Internal Server Error&#x27;)
   }
 
-  async updateSecretKey (apiKeysDto: ApiKeysDto) {
-    const [ownerId, appName] &#x3D; [apiKeysDto.ownerId, apiKeysDto.appName]
+  async getSandboxKey (projectId: string) {
+    const apiKeys &#x3D; await this.findOne({ projectId })
 
+    if (apiKeys &amp;&amp; apiKeys?.sandboxKey) {
+      return { sandboxKey: apiKeys?.sandboxKey }
+    }
+
+    throw new RpcException(&#x27;Not Found&#x27;)
+  }
+
+  async getProjectJwt (query: object) {
+    const projectApiKeys &#x3D; await this.apiKeyModel.findOne(query)
+    const projectEncryptedJwt &#x3D; projectApiKeys?.encryptedLegacyJwt
+    return this.studioLegacyJwtService.decryptEncryptedJWT(projectEncryptedJwt)
+  }
+
+  async updateSecretKey (projectId: string) {
     const { secretKey, secretPrefix, secretLastFourChars } &#x3D; await this.generateSecretKey()
     const saltRounds &#x3D; await bcrypt.genSalt()
     const secretHash &#x3D; await bcrypt.hash(secretKey, saltRounds)
 
     const result &#x3D; await this.apiKeyModel.findOneAndUpdate(
       {
-        ownerId, appName
+        projectId
       },
       {
         secretHash,
@@ -884,22 +1186,20 @@ export class ApiKeysService {
     }
   }
 
-  async getOwnerIdByPublicKey (publicKey: any) {
+  async getProjectIdByPublicKey (publicKey: any) {
     const projectApiKeys: ApiKey | null &#x3D; await this.apiKeyModel.findOne({ publicKey })
-    const ownerId: string &#x3D; projectApiKeys?.ownerId?.toString()
+    const projectId: string &#x3D; projectApiKeys?.projectId?.toString()
 
-    if (isEmpty(ownerId)) {
+    if (isEmpty(projectId)) {
       return new Error(&#x27;Project not found&#x27;)
     }
 
-    return ownerId
+    return projectId
   }
 
-  async getApiKeysInfo (apiKeysDto: ApiKeysDto) {
-    const [ownerId, appName] &#x3D; [apiKeysDto.ownerId, apiKeysDto.appName]
-
+  async getApiKeysInfo (projectId: string) {
     const projectApiKeys &#x3D; await this.apiKeyModel.findOne({
-      ownerId, appName
+      projectId
     })
       .select(&#x27;-secretHash -encryptedLegacyJwt&#x27;)
 

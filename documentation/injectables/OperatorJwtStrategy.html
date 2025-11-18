@@ -78,6 +78,11 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Static</span>
+                                <a href="#extractJwtFromCookies" >extractJwtFromCookies</a>
+                            </li>
+                            <li>
                                 <a href="#validate" >validate</a>
                             </li>
                         </ul>
@@ -103,7 +108,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">apps/charge-accounts-service/src/operators/operator-jwt.strategy.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">apps/charge-accounts-service/src/operators/operator-jwt.strategy.ts:9</a></div>
                             </td>
                         </tr>
 
@@ -150,6 +155,78 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="extractJwtFromCookies"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Static</span>
+                        <span ><b>extractJwtFromCookies</b></span>
+                        <a href="#extractJwtFromCookies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>extractJwtFromCookies(request: Request)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="21"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operator-jwt.strategy.ts:21</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>request</td>
+                                    <td>
+                                            <code>Request</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>string | undefined</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="validate"></a>
                     <span class="name">
                         <span ><b>validate</b></span>
@@ -166,8 +243,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">apps/charge-accounts-service/src/operators/operator-jwt.strategy.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">apps/charge-accounts-service/src/operators/operator-jwt.strategy.ts:25</a></div>
                 </td>
             </tr>
 
@@ -215,6 +292,7 @@ import { PassportStrategy } from &#x27;@nestjs/passport&#x27;
 import { ExtractJwt, Strategy } from &#x27;passport-jwt&#x27;
 import { operatorJwtString } from &#x27;@app/accounts-service/operators/operators.constants&#x27;
 import { ConfigService } from &#x27;@nestjs/config&#x27;
+import { Request } from &#x27;express&#x27;
 
 @Injectable()
 export class OperatorJwtStrategy extends PassportStrategy(Strategy, operatorJwtString) {
@@ -222,9 +300,15 @@ export class OperatorJwtStrategy extends PassportStrategy(Strategy, operatorJwtS
     private readonly configService: ConfigService
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        OperatorJwtStrategy.extractJwtFromCookies
+      ]),
       secretOrKey: configService.get(&#x27;SMART_WALLETS_JWT_SECRET&#x27;)
     })
+  }
+
+  private static extractJwtFromCookies (request: Request): string | undefined {
+    return request.cookies?.operator_access_token
   }
 
   validate (payload: unknown): unknown {

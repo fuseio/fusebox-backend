@@ -114,7 +114,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">libs/common/src/exceptions/all-exceptions.filter.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">libs/common/src/exceptions/all-exceptions.filter.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -190,8 +190,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">libs/common/src/exceptions/all-exceptions.filter.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">libs/common/src/exceptions/all-exceptions.filter.ts:20</a></div>
                 </td>
             </tr>
 
@@ -271,6 +271,7 @@ import { RpcException } from &#x27;@nestjs/microservices&#x27;
 import { ServerResponse } from &#x27;http&#x27;
 import { MongoServerError } from &#x27;mongodb&#x27;
 import { throwError } from &#x27;rxjs&#x27;
+import { get, isPlainObject } from &#x27;lodash&#x27;
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -299,8 +300,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
         errorMessage &#x3D; &#x60;${Object.keys(exception?.keyValue)} must be unique&#x60;
       }
     } else if (exception instanceof RpcException) {
-      httpStatus &#x3D; HttpStatus.INTERNAL_SERVER_ERROR
-      errorMessage &#x3D; exception.message
+      // RpcException can have custom status in the error object
+      const rpcError &#x3D; exception.getError()
+      this.logger.debug(&#x60;RpcException caught - Raw error object: ${JSON.stringify(rpcError)}&#x60;)
+
+      if (isPlainObject(rpcError)) {
+        httpStatus &#x3D; get(rpcError, &#x27;status&#x27;, get(rpcError, &#x27;statusCode&#x27;, HttpStatus.INTERNAL_SERVER_ERROR))
+        errorMessage &#x3D; get(rpcError, &#x27;error&#x27;, get(rpcError, &#x27;message&#x27;, exception.message))
+        this.logger.debug(&#x60;RpcException - Extracted status: ${httpStatus}, message: ${errorMessage}&#x60;)
+      } else {
+        httpStatus &#x3D; HttpStatus.INTERNAL_SERVER_ERROR
+        errorMessage &#x3D; exception.message
+        this.logger.debug(&#x60;RpcException - Using defaults, status: ${httpStatus}, message: ${errorMessage}&#x60;)
+      }
     } else {
       httpStatus &#x3D; HttpStatus.INTERNAL_SERVER_ERROR
       errorMessage &#x3D; &#x27;Critical Internal Server Error Occurred&#x27;
@@ -315,7 +327,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     if (host.getType() &#x3D;&#x3D;&#x3D; &#x27;rpc&#x27;) {
-      return throwError(() &#x3D;&gt; ({ message: errorMessage, status: httpStatus }))
+      this.logger.debug(&#x60;Returning RPC error - status: ${httpStatus}, message: ${errorMessage}&#x60;)
+      return throwError(() &#x3D;&gt; ({
+        error: errorMessage, // Use &#x27;error&#x27; field for consistency
+        status: httpStatus
+      }))
     }
 
     response.statusCode &#x3D; httpStatus

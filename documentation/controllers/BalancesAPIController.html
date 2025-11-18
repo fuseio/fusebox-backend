@@ -133,8 +133,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="23"
-                            class="link-to-prism">apps/charge-api-service/src/balances-api/balances-api.controller.ts:23</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">apps/charge-api-service/src/balances-api/balances-api.controller.ts:25</a></div>
                 </td>
             </tr>
 
@@ -221,8 +221,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">apps/charge-api-service/src/balances-api/balances-api.controller.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">apps/charge-api-service/src/balances-api/balances-api.controller.ts:50</a></div>
                 </td>
             </tr>
 
@@ -298,14 +298,16 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Param, UseGuards, Query } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Get, Param, UseGuards, Query, UseInterceptors } from &#x27;@nestjs/common&#x27;
 import { IsValidPublicApiKeyGuard } from &#x27;@app/api-service/api-keys/guards/is-valid-public-api-key.guard&#x27;
 import { BalancesAPIService } from &#x27;@app/api-service/balances-api/balances-api.service&#x27;
 import { ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, getSchemaPath } from &#x27;@nestjs/swagger&#x27;
+import { CacheInterceptor } from &#x27;@nestjs/cache-manager&#x27;
 
 @ApiTags(&#x27;Balances - ERC20 &amp; NFT&#x27;)
 @UseGuards(IsValidPublicApiKeyGuard)
 @Controller(&#x27;v0/balances&#x27;)
+@UseInterceptors(CacheInterceptor)
 export class BalancesAPIController {
   constructor (
     private readonly balancesAPIService: BalancesAPIService

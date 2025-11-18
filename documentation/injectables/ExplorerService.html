@@ -152,7 +152,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -241,8 +241,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:59</a></div>
                 </td>
             </tr>
 
@@ -312,8 +312,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="74"
-                            class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:74</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:75</a></div>
                 </td>
             </tr>
 
@@ -408,8 +408,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="39"
+                            class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:39</a></div>
                 </td>
             </tr>
 
@@ -483,7 +483,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:16</a></div>
                         </td>
                     </tr>
 
@@ -512,7 +512,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:22</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:23</a></div>
                                 </td>
                             </tr>
 
@@ -534,7 +534,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:26</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:27</a></div>
                                 </td>
                             </tr>
 
@@ -556,7 +556,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:30</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:31</a></div>
                                 </td>
                             </tr>
 
@@ -578,7 +578,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:34</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">apps/charge-network-service/src/balances/services/explorer-balance.service.ts:35</a></div>
                                 </td>
                             </tr>
 
@@ -598,8 +598,9 @@ import GraphQLService from &#x27;@app/common/services/graphql.service&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { NATIVE_FUSE_TOKEN } from &#x27;@app/smart-wallets-service/common/constants/fuseTokenInfo&#x27;
 import { ethers } from &#x27;ethers&#x27;
-import { getCollectiblesByOwner } from &#x27;@app/network-service/common/constants/graph-queries/nfts&#x27;
+import { getCollectiblesByOwner } from &#x27;@app/network-service/common/constants/graph-queries/nfts-v3&#x27;
 import { isEmpty } from &#x27;lodash&#x27;
+import { ExplorerServiceCollectibleResponse, ExplorerServiceGraphQLVariables, ExplorerServiceTransformedCollectible } from &#x27;../interfaces/balances.interface&#x27;
 
 @Injectable()
 export class ExplorerService implements BalanceService {
@@ -608,7 +609,7 @@ export class ExplorerService implements BalanceService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly graphQLService: GraphQLService
-  ) {}
+  ) { }
 
   get explorerBaseUrl () {
     return this.configService.get(&#x27;explorer.baseUrl&#x27;)
@@ -664,7 +665,7 @@ export class ExplorerService implements BalanceService {
 
   async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
     const query &#x3D; getCollectiblesByOwner
-    const variables: any &#x3D; {
+    const variables: ExplorerServiceGraphQLVariables &#x3D; {
       address: address.toLowerCase(),
       orderBy: &#x27;created&#x27;,
       orderDirection: &#x27;desc&#x27;,
@@ -676,16 +677,48 @@ export class ExplorerService implements BalanceService {
     }
 
     const data &#x3D; await this.graphQLService.fetchFromGraphQL(this.nftGraphUrl, query, variables)
+
+    if (!data?.data?.account) {
+      return {
+        nextCursor: null,
+        data: {
+          account: { address, id: address, collectibles: [] }
+        }
+      }
+    }
+
     const collectibles &#x3D; data?.data?.account?.collectibles || []
+
+    const transformedCollectibles &#x3D; collectibles.map((collectible: ExplorerServiceCollectibleResponse): ExplorerServiceTransformedCollectible &#x3D;&gt; ({
+      collection: collectible?.collection,
+      created: collectible?.created,
+      creator: collectible?.creator,
+      owner: collectible?.owner,
+      tokenId: collectible?.tokenId,
+      description: collectible?.metadata?.description ?? null,
+      descriptorUri: collectible?.contentURI ?? null,
+      imageURL: collectible?.metadata?.imageURL ?? null,
+      name: collectible?.metadata?.name ?? null,
+      id: collectible?.tokenId &amp;&amp; collectible?.collection?.collectionAddress
+        ? &#x60;${collectible.collection.collectionAddress}-0x${BigInt(collectible.tokenId).toString(16)}&#x60;
+        : null
+    }))
+
     const nextCursor &#x3D; isEmpty(collectibles)
       ? null
       : collectibles.length &#x3D;&#x3D;&#x3D; variables.first
-        ? Buffer.from((variables.skip || 0) + collectibles.length + &#x27;&#x27;).toString(&#x27;base64&#x27;)
+        ? Buffer.from(&#x60;${(variables.skip || 0) + collectibles.length}&#x60;).toString(&#x27;base64&#x27;)
         : null
 
     return {
       nextCursor,
-      ...data
+      data: {
+        account: {
+          address,
+          id: address,
+          collectibles: transformedCollectibles
+        }
+      }
     }
   }
 }

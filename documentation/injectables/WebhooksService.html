@@ -1310,7 +1310,7 @@ export class WebhooksService {
         }
       } else {
         // If the error code is not 11000, rethrow the error
-        // this.logger.error(err)
+        this.logger.error(err)
         throw err
       }
     }
@@ -1393,7 +1393,7 @@ export class WebhooksService {
             &#x60;Created a new webhook event for the tx ${eventData.txHash}&#x60;
           )
         } catch (err) {
-          // this.logger.error(&#x60;Webhook event couldn&#x27;t be added to the DB: ${err}&#x60;)
+          this.logger.error(&#x60;Webhook event couldn&#x27;t be added to the DB: ${err}&#x60;)
         }
       }
     }

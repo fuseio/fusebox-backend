@@ -99,6 +99,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#getStakingOptionV2" >getStakingOptionV2</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#getStakingProvider" >getStakingProvider</a>
                             </li>
                             <li>
@@ -111,11 +115,27 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#stakedTokensV2" >stakedTokensV2</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#stakeV2" >stakeV2</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#stakingOptions" >stakingOptions</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#stakingOptionsV2" >stakingOptionsV2</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#unStake" >unStake</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unStakeV2" >unStakeV2</a>
                             </li>
                         </ul>
                     </td>
@@ -136,6 +156,9 @@
                                 <li>
                                     <a href="#stakingOptionsConfig" >stakingOptionsConfig</a>
                                 </li>
+                                <li>
+                                    <a href="#stakingOptionsV2Config" >stakingOptionsV2Config</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -149,12 +172,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(voltBarService: <a href="../injectables/VoltBarService.html" target="_self">VoltBarService</a>, fuseLiquidStakingService: <a href="../injectables/FuseLiquidStakingService.html" target="_self">FuseLiquidStakingService</a>, configService: ConfigService)</code>
+<code>constructor(voltBarService: <a href="../injectables/VoltBarService.html" target="_self">VoltBarService</a>, fuseLiquidStakingService: <a href="../injectables/FuseLiquidStakingService.html" target="_self">FuseLiquidStakingService</a>, simpleStakingService: <a href="../injectables/SimpleStakingService.html" target="_self">SimpleStakingService</a>, configService: ConfigService)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:23</a></div>
                             </td>
                         </tr>
 
@@ -188,6 +211,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/FuseLiquidStakingService.html" target="_self" >FuseLiquidStakingService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>simpleStakingService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SimpleStakingService.html" target="_self" >SimpleStakingService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -243,8 +278,79 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="85"
-                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:85</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="165"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:165</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tokenAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStakingOptionV2"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>getStakingOptionV2</b></span>
+                        <a href="#getStakingOptionV2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStakingOptionV2(tokenAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:173</a></div>
                 </td>
             </tr>
 
@@ -314,8 +420,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="89"
-                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:89</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="181"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:181</a></div>
                 </td>
             </tr>
 
@@ -385,8 +491,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:75</a></div>
                 </td>
             </tr>
 
@@ -456,8 +562,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:115</a></div>
                 </td>
             </tr>
 
@@ -509,6 +615,148 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="stakedTokensV2"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>stakedTokensV2</b></span>
+                        <a href="#stakedTokensV2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stakedTokensV2(accountAddress: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>accountAddress</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stakeV2"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>stakeV2</b></span>
+                        <a href="#stakeV2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stakeV2(stakeDto: <a href="../classes/StakeDto.html" target="_self">StakeDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:85</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>stakeDto</td>
+                                    <td>
+                                                <code><a href="../classes/StakeDto.html" target="_self" >StakeDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="stakingOptions"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -527,8 +775,47 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="39"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:39</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stakingOptionsV2"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>stakingOptionsV2</b></span>
+                        <a href="#stakingOptionsV2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stakingOptionsV2()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:57</a></div>
                 </td>
             </tr>
 
@@ -566,8 +853,79 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>unStakeDto</td>
+                                    <td>
+                                                <code><a href="../classes/UnstakeDto.html" target="_self" >UnstakeDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unStakeV2"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>unStakeV2</b></span>
+                        <a href="#unStakeV2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unStakeV2(unStakeDto: <a href="../classes/UnstakeDto.html" target="_self">UnstakeDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:105</a></div>
                 </td>
             </tr>
 
@@ -641,7 +999,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:23</a></div>
                         </td>
                     </tr>
 
@@ -670,7 +1028,29 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:20</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:31</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="stakingOptionsV2Config"></a>
+                        <span class="name"><b>stakingOptionsV2Config</b><a href="#stakingOptionsV2Config"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>stakingOptionsV2Config()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">apps/charge-network-service/src/staking/staking.service.ts:35</a></div>
                                 </td>
                             </tr>
 
@@ -684,12 +1064,22 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, Logger } from &#x27;@nestjs/common&#x27;
 import { UnstakeDto } from &#x27;@app/network-service/staking/dto/unstake.dto&#x27;
 import { StakeDto } from &#x27;@app/network-service/staking/dto/stake.dto&#x27;
-import { StakingOption, StakingProvider } from &#x27;@app/network-service/staking/interfaces&#x27;
+import {
+  StakingOption,
+  StakingProvider
+} from &#x27;@app/network-service/staking/interfaces&#x27;
 import VoltBarService from &#x27;@app/network-service/staking/staking-providers/volt-bar.service&#x27;
 import { sumBy } from &#x27;lodash&#x27;
-import { fuseLiquidStakingId, voltBarId } from &#x27;@app/network-service/common/constants&#x27;
+import {
+  fuseLiquidStakingId,
+  usdcOnStargateSimpleStakingId,
+  voltBarId,
+  wethOnStargateSimpleStakingId
+} from &#x27;@app/network-service/common/constants&#x27;
 import { ConfigService } from &#x27;@nestjs/config&#x27;
 import FuseLiquidStakingService from &#x27;@app/network-service/staking/staking-providers/fuse-liquid-staking.service&#x27;
+import SimpleStakingService from &#x27;@app/network-service/staking/staking-providers/simple-staking.service&#x27;
+import { isLowercaseEqual } from &#x27;@app/common/utils/lowercase_equal&#x27;
 
 @Injectable()
 export class StakingService {
@@ -697,17 +1087,40 @@ export class StakingService {
   constructor (
     private readonly voltBarService: VoltBarService,
     private readonly fuseLiquidStakingService: FuseLiquidStakingService,
+    private readonly simpleStakingService: SimpleStakingService,
     private readonly configService: ConfigService
-  ) { }
+  ) {}
 
   get stakingOptionsConfig () {
     return this.configService.get(&#x27;stakingOptions&#x27;) as Array&lt;StakingOption&gt;
+  }
+
+  get stakingOptionsV2Config () {
+    return this.configService.get(&#x27;stakingOptionsV2&#x27;) as Array&lt;StakingOption&gt;
   }
 
   async stakingOptions () {
     const stakingOptionsData: Array&lt;StakingOption&gt; &#x3D; []
 
     for (const stakingOption of this.stakingOptionsConfig) {
+      const stakingProvider &#x3D; this.getStakingProvider(stakingOption)
+      const stakingApr &#x3D; await stakingProvider.stakingApr(stakingOption)
+      const tvl &#x3D; await stakingProvider.tvl(stakingOption)
+
+      stakingOptionsData.push({
+        ...stakingOption,
+        stakingApr,
+        tvl
+      })
+    }
+
+    return stakingOptionsData
+  }
+
+  async stakingOptionsV2 () {
+    const stakingOptionsData: Array&lt;StakingOption&gt; &#x3D; []
+
+    for (const stakingOption of this.stakingOptionsV2Config) {
       const stakingProvider &#x3D; this.getStakingProvider(stakingOption)
       const stakingApr &#x3D; await stakingProvider.stakingApr(stakingOption)
       const tvl &#x3D; await stakingProvider.tvl(stakingOption)
@@ -732,8 +1145,28 @@ export class StakingService {
     }
   }
 
+  async stakeV2 (stakeDto: StakeDto) {
+    const stakingOption &#x3D; this.getStakingOptionV2(stakeDto.tokenAddress)
+    const stakingProvider &#x3D; this.getStakingProvider(stakingOption)
+
+    return {
+      contractAddress: stakingProvider.address,
+      encodedABI: stakingProvider.stake(stakeDto)
+    }
+  }
+
   async unStake (unStakeDto: UnstakeDto) {
     const stakingOption &#x3D; this.getStakingOption(unStakeDto.tokenAddress)
+    const stakingProvider &#x3D; this.getStakingProvider(stakingOption)
+
+    return {
+      contractAddress: stakingProvider.address,
+      encodedABI: stakingProvider.unStake(unStakeDto)
+    }
+  }
+
+  async unStakeV2 (unStakeDto: UnstakeDto) {
+    const stakingOption &#x3D; this.getStakingOptionV2(unStakeDto.tokenAddress)
     const stakingProvider &#x3D; this.getStakingProvider(stakingOption)
 
     return {
@@ -765,15 +1198,62 @@ export class StakingService {
     }
   }
 
+  async stakedTokensV2 (accountAddress: string) {
+    const stakedTokens &#x3D; []
+
+    try {
+      for (const stakingOption of this.stakingOptionsV2Config) {
+        const stakingProvider &#x3D; this.getStakingProvider(stakingOption)
+
+        const stakedToken &#x3D; await stakingProvider.stakedToken(
+          accountAddress,
+          stakingOption
+        )
+
+        if (stakedToken.stakedAmount &gt; 0) {
+          stakedTokens.push(stakedToken)
+        }
+      }
+
+      return {
+        totalStakedAmountUSD: sumBy(stakedTokens, &#x27;stakedAmountUSD&#x27;),
+        totalEarnedAmountUSD: sumBy(stakedTokens, &#x27;earnedAmountUSD&#x27;),
+        stakedTokens
+      }
+    } catch (error) {
+      this.logger.error(&#x27;Error fetching staked tokens&#x27;, error)
+    }
+  }
+
   private getStakingOption (tokenAddress: string) {
-    return this.stakingOptionsConfig.find(stakingOption &#x3D;&gt; stakingOption.tokenAddress &#x3D;&#x3D;&#x3D; tokenAddress)
+    return this.stakingOptionsConfig.find(
+      (stakingOption) &#x3D;&gt; {
+        return isLowercaseEqual(stakingOption.tokenAddress, tokenAddress)
+      }
+    )
+  }
+
+  private getStakingOptionV2 (tokenAddress: string) {
+    return this.stakingOptionsV2Config.find(
+      (stakingOption) &#x3D;&gt; {
+        return isLowercaseEqual(stakingOption.tokenAddress, tokenAddress)
+      }
+    )
   }
 
   private getStakingProvider (stakingOption: StakingOption): StakingProvider {
-    if (stakingOption.stakingProviderId &#x3D;&#x3D;&#x3D; voltBarId) {
+    const stakingProviderId &#x3D; stakingOption.stakingProviderId
+
+    const isSimpleStaking &#x3D;
+      stakingProviderId &#x3D;&#x3D;&#x3D; usdcOnStargateSimpleStakingId ||
+      stakingProviderId &#x3D;&#x3D;&#x3D; wethOnStargateSimpleStakingId
+
+    if (stakingProviderId &#x3D;&#x3D;&#x3D; voltBarId) {
       return this.voltBarService
-    } else if (stakingOption.stakingProviderId &#x3D;&#x3D;&#x3D; fuseLiquidStakingId) {
+    } else if (stakingProviderId &#x3D;&#x3D;&#x3D; fuseLiquidStakingId) {
       return this.fuseLiquidStakingService
+    } else if (isSimpleStaking) {
+      return this.simpleStakingService
     }
   }
 }

@@ -224,6 +224,7 @@ import configuration from &#x27;apps/charge-network-service/src/common/config/co
 import GraphQLService from &#x27;@app/common/services/graphql.service&#x27;
 import { TokenService } from &#x27;@app/smart-wallets-service/common/services/token.service&#x27;
 import { EthersModule } from &#x27;nestjs-ethers&#x27;
+import { CacheModule } from &#x27;@nestjs/cache-manager&#x27;
 
 @Module({
   imports: [
@@ -243,6 +244,10 @@ import { EthersModule } from &#x27;nestjs-ethers&#x27;
           useDefaultProvider: false
         }
       }
+    }),
+    CacheModule.register({
+      ttl: 60000, // in milliseconds
+      max: 1000
     })
   ],
   controllers: [BalancesController],
@@ -254,7 +259,7 @@ import { EthersModule } from &#x27;nestjs-ethers&#x27;
     ExplorerService
   ]
 })
-export class BalancesModule {}
+export class BalancesModule { }
 </code></pre>
     </div>
 </div>

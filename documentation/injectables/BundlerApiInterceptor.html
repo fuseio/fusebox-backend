@@ -94,6 +94,10 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#constructUserOp" >constructUserOp</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Async</span>
                                 <a href="#intercept" >intercept</a>
                             </li>
@@ -124,12 +128,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(dataLayerClient: ClientProxy, httpService: HttpService, configService: ConfigService)</code>
+<code>constructor(dataLayerClient: ClientProxy, httpService: HttpService, configService: ConfigService, operatorsService: <a href="../injectables/OperatorsService.html" target="_self">OperatorsService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:26</a></div>
                             </td>
                         </tr>
 
@@ -182,6 +186,18 @@
                                                     </td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                        <td>operatorsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/OperatorsService.html" target="_self" >OperatorsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -196,6 +212,100 @@
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="constructUserOp"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>constructUserOp</b></span>
+                        <a href="#constructUserOp"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>constructUserOp(context: ExecutionContext, requestConfig: AxiosRequestConfig, response)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:136</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>context</td>
+                                    <td>
+                                            <code>ExecutionContext</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>requestConfig</td>
+                                    <td>
+                                            <code>AxiosRequestConfig</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -218,8 +328,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:34</a></div>
                 </td>
             </tr>
 
@@ -302,8 +412,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="80"
-                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:80</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:107</a></div>
                 </td>
             </tr>
 
@@ -366,15 +476,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>prepareUrl(environment)</code>
+                    <code>prepareUrl(environment, bundlerProvider)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="97"
-                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:97</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:125</a></div>
                 </td>
             </tr>
 
@@ -395,6 +505,15 @@
                             <tbody>
                                 <tr>
                                     <td>environment</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>bundlerProvider</td>
 
                                     <td>
                                         No
@@ -444,7 +563,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">apps/charge-api-service/src/bundler-api/bundler-api.interceptor.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -477,6 +596,8 @@ import { AxiosRequestConfig, AxiosResponse } from &#x27;axios&#x27;
 import { ClientProxy } from &#x27;@nestjs/microservices&#x27;
 import { callMSFunction } from &#x27;@app/common/utils/client-proxy&#x27;
 import { smartWalletsService } from &#x27;@app/common/constants/microservices.constants&#x27;
+import { BundlerProvider } from &#x27;@app/api-service/bundler-api/interfaces/bundler.interface&#x27;
+import { OperatorsService } from &#x27;@app/accounts-service/operators/operators.service&#x27;
 
 @Injectable()
 export class BundlerApiInterceptor implements NestInterceptor {
@@ -484,7 +605,8 @@ export class BundlerApiInterceptor implements NestInterceptor {
   constructor (
     @Inject(smartWalletsService) private readonly dataLayerClient: ClientProxy,
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private operatorsService: OperatorsService
   ) { }
 
   async intercept (context: ExecutionContext, next: CallHandler): Promise&lt;Observable&lt;any&gt;&gt; {
@@ -492,32 +614,56 @@ export class BundlerApiInterceptor implements NestInterceptor {
       context
     )
 
+    const isSponsoredQuotaExceeded &#x3D; await this.operatorsService.isOperatorSponsoredQuotaExceeded(context, requestConfig)
+    if (isSponsoredQuotaExceeded) {
+      throw new HttpException(&#x27;Operator sponsored transaction quota exceeded&#x27;, HttpStatus.BAD_REQUEST)
+    }
+
     const response &#x3D; await lastValueFrom(
       this.httpService
         .request(requestConfig)
         .pipe(
           map((axiosResponse: AxiosResponse) &#x3D;&gt; {
-            this.logger.log(&#x60;BundlerApiInterceptor succeeded: ${JSON.stringify(axiosResponse.data)}&#x60;)
-            return axiosResponse.data
+            const data &#x3D; axiosResponse.data
+            if (data?.error) {
+              this.logger.error(&#x60;BundlerApiInterceptor JSON-RPC error: ${JSON.stringify(data.error)}&#x60;)
+              // Parse specific error codes
+              if (data.error?.data?.includes(&#x27;0xe0cff05f&#x27;)) {
+                this.logger.error(&#x27;FailedOp: UserOperation validation failed at EntryPoint&#x27;)
+              }
+              // For CALL_EXCEPTION errors specifically
+              if (data.error?.message?.includes(&#x27;CALL_EXCEPTION&#x27;)) {
+                this.logger.error(&#x27;Transaction simulation failed - possible validation, gas, or contract execution error&#x27;)
+              }
+            } else {
+              this.logger.log(&#x60;BundlerApiInterceptor succeeded: ${JSON.stringify(data)}&#x60;)
+            }
+            return data
           })
         )
         .pipe(
           catchError((e) &#x3D;&gt; {
-            const errorReason &#x3D;
-              e?.response?.data?.error ||
-              e?.response?.data?.errors?.message ||
-              &#x27;&#x27;
-            this.logger.log(&#x60;BundlerApiInterceptor error: ${JSON.stringify(e)}&#x60;)
-            throw new HttpException(
-              &#x60;${e?.response?.statusText}: ${errorReason}&#x60;,
-              e?.response?.status
-            )
+            const errorData &#x3D; e?.response?.data
+            let errorMessage &#x3D; e?.response?.statusText || &#x27;Bundler API error&#x27;
+
+            if (errorData?.error) {
+              const error &#x3D; errorData.error
+              if (error.data?.includes(&#x27;0xe0cff05f&#x27;)) {
+                errorMessage &#x3D; &#x27;UserOperation validation failed - possible causes: expired validUntil timestamp, insufficient gas, or paymaster validation failure&#x27;
+                this.logger.error(&#x60;FailedOp details: ${JSON.stringify(error)}&#x60;)
+              } else {
+                errorMessage &#x3D; error.message || errorMessage
+              }
+            }
+
+            this.logger.error(&#x60;BundlerApiInterceptor error: ${JSON.stringify(e)}&#x60;)
+            throw new HttpException(errorMessage, e?.response?.status || 500)
           })
         )
     )
 
     if (requestConfig.data?.method &#x3D;&#x3D;&#x3D; &#x27;eth_sendUserOperation&#x27;) {
-      const userOp &#x3D; { ...requestConfig.data.params[0], userOpHash: response?.result, apiKey: context.switchToHttp().getRequest().query.apiKey }
+      const userOp &#x3D; this.constructUserOp(context, requestConfig, response)
       this.logger.log(&#x60;eth_sendUserOperation: ${JSON.stringify(userOp)}&#x60;)
       try {
         if (isNil(userOp.userOpHash)) {
@@ -539,10 +685,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
   private async prepareRequestConfig (context: ExecutionContext) {
     const request &#x3D; context.switchToHttp().getRequest()
     const requestEnvironment &#x3D; request.environment
+    const bundlerProvider &#x3D; request.query?.provider ?? BundlerProvider.ETHERSPOT
     const ctxHandlerName &#x3D; context.getHandler().name
     const body &#x3D; request.body
     const requestConfig: AxiosRequestConfig &#x3D; {
-      url: this.prepareUrl(requestEnvironment),
+      url: this.prepareUrl(requestEnvironment, bundlerProvider),
       method: ctxHandlerName
     }
 
@@ -553,15 +700,38 @@ export class BundlerApiInterceptor implements NestInterceptor {
     return requestConfig
   }
 
-  private prepareUrl (environment) {
+  private prepareUrl (environment, bundlerProvider) {
     if (isEmpty(environment)) throw new InternalServerErrorException(&#x27;Bundler environment is missing&#x27;)
-    const config &#x3D; this.configService.get(&#x60;bundler.${environment}&#x60;)
+    const config &#x3D; this.configService.get(&#x60;bundler.${bundlerProvider}.${environment}&#x60;)
 
     if (config.url) {
       return config.url
     } else {
       throw new InternalServerErrorException(&#x60;${capitalize(environment)} bundler environment is missing&#x60;)
     }
+  }
+
+  private constructUserOp (context: ExecutionContext, requestConfig: AxiosRequestConfig, response) {
+    const request &#x3D; context.switchToHttp().getRequest()
+    const bundlerProvider &#x3D; request.query?.provider ?? BundlerProvider.ETHERSPOT
+    const param &#x3D; requestConfig?.data?.params?.[0]
+    const base &#x3D; { userOpHash: response?.result, apiKey: request.query.apiKey }
+
+    if (!param) {
+      throw new InternalServerErrorException(&#x27;UserOp param is missing&#x27;)
+    }
+
+    if (bundlerProvider &#x3D;&#x3D;&#x3D; BundlerProvider.PIMLICO) {
+      return {
+        ...param,
+        ...base,
+        initCode: param.initCode ?? &#x27;0x&#x27;,
+        sponsorId: param.paymaster ? BundlerProvider.PIMLICO : undefined,
+        paymasterAndData: param.paymasterData,
+        paymasterData: undefined
+      }
+    }
+    return { ...param, ...base }
   }
 }
 </code></pre>

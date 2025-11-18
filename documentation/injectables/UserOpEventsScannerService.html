@@ -637,9 +637,9 @@ export class UserOpEventsScannerService extends EventsScannerService {
       try {
         await this.processEvent(log)
       } catch (error) {
-        // this.logger.error(&#x27;Failed to process log:&#x27;)
-        // this.logger.error({ log })
-        // this.logger.error(error)
+        this.logger.error(&#x27;Failed to process log:&#x27;)
+        this.logger.error({ log })
+        this.logger.error(error)
       }
     }
   }
@@ -666,10 +666,10 @@ export class UserOpEventsScannerService extends EventsScannerService {
     }
     try {
       callMSFunction(this.dataLayerClient, &#x27;update-user-op&#x27;, eventData).catch((error) &#x3D;&gt; {
-        // this.logger.error(&#x60;Failed to call update-user-op: ${error.message}&#x60;)
+        this.logger.error(&#x60;Failed to call update-user-op: ${error.message}&#x60;)
       })
     } catch (error) {
-      // this.logger.error(&#x60;Failed to call update-user-op: ${error.message}&#x60;)
+      this.logger.error(&#x60;Failed to call update-user-op: ${error.message}&#x60;)
     }
   }
 }

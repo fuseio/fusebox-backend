@@ -1,23 +1,32 @@
 import { Injectable, Logger } from '@nestjs/common'
+import { lastValueFrom, map } from 'rxjs'
+
 import { BalanceService } from '@app/network-service/balances/interfaces/balances.interface'
 import { ConfigService } from '@nestjs/config'
 import GraphQLService from '@app/common/services/graphql.service'
+import { HttpService } from '@nestjs/axios'
 import { NATIVE_FUSE_TOKEN } from '@app/smart-wallets-service/common/constants/fuseTokenInfo'
-import { ethers, Contract } from 'ethers'
+import { ethers } from 'ethers'
 import { getCollectiblesByOwner } from '@app/network-service/common/constants/graph-queries/nfts-v3'
 import { isEmpty } from 'lodash'
 import { ExplorerServiceCollectibleResponse, ExplorerServiceGraphQLVariables, ExplorerServiceTransformedCollectible } from '../interfaces/balances.interface'
-import MultiCallAbi from '@app/network-service/common/constants/abi/MultiCall'
-import Erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
-import { getERC20TokensQuery } from '@app/network-service/common/constants/graph-queries/erc20'
 
 @Injectable()
 export class ExplorerService implements BalanceService {
   private readonly logger = new Logger(ExplorerService.name)
   constructor (
+    private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly graphQLService: GraphQLService
   ) { }
+
+  get explorerBaseUrl () {
+    return this.configService.get('explorer.baseUrl')
+  }
+
+  get explorerApiKey () {
+    return this.configService.get('explorer.apiKey')
+  }
 
   get nftGraphUrl () {
     return this.configService.get('nftGraphUrl')
@@ -25,14 +34,6 @@ export class ExplorerService implements BalanceService {
 
   get rpcUrl () {
     return this.configService.get('rpcConfig.rpc.url')
-  }
-
-  get erc20SubgraphUrl () {
-    return this.configService.get('erc20SubgraphUrl')
-  }
-
-  get multiCallAddress () {
-    return this.configService.get('multiCallAddress')
   }
 
   private async getNativeTokenBalance (address: string) {
@@ -55,83 +56,20 @@ export class ExplorerService implements BalanceService {
     ]
   }
 
-  private async fetchAllTokensFromSubgraph (address: string) {
-    const PAGE_SIZE = 100
-    const allBalances: any[] = []
-    let skip = 0
-
-    while (true) {
-      const subgraphData = await this.graphQLService.fetchFromGraphQL(
-        this.erc20SubgraphUrl,
-        getERC20TokensQuery,
-        { address: address.toLowerCase(), first: PAGE_SIZE, skip }
-      )
-
-      const accounts = subgraphData?.data?.accounts || []
-      if (accounts.length === 0 || !accounts[0]?.balances?.length) {
-        break
-      }
-
-      const balances = accounts[0].balances
-      allBalances.push(...balances)
-
-      if (balances.length < PAGE_SIZE) {
-        break
-      }
-      skip += PAGE_SIZE
-    }
-
-    return allBalances
-  }
-
   async getERC20TokenBalances (address: string) {
     const nativeTokenBalance = await this.getNativeTokenBalance(address)
+    const observable = this.httpService
+      .get(`${this.explorerBaseUrl}?module=account&action=tokenlist&address=${address}&apikey=${this.explorerApiKey}`)
+      .pipe(map(res => res.data))
+    const data = await lastValueFrom(observable)
 
-    // Fetch all tokens from ERC20 subgraph (paginated)
-    const tokenBalances = await this.fetchAllTokensFromSubgraph(address)
+    const erc20Tokens = data.result.filter((token: any) => token.type === 'ERC-20')
 
-    if (tokenBalances.length === 0) {
-      if (nativeTokenBalance.length === 0) {
-        return { message: 'No tokens found', result: [], status: '0' }
-      }
-      return { message: 'OK', result: [...nativeTokenBalance], status: '1' }
+    return {
+      message: data.message,
+      result: [...nativeTokenBalance, ...erc20Tokens],
+      status: data.status
     }
-
-    const tokenAddresses = tokenBalances.map((b: any) => b.token.id)
-
-    // Use multicall to batch balanceOf calls
-    const provider = new ethers.providers.JsonRpcProvider(this.rpcUrl)
-    const multiCallContract = new Contract(this.multiCallAddress, MultiCallAbi, provider)
-    const erc20Interface = new ethers.utils.Interface(Erc20Abi)
-
-    const encodedCalls = tokenAddresses.map((tokenAddress: string) => ({
-      target: tokenAddress,
-      callData: erc20Interface.encodeFunctionData('balanceOf', [address])
-    }))
-
-    const [, results] = await multiCallContract.aggregate(encodedCalls)
-
-    // Map results and filter out zero balances
-    const erc20Tokens = tokenBalances
-      .map((tokenBalance: any, index: number) => {
-        const balance = erc20Interface.decodeFunctionResult('balanceOf', results[index])[0]
-        return {
-          balance: balance.toString(),
-          contractAddress: tokenBalance.token.id.toLowerCase(),
-          decimals: tokenBalance.token.decimals,
-          name: tokenBalance.token.name,
-          symbol: tokenBalance.token.symbol,
-          type: 'ERC-20'
-        }
-      })
-      .filter((token: any) => token.balance !== '0')
-
-    const allTokens = [...nativeTokenBalance, ...erc20Tokens]
-    if (allTokens.length === 0) {
-      return { message: 'No tokens found', result: [], status: '0' }
-    }
-
-    return { message: 'OK', result: allTokens, status: '1' }
   }
 
   async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {

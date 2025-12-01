@@ -118,7 +118,7 @@ export class ExplorerService implements BalanceService {
         return {
           balance: balance.toString(),
           contractAddress: tokenBalance.token.id.toLowerCase(),
-          decimals: tokenBalance.token.decimals,
+          decimals: tokenBalance.token.decimals.toString(),
           name: tokenBalance.token.name,
           symbol: tokenBalance.token.symbol,
           type: 'ERC-20'

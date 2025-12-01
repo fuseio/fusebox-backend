@@ -35,7 +35,6 @@ export default () => ({
   blockGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/4NdGNtBYVAuWriUfcb58vLmiaendp7v8EQ9tGe3i1RPo',
   voltageGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/4buFyoUT8Lay3T1DK9ctdMdcpkZMdi5EpCBWZCBTKvQd',
   nftGraphUrl: 'https://gateway.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/GE83YjCJaNbsKnSATYhKCFHwkcVWnT7VNfa5rcqdDuBd',
-  erc20SubgraphUrl: 'https://gateway.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/FJc4XambRrE9iEiddypzgWjpaa3DkpTS5tkpypZqSdvx',
   accountAbstractionGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/47700e2a17b911be5b2186cf496a6737/subgraphs/id/hmmXWtoJqnvYaQKrBjXzPzwiXksVHoGrTZGrDi4FRtL',
   voltageV2GraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/550967d6d70d7fce0a710f38dc7bc5df/subgraphs/id/B4BGk9itvmRXzzNRAzBWwQARHRt3ZvLz11aWNVsZPT4',
   liquidStakingFuseGraphUrl: 'https://gateway-arbitrum.network.thegraph.com/api/3f81974147b5b63470524ed08206e24e/subgraphs/id/7FQVAoYfsrYPAVzaHnky1rHGYjXj2hcw3yokeLQmpntp',

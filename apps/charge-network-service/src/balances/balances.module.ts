@@ -3,8 +3,8 @@ import { HttpModule } from '@nestjs/axios'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { BalancesController } from 'apps/charge-network-service/src/balances/balances.controller'
 import BalancesService from 'apps/charge-network-service/src/balances/balances.service'
-import { UnmarshalService } from 'apps/charge-network-service/src/balances/services/unmarshal-balance.service'
-import { ExplorerService } from 'apps/charge-network-service/src/balances/services/explorer-balance.service'
+import { FallbackBalanceService } from '@app/network-service/balances/services/fallback-balance.service'
+import { ExplorerService } from '@app/network-service/balances/services/explorer-balance.service'
 import configuration from 'apps/charge-network-service/src/common/config/configuration'
 import GraphQLService from '@app/common/services/graphql.service'
 import { TokenService } from '@app/smart-wallets-service/common/services/token.service'
@@ -40,7 +40,7 @@ import { CacheModule } from '@nestjs/cache-manager'
     TokenService,
     GraphQLService,
     BalancesService,
-    UnmarshalService,
+    FallbackBalanceService,
     ExplorerService
   ]
 })

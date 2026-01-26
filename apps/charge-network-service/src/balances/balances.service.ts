@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { UnmarshalService } from 'apps/charge-network-service/src/balances/services/unmarshal-balance.service'
+import { FallbackBalanceService } from '@app/network-service/balances/services/fallback-balance.service'
 import { ExplorerService } from 'apps/charge-network-service/src/balances/services/explorer-balance.service'
 import { BalanceService } from 'apps/charge-network-service/src/balances/interfaces/balances.interface'
 import { BaseProvider, Contract, EthersContract, InjectContractProvider, InjectEthersProvider } from 'nestjs-ethers'
@@ -13,7 +13,7 @@ export default class BalancesService {
 
   constructor (
     private readonly configService: ConfigService,
-    private readonly unmarshalService: UnmarshalService,
+    private readonly fallbackBalanceService: FallbackBalanceService,
     private readonly explorerService: ExplorerService,
     @InjectEthersProvider('regular-node')
     private readonly rpcProvider: BaseProvider,
@@ -23,12 +23,12 @@ export default class BalancesService {
 
   private get primaryService (): BalanceService {
     const primaryService = this.configService.get('primaryService')
-    return primaryService === 'explorer' ? this.explorerService : this.unmarshalService
+    return primaryService === 'explorer' ? this.explorerService : this.fallbackService
   }
 
   private get fallbackService (): BalanceService {
     const primaryService = this.configService.get('primaryService')
-    return primaryService === 'explorer' ? this.unmarshalService : this.explorerService
+    return primaryService === 'explorer' ? this.fallbackBalanceService : this.explorerService
   }
 
   private async getTokenInfo (address: string, tokenAddress?: string) {

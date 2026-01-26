@@ -12,8 +12,8 @@ import Erc20Abi from '@app/network-service/common/constants/abi/Erc20.json'
 import { getERC20TokensQuery } from '@app/network-service/common/constants/graph-queries/erc20'
 
 @Injectable()
-export class UnmarshalService implements BalanceService {
-  private readonly logger = new Logger(UnmarshalService.name)
+export class FallbackBalanceService implements BalanceService {
+  private readonly logger = new Logger(FallbackBalanceService.name)
   constructor (
     private readonly configService: ConfigService,
     private readonly graphQLService: GraphQLService

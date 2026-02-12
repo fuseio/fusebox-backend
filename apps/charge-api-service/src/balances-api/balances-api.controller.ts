@@ -1,6 +1,7 @@
-import { Controller, Get, Param, UseGuards, Query, UseInterceptors } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards, Query, UseInterceptors, ParseIntPipe, DefaultValuePipe } from '@nestjs/common'
 import { IsValidPublicApiKeyGuard } from '@app/api-service/api-keys/guards/is-valid-public-api-key.guard'
 import { BalancesAPIService } from '@app/api-service/balances-api/balances-api.service'
+import { ParseAddressPipe } from '@app/api-service/common/pipes/parse-address.pipe'
 import { ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger'
 import { CacheInterceptor } from '@nestjs/cache-manager'
 
@@ -23,8 +24,8 @@ export class BalancesAPIController {
   @ApiQuery({ name: 'tokenAddress', type: String, required: false, description: 'Optional. Filter results by a specific token address.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   getERC20TokenBalances (
-    @Param('address') address: string,
-    @Query('tokenAddress') tokenAddress?: string
+    @Param('address', ParseAddressPipe) address: string,
+    @Query('tokenAddress', new ParseAddressPipe(true)) tokenAddress?: string
   ) {
     return this.balancesAPIService.getERC20TokenBalances(address, tokenAddress)
   }
@@ -48,8 +49,8 @@ export class BalancesAPIController {
     }
   })
   getERC721TokenBalances (
-    @Param('address') address: string,
-    @Query('limit') limit?: number,
+    @Param('address', ParseAddressPipe) address: string,
+    @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit?: number,
     @Query('cursor') cursor?: string
   ) {
     return this.balancesAPIService.getERC721TokenBalances(address, limit, cursor)

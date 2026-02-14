@@ -33,9 +33,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/charge-accounts-service/test/jest-e2e.json",
     "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve",
-    "docker:staging": "docker compose -f docker-compose.yml build && docker compose -f docker-compose.yml -f docker-compose.staging.yml up -d",
-    "docker:prod": "docker compose -f docker-compose.yml build && docker compose -f docker-compose.yml -f docker-compose.production.yml up -d",
-    "docker:debug": "docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build"
+    "docker:staging": "docker compose --profile staging up --build -d",
+    "docker:prod": "docker compose --profile production up --build -d",
+    "docker:debug": "docker compose --profile dev up --build"
   },
   "dependencies": {
     "@amplitude/analytics-node": "^1.3.5",

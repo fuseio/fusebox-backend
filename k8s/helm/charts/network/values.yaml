@@ -55,8 +55,6 @@ autoscaling:
 
 # ConfigMap (non - sensitive information)
 configMap:
-  # -- Node environment
-  node_env: ""
   # -- BlockScout API URL
   explorer_api_url: ""
   # -- Unmarshal - Base URL

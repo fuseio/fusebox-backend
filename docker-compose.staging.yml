@@ -2,49 +2,79 @@ services:
   charge-network-service:
     build:
       target: production
-      args:
-        SERVICE_NAME: network
-        HTTP_PORT: 5004
-        TCP_PORT: 8878
-    command: npm run start:staging --service=charge-network-service
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-network-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
   charge-accounts-service:
     build:
       target: production
-      args:
-        SERVICE_NAME: accounts
-        HTTP_PORT: 5001
-        TCP_PORT: 8875
-    command: npm run start:staging --service=charge-accounts-service
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-accounts-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
   charge-api-service:
     build:
       target: production
-      args:
-        SERVICE_NAME: api
-        HTTP_PORT: 5002
-        TCP_PORT: 8876
-    command: npm run start:staging --service=charge-api-service
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-api-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
   charge-apps-service:
     build:
       target: production
-      args:
-        SERVICE_NAME: apps
-        HTTP_PORT: 5006
-        TCP_PORT: 8880
-    command: npm run start:staging --service=charge-apps-service
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-apps-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
   charge-smart-wallets-service:
     build:
       target: production
-      args:
-        SERVICE_NAME: smart-wallets
-        HTTP_PORT: 5007
-        TCP_PORT: 8881
-    command: npm run start:staging --service=charge-smart-wallets-service
-
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-smart-wallets-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
+  
   charge-notifications-service:
     build:
       target: production
-      args:
-        SERVICE_NAME: notifications
-        HTTP_PORT: 5005
-        TCP_PORT: 8879
-    command: npm run start:staging --service=charge-notifications-service
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run start:prod --service=charge-notifications-service
+    env_file:
+      - .env
+    networks:
+      - chargenet
+  # charge-relay-service:
+  #   build:
+  #     target: production
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - ./node_modules:/usr/src/app/node_modules
+  #   command: npm run start:prod --service=charge-relay-service
+  #   env_file:
+  #     - ./apps/charge-relay-service/.env
+  #     - .env
+  #   networks:
+  #     - chargenet

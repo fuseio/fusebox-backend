@@ -1,108 +1,15 @@
 services:
-  charge-network-service:
-    build:
-      target: development
-      args:
-        SERVICE_NAME: network
-        HTTP_PORT: 5004
-        TCP_PORT: 8878
-        DEBUG_PORT: 9225
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 9225:9225/tcp
-    command: npm run start:debug --service=charge-network-service
   charge-accounts-service:
-    build:
-      target: development
-      args:
-        SERVICE_NAME: accounts
-        HTTP_PORT: 5001
-        TCP_PORT: 8875
-        DEBUG_PORT: 9229
-    depends_on:
-      - mongo
-      - charge-api-service
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 9229:9229/tcp
-    command: npm run start:debug --service=charge-accounts-service
+    command: npm run start:debug --service=charge-accounts-service --port=9229
   charge-api-service:
-    build:
-      target: development
-      args:
-        SERVICE_NAME: api
-        HTTP_PORT: 5002
-        TCP_PORT: 8876
-        DEBUG_PORT: 9227
-    depends_on:
-      - mongo
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 9227:9227/tcp
-    command: npm run start:debug --service=charge-api-service
-  charge-apps-service:
-    build:
-      target: development
-      args:
-        SERVICE_NAME: apps
-        HTTP_PORT: 5006
-        TCP_PORT: 8880
-        DEBUG_PORT: 9231
-    depends_on:
-      - mongo
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 9231:9231/tcp
-    command: npm run start:debug --service=charge-apps-service
-  charge-smart-wallets-service:
-    build:
-      target: development
-      args:
-        SERVICE_NAME: smart-wallets
-        HTTP_PORT: 5007
-        TCP_PORT: 8881
-        DEBUG_PORT: 9232
-    depends_on:
-      - mongo
-      - centrifugo
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 9232:9232/tcp
-    command: npm run start:debug --service=charge-smart-wallets-service
+    command: npm run start:debug --service=charge-api-service --port=9227
   charge-notifications-service:
-    build:
-      target: development
-      args:
-        SERVICE_NAME: notifications
-        HTTP_PORT: 5005
-        TCP_PORT: 8879
-        DEBUG_PORT: 9230
-    depends_on:
-      - mongo
-      - redis
-      - charge-smart-wallets-service
-    environment:
-      - REDIS_HOST
-      - REDIS_PORT
-      - REDIS_PASSWORD
-      - REDIS_DB
-      - SMART_WALLETS_JWT_SECRET
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 9230:9230/tcp
-    command: npm run start:debug --service=charge-notifications-service
-networks:
-  chargenet:
-    driver: bridge
+    command: npm run start:debug --service=charge-notifications-service --port=9230
+  # charge-relay-service:
+  #   command: npm run start:debug --service charge-relay-service --port=9226
+  charge-network-service:
+    command: npm run start:debug --service=charge-network-service --port=9225
+  charge-apps-service:
+    command: npm run start:debug --service=charge-apps-service --port=9231
+  charge-smart-wallets-service:
+    command: npm run start:debug --service=charge-smart-wallets-service --port=9232

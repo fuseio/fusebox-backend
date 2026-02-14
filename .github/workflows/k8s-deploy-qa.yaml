@@ -114,7 +114,6 @@ jobs:
       - name: Release
         run: |
           helm upgrade \
-            --force \
             --reset-values \
             --install \
             --history-max 3 \

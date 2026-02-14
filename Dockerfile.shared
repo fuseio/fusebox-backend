@@ -1,0 +1,130 @@
+# ============================================
+# Base stage - Alpine for minimalism
+# ============================================
+FROM node:22-alpine AS base
+
+# Build arguments for service configuration
+ARG SERVICE_NAME
+ARG HTTP_PORT
+ARG TCP_PORT
+
+# Install system dependencies
+# ca-certificates: Required for TLS connections
+RUN apk add --no-cache ca-certificates
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Grant full access for 'node' user
+RUN chown -R node:node /usr/src/app
+
+# ============================================
+# Dependencies stage - Install all dependencies
+# ============================================
+FROM base AS dependencies
+
+# Re-declare args for this stage
+ARG SERVICE_NAME
+
+# Use less-privileged permissions
+USER node
+
+# Copy only package files first for better layer caching
+COPY --chown=node:node package.json package-lock.json ./
+
+# Install ALL dependencies with BuildKit cache mount
+# Cache mount persists npm store between builds for massive speedup
+RUN --mount=type=cache,id=npm,target=/home/node/.npm,uid=1000,gid=1000 \
+    npm install --frozen-lockfile
+
+# ============================================
+# Builder stage - Compile the application
+# ============================================
+FROM dependencies AS builder
+
+# Re-declare args for this stage
+ARG SERVICE_NAME
+
+# Copy all source files needed for build
+COPY --chown=node:node libs/ ./libs/
+COPY --chown=node:node apps/ ./apps/
+COPY --chown=node:node scripts/ ./scripts/
+COPY --chown=node:node nest-cli.json tsconfig*.json webpack.config.js* ./
+
+# Build only the specific service
+# NestJS automatically compiles dependencies (libs/) when building services
+RUN npm run build:${SERVICE_NAME}
+
+# ============================================
+# Development stage - Hot reload for local dev
+# ============================================
+FROM dependencies AS development
+
+# Re-declare args for this stage
+ARG SERVICE_NAME
+ARG HTTP_PORT
+ARG TCP_PORT
+ARG DEBUG_PORT
+
+# Copy application source
+COPY --chown=node:node . .
+
+# Build only the specific service
+RUN npm run build:${SERVICE_NAME}
+
+# Expose ports
+EXPOSE ${HTTP_PORT} ${TCP_PORT} ${DEBUG_PORT}
+
+# ============================================
+# Production Dependencies - Only production deps
+# ============================================
+FROM base AS production-dependencies
+
+# Re-declare args for this stage
+ARG SERVICE_NAME
+
+# Use less-privileged permissions
+USER node
+
+# Copy only package files
+COPY --chown=node:node package.json package-lock.json ./
+
+# Install ONLY production dependencies with BuildKit cache mount
+# Skip scripts to avoid running dev tools (husky, etc.) that aren't in prod deps
+RUN --mount=type=cache,id=npm,target=/home/node/.npm,uid=1000,gid=1000 \
+    npm install --frozen-lockfile --prod --ignore-scripts
+
+# ============================================
+# Production stage - Minimal runtime image
+# ============================================
+FROM node:22-alpine AS production
+
+# Re-declare args for this stage
+ARG SERVICE_NAME
+ARG HTTP_PORT
+ARG TCP_PORT
+
+# Install system dependencies
+# ca-certificates: Required for TLS connections
+RUN apk add --no-cache ca-certificates
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Use less-privileged permissions
+USER node
+
+# Copy ONLY production dependencies (no build tools, no npm)
+COPY --from=production-dependencies --chown=node:node /usr/src/app/node_modules ./node_modules
+
+# Copy ONLY the compiled service output (not entire dist/)
+COPY --from=builder --chown=node:node /usr/src/app/dist/apps/charge-${SERVICE_NAME}-service ./dist/apps/charge-${SERVICE_NAME}-service
+
+# Copy only package.json (needed for module resolution)
+COPY --chown=node:node package.json ./
+
+# Expose ports
+EXPOSE ${HTTP_PORT} ${TCP_PORT}
+
+# Run command - using shell form for variable expansion
+CMD node dist/apps/charge-${SERVICE_NAME}-service/main

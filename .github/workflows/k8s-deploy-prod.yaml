@@ -14,16 +14,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./apps/charge-accounts-service/Dockerfile
+          - service_name: accounts
             image: accounts-service
-          - dockerfile: ./apps/charge-api-service/Dockerfile
+            http_port: 5001
+            tcp_port: 8875
+          - service_name: api
             image: api-service
-          - dockerfile: ./apps/charge-network-service/Dockerfile
+            http_port: 5002
+            tcp_port: 8876
+          - service_name: network
             image: network-service
-          - dockerfile: ./apps/charge-notifications-service/Dockerfile
+            http_port: 5004
+            tcp_port: 8878
+          - service_name: notifications
             image: notifications-service
-          - dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
+            http_port: 5005
+            tcp_port: 8879
+          - service_name: smart-wallets
             image: smart-wallets-service
+            http_port: 5007
+            tcp_port: 8881
     env:
       PRIVATE_REGISTRY_ENDPOINT: ${{ secrets.PRIVATE_REGISTRY_ENDPOINT }}
       PRIVATE_REGISTRY_REPOSITORY: ${{ secrets.PRIVATE_REGISTRY_REPOSITORY_PROD }}
@@ -59,7 +69,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: Dockerfile.shared
+          build-args: |
+            SERVICE_NAME=${{ matrix.service_name }}
+            HTTP_PORT=${{ matrix.http_port }}
+            TCP_PORT=${{ matrix.tcp_port }}
           push: true
           tags: |
             ${{ env.PRIVATE_REGISTRY_ENDPOINT }}/${{ env.PRIVATE_REGISTRY_REPOSITORY }}/${{ matrix.image }}:latest

@@ -15,6 +15,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/charge-accounts-service/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "apps/charge-accounts-service/tsconfig.app.json"
       }
     },
@@ -24,6 +25,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/charge-api-service/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "apps/charge-api-service/tsconfig.app.json"
       }
     },
@@ -33,16 +35,8 @@
       "entryFile": "index",
       "sourceRoot": "libs/common/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "libs/common/tsconfig.lib.json"
-      }
-    },
-    "charge-relay-service": {
-      "type": "application",
-      "root": "apps/charge-relay-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/charge-relay-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/charge-relay-service/tsconfig.app.json"
       }
     },
     "charge-notifications-service": {
@@ -51,6 +45,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/charge-notifications-service/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "apps/charge-notifications-service/tsconfig.app.json"
       }
     },
@@ -60,6 +55,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/charge-network-service/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "apps/charge-network-service/tsconfig.app.json"
       }
     },
@@ -69,6 +65,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/charge-apps-service/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "apps/charge-apps-service/tsconfig.app.json"
       }
     },
@@ -78,6 +75,7 @@
       "entryFile": "main",
       "sourceRoot": "apps/charge-smart-wallets-service/src",
       "compilerOptions": {
+        "webpack": true,
         "tsConfigPath": "apps/charge-smart-wallets-service/tsconfig.app.json",
         "assets": [
           "common/config/*"

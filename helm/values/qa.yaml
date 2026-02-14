@@ -35,9 +35,7 @@ accounts-service:
   nameOverride: ""
   fullnameOverride: ""
 
-  command:
-    - node
-    - dist/apps/charge-accounts-service/main
+  command: []
 
   args: []
 
@@ -141,7 +139,6 @@ accounts-service:
     COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
     WFUSE_CONTRACT_ADDRESS_MAINNET: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
     WFUSE_CONTRACT_ADDRESS_TESTNET: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
-    NODE_ENV: "staging"
 
   nodeSelector: {}
 
@@ -183,9 +180,7 @@ api-service:
   nameOverride: ""
   fullnameOverride: ""
 
-  command:
-    - node
-    - dist/apps/charge-api-service/main
+  command: []
 
   args: []
 
@@ -283,7 +278,6 @@ api-service:
     LEGACY_FUSE_ADMIN_API_URL: "https://studio.fuse.io"
     LEGACY_FUSE_WALLET_API_URL: "https://staging-wallet.fuse.io"
     VOLTAGE_ROUTER_API_URL: "https://router.voltage.finance"
-    NODE_ENV: "staging"
 
   nodeSelector: {}
 
@@ -323,9 +317,7 @@ network-service:
   nameOverride: ""
   fullnameOverride: ""
 
-  command:
-    - node
-    - dist/apps/charge-network-service/main
+  command: []
 
   args: []
 
@@ -408,7 +400,6 @@ network-service:
     EXPLORER_API_URL: "https://explorer.fuse.io/api"
     UNMARSHAL_BASE_URL: "https://api.unmarshal.com"
     COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
-    NODE_ENV: "staging"
 
   nodeSelector: {}
 
@@ -442,9 +433,7 @@ notifications-service:
   nameOverride: ""
   fullnameOverride: ""
 
-  command:
-    - node
-    - dist/apps/charge-notifications-service/main
+  command: []
 
   args: []
 
@@ -529,7 +518,6 @@ notifications-service:
     CHAIN_ID: "122"
     MAX_BLOCKS: "1500"
     TIMEOUT_INTERVAL: "20000"
-    NODE_ENV: "staging"
 
   nodeSelector: {}
 
@@ -575,9 +563,7 @@ smart-wallets-service:
   nameOverride: ""
   fullnameOverride: ""
 
-  command:
-    - node
-    - dist/apps/charge-smart-wallets-service/main
+  command: []
 
   args: []
 
@@ -665,7 +651,6 @@ smart-wallets-service:
     LEGACY_FUSE_WALLET_API_URL: "https://staging-wallet.fuse.io"
     CHARGE_BASE_URL: "https://api.qa.fuse.io"
     COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
-    NODE_ENV: "staging"
 
   nodeSelector: {}
 

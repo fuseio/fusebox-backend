@@ -55,8 +55,6 @@ autoscaling:
 
 # ConfigMap (non - sensitive information)
 configMap:
-  # -- Node environment
-  node_env: ""
   # -- Centrifugo - URL
   centrifugo_uri: ""
   # -- Centrifugo - API URL

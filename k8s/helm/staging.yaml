@@ -68,7 +68,6 @@ accounts:
     coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
     wfuse_contract_address_mainnet: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
     wfuse_contract_address_testnet: "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"
-    node_env: "staging"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -142,7 +141,6 @@ api:
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
     voltage_router_api_url: "https://router.voltage.finance"
-    node_env: "staging"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -193,7 +191,6 @@ apps:
     unmarshal_base_url: "https://api.unmarshal.com"
     alchemy_base_url: "https://dashboard.alchemy.com/api/update-webhook-addresses"
     ethereum_payments_network_name: "goerli"
-    node_env: "staging"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -271,7 +268,6 @@ network:
     explorer_api_url: "https://explorer.fuse.io/api"
     unmarshal_base_url: "https://api.unmarshal.com"
     coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
-    node_env: "staging"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -306,7 +302,6 @@ notifications:
     chain_id: "122"
     max_blocks: "1500"
     timeout_interval: "20000"
-    node_env: "staging"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:
@@ -396,7 +391,6 @@ smart-wallets:
     legacy_fuse_wallet_api_url: "https://staging-wallet.fuse.io"
     charge_base_url: "https://api.staging.fuse.io"
     coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
-    node_env: "staging"
 
   # Secret (external; sensitive information; pulled from Google Cloud, Secret Manager)
   secret:

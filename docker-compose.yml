@@ -3,9 +3,20 @@ services:
     container_name: charge-accounts-service
     build:
       context: .
-      dockerfile: ./apps/charge-accounts-service/Dockerfile
-      target: development
-    command: npm run start:dev charge-accounts-service
+      dockerfile: Dockerfile.shared
+      args:
+        SERVICE_NAME: accounts
+        HTTP_PORT: 5001
+        TCP_PORT: 8875
+
+    env_file:
+      - path: ./apps/charge-accounts-service/.env
+        required: false
+      - .env
+
+    networks:
+      - chargenet
+
     environment:
       - API_TCP_PORT
       - API_HOST
@@ -46,22 +57,29 @@ services:
     depends_on:
       - charge-api-service
       - charge-apps-service
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
       - ${ACCOUNTS_PORT}:${ACCOUNTS_PORT}
       - ${ACCOUNTS_TCP_PORT}:${ACCOUNTS_TCP_PORT}
     restart: always
+
   charge-api-service:
     container_name: charge-api-service
     build:
       context: .
-      dockerfile: ./apps/charge-api-service/Dockerfile
-      target: development
-    command: npm run start:dev charge-api-service
+      dockerfile: Dockerfile.shared
+      args:
+        SERVICE_NAME: api
+        HTTP_PORT: 5002
+        TCP_PORT: 8876
+
     env_file:
-      - ./apps/charge-api-service/.env
+      - path: ./apps/charge-api-service/.env
+        required: false
+      - .env
+
+    networks:
+      - chargenet
+
     environment:
       - API_HOST
       - API_PORT
@@ -91,24 +109,32 @@ services:
     depends_on:
       - charge-notifications-service
       - charge-network-service
-      # - charge-relay-service
       - charge-smart-wallets-service
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
-      - ${API_PORT}:${API_PORT}
-      - ${API_TCP_PORT}:${API_TCP_PORT}
+      - 5002:5002/tcp
+      - 8876:8876/tcp
     restart: always
+
   charge-notifications-service:
     container_name: charge-notifications-service
     build:
       context: .
-      dockerfile: ./apps/charge-notifications-service/Dockerfile
-      target: development
+      dockerfile: Dockerfile.shared
+      args:
+        SERVICE_NAME: notifications
+        HTTP_PORT: 5005
+        TCP_PORT: 8879
+
+    env_file:
+      - path: ./apps/charge-notifications-service/.env
+        required: false
+      - .env
+
+    networks:
+      - chargenet
+
     depends_on:
       - charge-smart-wallets-service
-    command: npm run start:dev charge-notifications-service
     environment:
       - NOTIFICATIONS_HOST
       - NOTIFICATIONS_PORT
@@ -121,22 +147,29 @@ services:
       - TIMEOUT_INTERVAL
       - MONGO_URI=${NOTIFICATIONS_MONGO_URI}
       - SMART_WALLETS_JWT_SECRET
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
-      - ${NOTIFICATIONS_PORT}:${NOTIFICATIONS_PORT}
-      - ${NOTIFICATIONS_TCP_PORT}:${NOTIFICATIONS_TCP_PORT}
+      - 5005:5005/tcp
+      - 8879:8879/tcp
     restart: always
+
   charge-network-service:
     container_name: charge-network-service
     build:
       context: .
-      dockerfile: ./apps/charge-network-service/Dockerfile
-      target: development
-    command: npm run start:dev charge-network-service
+      dockerfile: Dockerfile.shared
+      args:
+        SERVICE_NAME: network
+        HTTP_PORT: 5004
+        TCP_PORT: 8878
+
+    networks:
+      - chargenet
+
     env_file:
-      - ./apps/charge-network-service/.env
+      - path: ./apps/charge-network-service/.env
+        required: false
+      - .env
+
     environment:
       - NETWORK_HOST
       - NETWORK_PORT
@@ -148,20 +181,29 @@ services:
       - PRIMARY_SERVICE
       - COIN_GECKO_API_KEY
       - COIN_GECKO_URL
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
-      - ${NETWORK_PORT}:${NETWORK_PORT}
-      - ${NETWORK_TCP_PORT}:${NETWORK_TCP_PORT}
+      - 5004:5004/tcp
+      - 8878:8878/tcp
     restart: always
+
   charge-apps-service:
     container_name: charge-apps-service
     build:
       context: .
-      dockerfile: ./apps/charge-apps-service/Dockerfile
-      target: development
-    command: npm run start:dev charge-apps-service
+      dockerfile: Dockerfile.shared
+      args:
+        SERVICE_NAME: apps
+        HTTP_PORT: 5006
+        TCP_PORT: 8880
+
+    env_file:
+      - path: ./apps/charge-apps-service/.env
+        required: false
+      - .env
+
+    networks:
+      - chargenet
+
     environment:
       - APPS_HOST
       - APPS_PORT
@@ -181,22 +223,32 @@ services:
       - ALCHEMY_AUTH_KEY
       - ALCHEMY_BASE_URL
       - ETHEREUM_PAYMENTS_NETWORK_NAME
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
-      - ${APPS_PORT}:${APPS_PORT}
-      - ${APPS_TCP_PORT}:${APPS_TCP_PORT}
+      - 5006:5006/tcp
+      - 8880:8880/tcp
     restart: always
+
   charge-smart-wallets-service:
     container_name: charge-smart-wallets-service
     build:
       context: .
-      dockerfile: ./apps/charge-smart-wallets-service/Dockerfile
-      target: development
-    command: npm run start:dev charge-smart-wallets-service
+      dockerfile: Dockerfile.shared
+      args:
+        SERVICE_NAME: smart-wallets
+        HTTP_PORT: 5007
+        TCP_PORT: 8881
+
     depends_on:
       - centrifugo
+
+    env_file:
+      - path: ./apps/charge-smart-wallets-service/.env
+        required: false
+      - .env
+
+    networks:
+      - chargenet
+
     environment:
       - API_TCP_PORT
       - API_HOST
@@ -222,33 +274,53 @@ services:
       - ACCOUNTS_TCP_PORT
       - COIN_GECKO_API_KEY
       - COIN_GECKO_URL
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     ports:
-      - ${SMART_WALLETS_PORT}:${SMART_WALLETS_PORT}
-      - ${SMART_WALLETS_TCP_PORT}:${SMART_WALLETS_TCP_PORT}
+      - 5007:5007/tcp
+      - 8881:8881/tcp
     restart: always
 
-  # charge-relay-service:
-  #   container_name: charge-relay-service
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/charge-relay-service/Dockerfile
-  #     target: development
-  #   command: npm run start:dev charge-relay-service
-  #   env_file:
-  #     - ./apps/charge-relay-service/.env
-  #   environment:
-  #     - RELAY_HOST
-  #     - RELAY_PORT
-  #     - MONGO_URI=${RELAY_MONGO_URI}
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   ports:
-  #     - ${RELAY_PORT}:${RELAY_PORT}
-  #     - ${RELAY_TCP_PORT}:${RELAY_TCP_PORT}
-  #   restart: always
+  redis:
+    container_name: redis
+    image: "redis/redis-stack:latest"
+    environment:
+      - REDIS_PORT_NUMBER=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    restart: always
+    networks:
+      - chargenet
+
+  mongo:
+    container_name: mongo
+    image: mongo:5.0.15
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - ./data:/data/db
+    networks:
+      - chargenet
+
+  centrifugo:
+    container_name: centrifugo
+    image: centrifugo/centrifugo:v5
+    volumes:
+      - ./centrifugo/config.json:/centrifugo/config.json
+    command: centrifugo -c config.json --admin
+    depends_on:
+      - redis
+    ports:
+      - 8000:8000
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    networks:
+      - chargenet
+
 networks:
   chargenet:

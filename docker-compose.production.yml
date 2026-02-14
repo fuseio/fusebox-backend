@@ -6,7 +6,7 @@ services:
         SERVICE_NAME: network
         HTTP_PORT: 5004
         TCP_PORT: 8878
-    command: npm run start:staging --service=charge-network-service
+    command: npm run start:prod --service=charge-network-service
   charge-accounts-service:
     build:
       target: production
@@ -14,7 +14,7 @@ services:
         SERVICE_NAME: accounts
         HTTP_PORT: 5001
         TCP_PORT: 8875
-    command: npm run start:staging --service=charge-accounts-service
+    command: npm run start:prod --service=charge-accounts-service
   charge-api-service:
     build:
       target: production
@@ -22,7 +22,7 @@ services:
         SERVICE_NAME: api
         HTTP_PORT: 5002
         TCP_PORT: 8876
-    command: npm run start:staging --service=charge-api-service
+    command: npm run start:prod --service=charge-api-service
   charge-apps-service:
     build:
       target: production
@@ -30,7 +30,7 @@ services:
         SERVICE_NAME: apps
         HTTP_PORT: 5006
         TCP_PORT: 8880
-    command: npm run start:staging --service=charge-apps-service
+    command: npm run start:prod --service=charge-apps-service
   charge-smart-wallets-service:
     build:
       target: production
@@ -38,7 +38,7 @@ services:
         SERVICE_NAME: smart-wallets
         HTTP_PORT: 5007
         TCP_PORT: 8881
-    command: npm run start:staging --service=charge-smart-wallets-service
+    command: npm run start:prod --service=charge-smart-wallets-service
 
   charge-notifications-service:
     build:
@@ -47,4 +47,4 @@ services:
         SERVICE_NAME: notifications
         HTTP_PORT: 5005
         TCP_PORT: 8879
-    command: npm run start:staging --service=charge-notifications-service
+    command: npm run start:prod --service=charge-notifications-service

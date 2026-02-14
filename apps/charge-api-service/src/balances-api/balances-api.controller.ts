@@ -24,7 +24,7 @@ export class BalancesAPIController {
   @ApiQuery({ name: 'tokenAddress', type: String, required: false, description: 'Optional. Filter results by a specific token address.' })
   @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
   getERC20TokenBalances (
-    @Param('address', ParseAddressPipe) address: string,
+    @Param('address', new ParseAddressPipe()) address: string,
     @Query('tokenAddress', new ParseAddressPipe(true)) tokenAddress?: string
   ) {
     return this.balancesAPIService.getERC20TokenBalances(address, tokenAddress)
@@ -49,7 +49,7 @@ export class BalancesAPIController {
     }
   })
   getERC721TokenBalances (
-    @Param('address', ParseAddressPipe) address: string,
+    @Param('address', new ParseAddressPipe()) address: string,
     @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit?: number,
     @Query('cursor') cursor?: string
   ) {

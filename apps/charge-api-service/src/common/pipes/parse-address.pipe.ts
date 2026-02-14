@@ -1,7 +1,6 @@
-import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
+import { PipeTransform, BadRequestException } from '@nestjs/common'
 import { isEthereumAddress } from 'class-validator'
 
-@Injectable()
 export class ParseAddressPipe implements PipeTransform<string> {
   constructor (private readonly optional = false) {}
 

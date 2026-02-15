@@ -594,9 +594,9 @@ export abstract class EventsScannerService extends ScannerService {
       try {
         await this.processEvent(log)
       } catch (error) {
-        // this.logger.error(&#x27;Failed to process log:&#x27;)
-        // this.logger.error({ log })
-        // this.logger.error(error)
+        this.logger.error(&#x27;Failed to process log:&#x27;)
+        this.logger.error({ log })
+        this.logger.error(error)
       }
     }
   }

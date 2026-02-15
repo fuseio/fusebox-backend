@@ -7,8 +7,8 @@ import { arrayify, computeAddress, hashMessage, recoverPublicKey } from 'nestjs-
 import { ConfigService } from '@nestjs/config'
 import { smartWalletString } from '@app/smart-wallets-service/smart-wallets/smart-wallets.constants'
 import { SmartWallet, SmartWalletService } from '@app/smart-wallets-service/smart-wallets/interfaces/smart-wallets.interface'
-import { generateSalt, generateTransactionId } from 'apps/charge-smart-wallets-service/src/common/utils/helper-functions'
-import RelayAPIService from 'apps/charge-smart-wallets-service/src/common/services/relay-api.service'
+import { generateSalt, generateTransactionId } from '@app/smart-wallets-service/common/utils/helper-functions'
+import RelayAPIService from '@app/smart-wallets-service/common/services/relay-api.service'
 import { RelayDto } from '@app/smart-wallets-service/smart-wallets/dto/relay.dto'
 import { ISmartWalletUser } from '@app/common/interfaces/smart-wallet.interface'
 import { CentClient } from 'cent.js'
@@ -161,14 +161,39 @@ export class SmartWalletsLegacyService implements SmartWalletService {
   async relay (relayDto: RelayDto) {
     try {
       const transactionId = generateTransactionId(relayDto.data)
-      await this.centClient.subscribe({ channel: `transaction:#${transactionId}`, user: relayDto.ownerAddress })
-      this.relayAPIService.relay({
-        v2: true,
-        transactionId,
-        ...relayDto
+      const wsUrl = this.wsUrl
+
+      if (!wsUrl) {
+        throw new Error('WebSocket URL is not configured')
+      }
+
+      // Non-blocking subscription with error handling
+      const subscribePromise = this.centClient.subscribe({
+        channel: `transaction:#${transactionId}`,
+        user: relayDto.ownerAddress
       })
+
+      if (subscribePromise && typeof subscribePromise.catch === 'function') {
+        subscribePromise.catch(err => {
+          this.logger.error(`Centrifugo subscription failed: ${err}`)
+        })
+      }
+
+      // Fire-and-forget relay call with error handling (v2 flag MUST be set AFTER spread)
+      const relayPromise = this.relayAPIService.relay({
+        ...relayDto,
+        transactionId,
+        v2: true
+      })
+
+      if (relayPromise && typeof relayPromise.catch === 'function') {
+        relayPromise.catch(err => {
+          this.logger.error(`Relay API call failed: ${err}`)
+        })
+      }
+
       return {
-        connectionUrl: this.wsUrl,
+        connectionUrl: wsUrl,
         transactionId
       }
     } catch (err) {

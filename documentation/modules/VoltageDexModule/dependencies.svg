@@ -24,13 +24,13 @@
 <title>cluster_VoltageDexModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 798,-268 798,-70 8,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_VoltageDexModule_providers</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 790,-130 790,-78 16,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_VoltageDexModule_exports</title>
 <polygon fill="none" stroke="black" points="319,-208 319,-260 465,-260 465,-208 319,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_VoltageDexModule_providers</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 790,-130 790,-78 16,-78"/>
 </g>
 <!-- VoltageDexService  -->
 <g id="node1" class="node">

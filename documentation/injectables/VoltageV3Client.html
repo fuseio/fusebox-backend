@@ -79,6 +79,10 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#getMultipleTokenPrices" >getMultipleTokenPrices</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getTokenData" >getTokenData</a>
                             </li>
                             <li>
@@ -116,7 +120,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:9</a></div>
                             </td>
                         </tr>
 
@@ -163,6 +167,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getMultipleTokenPrices"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getMultipleTokenPrices</b></span>
+                        <a href="#getMultipleTokenPrices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMultipleTokenPrices(addresses: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:26</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>addresses</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/TokenPrice.html" target="_self" >Promise&lt;TokenPrices&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getTokenData"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -181,8 +256,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:55</a></div>
                 </td>
             </tr>
 
@@ -264,8 +339,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="60"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:60</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:73</a></div>
                 </td>
             </tr>
 
@@ -347,8 +422,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="11"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:11</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="12"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:12</a></div>
                 </td>
             </tr>
 
@@ -418,8 +493,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="25"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:25</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/services/voltage-v3-client.service.ts:38</a></div>
                 </td>
             </tr>
 
@@ -485,11 +560,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getTokenDataQuery, getTokenDayDataV3, getTokenUsdPrice } from &#x27;@app/network-service/common/constants/graph-queries/voltage-exchange-v3&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getMultipleTokenUsdPrices, getTokenDataQuery, getTokenDayDataV3, getTokenUsdPrice } from &#x27;@app/network-service/common/constants/graph-queries/voltage-exchange-v3&#x27;
 
 import { GraphQLClient } from &#x27;graphql-request&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import dayjs from &#x27;@app/common/utils/dayjs&#x27;
+import { TokenPrices } from &#x27;../types&#x27;
 
 @Injectable()
 export class VoltageV3Client {
@@ -507,6 +583,18 @@ export class VoltageV3Client {
       console.error(&#x60;Error fetching token price for address ${address}:&#x60;, error)
       return null
     }
+  }
+
+  async getMultipleTokenPrices (addresses: string[]): Promise&lt;TokenPrices&gt; {
+    const { tokens } &#x3D; await this.graphClient.request&lt;{
+      tokens: { id: string; derivedUSD: string }[]
+    }&gt;(getMultipleTokenUsdPrices, { addresses })
+
+    return tokens.reduce((result, token) &#x3D;&gt; {
+      const price &#x3D; token.derivedUSD
+      result[token.id] &#x3D; price &amp;&amp; price !&#x3D;&#x3D; &#x27;0&#x27; ? price : null
+      return result
+    }, {})
   }
 
   async getTokenStats (address: string, limit: number): Promise&lt;any&gt; {

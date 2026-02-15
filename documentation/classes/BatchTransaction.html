@@ -205,7 +205,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/WalletAction.html#source" target="_self" >WalletAction:6</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/WalletAction.html#source" target="_self" >WalletAction:7</a></code>
 </div>
                 </td>
             </tr>
@@ -282,7 +282,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/WalletAction.html#source" target="_self" >WalletAction:49</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/WalletAction.html#source" target="_self" >WalletAction:54</a></code>
 </div>
                 </td>
             </tr>
@@ -353,8 +353,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="10"
-                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/models/wallet-action/batch-transaction.ts:10</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="11"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/models/wallet-action/batch-transaction.ts:11</a></div>
                 </td>
             </tr>
 
@@ -565,6 +565,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ERC_20_TYPE, ERC_721_TYPE, NATIVE_TOKEN_TYPE } from &#x27;@app/smart-wallets-service/common/constants/tokenTypes&#x27;
 import WalletAction from &#x27;@app/smart-wallets-service/data-layer/models/wallet-action/base&#x27;
 import { NATIVE_FUSE_TOKEN } from &#x27;@app/smart-wallets-service/common/constants/fuseTokenInfo&#x27;
+import { ethers } from &#x27;ethers&#x27;
 
 export default class BatchTransaction extends WalletAction {
   descGenerator (data: any) {
@@ -585,14 +586,18 @@ export default class BatchTransaction extends WalletAction {
 
     const tokenData &#x3D; await this.tokenService.fetchTokenDetails(functionDetail.targetAddress)
     if (tokenData.decimals &#x3D;&#x3D;&#x3D; 0) {
+      const tokenIdObject &#x3D; functionDetail.callData.find(item &#x3D;&gt;
+        typeof item &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; item._isBigNumber
+      )
+      const tokenId &#x3D; tokenIdObject ? ethers.BigNumber.from(tokenIdObject._hex).toString() : &#x27;0&#x27;
       return {
         type: ERC_721_TYPE,
         name: tokenData.name,
         symbol: tokenData.symbol,
-        decimals: &#x27;1&#x27;,
+        decimals: 0,
         address: functionDetail.targetAddress,
         to: functionDetail.callData[0],
-        tokenId: functionDetail.callData[2],
+        tokenId,
         value: &#x27;0&#x27;,
         actionName
       }

@@ -79,6 +79,10 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#getMultipleTokenPrices" >getMultipleTokenPrices</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getTokenHistoricalStatistics" >getTokenHistoricalStatistics</a>
                             </li>
                             <li>
@@ -118,6 +122,84 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getMultipleTokenPrices"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getMultipleTokenPrices</b></span>
+                        <a href="#getMultipleTokenPrices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMultipleTokenPrices(tokenAddresses: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;prices/:tokenAddresses&#x27;)<br />@ApiOperation({summary: &#x27;Get prices for multiple tokens&#x27;})<br />@ApiParam({name: &#x27;tokenAddresses&#x27;, description: &#x27;Comma-separated list of token addresses&#x27;, example: &#x27;0x0BE9e53fd7EDaC9F859882AfdDa116645287C629,0x6a5F6A8121592BeCd6747a38d67451B310F7f156&#x27;})<br />@ApiOkResponse({description: &#x27;Success response with prices for multiple tokens&#x27;, schema: undefined})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:73</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tokenAddresses</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getTokenHistoricalStatistics"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -143,8 +225,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="193"
-                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:193</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="232"
+                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:232</a></div>
                 </td>
             </tr>
 
@@ -311,8 +393,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="68"
-                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:68</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:107</a></div>
                 </td>
             </tr>
 
@@ -389,8 +471,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="146"
-                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:146</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:185</a></div>
                 </td>
             </tr>
 
@@ -479,8 +561,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="113"
-                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:113</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="152"
+                            class="link-to-prism">apps/charge-api-service/src/trade-api/trade-api.controller.ts:152</a></div>
                 </td>
             </tr>
 
@@ -584,6 +666,45 @@ export class TradeApiController {
     const price &#x3D; await this.tradeApiService.getTokenPrice(tokenAddress)
     return {
       data: { price }
+    }
+  }
+
+  @Get(&#x27;prices/:tokenAddresses&#x27;)
+  @ApiOperation({
+    summary: &#x27;Get prices for multiple tokens&#x27;
+  })
+  @ApiParam({
+    name: &#x27;tokenAddresses&#x27;,
+    description: &#x27;Comma-separated list of token addresses&#x27;,
+    example: &#x27;0x0BE9e53fd7EDaC9F859882AfdDa116645287C629,0x6a5F6A8121592BeCd6747a38d67451B310F7f156&#x27;
+  })
+  @ApiOkResponse({
+    description: &#x27;Success response with prices for multiple tokens&#x27;,
+    schema: {
+      type: &#x27;object&#x27;,
+      properties: {
+        data: {
+          type: &#x27;object&#x27;,
+          properties: {
+            prices: {
+              type: &#x27;object&#x27;,
+              additionalProperties: {
+                type: &#x27;string&#x27;,
+                example: &#x27;0.03345197440906984362974767871408538&#x27;
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+  async getMultipleTokenPrices (
+    @Param(&#x27;tokenAddresses&#x27;) tokenAddresses: string
+  ) {
+    const prices &#x3D; await this.tradeApiService.getMultipleTokenPrices(tokenAddresses.split(&#x27;,&#x27;))
+
+    return {
+      data: { prices }
     }
   }
 

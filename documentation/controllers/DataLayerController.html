@@ -84,6 +84,9 @@
                                 <a href="#get" >get</a>
                             </li>
                             <li>
+                                <a href="#getOperatorByApiKey" >getOperatorByApiKey</a>
+                            </li>
+                            <li>
                                 <a href="#handleTokenTransferWebhook" >handleTokenTransferWebhook</a>
                             </li>
                             <li>
@@ -265,6 +268,82 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getOperatorByApiKey"></a>
+                    <span class="name">
+                        <span ><b>getOperatorByApiKey</b></span>
+                        <a href="#getOperatorByApiKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOperatorByApiKey(apiKey: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;get-operator-by-api-key&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">apps/charge-smart-wallets-service/src/data-layer/data-layer.controller.ts:42</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiKey</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="handleTokenTransferWebhook"></a>
                     <span class="name">
                         <span ><b>handleTokenTransferWebhook</b></span>
@@ -350,7 +429,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>sponsoredTransactionsCount(sponsorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>sponsoredTransactionsCount(data: literal type)</code>
                 </td>
             </tr>
 
@@ -386,9 +465,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>sponsorId</td>
+                                    <td>data</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <code>literal type</code>
                                     </td>
 
                                     <td>
@@ -526,10 +605,16 @@ export class DataLayerController {
   }
 
   @MessagePattern(&#x27;sponsored-transactions-count&#x27;)
-  sponsoredTransactionsCount (sponsorId: string) {
+  sponsoredTransactionsCount (data: { apiKey: string, startDate?: string }) {
     return this.dataLayerService.findSponsoredTransactionsCount(
-      sponsorId
+      data.apiKey,
+      data.startDate
     )
+  }
+
+  @MessagePattern(&#x27;get-operator-by-api-key&#x27;)
+  getOperatorByApiKey (apiKey: string) {
+    return this.dataLayerService.getOperatorByApiKey(apiKey)
   }
 }
 </code></pre>

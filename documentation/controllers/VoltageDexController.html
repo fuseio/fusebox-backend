@@ -84,6 +84,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#getMultipleTokenPrices" >getMultipleTokenPrices</a>
+                            </li>
+                            <li>
                                 <a href="#getTokenHistoricalStatistics" >getTokenHistoricalStatistics</a>
                             </li>
                             <li>
@@ -119,6 +122,82 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getMultipleTokenPrices"></a>
+                    <span class="name">
+                        <span ><b>getMultipleTokenPrices</b></span>
+                        <a href="#getMultipleTokenPrices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMultipleTokenPrices(multipleTokenPricesDto: <a href="../classes/MultipleTokenPricesDto.html" target="_self">MultipleTokenPricesDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@MessagePattern(&#x27;get_multiple_token_prices&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:20</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>multipleTokenPricesDto</td>
+                                    <td>
+                                                <code><a href="../classes/MultipleTokenPricesDto.html" target="_self" >MultipleTokenPricesDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getTokenHistoricalStatistics"></a>
                     <span class="name">
                         <span ><b>getTokenHistoricalStatistics</b></span>
@@ -142,8 +221,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:34</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:40</a></div>
                 </td>
             </tr>
 
@@ -218,8 +297,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="14"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:14</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="15"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:15</a></div>
                 </td>
             </tr>
 
@@ -294,8 +373,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:25</a></div>
                 </td>
             </tr>
 
@@ -370,8 +449,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:30</a></div>
                 </td>
             </tr>
 
@@ -446,8 +525,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">apps/charge-network-service/src/voltage-dex/voltage-dex.controller.ts:35</a></div>
                 </td>
             </tr>
 
@@ -506,6 +585,7 @@ import { MessagePattern } from &#x27;@nestjs/microservices&#x27;
 import { TokenPriceDto } from &#x27;@app/network-service/voltage-dex/dto/token-price.dto&#x27;
 import { TokenPriceChangeIntervalDto } from &#x27;@app/network-service/voltage-dex/dto/token-price-change-interval.dto&#x27;
 import { TokenHistoricalStatisticsDto } from &#x27;@app/network-service/voltage-dex/dto/token-stats.dto&#x27;
+import { MultipleTokenPricesDto } from &#x27;@app/network-service/voltage-dex/dto/multiple-token-prices.dto&#x27;
 
 @Controller(&#x27;voltage-dex&#x27;)
 export class VoltageDexController {
@@ -514,6 +594,11 @@ export class VoltageDexController {
   @MessagePattern(&#x27;get_token_price&#x27;)
   getTokenPrice (@Body() tokenPriceDto: TokenPriceDto) {
     return this.voltageDexService.getTokenPrice(tokenPriceDto)
+  }
+
+  @MessagePattern(&#x27;get_multiple_token_prices&#x27;)
+  getMultipleTokenPrices (@Body() multipleTokenPricesDto: MultipleTokenPricesDto) {
+    return this.voltageDexService.getMultipleTokenPrices(multipleTokenPricesDto)
   }
 
   @MessagePattern(&#x27;get_token_price_change&#x27;)

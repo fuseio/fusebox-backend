@@ -58,8 +58,6 @@ accounts:
     paymaster_production_contract_address_v_0_1_0: "0xEA1Ba4305A07cEd2bB5e42224D71aBE0BC3C3f28"
     entrypoint_sandbox_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     entrypoint_production_contract_address_v_0_1_0: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-    etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
-    etherspot_wallet_factory_production_contract_address_v_0_1_0: "0x7f6d8F107fE8551160BD5351d5F1514A6aD5d40E"
     paymaster_funder_api_key: "pk_yWkBe0hnObJmMkYjq4Ggce1g"
     paymaster_funder_webhook_id: "65c4ba66394c8d9c3e4801ff"
     console_dapp_url: "https://console.fuse.io"
@@ -137,7 +135,6 @@ api:
   configMap:
     explorer_api_url: "https://explorer.fuse.io/api"
     qa_mode: "false"
-    bundler_api_sandbox_url: "https://testnet-rpc.etherspot.io/v1/123"
     spark_rpc_url: "https://rpc.fusespark.io"
     legacy_fuse_admin_api_url: "https://studio.fuse.io"
     legacy_fuse_wallet_api_url: "https://wallet.fuse.io"
@@ -153,7 +150,6 @@ api:
     - paymaster_production_signer_private_key_v_0_1_0
     - paymaster_sandbox_signer_private_key_v_0_1_0
     - explorer_api_key
-    - bundler_api_prd_url
     - pimlico_api_prd_url
     - pimlico_api_sandbox_url
     - amplitude_api_key
@@ -334,38 +330,6 @@ relay:
   secret:
     - mongo_uri
     - relay_secret
-
-skandha:
-  enabled: false # Self - hosted instance used as a fall - back. By default used the EtherSpot - hosted instance.
-
-  # Replicas
-  replicas: 2
-
-  # Affinity (zones)
-  affinity:
-    zones:
-      - b
-
-  # Image
-  image:
-    repository: "etherspot/skandha"
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "v1-1.5.21"
-
-  # Resources (requests & limits)
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "500m"
-      memory: "1Gi"
-
-  # Service - RPS per Pod
-  maxRatePerEndpoint: 50
-
-  # Security - CloudArmor
-  securityPolicy: null
 
 smart-wallets:
   enabled: true

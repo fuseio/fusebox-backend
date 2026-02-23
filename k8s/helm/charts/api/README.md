@@ -11,7 +11,6 @@ A Helm chart for Kubernetes related api component
 | affinity | object | `{"zones":["a"]}` | Affinity (available region zones) |
 | autoscaling.hpa | object | `{"max_replicas":5}` | Horizontal Pod Autoscaler |
 | autoscaling.hpa.max_replicas | int | `5` | Horizontal Pod Autoscaler - Maximum number of replicas, minimal number is `replicas` value |
-| configMap.bundler_api_sandbox_url | string | `""` | Bundler - API Sandbox URL |
 | configMap.explorer_api_url | string | `""` | BlockScout API URL |
 | configMap.legacy_fuse_admin_api_url | string | `""` | Legacy - Fuse admin API URL |
 | configMap.legacy_fuse_wallet_api_url | string | `""` | Legacy - Fuse wallet API URL |
@@ -30,6 +29,6 @@ A Helm chart for Kubernetes related api component
 | replicas | int | `1` | Replicas |
 | resources.limits | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Limits |
 | resources.requests | object | `{"cpu":"500m","memory":"1Gi"}` | Resources - Requests |
-| secret | list | `["mongo_uri","rpc_url","fuse_studio_admin_jwt","legacy_jwt_secret","smart_wallets_jwt_secret","paymaster_production_signer_private_key_v_0_1_0","paymaster_sandbox_signer_private_key_v_0_1_0","explorer_api_key","bundler_api_prd_url","pimlico_api_prd_url","pimlico_api_sandbox_url","amplitude_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
+| secret | list | `["mongo_uri","rpc_url","fuse_studio_admin_jwt","legacy_jwt_secret","smart_wallets_jwt_secret","paymaster_production_signer_private_key_v_0_1_0","paymaster_sandbox_signer_private_key_v_0_1_0","explorer_api_key","pimlico_api_prd_url","pimlico_api_sandbox_url","amplitude_api_key"]` | Secret (external; sensitive information; pulled from Google Cloud, Secret Manager) |
 | securityPolicy | string | `nil` | Security policy name (Cloud Armor) |
 

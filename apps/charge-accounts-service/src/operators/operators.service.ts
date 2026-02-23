@@ -6,7 +6,6 @@ import { PaymasterService } from '@app/accounts-service/paymaster/paymaster.serv
 import { UsersService } from '@app/accounts-service/users/users.service'
 import { AuthOperatorDto } from '@app/accounts-service/operators/dto/auth-operator.dto'
 import paymasterAbi from '@app/api-service/paymaster-api/abi/FuseVerifyingPaymasterSingleton.abi.json'
-import etherspotWalletFactoryAbi from '@app/accounts-service/operators/abi/EtherspotWalletFactory.abi.json'
 import { ConfigService } from '@nestjs/config'
 import { CreateOperatorUserDto } from '@app/accounts-service/operators/dto/create-operator-user.dto'
 import { OperatorWallet } from '@app/accounts-service/operators/interfaces/operator-wallet.interface'
@@ -35,7 +34,6 @@ import { ChargeCheckoutWebhookEvent } from '@app/accounts-service/operators/inte
 import { ChargeCheckoutBillingCycle, ChargeCheckoutPaymentStatus } from '@app/accounts-service/operators/interfaces/charge-checkout.interface'
 import { differenceInMonths, getDate, getDaysInMonth, startOfMonth } from 'date-fns'
 import { monthsInYear } from 'date-fns/constants'
-import { BundlerProvider } from '@app/api-service/bundler-api/interfaces/bundler.interface'
 import { CreateChargeBridgeDto } from '@app/accounts-service/operators/dto/create-charge-bridge.dto'
 import { ChargeBridge } from '@app/accounts-service/operators/interfaces/charge-bridge.interface'
 import TradeService from '@app/common/token/trade.service'
@@ -281,20 +279,6 @@ export class OperatorsService {
     } else {
       this.logger.error(`Failed to create operator: ${error.message}`)
       throw new InternalServerErrorException(error.message)
-    }
-  }
-
-  async predictWallet (owner: string, index: number, ver: string, environment: string): Promise<string> {
-    const paymasterEnvs = this.configService.getOrThrow(`paymaster.${ver}`)
-    const contractAddress = paymasterEnvs[environment].etherspotWalletFactoryContractAddress
-
-    const provider = new ethers.providers.JsonRpcProvider(paymasterEnvs[environment].url)
-    const contract = new ethers.Contract(contractAddress, etherspotWalletFactoryAbi, provider)
-
-    try {
-      return await contract.getAddress(owner, index)
-    } catch (error) {
-      throw new InternalServerErrorException(`Failed to predict wallet: ${error}`)
     }
   }
 
@@ -1009,10 +993,6 @@ export class OperatorsService {
 
   async isOperatorSponsoredQuotaExceeded (context: ExecutionContext, requestConfig: AxiosRequestConfig) {
     const request = context.switchToHttp().getRequest()
-    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
-    if (bundlerProvider !== BundlerProvider.PIMLICO) {
-      return false
-    }
 
     const paymaster = requestConfig.data?.params?.[0]?.paymaster
     if (!paymaster) {

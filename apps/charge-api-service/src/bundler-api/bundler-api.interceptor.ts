@@ -107,11 +107,10 @@ export class BundlerApiInterceptor implements NestInterceptor {
   private async prepareRequestConfig (context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
     const requestEnvironment = request.environment
-    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
     const ctxHandlerName = context.getHandler().name
     const body = request.body
     const requestConfig: AxiosRequestConfig = {
-      url: this.prepareUrl(requestEnvironment, bundlerProvider),
+      url: this.prepareUrl(requestEnvironment),
       method: ctxHandlerName
     }
 
@@ -122,11 +121,11 @@ export class BundlerApiInterceptor implements NestInterceptor {
     return requestConfig
   }
 
-  private prepareUrl (environment, bundlerProvider) {
+  private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.${bundlerProvider}.${environment}`)
+    const config = this.configService.get(`bundler.${environment}`)
 
-    if (config.url) {
+    if (config?.url) {
       return config.url
     } else {
       throw new InternalServerErrorException(`${capitalize(environment)} bundler environment is missing`)
@@ -135,7 +134,6 @@ export class BundlerApiInterceptor implements NestInterceptor {
 
   private constructUserOp (context: ExecutionContext, requestConfig: AxiosRequestConfig, response) {
     const request = context.switchToHttp().getRequest()
-    const bundlerProvider = request.query?.provider ?? BundlerProvider.ETHERSPOT
     const param = requestConfig?.data?.params?.[0]
     const base = { userOpHash: response?.result, apiKey: request.query.apiKey }
 
@@ -143,16 +141,13 @@ export class BundlerApiInterceptor implements NestInterceptor {
       throw new InternalServerErrorException('UserOp param is missing')
     }
 
-    if (bundlerProvider === BundlerProvider.PIMLICO) {
-      return {
-        ...param,
-        ...base,
-        initCode: param.initCode ?? '0x',
-        sponsorId: param.paymaster ? BundlerProvider.PIMLICO : undefined,
-        paymasterAndData: param.paymasterData,
-        paymasterData: undefined
-      }
+    return {
+      ...param,
+      ...base,
+      initCode: param.initCode ?? '0x',
+      sponsorId: param.paymaster ? BundlerProvider.PIMLICO : undefined,
+      paymasterAndData: param.paymasterData,
+      paymasterData: undefined
     }
-    return { ...param, ...base }
   }
 }

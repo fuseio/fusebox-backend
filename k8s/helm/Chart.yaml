@@ -43,5 +43,3 @@ dependencies:
     condition: centrifugo.enabled
   - name: gateway-api
     condition: gateway-api.enabled
-  - name: skandha
-    condition: skandha.enabled

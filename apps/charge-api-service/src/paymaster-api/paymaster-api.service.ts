@@ -211,7 +211,7 @@ export class PaymasterApiService {
 
   private prepareUrl (environment) {
     if (isEmpty(environment)) throw new InternalServerErrorException('Bundler environment is missing')
-    const config = this.configService.get(`bundler.etherspot.${environment}`)
+    const config = this.configService.get(`bundler.${environment}`)
     if (config.url) {
       return config.url
     } else {

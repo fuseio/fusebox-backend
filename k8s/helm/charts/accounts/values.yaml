@@ -76,10 +76,6 @@ configMap:
   entrypoint_sandbox_contract_address_v_0_1_0: ""
   # -- Bundler - Entrypoint Production contract address
   entrypoint_production_contract_address_v_0_1_0: ""
-  # -- Etherspot Wallet Factory Sandbox contract address
-  etherspot_wallet_factory_sandbox_contract_address_v_0_1_0: ""
-  # -- Etherspot Wallet Factory Production contract address
-  etherspot_wallet_factory_production_contract_address_v_0_1_0: ""
   # -- Paymaster Funder API key
   paymaster_funder_api_key: ""
   # -- Paymaster Funder Webhook ID

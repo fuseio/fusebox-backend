@@ -18,8 +18,6 @@ A Helm chart for Kubernetes related accounts component
 | configMap.console_dapp_url | string | `""` | Console Dapp URL |
 | configMap.entrypoint_production_contract_address_v_0_1_0 | string | `""` | Bundler - Entrypoint Production contract address |
 | configMap.entrypoint_sandbox_contract_address_v_0_1_0 | string | `""` | Bundler - Entrypoint Sandbox contract address |
-| configMap.etherspot_wallet_factory_production_contract_address_v_0_1_0 | string | `""` | Etherspot Wallet Factory Production contract address |
-| configMap.etherspot_wallet_factory_sandbox_contract_address_v_0_1_0 | string | `""` | Etherspot Wallet Factory Sandbox contract address |
 | configMap.paymaster_funder_api_key | string | `""` | Paymaster Funder API key |
 | configMap.paymaster_funder_webhook_id | string | `""` | Paymaster Funder Webhook ID |
 | configMap.paymaster_production_contract_address_v_0_1_0 | string | `""` | Bundler - Paymaster Production contract address |

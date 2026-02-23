@@ -93,13 +93,13 @@ export class OperatorsController {
   }
 
   /**
-   * Migrate Etherspot AA wallet to SAFE for an operator
+   * Migrate legacy AA wallet to SAFE for an operator
    * @param authOperatorDto
    * @returns the SAFE AA wallet
    */
   @UseGuards(JwtAuthGuard)
   @Post('/migrate-wallet')
-  @ApiOperation({ summary: 'Migrate Etherspot AA wallet to SAFE for an operator' })
+  @ApiOperation({ summary: 'Migrate legacy AA wallet to SAFE for an operator' })
   @ApiBody({ type: CreateOperatorWallet, required: true })
   async migrateOperatorWallet (@Body() migrateOperatorWalletDto: CreateOperatorWalletDto, @User('sub') auth0Id: string) {
     return this.operatorsService.migrateOperatorWallet(migrateOperatorWalletDto, auth0Id)

@@ -49,6 +49,10 @@ export default () => ({
     baseUrl: process.env.EXPLORER_API_URL || 'https://explorer.fuse.io/api',
     apiKey: process.env.EXPLORER_API_KEY
   },
+  blockscoutProApi: {
+    baseUrl: process.env.BLOCKSCOUT_PRO_API_URL || 'https://api.blockscout.com/122/api/v2',
+    apiKey: process.env.BLOCKSCOUT_PRO_API_KEY
+  },
   primaryService: process.env.PRIMARY_SERVICE || 'unmarshal',
   stakingOptions: [
     {

@@ -30,6 +30,20 @@ export class BalancesAPIController {
     return this.balancesAPIService.getERC20TokenBalances(address, tokenAddress)
   }
 
+  @Get('assets/:address/pro')
+  @ApiOperation({
+    summary: 'Get Fungible ERC20 Token Balances (Pro API)',
+    description: 'Retrieve ERC20 token holdings via BlockScout Pro API with enhanced token metadata including exchange rates, market cap, and volume data.'
+  })
+  @ApiQuery({ name: 'apiKey', type: String, required: true, description: 'Your API key to authenticate requests.' })
+  @ApiParam({ name: 'address', type: String, required: true, description: 'The wallet address to query for ERC20 token balances.' })
+  @ApiForbiddenResponse({ description: 'Access to the resource is forbidden.' })
+  getERC20TokenBalancesFromProApi (
+    @Param('address', new ParseAddressPipe()) address: string
+  ) {
+    return this.balancesAPIService.getERC20TokenBalancesFromProApi(address)
+  }
+
   @Get('nft-assets/:address')
   @ApiOperation({
     summary: 'Get Non Fungible NFT Token Balances',

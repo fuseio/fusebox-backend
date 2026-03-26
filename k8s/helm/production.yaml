@@ -269,6 +269,7 @@ network:
   configMap:
     primary_service: "explorer"
     explorer_api_url: "https://explorer.fuse.io/api"
+    blockscout_pro_api_url: "https://api.blockscout.com/122/api/v2"
     unmarshal_base_url: "https://api.unmarshal.com"
     coin_gecko_url: "https://pro-api.coingecko.com/api/v3"
     node_env: "production"
@@ -278,6 +279,7 @@ network:
     - rpc_url
     - unmarshal_auth_key
     - explorer_api_key
+    - blockscout_pro_api_key
     - coin_gecko_api_key
 
 notifications:

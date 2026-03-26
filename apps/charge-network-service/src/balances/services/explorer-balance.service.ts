@@ -28,6 +28,14 @@ export class ExplorerService implements BalanceService {
     return this.configService.get('explorer.apiKey')
   }
 
+  get blockscoutProApiUrl () {
+    return this.configService.get('blockscoutProApi.baseUrl')
+  }
+
+  get blockscoutProApiKey () {
+    return this.configService.get('blockscoutProApi.apiKey')
+  }
+
   get nftGraphUrl () {
     return this.configService.get('nftGraphUrl')
   }
@@ -69,6 +77,34 @@ export class ExplorerService implements BalanceService {
       message: data.message,
       result: [...nativeTokenBalance, ...erc20Tokens],
       status: data.status
+    }
+  }
+
+  async getERC20TokenBalancesFromProApi (address: string) {
+    const nativeTokenBalance = await this.getNativeTokenBalance(address)
+    const observable = this.httpService
+      .get(`${this.blockscoutProApiUrl}/addresses/${address}/token-balances`, {
+        headers: this.blockscoutProApiKey ? { Authorization: `Bearer ${this.blockscoutProApiKey}` } : {}
+      })
+      .pipe(map(res => res.data))
+    const v2Data = await lastValueFrom(observable)
+
+    const erc20Tokens = (v2Data || [])
+      .filter((item: any) => item.token?.type === 'ERC-20')
+      .map((item: any) => ({
+        balance: item.value,
+        contractAddress: item.token.address_hash?.toLowerCase(),
+        decimals: item.token.decimals,
+        name: item.token.name,
+        symbol: item.token.symbol,
+        type: 'ERC-20'
+      }))
+      .filter((token: any) => token.balance !== '0')
+
+    return {
+      message: erc20Tokens.length > 0 || nativeTokenBalance.length > 0 ? 'OK' : 'No tokens found',
+      result: [...nativeTokenBalance, ...erc20Tokens],
+      status: erc20Tokens.length > 0 || nativeTokenBalance.length > 0 ? '1' : '0'
     }
   }
 

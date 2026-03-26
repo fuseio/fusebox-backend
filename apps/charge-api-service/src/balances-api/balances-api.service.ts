@@ -13,6 +13,10 @@ export class BalancesAPIService {
     return callMSFunction(this.networkClient, 'get_erc20_token_balances', { address, tokenAddress })
   }
 
+  async getERC20TokenBalancesFromProApi (address: string): Promise<any> {
+    return callMSFunction(this.networkClient, 'get_erc20_token_balances_from_pro_api', { address })
+  }
+
   async getERC721TokenBalances (address: string, limit: number = 100, cursor?: string): Promise<any> {
     return callMSFunction(this.networkClient, 'get_erc721_token_balances', { address, limit, cursor })
   }

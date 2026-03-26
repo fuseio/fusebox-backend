@@ -308,6 +308,7 @@ network-service:
       - RPC_URL
       - UNMARSHAL_AUTH_KEY
       - EXPLORER_API_KEY
+      - BLOCKSCOUT_PRO_API_KEY
       - COIN_GECKO_API_KEY
 
   replicaCount: 1
@@ -406,6 +407,7 @@ network-service:
     NETWORK_TCP_PORT: "8878"
     PRIMARY_SERVICE: "explorer"
     EXPLORER_API_URL: "https://explorer.fuse.io/api"
+    BLOCKSCOUT_PRO_API_URL: "https://api.blockscout.com/122/api/v2"
     UNMARSHAL_BASE_URL: "https://api.unmarshal.com"
     COIN_GECKO_URL: "https://pro-api.coingecko.com/api/v3"
     NODE_ENV: "staging"

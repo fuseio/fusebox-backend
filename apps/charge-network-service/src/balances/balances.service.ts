@@ -109,6 +109,17 @@ export default class BalancesService {
     }
   }
 
+  async getERC20TokenBalancesFromProApi (address: string) {
+    try {
+      const result = await this.explorerService.getERC20TokenBalancesFromProApi(address)
+      this.logger.log(`Successfully fetched ERC20 token balances from Pro API for address: ${address}`)
+      return result
+    } catch (error) {
+      this.logger.error(`Failed to fetch ERC20 token balances from Pro API for address: ${address}. Error: ${error.message}`)
+      throw error
+    }
+  }
+
   async getERC721TokenBalances (address: string, limit?: number, cursor?: string) {
     try {
       const result = await this.primaryService.getERC721TokenBalances(address, limit, cursor)

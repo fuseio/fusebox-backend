@@ -4,7 +4,7 @@ name: Build & Deploy to Kubernetes [QA]
 on:
   push:
     branches:
-      - qa
+      - qa-ovh
 
 jobs:
   build-and-push:

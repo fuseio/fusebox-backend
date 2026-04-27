@@ -10,12 +10,14 @@ import { sumBy } from 'lodash'
 import {
   fuseLiquidStakingId,
   usdcOnStargateSimpleStakingId,
+  veVoltId,
   voltBarId,
   wethOnStargateSimpleStakingId
 } from '@app/network-service/common/constants'
 import { ConfigService } from '@nestjs/config'
 import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
 import SimpleStakingService from '@app/network-service/staking/staking-providers/simple-staking.service'
+import VeVoltService from '@app/network-service/staking/staking-providers/vevolt.service'
 import { isLowercaseEqual } from '@app/common/utils/lowercase_equal'
 
 @Injectable()
@@ -23,6 +25,7 @@ export class StakingService {
   private readonly logger = new Logger(StakingService.name)
   constructor (
     private readonly voltBarService: VoltBarService,
+    private readonly veVoltService: VeVoltService,
     private readonly fuseLiquidStakingService: FuseLiquidStakingService,
     private readonly simpleStakingService: SimpleStakingService,
     private readonly configService: ConfigService
@@ -187,6 +190,8 @@ export class StakingService {
 
     if (stakingProviderId === voltBarId) {
       return this.voltBarService
+    } else if (stakingProviderId === veVoltId) {
+      return this.veVoltService
     } else if (stakingProviderId === fuseLiquidStakingId) {
       return this.fuseLiquidStakingService
     } else if (isSimpleStaking) {

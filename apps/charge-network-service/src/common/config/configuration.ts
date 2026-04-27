@@ -2,6 +2,7 @@ export default () => ({
   coinGeckoApiKey: process.env.COIN_GECKO_API_KEY,
   coinGeckoUrl: process.env.COIN_GECKO_URL,
   voltBarAddress: '0x97a6e78c9208c21afaDa67e7E61d7ad27688eFd1',
+  veVoltAddress: '0xB0a05314Bd77808269e2E1E3D280Bff57Ba85672',
   fuseLiquidStakingAddress: '0xa3dc222eC847Aac61FB6910496295bF344Ea46be',
   wfuseAddress: '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629',
   blockRewardAddress: '0x63D4efeD2e3dA070247bea3073BCaB896dFF6C9B',
@@ -63,6 +64,15 @@ export default () => ({
       unStakeTokenAddress: '0xb1DD0B683d9A56525cC096fbF5eec6E60FE79871',
       stakingProviderId: 'fuse-liquid-staking',
       expired: false
+    },
+    {
+      tokenAddress: '0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4',
+      tokenSymbol: 'VOLT',
+      tokenName: 'Volt',
+      tokenLogoURI: 'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4/logo.png',
+      unStakeTokenAddress: '0xB0a05314Bd77808269e2E1E3D280Bff57Ba85672',
+      stakingProviderId: 'vevolt',
+      expired: true
     }
   ],
   // Staking options have been removed from the config temporarily.

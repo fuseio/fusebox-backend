@@ -2,21 +2,18 @@ import { StakingOption, StakingProvider } from '@app/network-service/staking/int
 import { StakeDto } from '@app/network-service/staking/dto/stake.dto'
 import { UnstakeDto } from '@app/network-service/staking/dto/unstake.dto'
 import Erc20ABI from '@app/network-service/common/constants/abi/Erc20.json'
+import VeVoltABI from '@app/network-service/common/constants/abi/VeVolt.json'
 import { Injectable, Logger } from '@nestjs/common'
 import {
   Contract,
   InjectEthersProvider,
+  Interface,
   JsonRpcProvider,
   formatEther
 } from 'nestjs-ethers'
 import { ConfigService } from '@nestjs/config'
 import { veVoltId } from '@app/network-service/common/constants'
 import TradeService from '@app/common/token/trade.service'
-
-const veVoltAbi = [
-  'function locked(address) view returns (int128 amount, uint256 end)',
-  'function balanceOf(address) view returns (uint256)'
-]
 
 @Injectable()
 export default class VeVoltService implements StakingProvider {
@@ -37,12 +34,18 @@ export default class VeVoltService implements StakingProvider {
     return veVoltId
   }
 
+  get vevoltInterface () {
+    return new Interface(VeVoltABI)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   stake (_: StakeDto): string {
     throw new Error('veVOLT locking is not supported via the staking API')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   unStake (_: UnstakeDto): string {
-    throw new Error('veVOLT withdrawal is not supported via the staking API')
+    return this.vevoltInterface.encodeFunctionData('force_withdraw', [])
   }
 
   async stakedToken (
@@ -55,7 +58,7 @@ export default class VeVoltService implements StakingProvider {
       unStakeTokenAddress
     }: StakingOption) {
     try {
-      const veVoltContract = new Contract(this.address, veVoltAbi, this.provider)
+      const veVoltContract = new Contract(this.address, VeVoltABI, this.provider)
       const locked = await veVoltContract.locked(accountAddress)
 
       const stakedAmount = Number(formatEther(locked.amount))

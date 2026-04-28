@@ -72,7 +72,7 @@ export default () => ({
       tokenLogoURI: 'https://raw.githubusercontent.com/voltfinance/token-logos/main/logos/0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4/logo.png',
       unStakeTokenAddress: '0xB0a05314Bd77808269e2E1E3D280Bff57Ba85672',
       stakingProviderId: 'vevolt',
-      expired: true
+      expired: false
     }
   ],
   // Staking options have been removed from the config temporarily.

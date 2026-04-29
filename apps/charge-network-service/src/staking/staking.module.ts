@@ -10,6 +10,7 @@ import { HttpModule } from '@nestjs/axios'
 import FuseLiquidStakingService from '@app/network-service/staking/staking-providers/fuse-liquid-staking.service'
 import { TokenModule } from '@app/common/token/token.module'
 import SimpleStakingService from '@app/network-service/staking/staking-providers/simple-staking.service'
+import VeVoltService from '@app/network-service/staking/staking-providers/vevolt.service'
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import SimpleStakingService from '@app/network-service/staking/staking-providers
   providers: [
     StakingService,
     VoltBarService,
+    VeVoltService,
     FuseLiquidStakingService,
     SimpleStakingService,
     GraphService

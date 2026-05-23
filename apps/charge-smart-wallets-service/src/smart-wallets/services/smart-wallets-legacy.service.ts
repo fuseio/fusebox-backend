@@ -151,6 +151,9 @@ export class SmartWalletsLegacyService implements SmartWalletService {
       }
     } catch (err) {
       this.logger.error(`An error occurred during Smart Wallets Creation. ${err}`)
+      if (err instanceof RpcException) {
+        throw err
+      }
       throw new RpcException({
         error: err.message || 'Error creating smart wallet',
         status: HttpStatus.BAD_REQUEST

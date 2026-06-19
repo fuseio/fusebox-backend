@@ -46,6 +46,7 @@ export class ConsensusService {
   ) {}
 
   @Cron(CronExpression.EVERY_5_MINUTES)
+  @logPerformance('ConsensusService::HandleValidatorsUpdate')
   async handleValidatorsUpdate () {
     const validatorsInfo = await this.getValidators()
     await this.cacheManager.set('validatorsInfo', validatorsInfo)
@@ -329,6 +330,7 @@ export class ConsensusService {
     })
   }
 
+  @logPerformance('ConsensusService::IsJailed')
   private async isJailed (validator: string): Promise<boolean> {
     return this.getCacheOrFetch({
       cacheKey: `isJailed-${validator}`,
@@ -448,6 +450,7 @@ export class ConsensusService {
     })
   }
 
+  @logPerformance('ConsensusService::ReadDelegators')
   private async readDelegators (validator: string) {
     return this.getCacheOrFetch({
       cacheKey: `delegators-${validator}`,
@@ -464,6 +467,7 @@ export class ConsensusService {
     })
   }
 
+  @logPerformance('ConsensusService::ReadStakeAmount')
   private async readStakeAmount (validator: string) {
     return this.getCacheOrFetch({
       cacheKey: `stakeAmount-${validator}`,
@@ -495,23 +499,10 @@ export class ConsensusService {
         this.isJailed(validatorAddress)
       ])
 
-      const delegatedAmounts = await this.aggregateCalls(
-        delegatorsMap
-          .map(delegator => ({
-            method: 'delegatedAmount',
-            params: [delegator, validatorAddress]
-          }))
-      )
-
-      const delegators = delegatorsMap.reduce((acc, delegator, index) => {
-        acc[delegator] = {
-          address: delegator,
-          amount: delegatedAmounts[index].toString(),
-          amountFormatted: formatEther(delegatedAmounts[index])
-        }
-
-        return acc
-      }, {})
+      const { delegatedAmountsByDelegators: delegators } = await this.getDelegatedAmounts({
+        validator: validatorAddress,
+        delegators: delegatorsMap
+      })
 
       return {
         stakeAmount: formatEther(stakeAmount),
@@ -525,6 +516,7 @@ export class ConsensusService {
     }
   }
 
+  @logPerformance('ConsensusService::GetDelegatedAmounts')
   async getDelegatedAmounts (delegatedAmountsDto: DelegatedAmountsDto) {
     const { validator, delegators } = delegatedAmountsDto
     const delegatedAmounts = await this.aggregateCalls(
@@ -549,6 +541,7 @@ export class ConsensusService {
     }
   }
 
+  @logPerformance('ConsensusService::AggregateCalls')
   private async aggregateCalls (calls: { method: string; params?: any[] }[]) {
     const encodedCalls = calls.map(({ method, params }) => [
       this.consensusAddress,

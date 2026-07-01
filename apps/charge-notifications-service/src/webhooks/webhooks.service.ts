@@ -149,6 +149,26 @@ export class WebhooksService {
             `Creating a new webhook event for the tx ${eventData.txHash}`
           )
 
+          const webhookEvent = await this.webhookEventModel.findOne(
+            {
+              projectId,
+              webhookUrl,
+              addressType,
+              webhook: webhookId,
+              eventData: {
+                txHash: eventData.txHash
+              },
+              direction
+            }
+          )
+
+          if (webhookEvent) {
+            this.logger.warn(
+              `Webhook event for the tx ${eventData.txHash} already exists in the DB`
+            )
+            continue
+          }
+
           await this.webhookEventModel.create({
             webhook: webhookId,
             projectId,

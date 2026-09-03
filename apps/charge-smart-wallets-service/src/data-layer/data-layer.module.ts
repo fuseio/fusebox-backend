@@ -11,7 +11,8 @@ import { EthersModule } from 'nestjs-ethers'
 import { CentrifugeClientProvider } from '@app/common/centrifuge/centrifugeClient.provider'
 import { HttpModule } from '@nestjs/axios'
 import { SmartWalletsAAEventsService } from '@app/smart-wallets-service/smart-wallets/smart-wallets-aa-events.service'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import { accountsService, apiService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { TokenModule } from '@app/common/token/token.module'
@@ -40,24 +41,10 @@ import { UserOpParser } from '@app/common/services/user-op-parser.service'
       }
     }),
     ClientsModule.register([
-      {
-        name: accountsService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.ACCOUNTS_HOST,
-          port: parseInt(process.env.ACCOUNTS_TCP_PORT)
-        }
-      }
+      tcpClient(accountsService, process.env.ACCOUNTS_HOST, process.env.ACCOUNTS_TCP_PORT)
     ]),
     ClientsModule.register([
-      {
-        name: apiService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.API_HOST,
-          port: parseInt(process.env.API_TCP_PORT)
-        }
-      }
+      tcpClient(apiService, process.env.API_HOST, process.env.API_TCP_PORT)
     ])
   ],
   controllers: [DataLayerController],

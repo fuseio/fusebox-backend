@@ -6,21 +6,15 @@ import { smartWalletsService } from '@app/common/constants/microservices.constan
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from '@app/api-service/smart-wallets-api/jwt.strategy'
 
 @Module({
   imports: [
     ClientsModule.register([
-      {
-        name: smartWalletsService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.SMART_WALLETS_HOST,
-          port: parseInt(process.env.SMART_WALLETS_TCP_PORT)
-        }
-      }
+      tcpClient(smartWalletsService, process.env.SMART_WALLETS_HOST, process.env.SMART_WALLETS_TCP_PORT)
     ]),
     ApiKeyModule,
     ConfigModule.forRoot(),

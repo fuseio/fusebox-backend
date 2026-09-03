@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common'
 import { networkService } from '@app/common/constants/microservices.constants'
 import { BalancesAPIController } from 'apps/charge-api-service/src/balances-api/balances-api.controller'
 import { BalancesAPIService } from 'apps/charge-api-service/src/balances-api/balances-api.service'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import { ApiKeyModule } from '@app/api-service/api-keys/api-keys.module'
 import { CacheModule } from '@nestjs/cache-manager'
 
@@ -13,14 +14,7 @@ import { CacheModule } from '@nestjs/cache-manager'
       max: 1000
     }),
     ClientsModule.register([
-      {
-        name: networkService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.NETWORK_HOST,
-          port: parseInt(process.env.NETWORK_TCP_PORT)
-        }
-      }
+      tcpClient(networkService, process.env.NETWORK_HOST, process.env.NETWORK_TCP_PORT)
     ]),
     ApiKeyModule
   ],

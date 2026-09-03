@@ -11,7 +11,8 @@ import configuration from '@app/accounts-service/common/config/configuration'
 import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from '@app/common'
 import { operatorsProviders } from '@app/accounts-service/operators/operators.providers'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import { smartWalletsService, notificationsService } from '@app/common/constants/microservices.constants'
 import { AnalyticsService } from '@app/common/services/analytics.service'
 import { HttpModule } from '@nestjs/axios'
@@ -27,21 +28,8 @@ import { TokenModule } from '@app/common/token/token.module'
     PaymasterModule,
     ApiKeyModule,
     ClientsModule.register([
-      {
-        name: smartWalletsService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.SMART_WALLETS_HOST,
-          port: parseInt(process.env.SMART_WALLETS_TCP_PORT)
-        }
-      }, {
-        name: notificationsService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.NOTIFICATIONS_HOST,
-          port: parseInt(process.env.NOTIFICATIONS_TCP_PORT)
-        }
-      }
+      tcpClient(smartWalletsService, process.env.SMART_WALLETS_HOST, process.env.SMART_WALLETS_TCP_PORT),
+      tcpClient(notificationsService, process.env.NOTIFICATIONS_HOST, process.env.NOTIFICATIONS_TCP_PORT)
     ]),
     ConfigModule.forFeature(configuration),
     DatabaseModule,

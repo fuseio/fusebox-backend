@@ -6,7 +6,8 @@ import configuration from '@app/accounts-service/app-store/config/configuration'
 import { appStoreProviders } from '@app/accounts-service/app-store/app-store.providers'
 import { UsersModule } from '@app/accounts-service/users/users.module'
 import { DatabaseModule } from '@app/common/database/database.module'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import {
   appStoreService
 } from '@app/common/constants/microservices.constants'
@@ -17,14 +18,7 @@ import {
     DatabaseModule,
     ConfigModule.forFeature(configuration),
     ClientsModule.register([
-      {
-        name: appStoreService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.APPS_HOST,
-          port: parseInt(process.env.APPS_TCP_PORT)
-        }
-      }
+      tcpClient(appStoreService, process.env.APPS_HOST, process.env.APPS_TCP_PORT)
     ])
   ],
   controllers: [AppStoreController],

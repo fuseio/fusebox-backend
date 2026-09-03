@@ -9,7 +9,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EthersModule } from 'nestjs-ethers'
 import { webhookEventProviders } from '@app/notifications-service/common/providers/webhook-event.provider'
 import { WebhooksModule } from '@app/notifications-service/webhooks/webhooks.module'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import { smartWalletsService } from '@app/common/constants/microservices.constants'
 import { GasService } from '@app/common/services/gas.service'
 import { CacheModule } from '@nestjs/cache-manager'
@@ -34,14 +35,7 @@ import { CacheModule } from '@nestjs/cache-manager'
       }
     }),
     ClientsModule.register([
-      {
-        name: smartWalletsService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.SMART_WALLETS_HOST,
-          port: parseInt(process.env.SMART_WALLETS_TCP_PORT)
-        }
-      }
+      tcpClient(smartWalletsService, process.env.SMART_WALLETS_HOST, process.env.SMART_WALLETS_TCP_PORT)
     ]),
     WebhooksModule,
     DatabaseModule,

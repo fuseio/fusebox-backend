@@ -1,5 +1,6 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
-import { TcpOptions, Transport } from '@nestjs/microservices'
+import { TcpOptions } from '@nestjs/microservices'
+import { tcpServer } from '@app/common/utils/tcp-transport'
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { smartWalletsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
@@ -8,13 +9,7 @@ import { ChargeSmartWalletsServiceModule } from '@app/smart-wallets-service/char
 async function bootstrap () {
   const app = await NestFactory.create(ChargeSmartWalletsServiceModule)
 
-  const microServiceOptions: TcpOptions = {
-    transport: Transport.TCP,
-    options: {
-      host: process.env.SMART_WALLETS_HOST,
-      port: parseInt(process.env.SMART_WALLETS_TCP_PORT)
-    }
-  }
+  const microServiceOptions: TcpOptions = tcpServer(process.env.SMART_WALLETS_HOST, process.env.SMART_WALLETS_TCP_PORT)
   app.setGlobalPrefix('smart-wallets')
   app.enableCors()
 

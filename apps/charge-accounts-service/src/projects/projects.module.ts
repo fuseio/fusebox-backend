@@ -8,21 +8,15 @@ import {
   // relayService
 } from '@app/common/constants/microservices.constants'
 import { Module } from '@nestjs/common'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 
 @Module({
   imports: [
     UsersModule,
     DatabaseModule,
     ClientsModule.register([
-      {
-        name: apiService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.API_HOST,
-          port: parseInt(process.env.API_TCP_PORT)
-        }
-      }
+      tcpClient(apiService, process.env.API_HOST, process.env.API_TCP_PORT)
     ])
     // ClientsModule.register([
     //   {

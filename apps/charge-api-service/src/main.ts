@@ -1,4 +1,5 @@
-import { TcpOptions, Transport } from '@nestjs/microservices'
+import { TcpOptions } from '@nestjs/microservices'
+import { tcpServer } from '@app/common/utils/tcp-transport'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeApiServiceModule } from 'apps/charge-api-service/src/charge-api-service.module'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
@@ -9,13 +10,7 @@ import { setupSwagger } from './common/utils/swagger/setup-swagger'
 async function bootstrap () {
   const app = await NestFactory.create(ChargeApiServiceModule)
 
-  const microServiceOptions: TcpOptions = {
-    transport: Transport.TCP,
-    options: {
-      host: process.env.API_HOST,
-      port: parseInt(process.env.API_TCP_PORT)
-    }
-  }
+  const microServiceOptions: TcpOptions = tcpServer(process.env.API_HOST, process.env.API_TCP_PORT)
   app.setGlobalPrefix('api')
 
   app.useGlobalPipes(

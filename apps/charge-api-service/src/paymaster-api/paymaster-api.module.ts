@@ -6,7 +6,8 @@ import configuration from '@app/api-service/paymaster-api/config/configuration'
 import { PaymasterApiController } from '@app/api-service/paymaster-api/paymaster-api.controller'
 import { PaymasterApiService } from '@app/api-service/paymaster-api/paymaster-api.service'
 import { accountsService } from '@app/common/constants/microservices.constants'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { ClientsModule } from '@nestjs/microservices'
+import { tcpClient } from '@app/common/utils/tcp-transport'
 import { EthersModule } from 'nestjs-ethers'
 import { UserOpParser } from '@app/common/services/user-op-parser.service'
 
@@ -16,14 +17,7 @@ import { UserOpParser } from '@app/common/services/user-op-parser.service'
     HttpModule,
     ConfigModule.forFeature(configuration),
     ClientsModule.register([
-      {
-        name: accountsService,
-        transport: Transport.TCP,
-        options: {
-          host: process.env.ACCOUNTS_HOST,
-          port: parseInt(process.env.ACCOUNTS_TCP_PORT)
-        }
-      }
+      tcpClient(accountsService, process.env.ACCOUNTS_HOST, process.env.ACCOUNTS_TCP_PORT)
     ]),
     EthersModule.forRootAsync({
       imports: [ConfigModule],

@@ -1,4 +1,5 @@
-import { TcpOptions, Transport } from '@nestjs/microservices'
+import { TcpOptions } from '@nestjs/microservices'
+import { tcpServer } from '@app/common/utils/tcp-transport'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeNotificationsServiceModule } from 'apps/charge-notifications-service/src/charge-notifications-service.module'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
@@ -8,13 +9,7 @@ import { notificationsServiceLoggerContext } from '@app/common/constants/microse
 async function bootstrap () {
   const app = await NestFactory.create(ChargeNotificationsServiceModule)
 
-  const microServiceOptions: TcpOptions = {
-    transport: Transport.TCP,
-    options: {
-      host: process.env.NOTIFICATIONS_HOST,
-      port: parseInt(process.env.NOTIFICATIONS_TCP_PORT)
-    }
-  }
+  const microServiceOptions: TcpOptions = tcpServer(process.env.NOTIFICATIONS_HOST, process.env.NOTIFICATIONS_TCP_PORT)
   app.setGlobalPrefix('notifications')
 
   app.useGlobalPipes(

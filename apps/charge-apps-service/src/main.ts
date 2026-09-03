@@ -1,6 +1,7 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { ChargeAppsServiceModule } from '@app/apps-service/charge-apps-service.module'
-import { TcpOptions, Transport } from '@nestjs/microservices'
+import { TcpOptions } from '@nestjs/microservices'
+import { tcpServer } from '@app/common/utils/tcp-transport'
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { appStoreServiceLoggerContext } from '@app/common/constants/microservices.constants'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
@@ -8,13 +9,7 @@ import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filte
 async function bootstrap () {
   const app = await NestFactory.create(ChargeAppsServiceModule)
 
-  const microServiceOptions: TcpOptions = {
-    transport: Transport.TCP,
-    options: {
-      host: process.env.APPS_HOST,
-      port: parseInt(process.env.APPS_TCP_PORT)
-    }
-  }
+  const microServiceOptions: TcpOptions = tcpServer(process.env.APPS_HOST, process.env.APPS_TCP_PORT)
   app.setGlobalPrefix('app-store')
   app.enableCors()
 

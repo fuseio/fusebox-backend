@@ -2,7 +2,8 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { AccountsModule } from '@app/accounts-service/accounts.module'
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import Helmet from 'helmet'
-import { TcpOptions, Transport } from '@nestjs/microservices'
+import { TcpOptions } from '@nestjs/microservices'
+import { tcpServer } from '@app/common/utils/tcp-transport'
 import { AllExceptionsFilter } from '@app/common/exceptions/all-exceptions.filter'
 import { accountsServiceLoggerContext } from '@app/common/constants/microservices.constants'
 import { setupSwagger } from '@app/accounts-service/common/utils/swagger/setup-swagger'
@@ -14,15 +15,7 @@ async function bootstrap () {
   const configService = app.get(ConfigService)
   const consoleDappFuseOrVercelUrl = /^https:\/\/console[-.a-zA-Z0-9]*\.(fuse\.io|vercel\.app)$/
 
-  const microServiceOptions: TcpOptions = {
-    transport: Transport.TCP,
-    options: {
-      retryAttempts: 5,
-      retryDelay: 3000,
-      host: process.env.ACCOUNTS_HOST,
-      port: parseInt(process.env.ACCOUNTS_TCP_PORT)
-    }
-  }
+  const microServiceOptions: TcpOptions = tcpServer(process.env.ACCOUNTS_HOST, process.env.ACCOUNTS_TCP_PORT, { retryAttempts: 5, retryDelay: 3000 })
 
   app.use(Helmet())
   app.use(cookieParser())

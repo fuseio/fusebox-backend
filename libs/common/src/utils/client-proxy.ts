@@ -1,12 +1,22 @@
 import { HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
-import { lastValueFrom, takeLast, timeout, TimeoutError } from 'rxjs'
+import { defer, lastValueFrom, takeLast, timeout, TimeoutError } from 'rxjs'
 import { get } from 'lodash'
 
 const logger = new Logger('MicroserviceClient')
 
 export const MS_CALL_TIMEOUT_MS = 20000
 const DEFAULT_RETRIES = 1
+
+/**
+ * Wait before retrying. The failures worth retrying are transient by nature — a peer
+ * restarting during a rollout answers ECONNREFUSED for a second or two — so an immediate
+ * retry just spends the attempt against the same closed port. Jittered so a burst of
+ * concurrent callers does not resynchronise onto the recovering peer.
+ */
+const RETRY_BACKOFF_MS = 250
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export interface CallMSFunctionOptions {
   /** Per-attempt timeout. Raise it for handlers that are legitimately slow. */
@@ -124,15 +134,47 @@ function toHttpException (error: any, serviceName: string, pattern: string): Htt
   return new HttpException(`Error in ${serviceName} microservice: ${message}`, statusCode)
 }
 
+interface AttemptTiming {
+  connectMs?: number
+  waitedMs?: number
+}
+
+/**
+ * `client.send()` establishes the connection itself, so a single timeout around it
+ * cannot say whether the socket never came up or the peer accepted it and then never
+ * answered. Those point at completely different faults — an unreachable/backlogged peer
+ * versus a handler that is stuck or starved — so connect is awaited separately and each
+ * phase is reported. It also bounds a hanging connect, which previously burned the whole
+ * window silently.
+ */
 async function sendOnce (
   client: ClientProxy,
   pattern: string,
   data: any,
-  timeoutMs: number
+  timeoutMs: number,
+  timing: AttemptTiming
 ): Promise<any> {
-  return lastValueFrom(
-    client.send(pattern, data).pipe(timeout(timeoutMs), takeLast(1))
-  )
+  const startedAt = Date.now()
+
+  await lastValueFrom(defer(() => client.connect()).pipe(timeout(timeoutMs), takeLast(1)))
+  timing.connectMs = Date.now() - startedAt
+
+  const remainingMs = Math.max(timeoutMs - timing.connectMs, 1)
+  const sentAt = Date.now()
+  try {
+    return await lastValueFrom(
+      client.send(pattern, data).pipe(timeout(remainingMs), takeLast(1))
+    )
+  } finally {
+    timing.waitedMs = Date.now() - sentAt
+  }
+}
+
+function describeTiming (timing: AttemptTiming): string {
+  if (timing.connectMs === undefined) {
+    return 'connect never completed — peer unreachable or not accepting'
+  }
+  return `connected in ${timing.connectMs}ms, then waited ${timing.waitedMs}ms for a reply`
 }
 
 export async function callMSFunction (
@@ -146,8 +188,9 @@ export async function callMSFunction (
   const serviceName = describeClient(client)
 
   for (let attempt = 0; ; attempt++) {
+    const timing: AttemptTiming = {}
     try {
-      const response = await sendOnce(client, pattern, data, timeoutMs)
+      const response = await sendOnce(client, pattern, data, timeoutMs, timing)
       lastResponseAt.set(client, Date.now())
       return response
     } catch (error) {
@@ -171,7 +214,7 @@ export async function callMSFunction (
 
       logger.error(
         `Error in microservice call to ${serviceName} (pattern: ${pattern}, attempt: ${attempt + 1}): ` +
-        `${get(error, 'message', error)}`
+        `${get(error, 'message', error)} [${describeTiming(timing)}]`
       )
 
       // Only a stale socket needs dropping by hand. Every reachable connection error is
@@ -185,7 +228,11 @@ export async function callMSFunction (
       // Timeouts are not retried: the server may still be working on the request, and a
       // second full timeout would double the caller's wait for no extra chance of success.
       if (connectionLost && attempt < retries) {
-        logger.warn(`Retrying ${pattern} on ${serviceName} over a fresh connection`)
+        const backoffMs = Math.round(RETRY_BACKOFF_MS * (1 + Math.random()))
+        logger.warn(
+          `Retrying ${pattern} on ${serviceName} over a fresh connection in ${backoffMs}ms`
+        )
+        await sleep(backoffMs)
         continue
       }
 

@@ -1,7 +1,7 @@
 import { eventTypes } from '@app/notifications-service/webhooks/schemas/webhook.schema'
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { Model } from 'mongoose'
-import { webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
+import { MAX_RETRY_ATTEMPTS, webhookEventModelString } from '@app/notifications-service/common/constants/webhook-event.constants'
 import { WebhookEvent } from '@app/notifications-service/common/interfaces/webhook-event.interface'
 import { ConfigService } from '@nestjs/config'
 import { Webhook } from '@app/notifications-service/webhooks/interfaces/webhook.interface'
@@ -11,7 +11,6 @@ import WebhookSendService from '@app/common/services/webhook-send.service'
 export class BroadcasterService {
   private readonly logger = new Logger(BroadcasterService.name)
   private isProcessing = false
-  private readonly MAX_RETRY_ATTEMPTS = 6
   private readonly PROCESSING_INTERVAL_MS = 2000
 
   constructor (
@@ -63,7 +62,7 @@ export class BroadcasterService {
       {
         retryAfter: { $lte: new Date() },
         success: false,
-        numberOfTries: { $lt: this.MAX_RETRY_ATTEMPTS }
+        numberOfTries: { $lt: MAX_RETRY_ATTEMPTS }
       }
     ).populate<{ webhook: Webhook }>('webhook').sort({ retryAfter: -1 }).limit(100)
 

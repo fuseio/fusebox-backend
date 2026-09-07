@@ -149,16 +149,20 @@ export class WebhooksService {
             `Creating a new webhook event for the tx ${eventData.txHash}`
           )
 
+          // `webhook` already identifies the project and the URL, so this is the whole
+          // uniqueness key. Two earlier predicates could never match and made this a
+          // 12.9M-document COLLSCAN that returned nothing every time:
+          //   - `eventData: { txHash }` is exact subdocument equality, so it only matches
+          //     a document whose eventData is *solely* that field; ours has ~15.
+          //   - `webhookUrl` is not in WebhookEventSchema, so strict mode strips it on
+          //     create() and no stored document carries it.
+          // Backed by the { eventData.txHash, webhook, direction, addressType } index.
           const webhookEvent = await this.webhookEventModel.findOne(
             {
-              projectId,
-              webhookUrl,
-              addressType,
+              'eventData.txHash': eventData.txHash,
               webhook: webhookId,
-              eventData: {
-                txHash: eventData.txHash
-              },
-              direction
+              direction,
+              addressType
             }
           )
 

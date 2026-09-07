@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(gh pr create --title 'fix\\(smart-wallets\\): preserve RpcException status in createWallet' --body ' *)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(command -v gh)",
+      "Bash(git fetch *)"
+    ]
+  }
+}

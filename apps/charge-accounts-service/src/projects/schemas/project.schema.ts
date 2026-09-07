@@ -14,3 +14,7 @@ export const ProjectSchema = new mongoose.Schema(
     timestamps: true
   }
 )
+
+// findOne({ ownerId }) and find({ ownerId }) run on ordinary account paths with no index
+// behind them.
+ProjectSchema.index({ ownerId: 1 })

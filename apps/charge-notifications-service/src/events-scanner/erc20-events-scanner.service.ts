@@ -103,9 +103,16 @@ export class ERC20EventsScannerService extends EventsScannerService {
       eventData.tokenId = parseInt(parsedLog.args.tokenId?._hex)
     }
 
-    this.webhooksService.processWebhookTokenEvents(eventData).catch((error) => {
-      this.logger.error(`Failed to process webhook events for event data :${eventData} - Error: ${error}`)
-    })
+    // Awaited rather than fire-and-forget. Detached, this had no ceiling: every event in
+    // a batch dispatched its database work immediately, so when those queries were slow
+    // they piled up without limit and starved everything else sharing the connection.
+    // Awaiting bounds it to one in flight, which is free next to the RPC call that
+    // dominates this method now that the queries it makes are indexed.
+    try {
+      await this.webhooksService.processWebhookTokenEvents(eventData)
+    } catch (error) {
+      this.logger.error(`Failed to process webhook events for event data :${JSON.stringify(eventData)} - Error: ${error}`)
+    }
   }
 
   @logPerformance('ERC20EventsScannerService::GetTokenInfo')

@@ -66,10 +66,15 @@ WebhookEventSchema.index({
 
 // Broadcaster queue poll: find({ retryAfter: $lte, success: false, numberOfTries: $lt })
 // sorted by retryAfter. It runs continuously in a loop, so it was the heavier of the two.
-// Partial on success:false keeps the index to the small pending tail instead of every
-// event ever delivered; the poll always filters on success:false, so it stays eligible.
-// Follows equality-sort-range: retryAfter serves both the sort and its range bound.
-WebhookEventSchema.index(
-  { retryAfter: -1, numberOfTries: 1 },
-  { partialFilterExpression: { success: false } }
-)
+//
+// Declared to match the index already present in production
+// (success_1_retryAfter_-1_numberOfTries_1) rather than an equivalent of our own, so
+// autoIndex recognises it and does not build a second one covering the same query --
+// two overlapping indexes would double the write cost for no read benefit.
+//
+// Equality, sort, range: success is an equality prefix, retryAfter serves both the sort
+// and its range bound so there is no in-memory sort, and numberOfTries filters within
+// the index. Measured against a partial variant keyed only on the pending tail, the two
+// plans are indistinguishable -- same IXSCAN, same 100 documents examined, no sort --
+// and this one is already warm.
+WebhookEventSchema.index({ success: 1, retryAfter: -1, numberOfTries: 1 })

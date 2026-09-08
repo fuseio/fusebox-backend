@@ -36,44 +36,66 @@
 
 /* eslint-disable no-undef */
 
+/**
+ * Every setting can be overridden from the environment, so a run never requires editing
+ * this file on a bastion (and dryRun can never be committed as false by accident):
+ *
+ *   PURGE_DRY_RUN=false PURGE_MAX_MINUTES=30 mongosh "$MONGO_URI" --file scripts/purge-webhook-events.js
+ */
+function envNum (name, fallback) {
+  const raw = process.env[name]
+  if (raw === undefined || raw === '') return fallback
+  const n = Number(raw)
+  if (!isFinite(n)) throw new Error(`${name} must be a number, got "${raw}"`)
+  return n
+}
+
+function envBool (name, fallback) {
+  const raw = process.env[name]
+  if (raw === undefined || raw === '') return fallback
+  if (raw === 'true' || raw === '1') return true
+  if (raw === 'false' || raw === '0') return false
+  throw new Error(`${name} must be true or false, got "${raw}"`)
+}
+
 const CONFIG = {
-  dbName: 'charge-notifications',
-  collName: 'webhookevents',
+  dbName: process.env.PURGE_DB || 'charge-notifications',
+  collName: process.env.PURGE_COLLECTION || 'webhookevents',
 
   // Must exceed the broadcaster's worst-case retry horizon (15s + 1m + 10m + 1h + 1d
-  // + 1d, about 2.05 days). Kept equal to the TTL so the two agree.
-  retentionDays: 30,
+  // + 1d, about 2.05 days). Kept equal to WEBHOOK_EVENT_RETENTION_DAYS in the app.
+  retentionDays: envNum('PURGE_RETENTION_DAYS', 30),
 
   // Attempts the broadcaster makes before giving up. Must match MAX_RETRY_ATTEMPTS in
   // apps/charge-notifications-service/src/common/constants/webhook-event.constants.ts;
   // too low here would delete events that are still going to be retried.
-  maxRetryAttempts: 6,
+  maxRetryAttempts: envNum('PURGE_MAX_RETRY_ATTEMPTS', 6),
 
   // Documents per batch. Small enough that one batch is never a long-running write.
-  batchSize: 1000,
+  batchSize: envNum('PURGE_BATCH_SIZE', 1000),
 
   // Sleep = batchDuration * pacingFactor. 2 means roughly a third of the time is spent
   // deleting and two thirds idle. Raise it to tread more lightly, lower to go faster.
-  pacingFactor: 2,
-  minSleepMs: 100,
-  maxSleepMs: 5000,
+  pacingFactor: envNum('PURGE_PACING_FACTOR', 2),
+  minSleepMs: envNum('PURGE_MIN_SLEEP_MS', 100),
+  maxSleepMs: envNum('PURGE_MAX_SLEEP_MS', 5000),
 
   // Pause while any secondary is behind by more than this.
-  maxReplicationLagSeconds: 10,
-  lagBackoffMs: 5000,
+  maxReplicationLagSeconds: envNum('PURGE_MAX_LAG_SECONDS', 10),
+  lagBackoffMs: envNum('PURGE_LAG_BACKOFF_MS', 5000),
 
   // Safety valve so a batch cannot hang forever behind a stalled majority.
-  writeTimeoutMs: 30000,
+  writeTimeoutMs: envNum('PURGE_WRITE_TIMEOUT_MS', 30000),
 
-  // Set false only once a dry run looks right.
-  dryRun: true,
+  // Defaults to a dry run. Set PURGE_DRY_RUN=false to actually delete.
+  dryRun: envBool('PURGE_DRY_RUN', true),
 
   // Paste the "resume after" id from a previous run to continue where it stopped.
-  resumeAfterId: null,
+  resumeAfterId: process.env.PURGE_RESUME_AFTER_ID || null,
 
-  // 0 means run to completion.
-  maxDocumentsToDelete: 0,
-  maxRuntimeMinutes: 0
+  // 0 means run to completion. Use these to take a bounded first bite.
+  maxDocumentsToDelete: envNum('PURGE_MAX_DOCUMENTS', 0),
+  maxRuntimeMinutes: envNum('PURGE_MAX_MINUTES', 0)
 }
 
 function sleepMs (ms) {
@@ -169,6 +191,12 @@ function main () {
       ? Math.min(CONFIG.batchSize, CONFIG.maxDocumentsToDelete - processed)
       : CONFIG.batchSize
 
+    // Timed from before the find. The find is not free - on a contended cluster it has
+    // been measured at ~320ms per batch against ~1ms locally - so pacing has to cover
+    // the read as well as the write, or the script runs at roughly half the intended
+    // duty cycle without ever saying so.
+    const batchStartedAt = Date.now()
+
     // Ask only for _id: the batch stays small on the wire no matter how fat the
     // documents are.
     const ids = coll.find(
@@ -181,9 +209,9 @@ function main () {
       break
     }
 
-    const batchStartedAt = Date.now()
     let deletedCount = 0
 
+    const deleteStartedAt = Date.now()
     if (CONFIG.dryRun) {
       deletedCount = ids.length
     } else {
@@ -206,11 +234,12 @@ function main () {
     batches++
 
     const batchMs = Date.now() - batchStartedAt
+    const deleteMs = Date.now() - deleteStartedAt
     const lag = waitForReplication()
 
     if (batches % 10 === 1 || CONFIG.dryRun) {
       const rate = processed / Math.max((Date.now() - startedAt) / 1000, 0.001)
-      print(`  batch ${String(batches).padStart(5)}  ${CONFIG.dryRun ? 'would delete' : 'deleted'} ${fmt(processed)}  ${batchMs}ms/batch  ${rate.toFixed(0)}/s` +
+      print(`  batch ${String(batches).padStart(5)}  ${CONFIG.dryRun ? 'would delete' : 'deleted'} ${fmt(processed)}  ${batchMs}ms/batch (find ${batchMs - deleteMs}ms, delete ${deleteMs}ms)  ${rate.toFixed(0)}/s` +
         (lag === null ? '' : `  lag ${lag.toFixed(1)}s`) +
         `  resume after ${lastId}`)
     }

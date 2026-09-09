@@ -29,3 +29,9 @@ export const UserOpSchema = new mongoose.Schema(
     timestamps: true
   }
 )
+
+// Paymaster spend counting filters apiKey by equality and createdAt by range. The
+// single-field apiKey index finds the right documents but cannot narrow the date, so
+// every operation ever recorded for a busy project is fetched and then discarded.
+// Equality first, range second, so the scan is bounded to the window asked for.
+UserOpSchema.index({ apiKey: 1, createdAt: 1 })

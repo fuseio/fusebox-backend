@@ -17,3 +17,8 @@ export const WebhookSchema = new mongoose.Schema(
     timestamps: true
   }
 )
+
+// getAllByProjectId does find({ projectId }) with nothing to serve it, so it scans the
+// whole collection. Small today, but it shares a database with webhookevents and pays
+// the same contention.
+WebhookSchema.index({ projectId: 1 })
